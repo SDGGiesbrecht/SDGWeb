@@ -46,3 +46,6 @@ configuration.documentation.api.encryptedTravisCIDeploymentKey = "#warning(No ke
 
 configuration._applySDGOverrides()
 configuration._validateSDGStandards()
+
+// #workaround(GitHub Pages isn’t set up yet.)
+// #workaround(CI is not a required status check yet.)
