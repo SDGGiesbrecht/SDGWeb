@@ -28,7 +28,7 @@ configuration.documentation.localizations = ["🇨🇦EN"]
 
 configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "SDGWeb provides tools for generating websites."
 
-// #warning(No quote yet.)
+// #workaround(No quote yet.)
 configuration.documentation.readMe.quotation = Quotation(original: "")
 configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = ""
 configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=")!
