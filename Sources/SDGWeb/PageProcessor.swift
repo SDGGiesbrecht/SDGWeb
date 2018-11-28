@@ -15,5 +15,24 @@
 import SDGText
 
 public protocol PageProcessor {
-    func process(pageTemplate: inout StrictString, title: StrictString, siteRoot: StrictString, relativePath: String)
+
+    func frame() -> StrictString
+
+    func process(
+        pageTemplate: inout StrictString,
+        title: StrictString,
+        content: StrictString,
+        siteRoot: StrictString,
+        relativePath: StrictString)
+}
+
+extension PageProcessor {
+
+    func trimmedFrame() -> StrictString {
+        var result = frame()
+        if result.last == "\n" {
+            result.removeLast()
+        }
+        return result
+    }
 }

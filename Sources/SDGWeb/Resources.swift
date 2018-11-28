@@ -1,0 +1,22 @@
+/*
+ Resources.swift
+
+ This source file is part of the SDGWeb open source project.
+ https://sdggiesbrecht.github.io/SDGWeb
+
+ Copyright ©2018 Jeremy David Giesbrecht and the SDGWeb project contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
+
+import Foundation
+
+internal enum Resources {}
+
+extension Resources {
+    static let frame = String(data: Data(base64Encoded: "PCFET0NUWVBFIGh0bWw+Cgo8IS0tCiBGcmFtZS5odG1sCgogVGhpcyBzb3VyY2UgZmlsZSBpcyBwYXJ0IG9mIHRoZSBTREdXZWIgb3BlbiBzb3VyY2UgcHJvamVjdC4KIGh0dHBzOi8vc2RnZ2llc2JyZWNodC5naXRodWIuaW8vU0RHV2ViCgogQ29weXJpZ2h0IMKpMjAxOCBKZXJlbXkgRGF2aWQgR2llc2JyZWNodCBhbmQgdGhlIFNER1dlYiBwcm9qZWN0IGNvbnRyaWJ1dG9ycy4KCiBTb2xpIERlbyBnbG9yaWEuCgogTGljZW5zZWQgdW5kZXIgdGhlIEFwYWNoZSBMaWNlbmNlLCBWZXJzaW9uIDIuMC4KIFNlZSBodHRwOi8vd3d3LmFwYWNoZS5vcmcvbGljZW5zZXMvTElDRU5TRS0yLjAgZm9yIGxpY2VuY2UgaW5mb3JtYXRpb24uCiAtLT4KCjxodG1sIGRpcj0iWyp0ZXh0IGRpcmVjdGlvbipdIiBsYW5nPSJbKmxvY2FsaXphdGlvbiBjb2RlKl0iPgogICAgPGhlYWQ+CiAgICAgICAgPG1ldGEgY2hhcnNldD0idXRmLTgiPgogICAgICAgIDxsaW5rIHJlbD0iY2Fub25pY2FsIiBocmVmPSJbKmRvbWFpbipdL1sqcmVsYXRpdmUgcGF0aCpdIj4KICAgICAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Ilsqc2l0ZSByb290Kl1DU1MvWypzaXRlIGNzcyBmaWxlbmFtZSpdLmNzcyI+CiAgICAgICAgPHRpdGxlPlsqdGl0bGUqXTwvdGl0bGU+CiAgICA8L2hlYWQ+CiAgICA8Ym9keT4KWypib2R5Kl0KICAgIDwvYm9keT4KPC9odG1sPgo=")!, encoding: String.Encoding.utf8)!
+
+}

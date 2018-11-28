@@ -23,11 +23,11 @@ extension Site {
     public enum Error : PresentableError {
 
         case cleaningError(systemError: Swift.Error)
-        case templateLoadingError(page: String, systemError: Swift.Error)
-        case noMetadata(page: String)
+        case templateLoadingError(page: StrictString, systemError: Swift.Error)
+        case noMetadata(page: StrictString)
         case metadataMissingColon(line: StrictString)
-        case missingTitle(page: String)
-        case pageSavingError(page: String, systemError: Swift.Error)
+        case missingTitle(page: StrictString)
+        case pageSavingError(page: StrictString, systemError: Swift.Error)
 
         public func presentableDescription() -> StrictString {
             return UserFacing<StrictString, InterfaceLocalization>({ localization in

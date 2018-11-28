@@ -15,21 +15,31 @@
 import Foundation
 
 import SDGText
+import SDGLocalization
 
-public struct Site {
+public struct Site<Localization> where Localization : SDGLocalization.InputLocalization {
 
     // MARK: - Initialization
 
-    public init(repositoryStructure: RepositoryStructure, pageProcessor: PageProcessor, reportProgress: @escaping (StrictString) -> Void) {
+    public init(
+        repositoryStructure: RepositoryStructure,
+        domain: UserFacing<StrictString, Localization>,
+        pageProcessor: PageProcessor,
+        siteCSSFileName: StrictString, // #workaround(Only for specification compatibility.)
+        reportProgress: @escaping (StrictString) -> Void) {
         self.repositoryStructure = repositoryStructure
+        self.domain = domain
         self.pageProcessor = pageProcessor
+        self.siteCSSFileName = siteCSSFileName
         self.reportProgress = reportProgress
     }
 
     // MARK: - Properties
 
     internal let repositoryStructure: RepositoryStructure
+    internal let domain: UserFacing<StrictString, Localization>
     internal let pageProcessor: PageProcessor
+    internal let siteCSSFileName: StrictString
     internal let reportProgress: (StrictString) -> Void
 
     // MARK: - Processing
@@ -49,10 +59,10 @@ public struct Site {
 
     private func writePages() throws {
         for templateLocation in try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)  {
+            let template = try PageTemplate(from: templateLocation, in: self)
             let relativePath = templateLocation.path(relativeTo: repositoryStructure.pages)
             let resultLocation = repositoryStructure.result.appendingPathComponent(relativePath)
-            let template = try PageTemplate(from: templateLocation, in: self)
-            try template.writeResult(to: resultLocation, for: self)
+            try template.writeResult(to: resultLocation, for: Localization.fallbackLocalization, of: self)
         }
     }
 }
