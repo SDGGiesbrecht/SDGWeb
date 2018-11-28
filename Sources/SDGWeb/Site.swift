@@ -16,17 +16,25 @@ import Foundation
 
 public struct Site {
 
-    public init() {
+    // MARK: - Initialization
 
+    public init(repositoryStructure: RepositoryStructure) {
+        self.repositoryStructure = repositoryStructure
     }
 
-    public func generate(in resultDirectory: URL) throws {
-        try clean(resultDirectory)
+    // MARK: - Properties
+
+    private let repositoryStructure: RepositoryStructure
+
+    // MARK: - Processing
+
+    public func generate() throws {
+        try clean()
     }
 
-    private func clean(_ resultDirectory: URL) throws {
+    private func clean() throws {
         do {
-            try FileManager.default.removeItem(at: resultDirectory)
+            try FileManager.default.removeItem(at: repositoryStructure.result)
         } catch {
             throw Error.cleaningFailure(error)
         }
