@@ -28,7 +28,7 @@ configuration.documentation.localizations = ["🇨🇦EN"]
 
 configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "SDGWeb provides tools for generating websites."
 
-// #warning(No quote yet.)
+// #workaround(No quote yet.)
 configuration.documentation.readMe.quotation = Quotation(original: "")
 configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = ""
 configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=")!
@@ -42,7 +42,10 @@ configuration.documentation.readMe.featureList["🇨🇦EN"] = [
 configuration.documentation.readMe.exampleUsage["🇨🇦EN"] = ""
 
 configuration.continuousIntegration.skipSimulatorOutsideContinuousIntegration = true
-configuration.documentation.api.encryptedTravisCIDeploymentKey = "#warning(No key yet.)"
+configuration.documentation.api.encryptedTravisCIDeploymentKey = "sQc3HlGZyOj3FG45NC9smhjzb34iUQ4KRU95uBtpnXHLs/AcKE5RkED2ljyLJOIv9Wwzb2LIamfORBpbx4QPVgbdqcoeo7CF97+dw3S/xNH4PoLcLHOriS9idSDAqyRL+tOyGyxAPJ94Vu/+Sfn4z6co94Y2ZAaJc8fzYhYA5gdJxwayUve9aP9lw/vKOIOuENtHPrNz6gBbLgM1b9Jp/QTDk+oZ8zpe9l0/rzf4VmYZtI1VGxJGdC3SQKN+TyaJ7UaqCl+G9JdOjuhuRaclNQrKGsP9u+9nqWu9lAN+P3T7TYJnbSMQ+CGGuuXKxxhNKDM4pgtExdpKNLOo5fvISVN4Oi5YSY0KzDx/f0HtXqo4x92tWqWsZzGYjFoInKqKb/4iga3rNOa4vfOMTSbjxHxaQ4KczW+VhznKCKmipBrij8d9zQOsGdrDpVyTkhTcUZPVNjwThs2u0tgVIz4QYGsCqpi536kNzTVZj0v8+G6i1V5y4zlEda09E40XPOizwAZu/qrjAblE2GkL8P1/FADah0ULucQ+mjKZO/afrbmPYCAKDOUqlwUcV+Cd+BOr2ZnGR3TTOZ+mUoyBivPs7ewjTXqt1CwYuia0BgYUqrbupcb895XWeLvRy0mAjjqu4kArMwTiwjeT6rJtdtTW8YzUIqscOtWUcN7zVKkUGKI="
 
 configuration._applySDGOverrides()
 configuration._validateSDGStandards()
+
+// #workaround(GitHub Pages isn’t set up yet.)
+// #workaround(CI is not a required status check yet.)

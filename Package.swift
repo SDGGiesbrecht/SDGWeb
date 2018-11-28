@@ -16,15 +16,18 @@
 
 import PackageDescription
 
+/// #workaround(No documentation yet.)
 let package = Package(
     name: "SDGWeb",
     products: [
+        /// #workaround(No documentation yet.)
         .library(name: "SDGWeb", targets: ["SDGWeb"])
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 12, 0)))
     ],
     targets: [
+        /// #workaround(No documentation yet.)
         .target(name: "SDGWeb", dependencies: []),
         .testTarget(name: "SDGWebTests", dependencies: [
             "SDGWeb",
