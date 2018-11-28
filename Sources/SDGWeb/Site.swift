@@ -14,29 +14,45 @@
 
 import Foundation
 
+import SDGText
+
 public struct Site {
 
     // MARK: - Initialization
 
-    public init(repositoryStructure: RepositoryStructure) {
+    public init(repositoryStructure: RepositoryStructure, pageProcessor: PageProcessor, reportProgress: @escaping (StrictString) -> Void) {
         self.repositoryStructure = repositoryStructure
+        self.pageProcessor = pageProcessor
+        self.reportProgress = reportProgress
     }
 
     // MARK: - Properties
 
-    private let repositoryStructure: RepositoryStructure
+    internal let repositoryStructure: RepositoryStructure
+    internal let pageProcessor: PageProcessor
+    internal let reportProgress: (StrictString) -> Void
 
     // MARK: - Processing
 
     public func generate() throws {
         try clean()
+        try writePages()
     }
 
     private func clean() throws {
         do {
             try FileManager.default.removeItem(at: repositoryStructure.result)
         } catch {
-            throw Error.cleaningFailure(error)
+            throw Error.cleaningError(systemError: error)
+        }
+    }
+
+    private func writePages() throws {
+        for templateLocation in try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)  {
+            let relativePath = templateLocation.path(relativeTo: repositoryStructure.pages)
+            let resultLocation = repositoryStructure.result.appendingPathComponent(relativePath)
+            let template = try PageTemplate(from: templateLocation, in: self)
+            try template.writeResult(to: resultLocation, for: self)
         }
     }
 }

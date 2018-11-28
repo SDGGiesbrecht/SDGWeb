@@ -32,6 +32,8 @@ let package = Package(
         /// #workaround(No documentation yet.)
         .target(name: "SDGWeb", dependencies: [
             "SDGWebLocalizations",
+            .product(name: "SDGMathematics", package: "SDGCornerstone"),
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone")
             ]),
 

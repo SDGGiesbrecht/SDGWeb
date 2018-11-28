@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGText
 
 import SDGWebLocalizations
@@ -20,15 +22,45 @@ extension Site {
 
     public enum Error : PresentableError {
 
-        case cleaningFailure(Swift.Error)
+        case cleaningError(systemError: Swift.Error)
+        case templateLoadingError(page: String, systemError: Swift.Error)
+        case noMetadata(page: String)
+        case metadataMissingColon(line: StrictString)
+        case missingTitle(page: String)
+        case pageSavingError(page: String, systemError: Swift.Error)
 
         public func presentableDescription() -> StrictString {
             return UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch self {
-                case .cleaningFailure(let error):
+                case .cleaningError(systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to clean (empty) result directory:\n\(error)")
+                        return StrictString("Failed to clean (empty) result directory:\n\(error.localizedDescription)")
+                    }
+                case .templateLoadingError(page: let page, systemError: let error):
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("Failed to load template page “\(page)”: \(error.localizedDescription)")
+                    }
+                case .noMetadata(page: let page):
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("“\(page)” has no metadata (“<!-- ... -->”).")
+                    }
+                case .metadataMissingColon(line: let line):
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("Metadata entry has no colon:\n\(line)")
+                    }
+                case .missingTitle(page: let page):
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("“\(page)” has no title.")
+                    }
+                case .pageSavingError(page: let page, systemError: let error):
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("Failed to save page “\(page)”: \(error)")
                     }
                 }
             }).resolved()
