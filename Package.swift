@@ -27,8 +27,20 @@ let package = Package(
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 12, 0)))
     ],
     targets: [
+        // Products
+
         /// #workaround(No documentation yet.)
-        .target(name: "SDGWeb", dependencies: []),
+        .target(name: "SDGWeb", dependencies: [
+            "SDGWebLocalizations",
+            .product(name: "SDGText", package: "SDGCornerstone")
+            ]),
+
+        // Internal
+
+        .target(name: "SDGWebLocalizations", dependencies: [
+            .product(name: "SDGLocalization", package: "SDGCornerstone")
+            ]),
+
         .testTarget(name: "SDGWebTests", dependencies: [
             "SDGWeb",
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
