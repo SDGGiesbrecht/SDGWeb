@@ -26,15 +26,21 @@ public struct RepositoryStructure {
         self.init(root: url)
     }
 
-    public init(root: URL, template: URL? = nil, result: URL? = nil) {
+    public init(root: URL, template: URL? = nil, result: URL? = nil, pages: URL? = nil) {
         self.root = root
-        self.template = template ?? root.appendingPathComponent("Template")
+
+        let resolvedTemplate = template ?? root.appendingPathComponent("Template")
+        self.template = resolvedTemplate
+
         self.result = result ?? root.appendingPathComponent("Result")
+
+        self.pages = pages ?? resolvedTemplate.appendingPathComponent("Pages")
     }
 
     // MARK: - Properties
 
     public let root: URL
     public let template: URL
+    public let pages: URL
     public let result: URL
 }
