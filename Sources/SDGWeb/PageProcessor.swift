@@ -14,9 +14,11 @@
 
 import SDGText
 
+import SDGWebLocalizations
+
 public protocol PageProcessor {
 
-    func frame() -> StrictString
+    func frame(repositoryStructure: RepositoryStructure) throws -> StrictString
 
     func process(
         pageTemplate: inout StrictString,
@@ -28,8 +30,16 @@ public protocol PageProcessor {
 
 extension PageProcessor {
 
-    func trimmedFrame() -> StrictString {
-        var result = frame()
+    public func frame(repositoryStructure: RepositoryStructure) throws -> StrictString {
+        do {
+            return try StrictString(from: repositoryStructure.frame)
+        } catch {
+            throw Site<InterfaceLocalization>.Error.frameLoadingError(error: error)
+        }
+    }
+
+    func trimmedFrame(repositoryStructure: RepositoryStructure) throws -> StrictString {
+        var result = try frame(repositoryStructure: repositoryStructure)
         if result.last == "\n" {
             result.removeLast()
         }

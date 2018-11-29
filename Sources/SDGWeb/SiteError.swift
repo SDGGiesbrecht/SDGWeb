@@ -23,6 +23,7 @@ extension Site {
     public enum Error : PresentableError {
 
         case cleaningError(systemError: Swift.Error)
+        case frameLoadingError(error: Swift.Error)
         case templateLoadingError(page: StrictString, systemError: Swift.Error)
         case noMetadata(page: StrictString)
         case metadataMissingColon(line: StrictString)
@@ -38,10 +39,15 @@ extension Site {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("Failed to clean (empty) result directory:\n\(error.localizedDescription)")
                     }
+                case .frameLoadingError(error: let error):
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("Error loading frame:\n\(error.localizedDescription)")
+                    }
                 case .templateLoadingError(page: let page, systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to load template page “\(page)”: \(error.localizedDescription)")
+                        return StrictString("Failed to load template page “\(page)”:\n\(error.localizedDescription)")
                     }
                 case .noMetadata(page: let page):
                     switch localization {
@@ -61,12 +67,12 @@ extension Site {
                 case .pageSavingError(page: let page, systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to save page “\(page)”: \(error)")
+                        return StrictString("Failed to save page “\(page)”:\n\(error)")
                     }
                 case .cssCopyingError(systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to copy CSS: \(error)")
+                        return StrictString("Failed to copy CSS:\n\(error)")
                     }
                 }
             }).resolved()

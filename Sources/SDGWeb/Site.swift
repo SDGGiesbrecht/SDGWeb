@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGControlFlow
 import SDGText
 import SDGLocalization
 
@@ -40,6 +41,18 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     internal let domain: UserFacing<StrictString, Localization>
     internal let pageProcessor: PageProcessor
     internal let reportProgress: (StrictString) -> Void
+
+    private class Cache {
+        fileprivate init() {}
+        fileprivate var frame: StrictString?
+    }
+    private let cache = Cache()
+
+    internal func frame() throws -> StrictString {
+        return try cached(in: &cache.frame) {
+            try pageProcessor.trimmedFrame(repositoryStructure: repositoryStructure)
+        }
+    }
 
     // MARK: - Processing
 

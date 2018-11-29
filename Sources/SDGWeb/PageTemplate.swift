@@ -94,7 +94,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
 
     // MARK: - Processing
 
-    private func processedResult(for relativePath: StrictString, localization: Localization, site: Site<Localization>) -> StrictString {
+    private func processedResult(for relativePath: StrictString, localization: Localization, site: Site<Localization>) throws -> StrictString {
         var result = Frame.frame
 
         let htmlTextDirection: StrictString
@@ -118,7 +118,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
 
         result.replaceMatches(for: "[*title*]", with: title)
 
-        result.replaceMatches(for: "[*body*]", with: site.pageProcessor.trimmedFrame())
+        result.replaceMatches(for: "[*body*]", with: try site.frame())
         site.pageProcessor.process(pageTemplate: &result, title: title, content: content, siteRoot: siteRoot, relativePath: relativePath)
 
         return result

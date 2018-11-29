@@ -31,7 +31,9 @@ public struct RepositoryStructure {
         template: URL? = nil,
         result: URL? = nil,
         pages: URL? = nil,
+        components: URL? = nil,
         css: URL? = nil,
+        frame: URL? = nil,
         siteCSS: URL? = nil) {
 
         self.root = root
@@ -42,9 +44,12 @@ public struct RepositoryStructure {
         self.result = result ?? root.appendingPathComponent("Result")
 
         self.pages = pages ?? resolvedTemplate.appendingPathComponent("Pages")
+        let resolvedComponents = components ?? resolvedTemplate.appendingPathComponent("Components")
+        self.components = resolvedComponents
         let resolvedCSS = css ?? resolvedTemplate.appendingPathComponent("CSS")
         self.css = resolvedCSS
 
+        self.frame = frame ?? resolvedComponents.appendingPathComponent("Frame.html")
         self.siteCSS = siteCSS ?? resolvedCSS.appendingPathComponent("Site.css")
     }
 
@@ -57,6 +62,8 @@ public struct RepositoryStructure {
 
     public let pages: URL
     public let css: URL
+    public let components: URL
 
+    public let frame: URL
     public let siteCSS: URL
 }
