@@ -16,8 +16,7 @@ import XCTest
 
 extension SDGWebAPITests {
     static let __allTests = [
-        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
-        ("testUnlocalized", testUnlocalized)
+        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility)
     ]
 }
 
