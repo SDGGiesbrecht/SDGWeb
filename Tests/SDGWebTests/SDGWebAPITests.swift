@@ -14,7 +14,9 @@
 
 import SDGLocalization
 import SDGWeb
+import SDGWebLocalizations
 
+import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
 class SDGWebAPITests : TestCase {
@@ -29,6 +31,27 @@ class SDGWebAPITests : TestCase {
 
     func testRightToLeft() throws {
         try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
+    }
+
+    func testRepositoryStructure() {
+        _ = RepositoryStructure()
+    }
+
+    func testSiteError() {
+        struct StandInError : Error {}
+        let errors: [Site<SingleLocalization>.Error] = [
+            .frameLoadingError(error: StandInError()),
+            .templateLoadingError(page: "[...]", systemError: StandInError()),
+            .noMetadata(page: "[...]"),
+            .metadataMissingColon(line: "[...]"),
+            .missingTitle(page: "[...]"),
+            .pageSavingError(page: "[...]", systemError: StandInError()),
+            .cssCopyingError(systemError: StandInError())
+        ]
+        for index in errors.indices {
+            let error = errors[index]
+            testCustomStringConvertibleConformance(of: error, localizations: InterfaceLocalization.self, uniqueTestName: StrictString("\(index)"), overwriteSpecificationInsteadOfFailing: false)
+        }
     }
 
     func testUnknownLocalization() throws {
