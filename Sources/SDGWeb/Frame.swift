@@ -21,8 +21,9 @@ internal enum Frame {
         result.replaceMatches(for: CompositePattern([
             LiteralPattern("\n<\u{21}\u{2D}\u{2D}".scalars),
             RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy),
-            LiteralPattern("\u{2D}\u{2D}>\n\n".scalars),
+            LiteralPattern("\u{2D}\u{2D}>\n\n".scalars)
             ]), with: "".scalars)
+        result.replaceMatches(for: "[*UTF‐8*]", with: "utf\u{2D}8")
         return result
     }()
 }
