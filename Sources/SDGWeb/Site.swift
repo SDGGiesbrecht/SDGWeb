@@ -68,7 +68,8 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     }
 
     private func writePages() throws {
-        for templateLocation in try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages) {
+        for templateLocation in try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
+            where templateLocation.lastPathComponent ≠ ".DS_Store" {
             let template = try PageTemplate(from: templateLocation, in: self)
             let relativePath = templateLocation.path(relativeTo: repositoryStructure.pages)
             let resultLocation = repositoryStructure.result.appendingPathComponent(relativePath)
