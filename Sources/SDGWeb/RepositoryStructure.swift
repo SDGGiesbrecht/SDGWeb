@@ -14,10 +14,12 @@
 
 import Foundation
 
+/// The structure of a website repository.
 public struct RepositoryStructure {
 
     // MARK: - Initialization
 
+    /// Creates the default structure, assuming this initializer is called from “main.swift” in that file’s default location.
     public init(_main main: String = #file) {
         var url = URL(fileURLWithPath: main)
         for _ in 1 ... 3 {
@@ -26,6 +28,7 @@ public struct RepositoryStructure {
         self.init(root: url)
     }
 
+    /// Creates a custom repository structure.
     public init(
         root: URL,
         template: URL? = nil,
@@ -55,15 +58,23 @@ public struct RepositoryStructure {
 
     // MARK: - Properties
 
+    /// The root of the repository.
     public let root: URL
 
+    /// The directory where the user‐managed template files are stored.
     public let template: URL
+    /// The directory where the resulting site should be produced.
     public let result: URL
 
+    /// The directory containing the site’s page files.
     public let pages: URL
+    /// The directory containing CSS files.
     public let css: URL
+    /// The directory containing reusable template components.
     public let components: URL
 
+    /// The file representing the website frame.
     public let frame: URL
+    /// The file containing the site’s global CSS.
     public let siteCSS: URL
 }

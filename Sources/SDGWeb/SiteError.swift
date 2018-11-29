@@ -20,16 +20,32 @@ import SDGWebLocalizations
 
 extension Site {
 
+    /// An error encountered during site generation.
     public enum Error : PresentableError {
 
+        /// An error was encountered while loading the frame.
         case frameLoadingError(error: Swift.Error)
+
+        /// An error was encountered while loading a template file.
         case templateLoadingError(page: StrictString, systemError: Swift.Error)
+
+        /// A page has no metadata.
         case noMetadata(page: StrictString)
+
+        /// A metadata entry has no colon separating its key from its value.
         case metadataMissingColon(line: StrictString)
+
+        /// A page has no title.
         case missingTitle(page: StrictString)
+
+        /// An error was encountered while saving a generated page.
         case pageSavingError(page: StrictString, systemError: Swift.Error)
+
+        /// An error was encountered while copying CSS.
         case cssCopyingError(systemError: Swift.Error)
 
+        // #documentation(SDGCornerstone.PresentableError.presentableDescription())
+        /// Returns a localized description of the error.
         public func presentableDescription() -> StrictString {
             return UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch self {

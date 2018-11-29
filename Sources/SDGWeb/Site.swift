@@ -21,10 +21,12 @@ import SDGLocalization
 
 import SDGWebLocalizations
 
+/// A website.
 public struct Site<Localization> where Localization : SDGLocalization.InputLocalization {
 
     // MARK: - Initialization
 
+    /// Creates a website instance.
     public init(
         repositoryStructure: RepositoryStructure,
         domain: UserFacing<StrictString, Localization>,
@@ -57,6 +59,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
 
     // MARK: - Processing
 
+    /// Generates the website in its result directory.
     public func generate() throws {
         clean()
         try writePages()

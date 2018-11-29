@@ -16,10 +16,13 @@ import SDGText
 
 import SDGWebLocalizations
 
+/// A page processor.
 public protocol PageProcessor {
 
+    /// Returns the frame to use for each page of the site.
     func frame(repositoryStructure: RepositoryStructure) throws -> StrictString
 
+    /// Processes the page template, inserting its components into the frame.
     func process(
         pageTemplate: inout StrictString,
         title: StrictString,
