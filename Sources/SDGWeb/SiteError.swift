@@ -28,6 +28,7 @@ extension Site {
         case metadataMissingColon(line: StrictString)
         case missingTitle(page: StrictString)
         case pageSavingError(page: StrictString, systemError: Swift.Error)
+        case cssCopyingError(systemError: Swift.Error)
 
         public func presentableDescription() -> StrictString {
             return UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -61,6 +62,11 @@ extension Site {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("Failed to save page “\(page)”: \(error)")
+                    }
+                case .cssCopyingError(systemError: let error):
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("Failed to copy CSS: \(error)")
                     }
                 }
             }).resolved()

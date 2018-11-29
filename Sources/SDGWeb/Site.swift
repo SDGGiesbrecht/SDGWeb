@@ -17,6 +17,8 @@ import Foundation
 import SDGText
 import SDGLocalization
 
+import SDGWebLocalizations
+
 public struct Site<Localization> where Localization : SDGLocalization.InputLocalization {
 
     // MARK: - Initialization
@@ -44,6 +46,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     public func generate() throws {
         try clean()
         try writePages()
+        try copyCSS()
     }
 
     private func clean() throws {
@@ -60,6 +63,20 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             let relativePath = templateLocation.path(relativeTo: repositoryStructure.pages)
             let resultLocation = repositoryStructure.result.appendingPathComponent(relativePath)
             try template.writeResult(to: resultLocation, for: Localization.fallbackLocalization, of: self)
+        }
+    }
+
+    private func copyCSS() throws {
+        reportProgress(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Copying CSS..."
+            }
+        }).resolved())
+        do {
+            try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
+        } catch {
+            fatalError("\(error)")
         }
     }
 }
