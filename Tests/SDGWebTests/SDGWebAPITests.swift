@@ -20,9 +20,11 @@ import SDGXCTestUtilities
 class SDGWebAPITests : TestCase {
 
     func testNoFrame() {
-        do {
-            try generate(forMock: "No Frame", localization: SingleLocalization.self)
-        } catch {}
+        expectErrorGenerating(forMock: "No Frame", localization: SingleLocalization.self)
+    }
+
+    func testNoTitle() {
+        expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
     }
 
     func testUnlocalized() throws {

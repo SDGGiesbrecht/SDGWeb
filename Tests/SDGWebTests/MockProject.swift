@@ -17,6 +17,8 @@ import Foundation
 import SDGLocalization
 import SDGWeb
 
+import XCTest
+
 func generate<L>(forMock mockName: String, localization: L.Type) throws where L : InputLocalization {
     let mock = RepositoryStructure(root: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Mock Projects/\(mockName)"))
     let site = Site<L>(
@@ -25,4 +27,11 @@ func generate<L>(forMock mockName: String, localization: L.Type) throws where L 
         pageProcessor: Processor(),
         reportProgress: { _ in })
     try site.generate()
+}
+
+func expectErrorGenerating<L>(forMock mockName: String, localization: L.Type, file: String = #file, line: Int = #line) where L : InputLocalization {
+    do {
+        try generate(forMock: mockName, localization: localization)
+        XCTFail("Failed to throw error.")
+    } catch {}
 }
