@@ -25,12 +25,10 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         repositoryStructure: RepositoryStructure,
         domain: UserFacing<StrictString, Localization>,
         pageProcessor: PageProcessor,
-        siteCSSFileName: StrictString, // #workaround(Only for specification compatibility.)
         reportProgress: @escaping (StrictString) -> Void) {
         self.repositoryStructure = repositoryStructure
         self.domain = domain
         self.pageProcessor = pageProcessor
-        self.siteCSSFileName = siteCSSFileName
         self.reportProgress = reportProgress
     }
 
@@ -39,7 +37,6 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     internal let repositoryStructure: RepositoryStructure
     internal let domain: UserFacing<StrictString, Localization>
     internal let pageProcessor: PageProcessor
-    internal let siteCSSFileName: StrictString
     internal let reportProgress: (StrictString) -> Void
 
     // MARK: - Processing

@@ -115,7 +115,6 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         result.replaceMatches(for: "[*relative path*]", with: StrictString(String(relativePath).addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!.scalars))
 
         result.replaceMatches(for: "[*site root*]".scalars, with: siteRoot)
-        result.replaceMatches(for: "[*site css filename*]", with: site.siteCSSFileName)
 
         result.replaceMatches(for: "[*title*]", with: title)
 
