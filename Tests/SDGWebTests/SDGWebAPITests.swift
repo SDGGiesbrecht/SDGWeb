@@ -38,7 +38,11 @@ class SDGWebAPITests : TestCase {
     }
 
     func testSiteError() {
-        struct StandInError : Error {}
+        struct StandInError : PresentableError {
+            func presentableDescription() -> StrictString {
+                return "[...]"
+            }
+        }
         let errors: [Site<SingleLocalization>.Error] = [
             .frameLoadingError(error: StandInError()),
             .templateLoadingError(page: "[...]", systemError: StandInError()),
