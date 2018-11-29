@@ -27,6 +27,14 @@ class SDGWebAPITests : TestCase {
         expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
     }
 
+    func testRightToLeft() throws {
+        try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
+    }
+
+    func testUnknownLocalization() throws {
+        try generate(forMock: "Unknown Localization", localization: UnknownLocalization.self)
+    }
+
     func testUnlocalized() throws {
         try generate(forMock: "Unlocalized", localization: SingleLocalization.self)
     }
