@@ -33,6 +33,7 @@ let package = Package(
         .target(name: "SDGWeb", dependencies: [
             "SDGWebLocalizations",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGMathematics", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
@@ -47,6 +48,7 @@ let package = Package(
 
         .testTarget(name: "SDGWebTests", dependencies: [
             "SDGWeb",
+            .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ])
     ]

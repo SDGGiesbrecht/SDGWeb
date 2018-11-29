@@ -22,7 +22,6 @@ extension Site {
 
     public enum Error : PresentableError {
 
-        case cleaningError(systemError: Swift.Error)
         case frameLoadingError(error: Swift.Error)
         case templateLoadingError(page: StrictString, systemError: Swift.Error)
         case noMetadata(page: StrictString)
@@ -34,11 +33,6 @@ extension Site {
         public func presentableDescription() -> StrictString {
             return UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch self {
-                case .cleaningError(systemError: let error):
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to clean (empty) result directory:\n\(error.localizedDescription)")
-                    }
                 case .frameLoadingError(error: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

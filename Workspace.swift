@@ -47,5 +47,7 @@ configuration.documentation.api.encryptedTravisCIDeploymentKey = "sQc3HlGZyOj3FG
 configuration._applySDGOverrides()
 configuration._validateSDGStandards()
 
+configuration.repository.ignoredPaths.insert("Tests/Mock Projects")
+
 // #workaround(GitHub Pages isn’t set up yet.)
 // #workaround(CI is not a required status check yet.)

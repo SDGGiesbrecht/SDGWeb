@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGControlFlow
+import SDGLogic
 import SDGText
 import SDGLocalization
 
@@ -57,17 +58,13 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     // MARK: - Processing
 
     public func generate() throws {
-        try clean()
+        clean()
         try writePages()
         try copyCSS()
     }
 
-    private func clean() throws {
-        do {
-            try FileManager.default.removeItem(at: repositoryStructure.result)
-        } catch {
-            throw Error.cleaningError(systemError: error)
-        }
+    private func clean() {
+        try? FileManager.default.removeItem(at: repositoryStructure.result)
     }
 
     private func writePages() throws {
@@ -89,7 +86,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         do {
             try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
         } catch {
-            fatalError("\(error)")
+            throw Site<InterfaceLocalization>.Error.cssCopyingError(systemError: error)
         }
     }
 }
