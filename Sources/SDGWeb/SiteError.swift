@@ -77,12 +77,12 @@ extension Site {
                 case .pageSavingError(page: let page, systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to save page “\(page)”:\n\(error)")
+                        return StrictString("Failed to save page “\(page)”:\n\(error.localizedDescription)")
                     }
                 case .cssCopyingError(systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to copy CSS:\n\(error)")
+                        return StrictString("Failed to copy CSS:\n\(error.localizedDescription)")
                     }
                 }
             }).resolved()
