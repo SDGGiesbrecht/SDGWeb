@@ -1,5 +1,5 @@
 /*
- XCTestManifests.swift
+ SingleLocalization.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -12,18 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import XCTest
+import SDGLocalization
 
-extension SDGWebAPITests {
-    static let __allTests = [
-        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility)
-    ]
+enum SingleLocalization : String, InputLocalization {
+    case english = "en"
+    static var fallbackLocalization = SingleLocalization.english
 }
-
-#if !canImport(ObjectiveC)
-public func __allTests() -> [XCTestCaseEntry] {
-    return [
-        testCase(SDGWebAPITests.__allTests)
-    ]
-}
-#endif

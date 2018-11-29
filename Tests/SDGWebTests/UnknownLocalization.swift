@@ -1,5 +1,5 @@
 /*
- XCTestManifests.swift
+ UnknownLocalization.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -12,18 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import XCTest
+import SDGLocalization
 
-extension SDGWebAPITests {
-    static let __allTests = [
-        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility)
-    ]
+enum UnknownLocalization : String, InputLocalization {
+    case unknown = "zxx"
+    static var fallbackLocalization = UnknownLocalization.unknown
 }
-
-#if !canImport(ObjectiveC)
-public func __allTests() -> [XCTestCaseEntry] {
-    return [
-        testCase(SDGWebAPITests.__allTests)
-    ]
-}
-#endif
