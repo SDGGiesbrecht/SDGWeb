@@ -1,5 +1,5 @@
 /*
- SDGWebAPITests.swift
+ SimpleProcessor.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -12,14 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLocalization
+import SDGText
 import SDGWeb
 
-import SDGXCTestUtilities
-
-class SDGWebAPITests : TestCase {
-
-    func testUnlocalized() throws {
-        try generate(forMock: "Unlocalized", localization: SingleLocalization.self)
+struct Processor : PageProcessor {
+    func process(pageTemplate: inout StrictString, title: StrictString, content: StrictString, siteRoot: StrictString, relativePath: StrictString) {
+        pageTemplate.replaceMatches(for: "[*content*]", with: content)
     }
 }

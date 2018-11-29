@@ -1,5 +1,5 @@
 /*
- SDGWebAPITests.swift
+ SingleLocalization.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -13,13 +13,8 @@
  */
 
 import SDGLocalization
-import SDGWeb
 
-import SDGXCTestUtilities
-
-class SDGWebAPITests : TestCase {
-
-    func testUnlocalized() throws {
-        try generate(forMock: "Unlocalized", localization: SingleLocalization.self)
-    }
+enum SingleLocalization : String, InputLocalization {
+    case english = "en"
+    static var fallbackLocalization = SingleLocalization.english
 }
