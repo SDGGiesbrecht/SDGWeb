@@ -92,7 +92,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         }).resolved())
         do {
             try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
-            try Resources.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
+            try CSS.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
         } catch {
             throw Site<InterfaceLocalization>.Error.cssCopyingError(systemError: error)
         }
