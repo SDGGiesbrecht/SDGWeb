@@ -15,7 +15,7 @@
 import SDGText
 
 internal enum CSS {
-    
+
     internal static let root: StrictString = {
         var result = StrictString(Resources.root)
         result.replaceMatches(for: CompositePattern([

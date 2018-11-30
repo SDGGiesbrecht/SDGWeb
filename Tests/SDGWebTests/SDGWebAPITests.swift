@@ -13,6 +13,7 @@
  */
 
 import SDGLocalization
+import SDGCalendar
 import SDGWeb
 import SDGWebLocalizations
 
@@ -20,6 +21,11 @@ import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
 class SDGWebAPITests : TestCase {
+
+    func testCopyright() {
+        XCTAssert(¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–"))
+        XCTAssert(copyrightDates(yearFirstPublished: 2000).contains(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()))
+    }
 
     func testNoFrame() {
         expectErrorGenerating(forMock: "No Frame", localization: SingleLocalization.self)
