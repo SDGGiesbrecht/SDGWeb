@@ -40,7 +40,7 @@ Simply add SDGWeb as a dependency in `Package.swift`:
 let package = Package(
     name: "MyPackage",
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .upToNextMinor(from: Version(0, 0, 1))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .upToNextMinor(from: Version(0, 0, 2))),
     ],
     targets: [
         .target(name: "MyTarget", dependencies: [
