@@ -28,6 +28,7 @@ public protocol PageProcessor {
         title: StrictString,
         content: StrictString,
         siteRoot: StrictString,
+        localizationRoot: StrictString,
         relativePath: StrictString)
 }
 

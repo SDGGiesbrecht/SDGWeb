@@ -30,10 +30,12 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     public init(
         repositoryStructure: RepositoryStructure,
         domain: UserFacing<StrictString, Localization>,
+        localizationDirectories: UserFacing<StrictString, Localization>,
         pageProcessor: PageProcessor,
         reportProgress: @escaping (StrictString) -> Void) {
         self.repositoryStructure = repositoryStructure
         self.domain = domain
+        self.localizationDirectories = localizationDirectories
         self.pageProcessor = pageProcessor
         self.reportProgress = reportProgress
     }
@@ -42,6 +44,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
 
     internal let repositoryStructure: RepositoryStructure
     internal let domain: UserFacing<StrictString, Localization>
+    internal let localizationDirectories: UserFacing<StrictString, Localization>
     internal let pageProcessor: PageProcessor
     internal let reportProgress: (StrictString) -> Void
 
@@ -74,9 +77,9 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         for templateLocation in try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
             where templateLocation.lastPathComponent ≠ ".DS_Store" {
             let template = try PageTemplate(from: templateLocation, in: self)
-            let relativePath = templateLocation.path(relativeTo: repositoryStructure.pages)
-            let resultLocation = repositoryStructure.result.appendingPathComponent(relativePath)
-            try template.writeResult(to: resultLocation, for: Localization.fallbackLocalization, of: self)
+            for localization in Localization.allCases {
+                try template.writeResult(for: localization, of: self)
+            }
         }
     }
 
@@ -89,6 +92,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         }).resolved())
         do {
             try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
+            try Resources.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
         } catch {
             throw Site<InterfaceLocalization>.Error.cssCopyingError(systemError: error)
         }
