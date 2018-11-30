@@ -24,6 +24,7 @@ func generate<L>(forMock mockName: String, localization: L.Type) throws where L 
     let site = Site<L>(
         repositoryStructure: mock,
         domain: UserFacing<StrictString, L>({ _ in return "http://example.com" }),
+        localizationDirectories: UserFacing<StrictString, L>({ localization in return localization.icon ?? StrictString(localization.code) }),
         pageProcessor: Processor(),
         reportProgress: { _ in })
     try site.generate()
