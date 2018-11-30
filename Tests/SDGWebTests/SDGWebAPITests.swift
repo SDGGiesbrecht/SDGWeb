@@ -27,6 +27,10 @@ class SDGWebAPITests : TestCase {
         XCTAssert(copyrightDates(yearFirstPublished: 2000).contains(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()))
     }
 
+    func testLocalized() throws {
+        try generate(forMock: "Localized", localization: DoubleLocalization.self)
+    }
+
     func testNoFrame() {
         expectErrorGenerating(forMock: "No Frame", localization: SingleLocalization.self)
     }
