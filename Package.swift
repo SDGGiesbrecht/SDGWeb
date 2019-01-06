@@ -24,7 +24,7 @@ let package = Package(
         .library(name: "SDGWeb", targets: ["SDGWeb"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 12, 0)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 13, 0)))
     ],
     targets: [
         // Products
