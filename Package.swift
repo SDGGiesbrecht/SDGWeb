@@ -6,7 +6,7 @@
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
 
- Copyright ©2018 Jeremy David Giesbrecht and the SDGWeb project contributors.
+ Copyright ©2018–2019 Jeremy David Giesbrecht and the SDGWeb project contributors.
 
  Soli Deo gloria.
 
@@ -24,7 +24,7 @@ let package = Package(
         .library(name: "SDGWeb", targets: ["SDGWeb"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 12, 0)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 13, 0)))
     ],
     targets: [
         // Products
