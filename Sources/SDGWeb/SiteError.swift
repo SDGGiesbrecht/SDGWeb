@@ -62,7 +62,7 @@ extension Site {
                 case .noMetadata(page: let page):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("“\(page)” has no metadata (“<!-- ... -->”).")
+                        return StrictString("“\(page)” has no metadata (“<!\u{2D}\u{2D} ... \u{2D}\u{2D}>”).")
                     }
                 case .metadataMissingColon(line: let line):
                     switch localization {

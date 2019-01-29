@@ -68,7 +68,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
 
     private static func extractMetaData(from source: StrictString, for page: StrictString) throws -> (metaDataSource: StrictString, content: StrictString) {
 
-        guard let metaDataSegment = source.firstNestingLevel(startingWith: "<!--".scalars, endingWith: "-->\n".scalars) else {
+        guard let metaDataSegment = source.firstNestingLevel(startingWith: "<!\u{2D}\u{2D}".scalars, endingWith: "\u{2D}\u{2D}>\n".scalars) else {
             throw Site<InterfaceLocalization>.Error.noMetadata(page: page)
         }
         let metaData = StrictString(metaDataSegment.contents.contents)
