@@ -20,8 +20,11 @@ public struct RepositoryStructure {
     // MARK: - Initialization
 
     /// Creates the default structure, assuming this initializer is called from “main.swift” in that file’s default location.
-    public init(_main main: String = #file) {
-        var url = URL(fileURLWithPath: main)
+    ///
+    /// - Parameters:
+    ///     - main: Optional. The location of “main.swift” if different from the call site.
+    public init(main: String = #file) {
+        var url = URL(fileURLWithPath: String(main))
         for _ in 1 ... 3 {
             url.deleteLastPathComponent()
         }
@@ -29,6 +32,16 @@ public struct RepositoryStructure {
     }
 
     /// Creates a custom repository structure.
+    ///
+    /// - Parameters:
+    ///     - root: The path of the repository root. (Usually derived from `#file`.)
+    ///     - template: Optional. The URL of templates directory, if it is not in the default location.
+    ///     - result: Optional. The URL of result directory, if it is not in the default location.
+    ///     - pages: Optional. The URL of pages directory, if it is not in the default location.
+    ///     - components: Optional. The URL of the components directory, if it is not in the default location.
+    ///     - css: Optional. The URL of the CSS directory, if it is not in the default location.
+    ///     - frame: Optional. The URL of the frame file, if it is not in the default location.
+    ///     - siteCSS: Optional. The URL of the site‐specific CSS file, if it is not in the default location.
     public init(
         root: URL,
         template: URL? = nil,
