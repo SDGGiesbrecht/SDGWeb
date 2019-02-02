@@ -27,6 +27,13 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     // MARK: - Initialization
 
     /// Creates a website instance.
+    ///
+    /// - Parameters:
+    ///     - repositoryStructure: The layout of the repository.
+    ///     - domain: The domain of the website.
+    ///     - localizationDirectories: The name to use for localization directories.
+    ///     - pageProcessor: A page processor for generating each page.
+    ///     - reportProgress: A closure to report progress as the site is assembled.
     public init(
         repositoryStructure: RepositoryStructure,
         domain: UserFacing<StrictString, Localization>,

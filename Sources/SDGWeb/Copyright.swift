@@ -18,6 +18,9 @@ import SDGCalendar
 /// Returns the range from the year first published to the present.
 ///
 /// The result will not be expressed as a range if it contains only one year. i.e. “2018” instead of “2018–2018”.
+///
+/// - Parameters:
+///     - yearFirstPublished: The year the site was first published.
 public func copyrightDates(yearFirstPublished: GregorianYear) -> StrictString {
     let now = CalendarDate.gregorianNow().gregorianYear
     if now == yearFirstPublished {
