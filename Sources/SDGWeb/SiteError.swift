@@ -44,8 +44,8 @@ extension Site {
         /// An error was encountered while copying CSS.
         case cssCopyingError(systemError: Swift.Error)
 
-        // #documentation(SDGCornerstone.PresentableError.presentableDescription())
-        /// Returns a localized description of the error.
+        // MARK: - PresentableError
+
         public func presentableDescription() -> StrictString {
             return UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch self {
