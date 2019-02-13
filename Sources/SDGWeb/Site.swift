@@ -34,12 +34,13 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     ///     - localizationDirectories: The name to use for localization directories.
     ///     - pageProcessor: A page processor for generating each page.
     ///     - reportProgress: A closure to report progress as the site is assembled.
+    ///     - progressReport: A string describing progress made.
     public init(
         repositoryStructure: RepositoryStructure,
         domain: UserFacing<StrictString, Localization>,
         localizationDirectories: UserFacing<StrictString, Localization>,
         pageProcessor: PageProcessor,
-        reportProgress: @escaping (StrictString) -> Void) {
+        reportProgress: @escaping (_ progressReport: StrictString) -> Void) {
         self.repositoryStructure = repositoryStructure
         self.domain = domain
         self.localizationDirectories = localizationDirectories
