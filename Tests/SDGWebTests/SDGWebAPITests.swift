@@ -31,8 +31,20 @@ class SDGWebAPITests : TestCase {
         try generate(forMock: "Localized", localization: DoubleLocalization.self)
     }
 
+    func testNoColon() {
+        expectErrorGenerating(forMock: "No Colon", localization: SingleLocalization.self)
+    }
+
+    func testNoCSS() {
+        expectErrorGenerating(forMock: "No CSS", localization: SingleLocalization.self)
+    }
+
     func testNoFrame() {
         expectErrorGenerating(forMock: "No Frame", localization: SingleLocalization.self)
+    }
+
+    func testNoMetadata() {
+        expectErrorGenerating(forMock: "No Metadata", localization: SingleLocalization.self)
     }
 
     func testNoTitle() {
