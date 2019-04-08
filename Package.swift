@@ -19,6 +19,9 @@ import PackageDescription
 /// #workaround(No documentation yet.)
 let package = Package(
     name: "SDGWeb",
+    platforms: [
+        .macOS(.v10_13)
+    ],
     products: [
         /// #workaround(No documentation yet.)
         .library(name: "SDGWeb", targets: ["SDGWeb"])
