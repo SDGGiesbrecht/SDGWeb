@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 /*
  Package.swift
@@ -19,12 +19,18 @@ import PackageDescription
 /// #workaround(No documentation yet.)
 let package = Package(
     name: "SDGWeb",
+    platforms: [
+        .macOS(.v10_13),
+        .iOS(.v11),
+        .watchOS(.v4),
+        .tvOS(.v11)
+    ],
     products: [
         /// #workaround(No documentation yet.)
         .library(name: "SDGWeb", targets: ["SDGWeb"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 13, 0)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 16, 0)))
     ],
     targets: [
         // Products

@@ -62,6 +62,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         do {
             return try StrictString(from: file)
         } catch {
+            // @exempt(from: tests) Cannot be triggered reliably.
             throw Site<InterfaceLocalization>.Error.templateLoadingError(page: page, systemError: error)
         }
     }
