@@ -16,7 +16,7 @@
 
 import PackageDescription
 
-/// #workaround(No documentation yet.)
+/// SDGWeb provides tools for generating websites.
 let package = Package(
     name: "SDGWeb",
     platforms: [

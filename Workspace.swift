@@ -31,7 +31,7 @@ configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "SDGW
 configuration.documentation.readMe.quotation = Quotation(original: "כְּשִׁמְךָ אֱלֹהִים כְּן תְּהלָּתְךָ עַל־קַצְוֵי־אֶרֶץ׃")
 configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "Like your name, O God, your praise reaches to the ends of the earth."
 configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Psalm+48&version=WLC;NIV")!
-configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "sons of Koraẖ"
+configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "sons of קורח/Koraẖ"
 
 configuration.documentation.readMe.featureList["🇨🇦EN"] = [
     "\u{2D} Sites are constructed from simple templates.",
