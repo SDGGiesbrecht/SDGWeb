@@ -48,5 +48,3 @@ configuration._applySDGOverrides()
 configuration._validateSDGStandards()
 
 configuration.repository.ignoredPaths.insert("Tests/Mock Projects")
-
-// #workaround(GitHub Pages isn’t set up yet.)
