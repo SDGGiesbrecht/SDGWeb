@@ -20,6 +20,7 @@ import SDGWeb
 import XCTest
 
 func generate<L>(forMock mockName: String, localization: L.Type) throws where L : InputLocalization {
+    // @example(readMe🇨🇦EN)
     let mock = RepositoryStructure(root: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Mock Projects/\(mockName)"))
     let site = Site<L>(
         repositoryStructure: mock,
@@ -28,6 +29,7 @@ func generate<L>(forMock mockName: String, localization: L.Type) throws where L 
         pageProcessor: Processor(),
         reportProgress: { _ in })
     try site.generate()
+    // @endExample
 }
 
 func expectErrorGenerating<L>(forMock mockName: String, localization: L.Type, file: String = #file, line: Int = #line) where L : InputLocalization {
