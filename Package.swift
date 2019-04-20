@@ -16,7 +16,19 @@
 
 import PackageDescription
 
-/// #workaround(No documentation yet.)
+/// SDGWeb provides tools for generating websites.
+///
+/// > [כְּשִׁמְךָ אֱלֹהִים כְּן תְּהלָּתְךָ עַל־קַצְוֵי־אֶרֶץ׃](https://www.biblegateway.com/passage/?search=Psalm+48&version=WLC;NIV)
+/// >
+/// > [Like your name, O God, your praise reaches to the ends of the earth.](https://www.biblegateway.com/passage/?search=Psalm+48&version=WLC;NIV)
+/// >
+/// > ―sons of קורח/Koraẖ
+///
+/// ### Features:
+///
+/// - Sites are constructed from simple templates.
+/// - Customizable template processing in Swift.
+/// - Supports localized websites.
 let package = Package(
     name: "SDGWeb",
     platforms: [
@@ -26,7 +38,8 @@ let package = Package(
         .tvOS(.v11)
     ],
     products: [
-        /// #workaround(No documentation yet.)
+        // @documentation(SDGWeb)
+        /// The API to set up a generator.
         .library(name: "SDGWeb", targets: ["SDGWeb"])
     ],
     dependencies: [
@@ -35,7 +48,8 @@ let package = Package(
     targets: [
         // Products
 
-        /// #workaround(No documentation yet.)
+        // #documentation(SDGWeb)
+        /// The API to set up a generator.
         .target(name: "SDGWeb", dependencies: [
             "SDGWebLocalizations",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
