@@ -171,7 +171,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         site.reportProgress(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return StrictString("Writing to “\(reportedPath)”...")
+                return "Writing to “\(reportedPath)”..."
             }
         }).resolved())
 

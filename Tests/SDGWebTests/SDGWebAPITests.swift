@@ -76,7 +76,7 @@ class SDGWebAPITests : TestCase {
         ]
         for index in errors.indices {
             let error = errors[index]
-            testCustomStringConvertibleConformance(of: error, localizations: InterfaceLocalization.self, uniqueTestName: StrictString("\(index)"), overwriteSpecificationInsteadOfFailing: false)
+            testCustomStringConvertibleConformance(of: error, localizations: InterfaceLocalization.self, uniqueTestName: index.inDigits(), overwriteSpecificationInsteadOfFailing: false)
         }
     }
 

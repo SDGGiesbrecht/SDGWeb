@@ -52,37 +52,37 @@ extension Site {
                 case .frameLoadingError(error: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Error loading frame:\n\(error.localizedDescription)")
+                        return "Error loading frame:\n\(error.localizedDescription)"
                     }
                 case .templateLoadingError(page: let page, systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to load template page “\(page)”:\n\(error.localizedDescription)")
+                        return "Failed to load template page “\(page)”:\n\(error.localizedDescription)"
                     }
                 case .noMetadata(page: let page):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("“\(page)” has no metadata (“<!\u{2D}\u{2D} ... \u{2D}\u{2D}>”).")
+                        return "“\(page)” has no metadata (“<!\u{2D}\u{2D} ... \u{2D}\u{2D}>”)."
                     }
                 case .metadataMissingColon(line: let line):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Metadata entry has no colon:\n\(line)")
+                        return "Metadata entry has no colon:\n\(line)"
                     }
                 case .missingTitle(page: let page):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("“\(page)” has no title.")
+                        return "“\(page)” has no title."
                     }
                 case .pageSavingError(page: let page, systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to save page “\(page)”:\n\(error.localizedDescription)")
+                        return "Failed to save page “\(page)”:\n\(error.localizedDescription)"
                     }
                 case .cssCopyingError(systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Failed to copy CSS:\n\(error.localizedDescription)")
+                        return "Failed to copy CSS:\n\(error.localizedDescription)"
                     }
                 }
             }).resolved()
