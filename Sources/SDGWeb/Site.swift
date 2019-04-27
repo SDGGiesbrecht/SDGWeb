@@ -75,7 +75,9 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         clean()
         try writePages()
         try copyCSS()
-        try copyResources()
+        if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
+            try copyResources()
+        }
     }
 
     private func clean() {
