@@ -75,6 +75,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         clean()
         try writePages()
         try copyCSS()
+        try copyResources()
     }
 
     private func clean() {
