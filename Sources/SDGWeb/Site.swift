@@ -105,4 +105,18 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             throw Site<InterfaceLocalization>.Error.cssCopyingError(systemError: error)
         }
     }
+
+    private func copyResources() throws {
+        reportProgress(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Copying resources..."
+            }
+        }).resolved())
+        do {
+            try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
+        } catch {
+            throw Site<InterfaceLocalization>.Error.resourceCopyingError(systemError: error)
+        }
+    }
 }
