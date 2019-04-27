@@ -119,7 +119,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         do {
             try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
         } catch {
-            throw Site<InterfaceLocalization>.Error.resourceCopyingError(systemError: error)
+            throw Site<InterfaceLocalization>.Error.resourceCopyingError(systemError: error) // @exempt(from: tests)
         }
     }
 }

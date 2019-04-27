@@ -72,7 +72,8 @@ class SDGWebAPITests : TestCase {
             .metadataMissingColon(line: "[...]"),
             .missingTitle(page: "[...]"),
             .pageSavingError(page: "[...]", systemError: StandInError()),
-            .cssCopyingError(systemError: StandInError())
+            .cssCopyingError(systemError: StandInError()),
+            .resourceCopyingError(systemError: StandInError())
         ]
         for index in errors.indices {
             let error = errors[index]
