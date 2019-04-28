@@ -75,6 +75,9 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         clean()
         try writePages()
         try copyCSS()
+        if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
+            try copyResources()
+        }
     }
 
     private func clean() {
@@ -103,6 +106,20 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             try CSS.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
         } catch {
             throw Site<InterfaceLocalization>.Error.cssCopyingError(systemError: error)
+        }
+    }
+
+    private func copyResources() throws {
+        reportProgress(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Copying resources..."
+            }
+        }).resolved())
+        do {
+            try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
+        } catch {
+            throw Site<InterfaceLocalization>.Error.resourceCopyingError(systemError: error) // @exempt(from: tests)
         }
     }
 }
