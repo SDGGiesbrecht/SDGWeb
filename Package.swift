@@ -65,7 +65,7 @@ let package = Package(
             .product(name: "SDGCalendar", package: "SDGCornerstone")
             ]),
 
-        // @documentation(SDGHTML)
+        // #documentation(SDGHTML)
         /// General utilities for working with HTML source.
         .target(name: "SDGHTML", dependencies: [
             .product(name: "SDGText", package: "SDGCornerstone")
