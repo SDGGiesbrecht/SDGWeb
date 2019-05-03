@@ -36,7 +36,9 @@ class SDGWebAPITests : TestCase {
     }
 
     func testNoCSS() {
+        #if !os(Linux) // Foundation fails to error on Linux.
         expectErrorGenerating(forMock: "No CSS", localization: SingleLocalization.self)
+        #endif
     }
 
     func testNoFrame() {
