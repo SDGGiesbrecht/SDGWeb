@@ -24,4 +24,8 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertFalse(HTML.escapeTextForCharacterData("<").contains("<"))
         XCTAssertFalse(HTML.escapeTextForAttribute("\u{22}").contains("\u{22}"))
     }
+
+    func testPercentEncoding() {
+        XCTAssertEqual(HTML.percentEncodeURLPath("Ελληνικό κείμενο"), "Ελληνικό%20κείμενο")
+    }
 }
