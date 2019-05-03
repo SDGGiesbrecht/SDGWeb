@@ -40,7 +40,11 @@ let package = Package(
     products: [
         // @documentation(SDGWeb)
         /// The API to set up a generator.
-        .library(name: "SDGWeb", targets: ["SDGWeb"])
+        .library(name: "SDGWeb", targets: ["SDGWeb"]),
+
+        // @documentation(SDGHTML)
+        /// General utilities for working with HTML source.
+        .library(name: "SDGHTML", targets: ["SDGHTML"])
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 17, 0)))
@@ -61,6 +65,12 @@ let package = Package(
             .product(name: "SDGCalendar", package: "SDGCornerstone")
             ]),
 
+        // #documentation(SDGHTML)
+        /// General utilities for working with HTML source.
+        .target(name: "SDGHTML", dependencies: [
+            .product(name: "SDGText", package: "SDGCornerstone")
+            ]),
+
         // Internal
 
         .target(name: "SDGWebLocalizations", dependencies: [
@@ -74,6 +84,11 @@ let package = Package(
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            ]),
+
+        .testTarget(name: "SDGHTMLTests", dependencies: [
+            "SDGHTML",
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ])
     ]

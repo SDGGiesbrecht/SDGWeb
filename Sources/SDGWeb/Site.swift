@@ -105,6 +105,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
             try CSS.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
         } catch {
+            // @exempt(from: tests) // Foundation fails to error on Linux.
             throw Site<InterfaceLocalization>.Error.cssCopyingError(systemError: error)
         }
     }
