@@ -8,7 +8,10 @@ extension SDGWebAPITests {
     static let __allTests__SDGWebAPITests = [
         ("testCopyright", testCopyright),
         ("testLocalized", testLocalized),
+        ("testNoColon", testNoColon),
+        ("testNoCSS", testNoCSS),
         ("testNoFrame", testNoFrame),
+        ("testNoMetadata", testNoMetadata),
         ("testNoTitle", testNoTitle),
         ("testRepositoryStructure", testRepositoryStructure),
         ("testRightToLeft", testRightToLeft),
