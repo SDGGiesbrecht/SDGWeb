@@ -65,6 +65,8 @@ let package = Package(
             .product(name: "SDGCalendar", package: "SDGCornerstone")
             ]),
 
+        // @documentation(SDGHTML)
+        /// General utilities for working with HTML source.
         .target(name: "SDGHTML", dependencies: [
             .product(name: "SDGText", package: "SDGCornerstone")
             ]),
@@ -82,6 +84,11 @@ let package = Package(
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
+            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+            ]),
+
+        .testTarget(name: "SDGHTMLTests", dependencies: [
+            "SDGHTML",
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
             ])
     ]
