@@ -34,9 +34,9 @@ SDGWeb provides tools for generating websites.
 
 ## Importing
 
-SDGWeb provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDGWeb provides libraries for use with the [Swift Package Manager](https://swift.org/package-manager/).
 
-Simply add SDGWeb as a dependency in `Package.swift`:
+Simply add SDGWeb as a dependency in `Package.swift` and specify which of the libraries to use:
 
 ```swift
 let package = Package(
@@ -47,15 +47,17 @@ let package = Package(
     targets: [
         .target(name: "MyTarget", dependencies: [
             .productItem(name: "SDGWeb", package: "SDGWeb"),
+            .productItem(name: "SDGHTML", package: "SDGWeb"),
         ])
     ]
 )
 ```
 
-The library’s module can then be imported in source files:
+The libraries’ modules can then be imported in source files:
 
 ```swift
 import SDGWeb
+import SDGHTML
 ```
 
 ## Example Usage
