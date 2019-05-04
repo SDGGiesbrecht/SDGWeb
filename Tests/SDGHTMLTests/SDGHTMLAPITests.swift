@@ -25,6 +25,12 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertFalse(HTML.escapeTextForAttribute("\u{22}").contains("\u{22}"))
     }
 
+    func testHTMLElement() {
+        XCTAssertEqual(
+            HTMLElement("html", attributes: ["lang": "en"], contents: "<body></body>", inline: false).source(),
+            "<html lang=\u{22}en\u{22}>\n<body></body>\n</html>")
+    }
+
     func testPercentEncoding() {
         XCTAssertEqual(HTML.percentEncodeURLPath("Ελληνικό κείμενο"), "Ελληνικό%20κείμενο")
     }
