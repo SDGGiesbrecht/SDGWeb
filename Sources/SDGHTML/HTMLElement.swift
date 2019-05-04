@@ -20,7 +20,7 @@ public struct HTMLElement {
     /// Creates an HTMLElement.
     ///
     /// - Parameters:
-    ///     - element: The element name. (e.g. “html”, “head”, "body")
+    ///     - element: The element name. (e.g. “html”, “head”, “body”)
     ///     - attributes: The HTML attributes.
     ///     - contents: The contents of the element.
     ///     - inline: Whether or not to treat the element as inline for the purposes of source formatting.
