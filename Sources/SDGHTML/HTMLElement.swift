@@ -19,7 +19,7 @@ public struct HTMLElement {
 
     /// Creates an HTMLElement.
     ///
-    /// - Properties:
+    /// - Parameters:
     ///     - element: The element name. (e.g. “html”, “head”, "body")
     ///     - attributes: The HTML attributes.
     ///     - contents: The contents of the element.
