@@ -45,17 +45,24 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
             return .failure(.foundationError(error))
         }
 
-        let metaDataAttempt = PageTemplate.extractMetaData(from: source, for: relativePath)
+        let metaDataExtractionAttempt = PageTemplate.extractMetaData(from: source, for: relativePath)
         let metaDataSource: StrictString
         let content: StrictString
-        switch metaDataAttempt {
+        switch metaDataExtractionAttempt {
         case .failure(let error):
             return .failure(error)
         case .success(let extracted):
             (metaDataSource, content) = extracted
         }
 
-        let metaData = try PageTemplate.parseMetaData(from: metaDataSource)
+        let metaDataParsingAttempt = PageTemplate.parseMetaData(from: metaDataSource)
+        let metaData: [StrictString: StrictString]
+        switch metaDataParsingAttempt {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let parsed):
+            metaData = parsed
+        }
 
         guard let title = metaData["Title"] else {
             return .failure(SiteError.missingTitle(page: relativePath))
@@ -93,13 +100,13 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         return .success((metaData, content))
     }
 
-    private static func parseMetaData(from source: StrictString) throws -> [StrictString: StrictString] {
+    private static func parseMetaData(from source: StrictString) -> Result<[StrictString: StrictString], SiteError> {
         var dictionary: [StrictString: StrictString] = [:]
         for line in source.lines.map({ $0.line }) {
             let withoutIndent = StrictString(line.drop(while: { $0 ∈ CharacterSet.whitespaces }))
             if ¬withoutIndent.isEmpty {
                 guard let colon = withoutIndent.firstMatch(for: ": ".scalars) else {
-                    throw SiteError.metadataMissingColon(line: withoutIndent)
+                    return .failure(.metadataMissingColon(line: withoutIndent))
                 }
                 let key = StrictString(withoutIndent[..<colon.range.lowerBound])
                 let value = StrictString(withoutIndent[colon.range.upperBound...])
@@ -107,7 +114,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
                 dictionary[key] = value
             }
         }
-        return dictionary
+        return .success(dictionary)
     }
 
     private init(
