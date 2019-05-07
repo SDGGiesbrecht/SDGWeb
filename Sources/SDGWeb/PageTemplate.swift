@@ -25,8 +25,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
 
     // MARK: - Initialization
 
-    #warning("Should not throw.")
-    internal static func load(from file: URL, in site: Site<Localization>) throws -> Result<PageTemplate, SiteError> {
+    internal static func load(from file: URL, in site: Site<Localization>) -> Result<PageTemplate, SiteError> {
         let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
 
         let nestedLevel = relativePath.components(separatedBy: "/").count − 1

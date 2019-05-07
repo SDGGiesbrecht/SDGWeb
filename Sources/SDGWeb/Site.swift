@@ -70,14 +70,24 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
 
     // MARK: - Processing
 
+    #warning("Should not throw.")
     /// Generates the website in its result directory.
-    public func generate() throws {
+    public func generate() throws -> Result<Void, SiteError> {
         clean()
-        try writePages()
+        let pageWritingAttempt = try writePages()
+        switch pageWritingAttempt {
+        case .failure(let error):
+            return .failure(error)
+        case .success:
+            break
+        }
+
         try copyCSS()
         if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
             try copyResources()
         }
+
+        return .success(())
     }
 
     private func clean() {
@@ -85,14 +95,28 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     }
 
     #warning("Should not throw.")
-    private func writePages() throws {
-        for templateLocation in try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
-            where templateLocation.lastPathComponent ≠ ".DS_Store" {
-            let template = try PageTemplate.load(from: templateLocation, in: self).get()
-            for localization in Localization.allCases {
-                try template.writeResult(for: localization, of: self)
-            }
+    private func writePages() throws -> Result<Void, SiteError> {
+        let fileEnumeration: [URL]
+        do {
+            fileEnumeration = try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
+        } catch {
+            return .failure(.foundationError(error))
         }
+
+        for templateLocation in fileEnumeration
+            where templateLocation.lastPathComponent ≠ ".DS_Store" {
+
+                let loadAttempt = PageTemplate.load(from: templateLocation, in: self)
+                switch loadAttempt {
+                case .failure(let error):
+                    return .failure(error)
+                case .success(let template):
+                    for localization in Localization.allCases {
+                        try template.writeResult(for: localization, of: self)
+                    }
+                }
+        }
+        return .success(())
     }
 
     private func copyCSS() throws {
