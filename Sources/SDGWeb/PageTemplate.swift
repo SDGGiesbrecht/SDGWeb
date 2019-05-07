@@ -207,10 +207,6 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
             }
         }).resolved())
 
-        do {
-            try processedResult(for: relativePath, localization: localization, site: site).save(to: url)
-        } catch {
-            throw SiteError.pageSavingError(page: relativePath, systemError: error)
-        }
+        try processedResult(for: relativePath, localization: localization, site: site).save(to: url)
     }
 }

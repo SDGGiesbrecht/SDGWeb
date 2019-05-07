@@ -62,18 +62,10 @@ class SDGWebAPITests : TestCase {
     }
 
     func testSiteError() {
-        struct StandInError : PresentableError {
-            func presentableDescription() -> StrictString {
-                return "[...]"
-            }
-        }
         let errors: [SiteError] = [
             .noMetadata(page: "[...]"),
             .metadataMissingColon(line: "[...]"),
-            .missingTitle(page: "[...]"),
-            .pageSavingError(page: "[...]", systemError: StandInError()),
-            .cssCopyingError(systemError: StandInError()),
-            .resourceCopyingError(systemError: StandInError())
+            .missingTitle(page: "[...]")
         ]
         for index in errors.indices {
             let error = errors[index]

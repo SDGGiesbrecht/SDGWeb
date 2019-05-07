@@ -126,13 +126,8 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                 return "Copying CSS..."
             }
         }).resolved())
-        do {
-            try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
-            try CSS.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
-        } catch {
-            // @exempt(from: tests) // Foundation fails to error on Linux.
-            throw SiteError.cssCopyingError(systemError: error)
-        }
+        try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
+        try CSS.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
     }
 
     private func copyResources() throws {
@@ -142,10 +137,6 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                 return "Copying resources..."
             }
         }).resolved())
-        do {
-            try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
-        } catch {
-            throw SiteError.resourceCopyingError(systemError: error) // @exempt(from: tests)
-        }
+        try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
     }
 }
