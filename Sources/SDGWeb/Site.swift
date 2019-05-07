@@ -73,9 +73,10 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     #warning("Should not throw.")
     /// Generates the website in its result directory.
     public func generate() throws -> Result<Void, SiteError> {
+
         clean()
-        let pageWritingAttempt = try writePages()
-        switch pageWritingAttempt {
+
+        switch try writePages() {
         case .failure(let error):
             return .failure(error)
         case .success:
@@ -106,8 +107,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         for templateLocation in fileEnumeration
             where templateLocation.lastPathComponent ≠ ".DS_Store" {
 
-                let loadAttempt = PageTemplate.load(from: templateLocation, in: self)
-                switch loadAttempt {
+                switch PageTemplate.load(from: templateLocation, in: self) {
                 case .failure(let error):
                     return .failure(error)
                 case .success(let template):

@@ -44,19 +44,17 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
             return .failure(.foundationError(error))
         }
 
-        let metaDataExtractionAttempt = PageTemplate.extractMetaData(from: source, for: relativePath)
         let metaDataSource: StrictString
         let content: StrictString
-        switch metaDataExtractionAttempt {
+        switch PageTemplate.extractMetaData(from: source, for: relativePath) {
         case .failure(let error):
             return .failure(error)
         case .success(let extracted):
             (metaDataSource, content) = extracted
         }
 
-        let metaDataParsingAttempt = PageTemplate.parseMetaData(from: metaDataSource)
         let metaData: [StrictString: StrictString]
-        switch metaDataParsingAttempt {
+        switch PageTemplate.parseMetaData(from: metaDataSource) {
         case .failure(let error):
             return .failure(error)
         case .success(let parsed):
