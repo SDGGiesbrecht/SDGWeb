@@ -95,8 +95,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         try? FileManager.default.removeItem(at: repositoryStructure.result)
     }
 
-    #warning("Should not throw.")
-    private func writePages() throws -> Result<Void, SiteError> {
+    private func writePages() -> Result<Void, SiteError> {
         let fileEnumeration: [URL]
         do {
             fileEnumeration = try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
@@ -112,7 +111,11 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                     return .failure(error)
                 case .success(let template):
                     for localization in Localization.allCases {
-                        try template.writeResult(for: localization, of: self)
+                        do {
+                            try template.writeResult(for: localization, of: self)
+                        } catch {
+                            return .failure(.foundationError(error))
+                        }
                     }
                 }
         }
