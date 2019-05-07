@@ -70,9 +70,8 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
 
     // MARK: - Processing
 
-    #warning("Should not throw.")
     /// Generates the website in its result directory.
-    public func generate() throws -> Result<Void, SiteError> {
+    public func generate() -> Result<Void, SiteError> {
 
         clean()
 
