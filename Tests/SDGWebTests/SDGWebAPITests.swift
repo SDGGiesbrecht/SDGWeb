@@ -67,8 +67,7 @@ class SDGWebAPITests : TestCase {
                 return "[...]"
             }
         }
-        let errors: [Site<SingleLocalization>.Error] = [
-            .frameLoadingError(error: StandInError()),
+        let errors: [SiteError] = [
             .templateLoadingError(page: "[...]", systemError: StandInError()),
             .noMetadata(page: "[...]"),
             .metadataMissingColon(line: "[...]"),
