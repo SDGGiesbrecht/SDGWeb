@@ -84,10 +84,11 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         try? FileManager.default.removeItem(at: repositoryStructure.result)
     }
 
+    #warning("Should not throw.")
     private func writePages() throws {
         for templateLocation in try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
             where templateLocation.lastPathComponent ≠ ".DS_Store" {
-            let template = try PageTemplate(from: templateLocation, in: self)
+            let template = try PageTemplate.load(from: templateLocation, in: self).get()
             for localization in Localization.allCases {
                 try template.writeResult(for: localization, of: self)
             }
@@ -106,7 +107,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             try CSS.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
         } catch {
             // @exempt(from: tests) // Foundation fails to error on Linux.
-            throw Site<InterfaceLocalization>.Error.cssCopyingError(systemError: error)
+            throw SiteError.cssCopyingError(systemError: error)
         }
     }
 
@@ -120,7 +121,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         do {
             try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
         } catch {
-            throw Site<InterfaceLocalization>.Error.resourceCopyingError(systemError: error) // @exempt(from: tests)
+            throw SiteError.resourceCopyingError(systemError: error) // @exempt(from: tests)
         }
     }
 }
