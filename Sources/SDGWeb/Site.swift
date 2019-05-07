@@ -76,7 +76,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
 
         clean()
 
-        switch try writePages() {
+        switch writePages() {
         case .failure(let error):
             return .failure(error)
         case .success:
