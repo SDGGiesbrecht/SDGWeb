@@ -25,7 +25,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
 
     // MARK: - Initialization
 
-    internal static func load(from file: URL, in site: Site<Localization>) -> Result<PageTemplate, SiteError> {
+    internal static func load(from file: URL, in site: Site<Localization>) -> Result<PageTemplate, PageTemplateLoadingError> {
         let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
 
         let nestedLevel = relativePath.components(separatedBy: "/").count − 1
@@ -48,7 +48,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         let content: StrictString
         switch PageTemplate.extractMetaData(from: source, for: relativePath) {
         case .failure(let error):
-            return .failure(error)
+            return .failure(.metaDataExtractionError(error))
         case .success(let extracted):
             (metaDataSource, content) = extracted
         }
@@ -56,13 +56,13 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         let metaData: [StrictString: StrictString]
         switch PageTemplate.parseMetaData(from: metaDataSource) {
         case .failure(let error):
-            return .failure(error)
+            return .failure(.metaDataParsingError(error))
         case .success(let parsed):
             metaData = parsed
         }
 
         guard let title = metaData["Title"] else {
-            return .failure(SiteError.missingTitle(page: relativePath))
+            return .failure(.missingTitle(page: relativePath))
         }
 
         let fileNameWithoutExtension: StrictString
@@ -85,10 +85,10 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         return try StrictString(from: file)
     }
 
-    private static func extractMetaData(from source: StrictString, for page: StrictString) -> Result<(metaDataSource: StrictString, content: StrictString), SiteError> {
+    private static func extractMetaData(from source: StrictString, for page: StrictString) -> Result<(metaDataSource: StrictString, content: StrictString), PageTemplateMetaDataExtractionError> {
 
         guard let metaDataSegment = source.firstNestingLevel(startingWith: "<!\u{2D}\u{2D}".scalars, endingWith: "\u{2D}\u{2D}>\n".scalars) else {
-            return .failure(.noMetadata(page: page))
+            return .failure(PageTemplateMetaDataExtractionError(page: page))
         }
         let metaData = StrictString(metaDataSegment.contents.contents)
 
@@ -97,13 +97,13 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         return .success((metaData, content))
     }
 
-    private static func parseMetaData(from source: StrictString) -> Result<[StrictString: StrictString], SiteError> {
+    private static func parseMetaData(from source: StrictString) -> Result<[StrictString: StrictString], PageTemplateMetaDataParsingError> {
         var dictionary: [StrictString: StrictString] = [:]
         for line in source.lines.map({ $0.line }) {
             let withoutIndent = StrictString(line.drop(while: { $0 ∈ CharacterSet.whitespaces }))
             if ¬withoutIndent.isEmpty {
                 guard let colon = withoutIndent.firstMatch(for: ": ".scalars) else {
-                    return .failure(.metadataMissingColon(line: withoutIndent))
+                    return .failure(PageTemplateMetaDataParsingError(line: withoutIndent))
                 }
                 let key = StrictString(withoutIndent[..<colon.range.lowerBound])
                 let value = StrictString(withoutIndent[colon.range.upperBound...])

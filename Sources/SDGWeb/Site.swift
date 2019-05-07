@@ -77,7 +77,16 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
 
         switch writePages() {
         case .failure(let error):
-            return .failure(error)
+            switch error {
+            case .foundationError(let error):
+                return .failure(.foundationError(error))
+            case .metaDataExtractionError(let error):
+                return .failure(.noMetadata(page: error.page))
+            case .metaDataParsingError(let error):
+                return .failure(.metadataMissingColon(line: error.line))
+            case .missingTitle(page: let page):
+                return .failure(.missingTitle(page: page))
+            }
         case .success:
             break
         }
@@ -98,7 +107,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         try? FileManager.default.removeItem(at: repositoryStructure.result)
     }
 
-    private func writePages() -> Result<Void, SiteError> {
+    private func writePages() -> Result<Void, PageTemplateLoadingError> {
         let fileEnumeration: [URL]
         do {
             fileEnumeration = try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
