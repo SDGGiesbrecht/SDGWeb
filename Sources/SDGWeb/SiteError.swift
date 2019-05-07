@@ -21,6 +21,9 @@ import SDGWebLocalizations
 /// An error encountered during site generation.
 public enum SiteError : PresentableError {
 
+    /// Foundation encountered an error.
+    case foundationError(Swift.Error)
+
     /// A page has no metadata.
     case noMetadata(page: StrictString)
 
@@ -44,6 +47,8 @@ public enum SiteError : PresentableError {
     public func presentableDescription() -> StrictString {
         return UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch self {
+            case .foundationError(let error):
+                return StrictString(error.localizedDescription)
             case .noMetadata(page: let page):
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

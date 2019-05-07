@@ -38,7 +38,12 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
             siteRoot.append(contentsOf: "../".scalars)
         }
 
-        let source = try PageTemplate.loadSource(from: file, for: relativePath)
+        let source: StrictString
+        do {
+            source = try PageTemplate.loadSource(from: file, for: relativePath)
+        } catch {
+            return .failure(.foundationError(error))
+        }
 
         let metaDataAttempt = PageTemplate.extractMetaData(from: source, for: relativePath)
         let metaDataSource: StrictString
