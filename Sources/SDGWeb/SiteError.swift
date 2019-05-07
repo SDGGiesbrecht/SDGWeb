@@ -23,9 +23,6 @@ extension Site {
     /// An error encountered during site generation.
     public enum Error : PresentableError {
 
-        /// An error was encountered while loading the frame.
-        case frameLoadingError(error: Swift.Error)
-
         /// An error was encountered while loading a template file.
         case templateLoadingError(page: StrictString, systemError: Swift.Error)
 
@@ -52,11 +49,6 @@ extension Site {
         public func presentableDescription() -> StrictString {
             return UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch self {
-                case .frameLoadingError(error: let error):
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Error loading frame:\n\(error.localizedDescription)"
-                    }
                 case .templateLoadingError(page: let page, systemError: let error):
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
