@@ -19,7 +19,7 @@ import SDGText
 import SDGWebLocalizations
 
 /// An error encountered during site generation.
-public enum SiteError : PresentableError {
+public enum SiteGenerationError : PresentableError {
 
     /// Foundation encountered an error.
     case foundationError(Swift.Error)

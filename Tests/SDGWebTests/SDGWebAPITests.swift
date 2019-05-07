@@ -62,7 +62,7 @@ class SDGWebAPITests : TestCase {
     }
 
     func testSiteError() {
-        let errors: [SiteError] = [
+        let errors: [SiteGenerationError] = [
             .noMetadata(page: "[...]"),
             .metadataMissingColon(line: "[...]"),
             .missingTitle(page: "[...]")

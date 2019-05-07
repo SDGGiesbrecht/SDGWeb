@@ -71,7 +71,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     // MARK: - Processing
 
     /// Generates the website in its result directory.
-    public func generate() -> Result<Void, SiteError> {
+    public func generate() -> Result<Void, SiteGenerationError> {
 
         clean()
 
