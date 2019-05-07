@@ -83,9 +83,13 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             break
         }
 
-        try copyCSS()
-        if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
-            try copyResources()
+        do {
+            try copyCSS()
+            if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
+                try copyResources()
+            }
+        } catch {
+            return .failure(.foundationError(error))
         }
 
         return .success(())
