@@ -1,12 +1,9 @@
 🇬🇧EN
-Metadata entry has no colon:
-[...]
+“[...]” has no title.
 
 🇺🇸EN
-Metadata entry has no colon:
-[...]
+“[...]” has no title.
 
 🇨🇦EN
-Metadata entry has no colon:
-[...]
+“[...]” has no title.
 

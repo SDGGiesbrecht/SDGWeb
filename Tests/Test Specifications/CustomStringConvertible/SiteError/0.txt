@@ -1,12 +1,9 @@
 🇬🇧EN
-Failed to load template page “[...]”:
-[...]
+“[...]” has no metadata (“<!-- ... -->”).
 
 🇺🇸EN
-Failed to load template page “[...]”:
-[...]
+“[...]” has no metadata (“<!-- ... -->”).
 
 🇨🇦EN
-Failed to load template page “[...]”:
-[...]
+“[...]” has no metadata (“<!-- ... -->”).
 

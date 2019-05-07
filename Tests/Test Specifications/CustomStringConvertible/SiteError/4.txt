@@ -1,12 +1,12 @@
 🇬🇧EN
-Failed to save page “[...]”:
+Failed to copy CSS:
 [...]
 
 🇺🇸EN
-Failed to save page “[...]”:
+Failed to copy CSS:
 [...]
 
 🇨🇦EN
-Failed to save page “[...]”:
+Failed to copy CSS:
 [...]
 

@@ -63,12 +63,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
     }
 
     private static func loadSource(from file: URL, for page: StrictString) throws -> StrictString {
-        do {
-            return try StrictString(from: file)
-        } catch {
-            // @exempt(from: tests) Cannot be triggered reliably.
-            throw SiteError.templateLoadingError(page: page, systemError: error)
-        }
+        return try StrictString(from: file)
     }
 
     private static func extractMetaData(from source: StrictString, for page: StrictString) throws -> (metaDataSource: StrictString, content: StrictString) {

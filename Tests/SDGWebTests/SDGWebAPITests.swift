@@ -68,7 +68,6 @@ class SDGWebAPITests : TestCase {
             }
         }
         let errors: [SiteError] = [
-            .templateLoadingError(page: "[...]", systemError: StandInError()),
             .noMetadata(page: "[...]"),
             .metadataMissingColon(line: "[...]"),
             .missingTitle(page: "[...]"),

@@ -1,12 +1,12 @@
 🇬🇧EN
-Failed to copy CSS:
+Failed to copy resources:
 [...]
 
 🇺🇸EN
-Failed to copy CSS:
+Failed to copy resources:
 [...]
 
 🇨🇦EN
-Failed to copy CSS:
+Failed to copy resources:
 [...]
 
