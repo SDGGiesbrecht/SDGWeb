@@ -46,11 +46,7 @@ public protocol PageProcessor {
 extension PageProcessor {
 
     public func frame(repositoryStructure: RepositoryStructure) throws -> StrictString {
-        do {
-            return try StrictString(from: repositoryStructure.frame)
-        } catch {
-            throw Site<InterfaceLocalization>.Error.frameLoadingError(error: error)
-        }
+        return try StrictString(from: repositoryStructure.frame)
     }
 
     func trimmedFrame(repositoryStructure: RepositoryStructure) throws -> StrictString {

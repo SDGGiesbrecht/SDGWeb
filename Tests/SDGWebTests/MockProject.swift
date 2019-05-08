@@ -28,7 +28,7 @@ func generate<L>(forMock mockName: String, localization: L.Type) throws where L 
         localizationDirectories: UserFacing<StrictString, L>({ localization in return localization.icon ?? StrictString(localization.code) }),
         pageProcessor: Processor(),
         reportProgress: { _ in })
-    try site.generate()
+    try site.generate().get()
     // @endExample
 }
 

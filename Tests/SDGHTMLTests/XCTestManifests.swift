@@ -7,6 +7,8 @@ extension SDGHTMLAPITests {
     // to regenerate.
     static let __allTests__SDGHTMLAPITests = [
         ("testEscaping", testEscaping),
+        ("testHTMLElement", testHTMLElement),
+        ("testPercentEncoding", testPercentEncoding),
     ]
 }
 

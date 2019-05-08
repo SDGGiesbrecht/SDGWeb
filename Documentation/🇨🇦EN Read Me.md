@@ -70,7 +70,7 @@ let site = Site<L>(
     localizationDirectories: UserFacing<StrictString, L>({ localization in return localization.icon ?? StrictString(localization.code) }),
     pageProcessor: Processor(),
     reportProgress: { _ in })
-try site.generate()
+try site.generate().get()
 ```
 
 ## About

@@ -25,10 +25,9 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
 
     // MARK: - Initialization
 
-    internal init(from file: URL, in site: Site<Localization>) throws {
-        self.relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
-
+    internal static func load(from file: URL, in site: Site<Localization>) -> Result<PageTemplate, PageTemplateLoadingError> {
         let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
+
         let nestedLevel = relativePath.components(separatedBy: "/").count − 1
         var siteRoot: StrictString = ""
         for _ in 0 ..< nestedLevel {
@@ -37,17 +36,34 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         if Localization.allCases.count > 1 {
             siteRoot.append(contentsOf: "../".scalars)
         }
-        self.siteRoot = siteRoot
 
-        let source = try PageTemplate.loadSource(from: file, for: relativePath)
-        let (metaDataSource, content) = try PageTemplate.extractMetaData(from: source, for: relativePath)
-        self.content = content
-        let metaData = try PageTemplate.parseMetaData(from: metaDataSource)
+        let source: StrictString
+        do {
+            source = try PageTemplate.loadSource(from: file, for: relativePath)
+        } catch {
+            return .failure(.foundationError(error))
+        }
+
+        let metaDataSource: StrictString
+        let content: StrictString
+        switch PageTemplate.extractMetaData(from: source, for: relativePath) {
+        case .failure(let error):
+            return .failure(.metaDataExtractionError(error))
+        case .success(let extracted):
+            (metaDataSource, content) = extracted
+        }
+
+        let metaData: [StrictString: StrictString]
+        switch PageTemplate.parseMetaData(from: metaDataSource) {
+        case .failure(let error):
+            return .failure(.metaDataParsingError(error))
+        case .success(let parsed):
+            metaData = parsed
+        }
 
         guard let title = metaData["Title"] else {
-            throw Site<InterfaceLocalization>.Error.missingTitle(page: relativePath)
+            return .failure(.missingTitle(page: relativePath))
         }
-        self.title = title
 
         let fileNameWithoutExtension: StrictString
         if let fileName = metaData["File Name"] {
@@ -55,37 +71,39 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         } else {
             fileNameWithoutExtension = title
         }
-        self.fileName = fileNameWithoutExtension + ".html"
+        let fileName = fileNameWithoutExtension + ".html"
+
+        return .success(PageTemplate(
+            relativePath: relativePath,
+            fileName: fileName,
+            siteRoot: siteRoot,
+            title: title,
+            content: content))
     }
 
     private static func loadSource(from file: URL, for page: StrictString) throws -> StrictString {
-        do {
-            return try StrictString(from: file)
-        } catch {
-            // @exempt(from: tests) Cannot be triggered reliably.
-            throw Site<InterfaceLocalization>.Error.templateLoadingError(page: page, systemError: error)
-        }
+        return try StrictString(from: file)
     }
 
-    private static func extractMetaData(from source: StrictString, for page: StrictString) throws -> (metaDataSource: StrictString, content: StrictString) {
+    private static func extractMetaData(from source: StrictString, for page: StrictString) -> Result<(metaDataSource: StrictString, content: StrictString), PageTemplateMetaDataExtractionError> {
 
         guard let metaDataSegment = source.firstNestingLevel(startingWith: "<!\u{2D}\u{2D}".scalars, endingWith: "\u{2D}\u{2D}>\n".scalars) else {
-            throw Site<InterfaceLocalization>.Error.noMetadata(page: page)
+            return .failure(PageTemplateMetaDataExtractionError(page: page))
         }
         let metaData = StrictString(metaDataSegment.contents.contents)
 
         var content = source
         content.removeSubrange(metaDataSegment.container.range)
-        return (metaData, content)
+        return .success((metaData, content))
     }
 
-    private static func parseMetaData(from source: StrictString) throws -> [StrictString: StrictString] {
+    private static func parseMetaData(from source: StrictString) -> Result<[StrictString: StrictString], PageTemplateMetaDataParsingError> {
         var dictionary: [StrictString: StrictString] = [:]
         for line in source.lines.map({ $0.line }) {
             let withoutIndent = StrictString(line.drop(while: { $0 ∈ CharacterSet.whitespaces }))
             if ¬withoutIndent.isEmpty {
                 guard let colon = withoutIndent.firstMatch(for: ": ".scalars) else {
-                    throw Site<InterfaceLocalization>.Error.metadataMissingColon(line: withoutIndent)
+                    return .failure(PageTemplateMetaDataParsingError(line: withoutIndent))
                 }
                 let key = StrictString(withoutIndent[..<colon.range.lowerBound])
                 let value = StrictString(withoutIndent[colon.range.upperBound...])
@@ -93,7 +111,21 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
                 dictionary[key] = value
             }
         }
-        return dictionary
+        return .success(dictionary)
+    }
+
+    private init(
+        relativePath: StrictString,
+        fileName: StrictString,
+        siteRoot: StrictString,
+        title: StrictString,
+        content: StrictString) {
+
+        self.relativePath = relativePath
+        self.fileName = fileName
+        self.siteRoot = siteRoot
+        self.title = title
+        self.content = content
     }
 
     // MARK: - Properties
@@ -175,10 +207,6 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
             }
         }).resolved())
 
-        do {
-            try processedResult(for: relativePath, localization: localization, site: site).save(to: url)
-        } catch {
-            throw Site<InterfaceLocalization>.Error.pageSavingError(page: relativePath, systemError: error)
-        }
+        try processedResult(for: relativePath, localization: localization, site: site).save(to: url)
     }
 }

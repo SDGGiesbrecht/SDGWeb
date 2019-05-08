@@ -67,15 +67,11 @@ class SDGWebAPITests : TestCase {
                 return "[...]"
             }
         }
-        let errors: [Site<SingleLocalization>.Error] = [
-            .frameLoadingError(error: StandInError()),
-            .templateLoadingError(page: "[...]", systemError: StandInError()),
+        let errors: [SiteGenerationError] = [
+            .foundationError(StandInError()),
             .noMetadata(page: "[...]"),
             .metadataMissingColon(line: "[...]"),
-            .missingTitle(page: "[...]"),
-            .pageSavingError(page: "[...]", systemError: StandInError()),
-            .cssCopyingError(systemError: StandInError()),
-            .resourceCopyingError(systemError: StandInError())
+            .missingTitle(page: "[...]")
         ]
         for index in errors.indices {
             let error = errors[index]

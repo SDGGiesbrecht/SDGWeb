@@ -71,27 +71,67 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     // MARK: - Processing
 
     /// Generates the website in its result directory.
-    public func generate() throws {
+    public func generate() -> Result<Void, SiteGenerationError> {
+
         clean()
-        try writePages()
-        try copyCSS()
-        if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
-            try copyResources()
+
+        switch writePages() {
+        case .failure(let error):
+            switch error {
+            case .foundationError(let error):
+                return .failure(.foundationError(error))
+            case .metaDataExtractionError(let error):
+                return .failure(.noMetadata(page: error.page))
+            case .metaDataParsingError(let error):
+                return .failure(.metadataMissingColon(line: error.line))
+            case .missingTitle(page: let page):
+                return .failure(.missingTitle(page: page))
+            }
+        case .success:
+            break
         }
+
+        do {
+            try copyCSS()
+            if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
+                try copyResources()
+            }
+        } catch {
+            return .failure(.foundationError(error))
+        }
+
+        return .success(())
     }
 
     private func clean() {
         try? FileManager.default.removeItem(at: repositoryStructure.result)
     }
 
-    private func writePages() throws {
-        for templateLocation in try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
-            where templateLocation.lastPathComponent ≠ ".DS_Store" {
-            let template = try PageTemplate(from: templateLocation, in: self)
-            for localization in Localization.allCases {
-                try template.writeResult(for: localization, of: self)
-            }
+    private func writePages() -> Result<Void, PageTemplateLoadingError> {
+        let fileEnumeration: [URL]
+        do {
+            fileEnumeration = try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
+        } catch {
+            return .failure(.foundationError(error))
         }
+
+        for templateLocation in fileEnumeration
+            where templateLocation.lastPathComponent ≠ ".DS_Store" {
+
+                switch PageTemplate.load(from: templateLocation, in: self) {
+                case .failure(let error):
+                    return .failure(error)
+                case .success(let template):
+                    for localization in Localization.allCases {
+                        do {
+                            try template.writeResult(for: localization, of: self)
+                        } catch {
+                            return .failure(.foundationError(error))
+                        }
+                    }
+                }
+        }
+        return .success(())
     }
 
     private func copyCSS() throws {
@@ -101,13 +141,8 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                 return "Copying CSS..."
             }
         }).resolved())
-        do {
-            try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
-            try CSS.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
-        } catch {
-            // @exempt(from: tests) // Foundation fails to error on Linux.
-            throw Site<InterfaceLocalization>.Error.cssCopyingError(systemError: error)
-        }
+        try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
+        try CSS.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
     }
 
     private func copyResources() throws {
@@ -117,10 +152,6 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                 return "Copying resources..."
             }
         }).resolved())
-        do {
-            try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
-        } catch {
-            throw Site<InterfaceLocalization>.Error.resourceCopyingError(systemError: error) // @exempt(from: tests)
-        }
+        try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
     }
 }
