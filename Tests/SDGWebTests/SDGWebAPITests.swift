@@ -62,7 +62,13 @@ class SDGWebAPITests : TestCase {
     }
 
     func testSiteError() {
+        struct StandInError : PresentableError {
+            func presentableDescription() -> StrictString {
+                return "[]"
+            }
+        }
         let errors: [SiteGenerationError] = [
+            .foundationError(StandInError()),
             .noMetadata(page: "[...]"),
             .metadataMissingColon(line: "[...]"),
             .missingTitle(page: "[...]")
