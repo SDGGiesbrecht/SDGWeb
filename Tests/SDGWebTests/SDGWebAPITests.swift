@@ -64,7 +64,7 @@ class SDGWebAPITests : TestCase {
     func testSiteError() {
         struct StandInError : PresentableError {
             func presentableDescription() -> StrictString {
-                return "[]"
+                return "[...]"
             }
         }
         let errors: [SiteGenerationError] = [
