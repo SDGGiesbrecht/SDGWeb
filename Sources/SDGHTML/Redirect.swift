@@ -41,7 +41,13 @@ public struct Redirect {
     ///     - target: The URL to redirect to.
     public init(target: String) {
         var mutable = String(Redirect.template)
-        mutable.scalars.replaceMatches(for: "[*target*]".scalars, with: HTML.percentEncodeURLPath(HTML.escapeTextForAttribute(target)).scalars)
+
+        let encoded: String = HTML.escapeTextForAttribute(HTML.percentEncodeURLPath(target))
+        mutable.scalars.replaceMatches(for: "[*encoded*]".scalars, with: encoded.scalars)
+
+        let readable = HTML.escapeTextForCharacterData(StrictString(target))
+        mutable.scalars.replaceMatches(for: "[*readable*]".scalars, with: readable)
+
         contents = mutable
     }
 
