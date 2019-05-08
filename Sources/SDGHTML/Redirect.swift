@@ -26,8 +26,8 @@ public struct Redirect {
         var result = StrictString(Resources.redirect)
         let header = result.firstMatch(for: CompositePattern<Unicode.Scalar>([
             LiteralPattern("\n\n<!--".scalars),
-            RepetitionPattern(ConditionalPattern({ $0 ≠ "\u{2D}" })),
-            LiteralPattern("\u{2D}\u{2D}>\n\n".scalars)
+            RepetitionPattern(ConditionalPattern({ $0 ≠ ">" })),
+            LiteralPattern("\u{2D}\u{2D}>\n".scalars)
             ]))!
         result.removeSubrange(header.range)
         return result
