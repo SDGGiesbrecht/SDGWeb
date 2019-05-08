@@ -39,8 +39,8 @@ public struct Redirect {
     ///
     /// - Parameters:
     ///     - target: The URL to redirect to.
-    public init(target: StrictString) {
-        var mutable = Redirect.template
+    public init(target: String) {
+        var mutable = String(Redirect.template)
         mutable.scalars.replaceMatches(for: "[*target*]".scalars, with: HTML.percentEncodeURLPath(HTML.escapeTextForAttribute(target)).scalars)
         contents = mutable
     }
@@ -48,5 +48,5 @@ public struct Redirect {
     // MARK: - Properties
 
     /// The source of the HTML file.
-    public let contents: StrictString
+    public let contents: String
 }
