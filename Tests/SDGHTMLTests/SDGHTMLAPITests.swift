@@ -16,6 +16,7 @@ import SDGLogic
 
 import SDGHTML
 
+import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
 class SDGHTMLAPITests : TestCase {
@@ -36,5 +37,9 @@ class SDGHTMLAPITests : TestCase {
 
     func testPercentEncoding() {
         XCTAssertEqual(HTML.percentEncodeURLPath("Ελληνικό κείμενο"), "Ελληνικό%20κείμενο")
+    }
+
+    func testRedirect() {
+        compare(String(Redirect(target: "../").contents), against: testSpecificationDirectory().appendingPathComponent("Redirect.html"), overwriteSpecificationInsteadOfFailing: false)
     }
 }

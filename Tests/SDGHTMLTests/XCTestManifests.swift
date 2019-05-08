@@ -9,6 +9,7 @@ extension SDGHTMLAPITests {
         ("testEscaping", testEscaping),
         ("testHTMLElement", testHTMLElement),
         ("testPercentEncoding", testPercentEncoding),
+        ("testRedirect", testRedirect),
     ]
 }
 
