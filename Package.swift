@@ -70,7 +70,8 @@ let package = Package(
         .target(name: "SDGHTML", dependencies: [
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
-            .product(name: "SDGText", package: "SDGCornerstone")
+            .product(name: "SDGText", package: "SDGCornerstone"),
+            .product(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
 
         // Internal
