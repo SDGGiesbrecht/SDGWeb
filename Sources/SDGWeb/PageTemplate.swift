@@ -141,19 +141,8 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
     private func processedResult(for relativePath: StrictString, localization: Localization, site: Site<Localization>) throws -> StrictString {
         var result = Frame.frame
 
-        let htmlTextDirection: StrictString
-        if let known = localization.textDirection {
-            switch known {
-            case .rightToLeftTopToBottom, .topToBottomRightToLeft:
-                htmlTextDirection = "rtl"
-            case .leftToRightTopToBottom:
-                htmlTextDirection = "ltr"
-            }
-        } else {
-            htmlTextDirection = "auto"
-        }
         result.replaceMatches(for: "[*localization code*]", with: StrictString(localization.code))
-        result.replaceMatches(for: "[*text direction*]", with: htmlTextDirection)
+        result.replaceMatches(for: "[*text direction*]", with: localization.textDirection.htmlAttribute)
 
         result.replaceMatches(for: "[*domain*]", with: site.domain.resolved(for: localization))
         var localizedRelativePath = StrictString(relativePath)
