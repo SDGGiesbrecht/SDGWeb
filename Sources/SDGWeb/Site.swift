@@ -20,7 +20,7 @@ import SDGText
 import SDGLocalization
 
 import SDGWebLocalizations
-import SDGHTML
+import SDGCSS
 
 /// A website.
 public struct Site<Localization> where Localization : SDGLocalization.InputLocalization {
