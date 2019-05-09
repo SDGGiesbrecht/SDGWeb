@@ -25,7 +25,7 @@ public struct Redirect {
     private static let template: StrictString = {
         var result = StrictString(Resources.redirect)
         let header = result.firstMatch(for: CompositePattern<Unicode.Scalar>([
-            LiteralPattern("\n\n<!--".scalars),
+            LiteralPattern("\n\n<!\u{2D}\u{2D}".scalars),
             RepetitionPattern(ConditionalPattern({ $0 ≠ ">" })),
             LiteralPattern("\u{2D}\u{2D}>\n".scalars)
             ]))!
