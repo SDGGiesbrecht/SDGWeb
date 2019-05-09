@@ -14,9 +14,11 @@
 
 import SDGText
 
-internal enum CSS {
+/// A namespace for functions related to CSS.
+public enum CSS {
 
-    internal static let root: StrictString = {
+    /// A recommended root CSS file.
+    public static let root: StrictString = {
         var result = StrictString(Resources.root)
         result.replaceMatches(for: CompositePattern([
             LiteralPattern("/*".scalars),
