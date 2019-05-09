@@ -20,6 +20,7 @@ import SDGText
 import SDGLocalization
 
 import SDGWebLocalizations
+import SDGHTML
 
 internal class PageTemplate<Localization> where Localization : SDGLocalization.InputLocalization {
 
@@ -142,7 +143,7 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         var result = Frame.frame
 
         result.replaceMatches(for: "[*localization code*]", with: StrictString(localization.code))
-        result.replaceMatches(for: "[*text direction*]", with: localization.textDirection.htmlAttribute)
+        result.replaceMatches(for: "[*text direction*]", with: StrictString(localization.textDirection.htmlAttribute))
 
         result.replaceMatches(for: "[*domain*]", with: site.domain.resolved(for: localization))
         var localizedRelativePath = StrictString(relativePath)

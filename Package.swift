@@ -56,6 +56,7 @@ let package = Package(
         /// The API to set up a generator.
         .target(name: "SDGWeb", dependencies: [
             "SDGWebLocalizations",
+            "SDGHTML",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGMathematics", package: "SDGCornerstone"),
