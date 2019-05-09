@@ -40,6 +40,6 @@ class SDGHTMLAPITests : TestCase {
     }
 
     func testRedirect() {
-        compare(String(Redirect(target: "../").contents), against: testSpecificationDirectory().appendingPathComponent("Redirect.html"), overwriteSpecificationInsteadOfFailing: false)
+        compare(String(Redirect(target: "../").contents), against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"), overwriteSpecificationInsteadOfFailing: false)
     }
 }
