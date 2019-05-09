@@ -48,6 +48,7 @@ let package = Package(
         .target(name: "MyTarget", dependencies: [
             .productItem(name: "SDGWeb", package: "SDGWeb"),
             .productItem(name: "SDGHTML", package: "SDGWeb"),
+            .productItem(name: "SDGCSS", package: "SDGWeb"),
         ])
     ]
 )
@@ -58,6 +59,7 @@ The libraries’ modules can then be imported in source files:
 ```swift
 import SDGWeb
 import SDGHTML
+import SDGCSS
 ```
 
 ## Example Usage
