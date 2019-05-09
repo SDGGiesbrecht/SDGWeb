@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGLocalization
 
 import SDGHTML
 
@@ -41,5 +42,17 @@ class SDGHTMLAPITests : TestCase {
 
     func testRedirect() {
         compare(String(Redirect(target: "../").contents), against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"), overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testTextDirection() {
+        enum TestLocalization : String, Localization {
+            case עברית = "he"
+            case ελληνικά = "el"
+            case undefined = "und"
+            static var fallbackLocalization: TestLocalization = .עברית
+        }
+        XCTAssertEqual(TestLocalization.עברית.textDirection.htmlAttribute, "rtl")
+        XCTAssertEqual(TestLocalization.ελληνικά.textDirection.htmlAttribute, "ltr")
+        XCTAssertEqual(TestLocalization.undefined.textDirection.htmlAttribute, "auto")
     }
 }

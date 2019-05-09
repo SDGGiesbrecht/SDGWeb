@@ -10,6 +10,7 @@ extension SDGHTMLAPITests {
         ("testHTMLElement", testHTMLElement),
         ("testPercentEncoding", testPercentEncoding),
         ("testRedirect", testRedirect),
+        ("testTextDirection", testTextDirection),
     ]
 }
 
