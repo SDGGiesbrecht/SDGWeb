@@ -169,9 +169,52 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                         ])
                     document.documentContentKind = .html
                     try document.validate()
+                    for badLink in checkLinks(in: document, file: file) {
+                        results.append((file, badLink))
+                    }
                 } catch {
                     results.append((file, error))
                 }
+        }
+        return results
+    }
+
+    private func checkLinks(in node: XMLNode, file: URL) -> [Error] {
+        var results: [Error] = []
+
+        if let element = node as? XMLElement {
+            for attribute in ["href", "src"] {
+                if let link = element.attribute(forName: attribute),
+                    let urlString = link.stringValue {
+                    if let url = URL(string: urlString, relativeTo: file) {
+                        if (try? url.checkResourceIsReachable()) ≠ nil {
+                            results.append(ValidationError(description: UserFacing({ localization in
+                                switch localization {
+                                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                    return [
+                                        "Dead link:",
+                                        StrictString(urlString)
+                                    ]
+                                }
+                            })))
+                        }
+                    } else {
+                        results.append(ValidationError(description: UserFacing({ localization in
+                            switch localization {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                return [
+                                    "Invalid URL:",
+                                    StrictString(urlString)
+                                ]
+                            }
+                        })))
+                    }
+                }
+            }
+        }
+
+        for child in node.children ?? [] {
+            results += checkLinks(in: child, file: file)
         }
         return results
     }
