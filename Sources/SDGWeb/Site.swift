@@ -187,7 +187,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                 if let link = element.attribute(forName: attribute),
                     let urlString = link.stringValue {
                     if let url = URL(string: urlString, relativeTo: file) {
-                        if (try? url.checkResourceIsReachable()) ≠ nil {
+                        if (try? url.checkResourceIsReachable()) ≠ true {
                             results.append(ValidationError(description: UserFacing({ localization in
                                 switch localization {
                                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
