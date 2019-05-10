@@ -13,7 +13,6 @@
  */
 
 import Foundation
-import WebKit
 
 import SDGControlFlow
 import SDGLogic
