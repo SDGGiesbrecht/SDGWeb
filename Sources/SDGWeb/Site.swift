@@ -13,6 +13,7 @@
  */
 
 import Foundation
+import WebKit
 
 import SDGControlFlow
 import SDGLogic
@@ -187,7 +188,15 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                 if let link = element.attribute(forName: attribute),
                     let urlString = link.stringValue {
                     if let url = URL(string: urlString, relativeTo: file) {
-                        if (try? url.checkResourceIsReachable()) ≠ true {
+                        var dead = true
+                        if url.isFileURL {
+                            if (try? url.checkResourceIsReachable()) == true {
+                                dead = false
+                            }
+                        } else {
+                            dead = false
+                        }
+                        if dead {
                             results.append(ValidationError(description: UserFacing({ localization in
                                 switch localization {
                                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
