@@ -44,7 +44,11 @@ let package = Package(
 
         // @documentation(SDGHTML)
         /// General utilities for working with HTML source.
-        .library(name: "SDGHTML", targets: ["SDGHTML"])
+        .library(name: "SDGHTML", targets: ["SDGHTML"]),
+
+        // @documentation(SDGCSS)
+        /// General utilities for working with CSS source.
+        .library(name: "SDGCSS", targets: ["SDGCSS"])
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .upToNextMinor(from: Version(0, 18, 0)))
@@ -57,6 +61,7 @@ let package = Package(
         .target(name: "SDGWeb", dependencies: [
             "SDGWebLocalizations",
             "SDGHTML",
+            "SDGCSS",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGMathematics", package: "SDGCornerstone"),
@@ -73,6 +78,12 @@ let package = Package(
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone")
+            ]),
+
+        // #documentation(SDGCSS)
+        /// General utilities for working with CSS source.
+        .target(name: "SDGCSS", dependencies: [
+            .product(name: "SDGText", package: "SDGCornerstone")
             ]),
 
         // Internal
