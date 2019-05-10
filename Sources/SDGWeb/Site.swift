@@ -155,4 +155,20 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         }).resolved())
         try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
     }
+
+    // MARK: - Validation
+
+    /// Validates the generated website.
+    public func validate() throws -> [(URL, Error)] {
+        var results: [(URL, Error)] = []
+        for file in try FileManager.default.deepFileEnumeration(in: repositoryStructure.result)
+            where file.pathExtension == "html" {
+                do {
+                    let document = try XMLDocument(contentsOf: file, options: [.documentValidate])
+                } catch {
+                    results.append((file, error))
+                }
+        }
+        return results
+    }
 }

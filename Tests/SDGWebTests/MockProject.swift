@@ -19,17 +19,34 @@ import SDGWeb
 
 import XCTest
 
-func generate<L>(forMock mockName: String, localization: L.Type) throws where L : InputLocalization {
+func generate<L>(forMock mockName: String, localization: L.Type, file: StaticString = #file, line: UInt = #line) throws where L : InputLocalization {
     // @example(readMe🇨🇦EN)
-    let mock = RepositoryStructure(root: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Mock Projects/\(mockName)"))
+    let mock = RepositoryStructure(
+        root: URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Mock Projects/\(mockName)"))
+
     let site = Site<L>(
         repositoryStructure: mock,
         domain: UserFacing<StrictString, L>({ _ in return "http://example.com" }),
         localizationDirectories: UserFacing<StrictString, L>({ localization in return localization.icon ?? StrictString(localization.code) }),
         pageProcessor: Processor(),
         reportProgress: { _ in })
+
     try site.generate().get()
+    let warnings = try site.validate()
     // @endExample
+
+    func describe(_ warnings: [(URL, Error)]) -> String {
+        return warnings.map({ (url, error) in
+            return [
+                url.path(relativeTo: mock.result),
+                error.localizedDescription
+            ].joined(separator: "\n")
+        }).joined(separator: "\n\n")
+    }
+    XCTAssert(warnings.isEmpty, describe(warnings), file: file, line: line)
 }
 
 func expectErrorGenerating<L>(forMock mockName: String, localization: L.Type, file: String = #file, line: Int = #line) where L : InputLocalization {
