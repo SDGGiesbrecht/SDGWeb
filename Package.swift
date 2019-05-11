@@ -74,6 +74,8 @@ let package = Package(
         // #documentation(SDGHTML)
         /// General utilities for working with HTML source.
         .target(name: "SDGHTML", dependencies: [
+            "SDGWebLocalizations",
+            .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
