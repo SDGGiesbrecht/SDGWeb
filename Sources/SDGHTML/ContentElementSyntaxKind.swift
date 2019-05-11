@@ -15,6 +15,6 @@
 /// Enumerates the kinds of content piece.
 public enum ContentElementSyntaxKind {
 
-    /// A `TokenSyntax` instance.
-    case token(TokenSyntax)
+    /// A `TextSyntax` instance.
+    case text(TextSyntax)
 }

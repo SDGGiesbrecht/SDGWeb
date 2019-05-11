@@ -20,8 +20,8 @@ public struct ContentElementSyntax : Syntax {
         self.kind = kind
         let child: Syntax
         switch kind {
-        case .token(let token):
-            child = token
+        case .text(let text):
+            child = text
         }
         self._storage = SyntaxStorage(children: [child])
     }

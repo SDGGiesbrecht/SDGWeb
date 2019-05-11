@@ -22,12 +22,15 @@ public struct ContentSyntax : Syntax {
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     internal static func parse(source: String) -> ContentSyntax {
+        var source = source
         var entries: [ContentElementSyntax] = []
         while ¬source.isEmpty {
             if source.scalars.last == ">" {
-
+                #warning("Stand‐in.")
+                source.scalars.removeLast()
+                entries.append(ContentElementSyntax(kind: .text(TextSyntax(_storage: SyntaxStorage(children: [TokenSyntax(kind: .greaterThan)])))))
             } else {
-                entries.append(ContentElementSyntax(_storage: <#T##_SyntaxStorage#>))
+                entries.append(ContentElementSyntax(kind: .text(TextSyntax.parse(fromEndOf: &source))))
             }
         }
         let list = ListSyntax<ContentElementSyntax>(entries: entries)

@@ -30,7 +30,7 @@ public struct DocumentSyntax : Syntax {
 
     // MARK: - Children
 
-    public let content: ContentSyntax {
+    public var content: ContentSyntax {
         return children[DocumentSyntax.indices[.content]!] as! ContentSyntax
     }
 
