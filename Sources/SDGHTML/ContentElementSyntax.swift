@@ -14,6 +14,22 @@
 
 public struct ContentElementSyntax : Syntax {
 
+    // MARK: - Initialization
+
+    public init(kind: ContentElementSyntaxKind) {
+        self.kind = kind
+        let child: Syntax
+        switch kind {
+        case .token(let token):
+            child = token
+        }
+        self._storage = SyntaxStorage(children: [child])
+    }
+
+    // MARK: - Properties
+
+    public let kind: ContentElementSyntaxKind
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage
