@@ -20,6 +20,7 @@ import SDGText
 import SDGLocalization
 
 import SDGWebLocalizations
+import SDGHTML
 import SDGCSS
 
 /// A website.
@@ -164,12 +165,19 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         for file in try FileManager.default.deepFileEnumeration(in: repositoryStructure.result)
             where file.pathExtension == "html" {
                 do {
-                    let document = try XMLDocument(contentsOf: file, options: [
+                    let source = try String(from: file)
+                    let document = DocumentSyntax.parse(source: source)
+
+                    #warning("Temporary test.")
+                    assert(document.source().scalars.elementsEqual(source.scalars))
+
+                    #warning("Duplicate functionality.")
+                    let xmlDocument = try XMLDocument(contentsOf: file, options: [
                         .documentTidyHTML
                         ])
-                    document.documentContentKind = .html
-                    try document.validate()
-                    for badLink in checkLinks(in: document, file: file) {
+                    xmlDocument.documentContentKind = .html
+                    try xmlDocument.validate()
+                    for badLink in checkLinks(in: xmlDocument, file: file) {
                         results.append((file, badLink))
                     }
                 } catch {
