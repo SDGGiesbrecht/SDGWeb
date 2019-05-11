@@ -1,5 +1,5 @@
 /*
- ContentSyntax.swift
+ ListSyntax.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -12,11 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public struct ContentSyntax : Syntax {
+/// A node representing a consecutive list of other nodes.
+public struct ListSyntax<Entry> : Syntax
+where Entry : Syntax {
 
-    internal static func parse(source: String) -> ContentSyntax {
-        let list = ListSyntax<TokenSyntax>(entries: [TokenSyntax(kind: .text(source))])
-        return ContentSyntax(_storage: SyntaxStorage(children: [list]))
+    /// Creates a list syntax node from an array of entries.
+    public init(entries: [Entry]) {
+        _storage = SyntaxStorage(children: entries)
     }
 
     // MARK: - Syntax
