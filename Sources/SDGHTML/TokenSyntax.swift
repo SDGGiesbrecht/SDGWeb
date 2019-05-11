@@ -15,8 +15,20 @@
 /// A syntax node representing a single token.
 public struct TokenSyntax : Syntax {
 
-    public var _storage: _SyntaxStorage
+    // MARK: - Initialization
+
+    /// Creates a token of the specified kind.
+    public init(kind: TokenKind) {
+        tokenKind = kind
+        _storage = SyntaxStorage(children: [])
+    }
+
+    // MARK: - Properties
 
     /// The kind of token this node represents.
     public let tokenKind: TokenKind
+
+    // MARK: - Syntax
+
+    public var _storage: _SyntaxStorage
 }

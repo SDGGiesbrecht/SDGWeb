@@ -1,5 +1,5 @@
 /*
- SyntaxStorage.swift
+ ContentSyntax.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -12,10 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal typealias SyntaxStorage = _SyntaxStorage
-public struct _SyntaxStorage {
+public struct ContentSyntax : Syntax {
 
-    // MARK: - Properties
+    internal static func parse(source: String) -> ContentSyntax {
+        return ContentSyntax(_storage: SyntaxStorage(children: [TokenSyntax(kind: .text(source))]))
+    }
 
-    var children: [Syntax]
+    // MARK: - Syntax
+
+    public var _storage: _SyntaxStorage
 }
