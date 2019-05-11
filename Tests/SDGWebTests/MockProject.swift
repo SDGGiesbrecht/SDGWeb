@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGLocalization
+import SDGHTML
 import SDGWeb
 
 import XCTest
@@ -37,6 +38,14 @@ func generate<L>(forMock mockName: String, localization: L.Type, file: StaticStr
     try site.generate().get()
     let warnings = try site.validate()
     // @endExample
+
+    // Test HTML parsing.
+    for htmlFile in try FileManager.default.deepFileEnumeration(in: mock.result)
+        where htmlFile.pathExtension == "html" {
+            let source = try String(from: htmlFile)
+            let document = DocumentSyntax.parse(source: source)
+            XCTAssertEqual(document.source(), source, file: file, line: line)
+    }
 
     func describe(_ warnings: [(URL, Error)]) -> String {
         return warnings.map({ (url, error) in
