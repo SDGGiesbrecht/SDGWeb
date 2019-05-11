@@ -40,7 +40,7 @@ extension Syntax {
             token.tokenKind.text.write(to: &target)
         } else {
             for child in children {
-                return child.write(to: &target)
+                child.write(to: &target)
             }
         }
     }
