@@ -169,7 +169,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                     let document = DocumentSyntax.parse(source: source)
 
                     #warning("Temporary test.")
-                    assert(document.source().scalars.elementsEqual(source.scalars))
+                    assert(document.source().scalars.elementsEqual(source.scalars), "\(source)\n ≠ \n\(document.source())")
 
                     #warning("Duplicate functionality.")
                     let xmlDocument = try XMLDocument(contentsOf: file, options: [

@@ -33,7 +33,7 @@ public struct ContentSyntax : Syntax {
                 entries.append(ContentElementSyntax(kind: .text(TextSyntax.parse(fromEndOf: &source))))
             }
         }
-        let list = ListSyntax<ContentElementSyntax>(entries: entries)
+        let list = ListSyntax<ContentElementSyntax>(entries: entries.reversed())
         return ContentSyntax(_storage: SyntaxStorage(children: [list]))
     }
 
