@@ -13,6 +13,9 @@
  */
 
 import SDGLogic
+import SDGLocalization
+
+import SDGWebLocalizations
 
 public struct ElementSyntax : Syntax {
 
@@ -25,13 +28,22 @@ public struct ElementSyntax : Syntax {
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     internal static func parse(fromEndOf source: inout String) -> Result<ElementSyntax, SyntaxError> {
+        var preservedSource = source
         switch AttributesSyntax.parse(fromEndOf: &source) {
         case .failure(let error):
             return .failure(error)
         case .success(let (name, attributes)):
             if source.scalars.isEmpty {
-                #warning("Throw. Extraneous “>”.")
-                return .failure(SyntaxError())
+                return .failure(SyntaxError(
+                    file: preservedSource,
+                    index: preservedSource.scalars.endIndex,
+                    description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "A greater‐than sign has no corresponding less‐than sign."
+                        }
+                    }),
+                    context: preservedSource))
             }
             if source.scalars.last ≠ "/" {
                 source.scalars.removeLast() // “<”
