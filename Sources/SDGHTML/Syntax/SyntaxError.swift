@@ -14,7 +14,38 @@
 
 import SDGLocalization
 
+import SDGWebLocalizations
+
 public struct SyntaxError : PresentableError {
+
+    init() {
+        #warning("Temporary.")
+        file = nil
+        line = 0
+        description = UserFacing({ _ in "" })
+        context = ""
+    }
+
+    init(
+        path: String?,
+        file: String,
+        index: String.ScalarView.Index,
+        description: UserFacing<StrictString, InterfaceLocalization>,
+        context: String) {
+
+        self.file = file
+        self.description = description
+        self.context = context
+
+        let lines = file.lines
+        let line = index.line(in: lines)
+        self.line = lines.distance(from: lines.startIndex, to: line) + 1
+    }
+
+    internal let file: String?
+    internal let line: Int
+    internal let description: UserFacing<StrictString, InterfaceLocalization>
+    internal let context: String
 
     // MARK: - PresentableError
 

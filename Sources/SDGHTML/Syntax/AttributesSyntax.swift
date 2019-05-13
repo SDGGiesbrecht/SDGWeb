@@ -13,6 +13,9 @@
  */
 
 import SDGLogic
+import SDGLocalization
+
+import SDGWebLocalizations
 
 public struct AttributesSyntax : Syntax {
 
@@ -24,7 +27,7 @@ public struct AttributesSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String) -> Result<(name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError> {
+    internal static func parse(fromEndOf source: inout String, path: String?) -> Result<(name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError> {
         let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
         var parsedElements: [AttributeSyntax] = []
 
@@ -46,8 +49,16 @@ public struct AttributesSyntax : Syntax {
         }
 
         if parsedElements.isEmpty {
-            #warning("Throw. Empty tag.")
-            return .failure(SyntaxError())
+            return .failure(SyntaxError(
+                file: path,
+                line: source.lines.distance(from: source.lines.startIndex, to: <#T##LineViewIndex#>) + 1,
+                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates .englishCanada:
+                        return "A tag is empty."
+                    }
+                }),
+                context: <#T##String#>))
         }
         let parsedName = parsedElements.removeLast()
         let attributes: [AttributeSyntax] = parsedElements.reversed()
