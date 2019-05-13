@@ -27,9 +27,24 @@ public struct AttributesSyntax : Syntax {
     internal static func parse(fromEndOf source: inout String) -> Result<(name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError> {
         let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
         var parsedElements: [AttributeSyntax] = []
-        while let parsedElement = AttributeSyntax.parse(fromEndOf: &source) {
+
+        var error: SyntaxError?
+        func parse() -> AttributeSyntax? {
+            switch AttributeSyntax.parse(fromEndOf: &source) {
+            case .failure(let caught):
+                error = caught
+                return nil
+            case .success(let attribute):
+                return attribute
+            }
+        }
+        while let parsedElement = parse() {
             parsedElements.append(parsedElement)
         }
+        if let thrown = error {
+            return .failure(thrown)
+        }
+
         if parsedElements.isEmpty {
             #warning("Throw. Empty tag.")
             return .failure(SyntaxError())
