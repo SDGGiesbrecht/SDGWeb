@@ -18,7 +18,7 @@ public struct ElementContinuationSyntax : Syntax {
 
     private enum Child : CaseIterable {
         case content
-        case endTag
+        case closingTag
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
@@ -28,8 +28,8 @@ public struct ElementContinuationSyntax : Syntax {
         return children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
     }
 
-    public var endTag: EndTagSyntax {
-        return children[ElementContinuationSyntax.indices[.endTag]!] as! EndTagSyntax
+    public var closingTag: EndTagSyntax {
+        return children[ElementContinuationSyntax.indices[.closingTag]!] as! EndTagSyntax
     }
 
     // MARK: - Syntax
