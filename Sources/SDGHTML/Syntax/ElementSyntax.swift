@@ -40,7 +40,7 @@ public struct ElementSyntax : Syntax {
                     description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "A tag has no less‐than sign."
+                            return "A greater‐than sign has no corresponding less‐than sign."
                         }
                     }),
                     context: preservedSource))
