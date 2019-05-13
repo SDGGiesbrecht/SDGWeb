@@ -43,7 +43,7 @@ func generate<L>(forMock mockName: String, localization: L.Type, file: StaticStr
     for htmlFile in try FileManager.default.deepFileEnumeration(in: mock.result)
         where htmlFile.pathExtension == "html" {
             let source = try String(from: htmlFile)
-            let document = DocumentSyntax.parse(source: source)
+            let document = try DocumentSyntax.parse(source: source).get()
             XCTAssertEqual(document.source(), source, file: file, line: line)
     }
 
