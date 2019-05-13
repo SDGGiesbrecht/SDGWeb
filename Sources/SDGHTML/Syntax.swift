@@ -30,7 +30,7 @@ extension Syntax {
 
     /// The children of this node.
     public var children: [Syntax] {
-        return _storage.children
+        return _storage.children.compactMap { $0 }
     }
 
     // MARK: - TextOutputStreamable
