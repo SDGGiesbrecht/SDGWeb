@@ -21,29 +21,33 @@ public struct ContentSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(source: String) -> ContentSyntax {
+    internal static func parse(source: String) -> Result<ContentSyntax, SyntaxError> {
         var source = source
-        return parse(fromEndOf: &source, untilOpeningOf: nil).content
+        return parse(fromEndOf: &source, untilOpeningOf: nil).map { $0.content }
     }
 
-    internal static func parse(fromEndOf source: inout String, untilOpeningOf element: String?) -> (tag: OpeningTagSyntax?, content: ContentSyntax) {
+    internal static func parse(fromEndOf source: inout String, untilOpeningOf element: String?) -> Result<(tag: OpeningTagSyntax?, content: ContentSyntax), SyntaxError> {
         var tag: OpeningTagSyntax?
         var entries: [ContentElementSyntax] = []
         while ¬source.isEmpty {
             if source.scalars.last == ">" {
-                let parsedElement = ElementSyntax.parse(fromEndOf: &source)
-                if parsedElement.continuation == nil,
-                    parsedElement.openingTag.name.source() == element {
-                    tag = parsedElement.openingTag
-                } else {
-                    entries.append(ContentElementSyntax(kind: .element(parsedElement)))
+                switch ElementSyntax.parse(fromEndOf: &source) {
+                case .failure(let error):
+                    return .failure(error)
+                case .success(let parsedElement):
+                    if parsedElement.continuation == nil,
+                        parsedElement.openingTag.name.source() == element {
+                        tag = parsedElement.openingTag
+                    } else {
+                        entries.append(ContentElementSyntax(kind: .element(parsedElement)))
+                    }
                 }
             } else {
                 entries.append(ContentElementSyntax(kind: .text(TextSyntax.parse(fromEndOf: &source))))
             }
         }
         let list = ListSyntax<ContentElementSyntax>(entries: entries.reversed())
-        return (tag, ContentSyntax(_storage: SyntaxStorage(children: [list])))
+        return .success((tag, ContentSyntax(_storage: SyntaxStorage(children: [list]))))
     }
 
     // MARK: - Children

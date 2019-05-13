@@ -23,9 +23,10 @@ public struct DocumentSyntax : Syntax {
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     /// Parses the source into a syntax tree.
-    public static func parse(source: String) -> DocumentSyntax {
-        let content = ContentSyntax.parse(source: source)
-        return DocumentSyntax(_storage: SyntaxStorage(children: [content]))
+    public static func parse(source: String) -> Result<DocumentSyntax, SyntaxError> {
+        return ContentSyntax.parse(source: source).map { content in
+            return DocumentSyntax(_storage: SyntaxStorage(children: [content]))
+        }
     }
 
     // MARK: - Children

@@ -43,13 +43,17 @@ public struct ElementSyntax : Syntax {
                 return .failure(SyntaxError())
             } else {
                 source.removeLast() // “<”
-                let (opening, content) = ContentSyntax.parse(fromEndOf: &source, untilOpeningOf: name.source())
-                return .success(ElementSyntax(_storage: SyntaxStorage(children: [
-                    opening,
-                    ElementContinuationSyntax(
-                        content: content,
-                        closingTag: ClosingTagSyntax(name: name))
-                    ])))
+                switch ContentSyntax.parse(fromEndOf: &source, untilOpeningOf: name.source()) {
+                case .failure(let error):
+                    return .failure(error)
+                case .success(let (opening, content)):
+                    return .success(ElementSyntax(_storage: SyntaxStorage(children: [
+                        opening,
+                        ElementContinuationSyntax(
+                            content: content,
+                            closingTag: ClosingTagSyntax(name: name))
+                        ])))
+                }
             }
         }
     }
