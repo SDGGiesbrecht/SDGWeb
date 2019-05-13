@@ -33,7 +33,7 @@ public struct AttributeSyntax : Syntax {
     }
 
     public var value: AttributeValueSyntax? {
-        return children[ElementSyntax.indices[.value]!] as? AttributeValueSyntax
+        return children[AttributeSyntax.indices[.value]!] as? AttributeValueSyntax
     }
 
     // MARK: - Syntax
