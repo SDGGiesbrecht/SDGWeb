@@ -23,17 +23,27 @@ public struct ContentSyntax : Syntax {
 
     internal static func parse(source: String) -> ContentSyntax {
         var source = source
+        return parse(fromEndOf: &source, untilOpeningOf: nil).content
+    }
+
+    internal static func parse(fromEndOf source: inout String, untilOpeningOf element: String?) -> (tag: OpeningTagSyntax?, content: ContentSyntax) {
+        var tag: OpeningTagSyntax?
         var entries: [ContentElementSyntax] = []
         while ¬source.isEmpty {
             if source.scalars.last == ">" {
                 let element = ElementSyntax.parse(fromEndOf: &source)
-                entries.append(ContentElementSyntax(kind: .element(element)))
+                if element.continuation == nil,
+                    element.openingTag.name.source() == element.source() {
+                    tag = element.openingTag
+                } else {
+                    entries.append(ContentElementSyntax(kind: .element(element)))
+                }
             } else {
                 entries.append(ContentElementSyntax(kind: .text(TextSyntax.parse(fromEndOf: &source))))
             }
         }
         let list = ListSyntax<ContentElementSyntax>(entries: entries.reversed())
-        return ContentSyntax(_storage: SyntaxStorage(children: [list]))
+        return (tag, ContentSyntax(_storage: SyntaxStorage(children: [list])))
     }
 
     // MARK: - Children
