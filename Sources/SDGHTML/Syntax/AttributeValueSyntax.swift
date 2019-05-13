@@ -50,8 +50,16 @@ public struct AttributeValueSyntax : Syntax {
         }
         source.scalars.removeLast()
         if source.scalars.last ≠ "=" {
-            #warning("Throw. Missing equals sign.")
-            return .failure(SyntaxError())
+            return .failure(SyntaxError(
+                file: source,
+                index: source.scalars.endIndex,
+                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Missing equals sign."
+                    }
+                }),
+                context: "\u{22}" + (value?.source() ?? "") + "\u{22}"))
         }
         source.scalars.removeLast()
         return .success(AttributeValueSyntax(_storage: SyntaxStorage(children: [
