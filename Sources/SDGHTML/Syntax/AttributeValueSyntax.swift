@@ -24,6 +24,22 @@ public struct AttributeValueSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
+    internal static func parse(fromEndOf source: inout String) -> AttributeValueSyntax? {
+        if source.scalars.last ≠ "\u{22}" {
+            return nil
+        }
+        let end = source.scalars.index(before: source.scalars.endIndex)
+        var start = end
+        while start ≠ source.scalars.startIndex,
+            source.scalars[start] ≠ "\u{ff}" {
+                start = source.scalars.index(before: start)
+        }
+        let text = String(source[start...])
+        source.scalars.removeSubrange(start...)
+        let value = AttributeValueSyntax(_storage: <#T##_SyntaxStorage#>)
+        return TextSyntax(_storage: SyntaxStorage(children: [TokenSyntax(kind: .text(text))]))
+    }
+
     // MARK: - Children
 
     public var equals: TokenSyntax {

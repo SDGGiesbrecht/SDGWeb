@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public struct AttributeSyntax : Syntax {
 
     // MARK: - Parsing
@@ -23,8 +25,8 @@ public struct AttributeSyntax : Syntax {
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     internal static func parse(fromEndOf source: inout String) -> AttributeSyntax? {
-        return nil
-        #warning("Not implemented yet.")
+        let value = AttributeValueSyntax.parse(fromEndOf: &source)
+        let name = TokenSyntax.pa
     }
 
     // MARK: - Children
