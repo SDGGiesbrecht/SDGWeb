@@ -27,6 +27,15 @@ public struct ElementSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
+    private static func unpairedGreaterThan() -> UserFacing<StrictString, InterfaceLocalization> {
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "A greater‐than sign has no corresponding less‐than sign."
+            }
+        })
+    }
+
     internal static func parse(fromEndOf source: inout String) -> Result<ElementSyntax, SyntaxError> {
         var preservedSource = source
         switch AttributesSyntax.parse(fromEndOf: &source) {
@@ -37,12 +46,7 @@ public struct ElementSyntax : Syntax {
                 return .failure(SyntaxError(
                     file: preservedSource,
                     index: preservedSource.scalars.endIndex,
-                    description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "A greater‐than sign has no corresponding less‐than sign."
-                        }
-                    }),
+                    description: unpairedGreaterThan(),
                     context: preservedSource))
             }
             if source.scalars.last ≠ "/" {
@@ -57,12 +61,7 @@ public struct ElementSyntax : Syntax {
                     return .failure(SyntaxError(
                         file: preservedSource,
                         index: preservedSource.scalars.endIndex,
-                        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                            switch localization {
-                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                return "A closing tag has no less‐than sign."
-                            }
-                        }),
+                        description: unpairedGreaterThan(),
                         context: preservedSource))
                 } else {
                     source.scalars.removeLast() // “<”
