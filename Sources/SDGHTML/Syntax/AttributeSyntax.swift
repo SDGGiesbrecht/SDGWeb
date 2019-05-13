@@ -24,9 +24,14 @@ public struct AttributeSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String) -> AttributeSyntax? {
-        let value = AttributeValueSyntax.parse(fromEndOf: &source)
-        let name = TokenSyntax.pa
+    internal static func parse(fromEndOf source: inout String) -> Result<AttributeSyntax?, SyntaxError> {
+        return AttributeValueSyntax.parse(fromEndOf: &source).map { value in
+            let name = TokenSyntax.parseIdentifer(fromEndOf: &source)
+            return AttributeSyntax(_storage: SyntaxStorage(children: [
+                name,
+                value
+                ]))
+        }
     }
 
     // MARK: - Children
