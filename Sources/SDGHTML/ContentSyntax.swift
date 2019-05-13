@@ -26,9 +26,8 @@ public struct ContentSyntax : Syntax {
         var entries: [ContentElementSyntax] = []
         while ¬source.isEmpty {
             if source.scalars.last == ">" {
-                #warning("Stand‐in.")
-                source.scalars.removeLast()
-                entries.append(ContentElementSyntax(kind: .text(TextSyntax(_storage: SyntaxStorage(children: [TokenSyntax(kind: .greaterThan)])))))
+                let element = ElementSyntax.parse(fromEndOf: &source)
+                entries.append(ContentElementSyntax(kind: .element(element)))
             } else {
                 entries.append(ContentElementSyntax(kind: .text(TextSyntax.parse(fromEndOf: &source))))
             }
