@@ -11,3 +11,32 @@
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
+
+public struct AttributesSyntax : Syntax {
+
+    // MARK: - Parsing
+
+    private enum Child : CaseIterable {
+        case attributes
+    }
+    private static let indices = Child.allCases.bijectiveIndexMapping
+
+    internal static func parse(source: inout String) -> ContentSyntax {
+        var entries: [AttributeSyntax]
+        while let attribute = AttributesSyntax.parse(fromEndOf: &source) {
+            entries.append(attribute)
+        }
+        let list = ListSyntax<ContentElementSyntax>(entries: entries.reversed())
+        return ContentSyntax(_storage: SyntaxStorage(children: [list]))
+    }
+
+    // MARK: - Children
+
+    public var attributes: ListSyntax<AttributeSyntax> {
+        return children[ContentSyntax.indices[.attributes]!] as! ListSyntax<AttributeSyntax>
+    }
+
+    // MARK: - Syntax
+
+    public var _storage: _SyntaxStorage
+}
