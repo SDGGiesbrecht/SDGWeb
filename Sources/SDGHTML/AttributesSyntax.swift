@@ -23,7 +23,7 @@ public struct AttributesSyntax : Syntax {
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     internal static func parse(source: inout String) -> ContentSyntax {
-        let whitespace = WhitespaceSyntax.parse(fromEndOf: &source)
+        let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
         var entries: [AttributeSyntax] = []
         while let attribute = AttributesSyntax.parse(fromEndOf: &source) {
             entries.append(attribute)

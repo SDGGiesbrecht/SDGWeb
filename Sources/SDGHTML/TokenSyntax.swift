@@ -12,8 +12,23 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 /// A syntax node representing a single token.
 public struct TokenSyntax : Syntax {
+
+    // MARK: - Parsing
+
+    internal static func parseWhitespace(fromEndOf source: inout String) -> TokenSyntax {
+        var start = source.scalars.endIndex
+        while start ≠ source.scalars.startIndex,
+            source.scalars[source.scalars.index(before: start)].properties.isWhitespace {
+                start = source.scalars.index(before: start)
+        }
+        let whitespace = String(source[start...])
+        source.scalars.removeSubrange(start...)
+        return TokenSyntax(kind: .whitespace(whitespace))
+    }
 
     // MARK: - Initialization
 
