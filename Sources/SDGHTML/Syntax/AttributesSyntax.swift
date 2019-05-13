@@ -27,7 +27,7 @@ public struct AttributesSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String, path: String?) -> Result<(name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError> {
+    internal static func parse(fromEndOf source: inout String) -> Result<(name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError> {
         let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
         var parsedElements: [AttributeSyntax] = []
 
@@ -50,15 +50,15 @@ public struct AttributesSyntax : Syntax {
 
         if parsedElements.isEmpty {
             return .failure(SyntaxError(
-                file: path,
-                line: source.lines.distance(from: source.lines.startIndex, to: <#T##LineViewIndex#>) + 1,
+                file: source,
+                index: source.endIndex,
                 description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "A tag is empty."
                     }
                 }),
-                context: <#T##String#>))
+                context: "<>"))
         }
         let parsedName = parsedElements.removeLast()
         let attributes: [AttributeSyntax] = parsedElements.reversed()

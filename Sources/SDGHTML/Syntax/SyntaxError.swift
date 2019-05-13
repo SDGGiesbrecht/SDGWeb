@@ -20,20 +20,17 @@ public struct SyntaxError : PresentableError {
 
     init() {
         #warning("Temporary.")
-        file = nil
         line = 0
         description = UserFacing({ _ in "" })
         context = ""
     }
 
     init(
-        path: String?,
         file: String,
         index: String.ScalarView.Index,
         description: UserFacing<StrictString, InterfaceLocalization>,
         context: String) {
 
-        self.file = file
         self.description = description
         self.context = context
 
@@ -42,7 +39,6 @@ public struct SyntaxError : PresentableError {
         self.line = lines.distance(from: lines.startIndex, to: line) + 1
     }
 
-    internal let file: String?
     internal let line: Int
     internal let description: UserFacing<StrictString, InterfaceLocalization>
     internal let context: String
