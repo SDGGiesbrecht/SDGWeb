@@ -12,6 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLocalization
+
 public struct SyntaxError : PresentableError {
 
+    // MARK: - PresentableError
+
+    public func presentableDescription() -> StrictString {
+        #warning("Not implemented.")
+        return ""
+    }
 }
