@@ -51,7 +51,7 @@ public struct AttributesSyntax : Syntax {
         if parsedElements.isEmpty {
             return .failure(SyntaxError(
                 file: source,
-                index: source.endIndex,
+                index: source.scalars.endIndex,
                 description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -71,8 +71,8 @@ public struct AttributesSyntax : Syntax {
             context += (whitespace?.source() ?? "") + ">"
 
             return .failure(SyntaxError(
-                file: source + parsedName.source(),
-                index: source.scalars.index(before: source.scalars.endIndex),
+                file: source,
+                index: source.scalars.endIndex,
                 description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

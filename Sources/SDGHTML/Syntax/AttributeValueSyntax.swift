@@ -13,6 +13,9 @@
  */
 
 import SDGLogic
+import SDGLocalization
+
+import SDGWebLocalizations
 
 public struct AttributeValueSyntax : Syntax {
 
@@ -33,8 +36,17 @@ public struct AttributeValueSyntax : Syntax {
         source.scalars.removeLast()
         let value = TokenSyntax.parseAttribute(fromEndOf: &source)
         if source.scalars.last ≠ "\u{22}" {
-            #warning("Throw. Extraneus quotation mark.")
-            return .failure(SyntaxError())
+            let attributeSource = source + (value?.source() ?? "") + "\u{22}"
+            return .failure(SyntaxError(
+                file: attributeSource,
+                index: attributeSource.scalars.index(before: attributeSource.scalars.endIndex),
+                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "A quotation mark is not paired."
+                    }
+                }),
+                context: attributeSource))
         }
         source.scalars.removeLast()
         if source.scalars.last ≠ "=" {
