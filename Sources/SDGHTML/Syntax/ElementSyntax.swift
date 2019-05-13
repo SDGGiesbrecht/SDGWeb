@@ -40,7 +40,7 @@ public struct ElementSyntax : Syntax {
                     description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "A greater‐than sign has no corresponding less‐than sign."
+                            return "A tag has no less‐than sign."
                         }
                     }),
                     context: preservedSource))
@@ -54,8 +54,16 @@ public struct ElementSyntax : Syntax {
             } else {
                 source.scalars.removeLast() // “/”
                 if source.scalars.last ≠ "<" {
-                    #warning("Throw. Extraneous “>”.")
-                    return .failure(SyntaxError())
+                    return .failure(SyntaxError(
+                        file: preservedSource,
+                        index: preservedSource.scalars.endIndex,
+                        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                            switch localization {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                return "A closing tag has no less‐than sign."
+                            }
+                        }),
+                        context: preservedSource))
                 } else {
                     source.scalars.removeLast() // “<”
                     switch ContentSyntax.parse(fromEndOf: &source, untilOpeningOf: name.source()) {
