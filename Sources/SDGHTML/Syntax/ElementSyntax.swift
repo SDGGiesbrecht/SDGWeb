@@ -24,7 +24,7 @@ public struct ElementSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String) -> ElementSyntax {
+    internal static func parse(fromEndOf source: inout String) -> Result<ElementSyntax,  {
         let (name, attributes) = AttributesSyntax.parse(fromEndOf: &source)
         if source.scalars.isEmpty {
             #warning("Throw. Extraneous “>”.")
