@@ -28,8 +28,8 @@ public struct ElementContinuationSyntax : Syntax {
         return children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
     }
 
-    public var closingTag: EndTagSyntax {
-        return children[ElementContinuationSyntax.indices[.closingTag]!] as! EndTagSyntax
+    public var closingTag: ClosingTagSyntax {
+        return children[ElementContinuationSyntax.indices[.closingTag]!] as! ClosingTagSyntax
     }
 
     // MARK: - Syntax
