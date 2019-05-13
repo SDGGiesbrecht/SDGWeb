@@ -22,10 +22,10 @@ public struct AttributesSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(source: inout String) -> ContentSyntax {
+    internal static func parse(fromEndOf source: inout String) -> ContentSyntax {
         let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
         var entries: [AttributeSyntax] = []
-        while let attribute = AttributesSyntax.parse(fromEndOf: &source) {
+        while let attribute = AttributeSyntax.parse(fromEndOf: &source) {
             entries.append(attribute)
         }
         let list = ListSyntax<ContentElementSyntax>(entries: entries.reversed())

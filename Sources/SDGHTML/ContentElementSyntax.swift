@@ -22,6 +22,8 @@ public struct ContentElementSyntax : Syntax {
         switch kind {
         case .text(let text):
             child = text
+        case .element(let element):
+            child = element
         }
         self._storage = SyntaxStorage(children: [child])
     }
