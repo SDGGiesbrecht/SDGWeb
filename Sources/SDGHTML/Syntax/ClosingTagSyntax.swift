@@ -24,6 +24,15 @@ public struct ClosingTagSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
+    internal init(name: TokenSyntax) {
+        _storage = _SyntaxStorage(children: [
+            TokenSyntax(kind: .lessThan),
+            TokenSyntax(kind: .slash),
+            name,
+            TokenSyntax(kind: .greaterThan)
+            ])
+    }
+
     // MARK: - Children
 
     public var lessThan: TokenSyntax {

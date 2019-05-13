@@ -19,8 +19,6 @@ public enum TokenKind : Equatable, Hashable {
 
     /// Text.
     case text(String)
-    /// Whitespace.
-    case whitespace(String)
 
     /// A less‐than sign.
     case lessThan
@@ -29,6 +27,11 @@ public enum TokenKind : Equatable, Hashable {
     /// An element name.
     case elementName(String)
 
+    /// A slash.
+    case slash
+
+    /// Whitespace.
+    case whitespace(String)
     /// An attribute name.
     case attributeName(String)
     /// An equals sign.
@@ -47,6 +50,8 @@ public enum TokenKind : Equatable, Hashable {
             return "<"
         case .greaterThan:
             return ">"
+        case .slash:
+            return "/"
         case .equalsSign:
             return "="
         case .quotationMark:
