@@ -31,12 +31,12 @@ public struct ContentSyntax : Syntax {
         var entries: [ContentElementSyntax] = []
         while ¬source.isEmpty {
             if source.scalars.last == ">" {
-                let element = ElementSyntax.parse(fromEndOf: &source)
-                if element.continuation == nil,
-                    element.openingTag.name.source() == element.source() {
-                    tag = element.openingTag
+                let parsedElement = ElementSyntax.parse(fromEndOf: &source)
+                if parsedElement.continuation == nil,
+                    parsedElement.openingTag.name.source() == element {
+                    tag = parsedElement.openingTag
                 } else {
-                    entries.append(ContentElementSyntax(kind: .element(element)))
+                    entries.append(ContentElementSyntax(kind: .element(parsedElement)))
                 }
             } else {
                 entries.append(ContentElementSyntax(kind: .text(TextSyntax.parse(fromEndOf: &source))))

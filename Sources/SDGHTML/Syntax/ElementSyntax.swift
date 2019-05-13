@@ -41,7 +41,7 @@ public struct ElementSyntax : Syntax {
                 #warning("Throw. Extraneous “>”.")
             } else {
                 source.removeLast() // “<”
-                let (opening, content) = ContentSyntax.parse(fromEndOf: &source, untilOpeningOf: name)
+                let (opening, content) = ContentSyntax.parse(fromEndOf: &source, untilOpeningOf: name.source())
                 return ElementSyntax(_storage: [
                     opening,
                     ElementContinuationSyntax(
