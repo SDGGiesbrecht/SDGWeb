@@ -33,19 +33,19 @@ public struct ElementSyntax : Syntax {
                 #warning("Throw. Extraneous “>”.")
                 return .failure(SyntaxError())
             }
-            if source.last ≠ "/" {
-                source.removeLast() // “<”
+            if source.scalars.last ≠ "/" {
+                source.scalars.removeLast() // “<”
                 return .success(ElementSyntax(_storage: SyntaxStorage(children: [
                     OpeningTagSyntax(name: name, attributes: attributes),
                     nil
                     ])))
             } else {
-                source.removeLast() // “/”
-                if source.last ≠ "<" {
+                source.scalars.removeLast() // “/”
+                if source.scalars.last ≠ "<" {
                     #warning("Throw. Extraneous “>”.")
                     return .failure(SyntaxError())
                 } else {
-                    source.removeLast() // “<”
+                    source.scalars.removeLast() // “<”
                     switch ContentSyntax.parse(fromEndOf: &source, untilOpeningOf: name.source()) {
                     case .failure(let error):
                         return .failure(error)

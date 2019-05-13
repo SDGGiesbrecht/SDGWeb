@@ -17,7 +17,7 @@ public enum TokenKind : Equatable, Hashable {
 
     // MARK: - Cases
 
-    /// Text.
+    /// Content text.
     case text(String)
 
     /// A less‐than sign.
@@ -38,13 +38,19 @@ public enum TokenKind : Equatable, Hashable {
     case equalsSign
     /// A quotation mark.
     case quotationMark
+    /// Text of an attribute value.
+    case attributeText(String)
 
     // MARK: - Properties
 
     /// The textual representation of this token kind.
     var text: String {
         switch self {
-        case .text(let text), .whitespace(let text), .elementName(let text), .attributeName(let text):
+        case .text(let text),
+             .whitespace(let text),
+             .elementName(let text),
+             .attributeName(let text),
+             .attributeText(let text):
             return text
         case .lessThan:
             return "<"

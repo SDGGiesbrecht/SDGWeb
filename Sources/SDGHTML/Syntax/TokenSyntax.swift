@@ -35,6 +35,9 @@ public struct TokenSyntax : Syntax {
     internal static func parseIdentifer(fromEndOf source: inout String) -> TokenSyntax? {
         return parse(fromEndOf: &source, while: { ¬$0.properties.isWhitespace ∧ $0 ≠ "<" })
     }
+    internal static func parseAttribute(fromEndOf source: inout String) -> TokenSyntax? {
+        return parse(fromEndOf: &source, while: { $0 ≠ "\u{22}" })
+    }
     internal static func parseWhitespace(fromEndOf source: inout String) -> TokenSyntax? {
         return parse(fromEndOf: &source, while: { $0.properties.isWhitespace })
     }

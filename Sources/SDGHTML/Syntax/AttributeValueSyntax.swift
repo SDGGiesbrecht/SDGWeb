@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public struct AttributeValueSyntax : Syntax {
 
     // MARK: - Parsing
@@ -24,20 +26,28 @@ public struct AttributeValueSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String) -> AttributeValueSyntax? {
+    internal static func parse(fromEndOf source: inout String) -> Result<AttributeValueSyntax?, SyntaxError> {
         if source.scalars.last ≠ "\u{22}" {
-            return nil
+            return .success(nil)
         }
-        let end = source.scalars.index(before: source.scalars.endIndex)
-        var start = end
-        while start ≠ source.scalars.startIndex,
-            source.scalars[start] ≠ "\u{ff}" {
-                start = source.scalars.index(before: start)
+        source.scalars.removeLast()
+        let value = TokenSyntax.parseAttribute(fromEndOf: &source)
+        if source.scalars.last ≠ "\u{22}" {
+            #warning("Throw. Extraneus quotation mark.")
+            return .failure(SyntaxError())
         }
-        let text = String(source[start...])
-        source.scalars.removeSubrange(start...)
-        let value = AttributeValueSyntax(_storage: <#T##_SyntaxStorage#>)
-        return TextSyntax(_storage: SyntaxStorage(children: [TokenSyntax(kind: .text(text))]))
+        source.scalars.removeLast()
+        if source.scalars.last ≠ "=" {
+            #warning("Throw. Missing equals sign.")
+            return .failure(SyntaxError())
+        }
+        source.scalars.removeLast()
+        return .success(AttributeValueSyntax(_storage: SyntaxStorage(children: [
+            TokenSyntax(kind: .equalsSign),
+            TokenSyntax(kind: .quotationMark),
+            value,
+            TokenSyntax(kind: .quotationMark),
+            ])))
     }
 
     // MARK: - Children
