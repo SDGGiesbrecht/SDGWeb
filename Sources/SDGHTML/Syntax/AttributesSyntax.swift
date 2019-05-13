@@ -65,8 +65,21 @@ public struct AttributesSyntax : Syntax {
 
         let name = parsedName.name
         if parsedName.value ≠ nil {
-            #warning("Throw. Tag name with attribute value.")
-            return .failure(SyntaxError())
+
+            var context = "<" + parsedName.source()
+            context += (attributes.lazy.map({ $0.source() }).joined() as String)
+            context += (whitespace?.source() ?? "") + ">"
+
+            return .failure(SyntaxError(
+                file: source + parsedName.source(),
+                index: source.scalars.index(before: source.scalars.endIndex),
+                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "A tag has no name."
+                    }
+                }),
+                context: context))
         }
 
         let list = attributes.isEmpty ? nil : ListSyntax<AttributeSyntax>(entries: attributes)
