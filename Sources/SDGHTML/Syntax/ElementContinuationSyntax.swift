@@ -22,6 +22,13 @@ public struct ElementContinuationSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
+    internal init(content: ContentSyntax, closingTag: ClosingTagSyntax) {
+        _storage = _SyntaxStorage(children: [
+            content,
+            closingTag,
+            ])
+    }
+
     // MARK: - Children
 
     public var content: ContentSyntax {
