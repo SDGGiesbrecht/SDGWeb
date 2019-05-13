@@ -17,7 +17,7 @@ public struct AttributeValueSyntax : Syntax {
     // MARK: - Parsing
 
     private enum Child : CaseIterable {
-        case equalsSign
+        case equals
         case openingQuotationMark
         case value
         case closingQuotationMark
@@ -26,8 +26,8 @@ public struct AttributeValueSyntax : Syntax {
 
     // MARK: - Children
 
-    public var equalsSign: TokenSyntax {
-        return children[AttributeValueSyntax.indices[.equalsSign]!] as! TokenSyntax
+    public var equals: TokenSyntax {
+        return children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
     }
 
     public var openingQuotationMark: TokenSyntax {

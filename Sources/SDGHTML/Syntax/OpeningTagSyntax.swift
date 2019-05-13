@@ -1,5 +1,5 @@
 /*
- AttributeSyntax.swift
+ OpeningTagSyntax.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -12,28 +12,34 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-public struct AttributeSyntax : Syntax {
+public struct OpeningTagSyntax : Syntax {
 
     // MARK: - Parsing
 
     private enum Child : CaseIterable {
+        case lessThan
         case name
-        case value
+        case attributes
+        case greaterThan
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String) -> AttributeSyntax? {
-        #error("Not implemented yet.")
-    }
-
     // MARK: - Children
 
-    public var name: TokenSyntax {
-        return children[AttributeSyntax.indices[.name]!] as! TokenSyntax
+    public var lessThan: TokenSyntax {
+        return children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
     }
 
-    public var value: AttributeValueSyntax? {
-        return children[AttributeSyntax.indices[.value]!] as? AttributeValueSyntax
+    public var name: TokenSyntax {
+        return children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
+    }
+
+    public var attributes: AttributesSyntax? {
+        return children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
+    }
+
+    public var greaterThan: TokenSyntax {
+        return children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
     }
 
     // MARK: - Syntax
