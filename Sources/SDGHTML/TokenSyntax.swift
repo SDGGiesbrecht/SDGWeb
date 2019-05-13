@@ -19,11 +19,14 @@ public struct TokenSyntax : Syntax {
 
     // MARK: - Parsing
 
-    internal static func parseWhitespace(fromEndOf source: inout String) -> TokenSyntax {
+    internal static func parseWhitespace(fromEndOf source: inout String) -> TokenSyntax? {
         var start = source.scalars.endIndex
         while start ≠ source.scalars.startIndex,
             source.scalars[source.scalars.index(before: start)].properties.isWhitespace {
                 start = source.scalars.index(before: start)
+        }
+        if start == source.scalars.endIndex {
+            return nil // Empty
         }
         let whitespace = String(source[start...])
         source.scalars.removeSubrange(start...)
