@@ -18,16 +18,21 @@ public struct AttributesSyntax : Syntax {
 
     private enum Child : CaseIterable {
         case attributes
+        case trailingWhitespace
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     internal static func parse(source: inout String) -> ContentSyntax {
-        var entries: [AttributeSyntax]
+        let whitespace = WhitespaceSyntax.parse(fromEndOf: &source)
+        var entries: [AttributeSyntax] = []
         while let attribute = AttributesSyntax.parse(fromEndOf: &source) {
             entries.append(attribute)
         }
         let list = ListSyntax<ContentElementSyntax>(entries: entries.reversed())
-        return ContentSyntax(_storage: SyntaxStorage(children: [list]))
+        return AttributesSyntax(_storage: [SyntaxStorage(children: [
+            list,
+            whitespace
+            ]))
     }
 
     // MARK: - Children
