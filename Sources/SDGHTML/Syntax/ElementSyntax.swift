@@ -42,22 +42,14 @@ public struct ElementSyntax : Syntax {
             } else {
                 source.removeLast() // “<”
                 let (opening, content) = ContentSyntax.parse(fromEndOf: &source, untilOpeningOf: name.source())
-                return ElementSyntax(_storage: [
+                return ElementSyntax(_storage: SyntaxStorage(children: [
                     opening,
                     ElementContinuationSyntax(
                         content: content,
                         closingTag: ClosingTagSyntax(name: name))
-                    ])
+                    ]))
             }
         }
-        var start = source.scalars.index(before: source.scalars.endIndex)
-        while start ≠ source.scalars.startIndex,
-            source.scalars[start] ≠ ">" {
-                start = source.scalars.index(before: start)
-        }
-        let text = String(source[start...])
-        source.scalars.removeSubrange(start...)
-        return TextSyntax(_storage: SyntaxStorage(children: [TokenSyntax(kind: .text(text))]))
     }
 
     // MARK: - Children
@@ -67,7 +59,7 @@ public struct ElementSyntax : Syntax {
     }
 
     public var continuation: ElementContinuationSyntax? {
-        return children[ElementSyntax.indices[.openingTag]!] as? OpeningTagSyntax
+        return children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
     }
 
     // MARK: - Syntax
