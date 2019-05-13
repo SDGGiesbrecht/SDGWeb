@@ -31,7 +31,7 @@ public struct ElementSyntax : Syntax {
         }
         if source.last ≠ "/" {
             source.removeLast() // “<”
-            return ElementSyntax(_storage: SyntaxStorage([
+            return ElementSyntax(_storage: SyntaxStorage(children: [
                 OpeningTagSyntax(name: name, attributes: attributes),
                 nil
                 ]))

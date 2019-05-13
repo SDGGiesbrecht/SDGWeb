@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public struct AttributesSyntax : Syntax {
 
     // MARK: - Parsing
@@ -22,21 +24,32 @@ public struct AttributesSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String) -> AttributesSyntax? {
+    internal static func parse(fromEndOf source: inout String) -> (name: TokenSyntax, attributes: AttributesSyntax?) {
         let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
-        var entries: [AttributeSyntax] = []
-        while let attribute = AttributeSyntax.parse(fromEndOf: &source) {
-            entries.append(attribute)
+        var parsedElements: [AttributeSyntax] = []
+        while let parsedElement = AttributeSyntax.parse(fromEndOf: &source) {
+            parsedElements.append(parsedElement)
         }
-        let list = entries.isEmpty ? nil : ListSyntax<AttributeSyntax>(entries: entries.reversed())
+        if parsedElements.isEmpty {
+            #warning("Throw. Empty tag.")
+        }
+        let parsedName = parsedElements.removeLast()
+        let attributes: [AttributeSyntax] = parsedElements.reversed()
+
+        let name = parsedName.name
+        if parsedName.value ≠ nil {
+            #warning("Throw. Tag name with attribute value.")
+        }
+
+        let list = attributes.isEmpty ? nil : ListSyntax<AttributeSyntax>(entries: attributes)
         if whitespace == nil,
             list == nil {
-            return nil // Empty.
+            return (name, nil) // Empty.
         }
-        return AttributesSyntax(_storage: SyntaxStorage(children: [
+        return (name, AttributesSyntax(_storage: SyntaxStorage(children: [
             list,
             whitespace
-            ]))
+            ])))
     }
 
     // MARK: - Children
