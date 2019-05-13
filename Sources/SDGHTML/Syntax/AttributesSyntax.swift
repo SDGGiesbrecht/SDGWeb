@@ -24,7 +24,7 @@ public struct AttributesSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String) -> (name: TokenSyntax, attributes: AttributesSyntax?) {
+    internal static func parse(fromEndOf source: inout String) -> Result<(name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError> {
         let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
         var parsedElements: [AttributeSyntax] = []
         while let parsedElement = AttributeSyntax.parse(fromEndOf: &source) {
@@ -32,6 +32,7 @@ public struct AttributesSyntax : Syntax {
         }
         if parsedElements.isEmpty {
             #warning("Throw. Empty tag.")
+            return .failure(SyntaxError())
         }
         let parsedName = parsedElements.removeLast()
         let attributes: [AttributeSyntax] = parsedElements.reversed()
@@ -39,17 +40,18 @@ public struct AttributesSyntax : Syntax {
         let name = parsedName.name
         if parsedName.value ≠ nil {
             #warning("Throw. Tag name with attribute value.")
+            return .failure(SyntaxError())
         }
 
         let list = attributes.isEmpty ? nil : ListSyntax<AttributeSyntax>(entries: attributes)
         if whitespace == nil,
             list == nil {
-            return (name, nil) // Empty.
+            return .success((name, nil)) // Empty.
         }
-        return (name, AttributesSyntax(_storage: SyntaxStorage(children: [
+        return .success((name, AttributesSyntax(_storage: SyntaxStorage(children: [
             list,
             whitespace
-            ])))
+            ]))))
     }
 
     // MARK: - Children

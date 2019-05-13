@@ -25,34 +25,38 @@ public struct ElementSyntax : Syntax {
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     internal static func parse(fromEndOf source: inout String) -> Result<ElementSyntax, SyntaxError> {
-        let (name, attributes) = AttributesSyntax.parse(fromEndOf: &source)
-        if source.scalars.isEmpty {
-            #warning("Throw. Extraneous “>”.")
-            return .failure(SyntaxError())
-        }
-        if source.last ≠ "/" {
-            source.removeLast() // “<”
-            return .success(ElementSyntax(_storage: SyntaxStorage(children: [
-                OpeningTagSyntax(name: name, attributes: attributes),
-                nil
-                ])))
-        } else {
-            source.removeLast() // “/”
-            if source.last ≠ "<" {
+        switch AttributesSyntax.parse(fromEndOf: &source) {
+        case .failure(let error):
+            return .failure(error)
+        case .success(let (name, attributes)):
+            if source.scalars.isEmpty {
                 #warning("Throw. Extraneous “>”.")
                 return .failure(SyntaxError())
-            } else {
+            }
+            if source.last ≠ "/" {
                 source.removeLast() // “<”
-                switch ContentSyntax.parse(fromEndOf: &source, untilOpeningOf: name.source()) {
-                case .failure(let error):
-                    return .failure(error)
-                case .success(let (opening, content)):
-                    return .success(ElementSyntax(_storage: SyntaxStorage(children: [
-                        opening,
-                        ElementContinuationSyntax(
-                            content: content,
-                            closingTag: ClosingTagSyntax(name: name))
-                        ])))
+                return .success(ElementSyntax(_storage: SyntaxStorage(children: [
+                    OpeningTagSyntax(name: name, attributes: attributes),
+                    nil
+                    ])))
+            } else {
+                source.removeLast() // “/”
+                if source.last ≠ "<" {
+                    #warning("Throw. Extraneous “>”.")
+                    return .failure(SyntaxError())
+                } else {
+                    source.removeLast() // “<”
+                    switch ContentSyntax.parse(fromEndOf: &source, untilOpeningOf: name.source()) {
+                    case .failure(let error):
+                        return .failure(error)
+                    case .success(let (opening, content)):
+                        return .success(ElementSyntax(_storage: SyntaxStorage(children: [
+                            opening,
+                            ElementContinuationSyntax(
+                                content: content,
+                                closingTag: ClosingTagSyntax(name: name))
+                            ])))
+                    }
                 }
             }
         }
