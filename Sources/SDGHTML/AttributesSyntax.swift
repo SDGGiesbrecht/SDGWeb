@@ -22,14 +22,14 @@ public struct AttributesSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String) -> ContentSyntax {
+    internal static func parse(fromEndOf source: inout String) -> AttributesSyntax {
         let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
         var entries: [AttributeSyntax] = []
         while let attribute = AttributeSyntax.parse(fromEndOf: &source) {
             entries.append(attribute)
         }
-        let list = ListSyntax<ContentElementSyntax>(entries: entries.reversed())
-        return AttributesSyntax(_storage: [SyntaxStorage(children: [
+        let list = ListSyntax<AttributeSyntax>(entries: entries.reversed())
+        return AttributesSyntax(_storage: SyntaxStorage(children: [
             list,
             whitespace
             ]))
@@ -38,7 +38,11 @@ public struct AttributesSyntax : Syntax {
     // MARK: - Children
 
     public var attributes: ListSyntax<AttributeSyntax> {
-        return children[ContentSyntax.indices[.attributes]!] as! ListSyntax<AttributeSyntax>
+        return children[AttributesSyntax.indices[.attributes]!] as! ListSyntax<AttributeSyntax>
+    }
+
+    public var trailingWhitespace: TokenSyntax {
+        return children[AttributesSyntax.indices[.trailingWhitespace]!] as! TokenSyntax
     }
 
     // MARK: - Syntax

@@ -22,7 +22,7 @@ public struct AttributeSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal static func parse(fromEndOf source: inout String) -> AttributeSyntax {
+    internal static func parse(fromEndOf source: inout String) -> AttributeSyntax? {
         #error("Not implemented yet.")
     }
 
