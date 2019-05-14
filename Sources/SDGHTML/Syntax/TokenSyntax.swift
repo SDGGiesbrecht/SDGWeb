@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 /// A syntax node representing a single token.
 public struct TokenSyntax : Syntax {
@@ -33,7 +34,7 @@ public struct TokenSyntax : Syntax {
         return TokenSyntax(kind: .whitespace(whitespace))
     }
     internal static func parseIdentifer(fromEndOf source: inout String) -> TokenSyntax? {
-        return parse(fromEndOf: &source, while: { ¬$0.properties.isWhitespace ∧ $0 ≠ "<" })
+        return parse(fromEndOf: &source, while: { ¬$0.properties.isWhitespace ∧ $0 ∉ Set(["<", "/"]) })
     }
     internal static func parseAttribute(fromEndOf source: inout String) -> TokenSyntax? {
         return parse(fromEndOf: &source, while: { $0 ≠ "\u{22}" })
