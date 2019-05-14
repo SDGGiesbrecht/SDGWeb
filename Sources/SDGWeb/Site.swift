@@ -160,26 +160,32 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     // MARK: - Validation
 
     /// Validates the generated website.
-    public func validate() throws -> [(URL, Error)] {
-        var results: [(URL, Error)] = []
-        for file in try FileManager.default.deepFileEnumeration(in: repositoryStructure.result)
-            where file.pathExtension == "html" {
-                do {
-                    let source = try String(from: file)
-                    let document = DocumentSyntax.parse(source: source)
+    public func validate() -> [URL: [SiteValidationError]] {
+        var files: [URL]
+        do {
+            files = try FileManager.default.deepFileEnumeration(in: repositoryStructure.result)
+        } catch {
+            return [URL(string: "./")!: [.foundationError(error)]]
+        }
 
-                    #warning("Duplicate functionality.")
-                    let xmlDocument = try XMLDocument(contentsOf: file, options: [
-                        .documentTidyHTML
-                        ])
-                    xmlDocument.documentContentKind = .html
-                    try xmlDocument.validate()
-                    for badLink in checkLinks(in: xmlDocument, file: file) {
-                        results.append((file, badLink))
-                    }
-                } catch {
-                    results.append((file, error))
+        var results: [(URL, Error)] = []
+        for file in files where file.pathExtension == "html" {
+            do {
+                let source = try String(from: file)
+                let document = DocumentSyntax.parse(source: source)
+
+                #warning("Duplicate functionality.")
+                let xmlDocument = try XMLDocument(contentsOf: file, options: [
+                    .documentTidyHTML
+                    ])
+                xmlDocument.documentContentKind = .html
+                try xmlDocument.validate()
+                for badLink in checkLinks(in: xmlDocument, file: file) {
+                    results.append((file, badLink))
                 }
+            } catch {
+                results.append((file, error))
+            }
         }
         return results
     }
