@@ -38,6 +38,7 @@ public struct ElementSyntax : Syntax {
 
     internal static func parse(fromEndOf source: inout String) -> Result<ElementSyntax, SyntaxError> {
         var preservedSource = source
+        source.scalars.removeLast() // “>”
         switch AttributesSyntax.parse(fromEndOf: &source) {
         case .failure(let error):
             return .failure(error)
