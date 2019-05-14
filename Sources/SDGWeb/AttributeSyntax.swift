@@ -100,8 +100,21 @@ extension AttributeSyntax {
                         dead = false
                     }
                 } else {
-                    #warning("Can this be checked?")
-                    dead = false
+                    let request = URLRequest(
+                        url: url,
+                        cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+                        timeoutInterval: 10)
+                    let semaphore = DispatchSemaphore(value: 0)
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                        if error ≠ nil,
+                            let status = (response as? HTTPURLResponse)?.statusCode,
+                            status.dividedAccordingToEuclid(by: 100) ≠ 2 {
+                            dead = false
+                        }
+                        semaphore.signal()
+                    }
+                    task.resume()
+                    semaphore.wait()
                 }
                 if dead {
                     results.append(SiteValidationError.syntaxError(SyntaxError(
