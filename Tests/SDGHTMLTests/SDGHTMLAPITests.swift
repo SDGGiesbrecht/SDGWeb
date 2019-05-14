@@ -36,6 +36,10 @@ class SDGHTMLAPITests : TestCase {
             "<span class=\u{22}&#x0022;\u{22}>...</span>")
     }
 
+    func testParsing() throws {
+        XCTAssert(try DocumentSyntax.parse(source: "<tag attribute=\u{22}value\u{22}></tag>").get().descendents().contains(where: { $0 is AttributeSyntax }))
+    }
+
     func testPercentEncoding() {
         XCTAssertEqual(HTML.percentEncodeURLPath("Ελληνικό κείμενο"), "Ελληνικό%20κείμενο")
     }
