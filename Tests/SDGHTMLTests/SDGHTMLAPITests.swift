@@ -37,7 +37,9 @@ class SDGHTMLAPITests : TestCase {
     }
 
     func testParsing() throws {
-        XCTAssert(try DocumentSyntax.parse(source: "<tag attribute=\u{22}value\u{22}></tag>").get().descendents().contains(where: { $0 is AttributeSyntax }))
+        XCTAssert(try DocumentSyntax.parse(source:
+            "<tag attribute=\u{22}value\u{22}></tag>"
+            ).get().descendents().contains(where: { $0 is AttributeSyntax }))
     }
 
     func testPercentEncoding() {
