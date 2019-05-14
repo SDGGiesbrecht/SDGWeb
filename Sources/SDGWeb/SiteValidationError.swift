@@ -1,5 +1,5 @@
 /*
- ValidationError.swift
+ SiteValidationError.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb

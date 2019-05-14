@@ -165,75 +165,26 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         do {
             files = try FileManager.default.deepFileEnumeration(in: repositoryStructure.result)
         } catch {
-            return [URL(string: "./")!: [.foundationError(error)]]
+            return [repositoryStructure.result: [.foundationError(error)]]
         }
 
-        var results: [(URL, Error)] = []
+        var results: [URL: [SiteValidationError]] = [:]
         for file in files where file.pathExtension == "html" {
+            let source: String
             do {
-                let source = try String(from: file)
-                let document = DocumentSyntax.parse(source: source)
-
-                #warning("Duplicate functionality.")
-                let xmlDocument = try XMLDocument(contentsOf: file, options: [
-                    .documentTidyHTML
-                    ])
-                xmlDocument.documentContentKind = .html
-                try xmlDocument.validate()
-                for badLink in checkLinks(in: xmlDocument, file: file) {
-                    results.append((file, badLink))
-                }
+                source = try String(from: file)
             } catch {
-                results.append((file, error))
+                results[file] = [.foundationError(error)]
+                break
             }
-        }
-        return results
-    }
 
-    private func checkLinks(in node: XMLNode, file: URL) -> [Error] {
-        var results: [Error] = []
-
-        if let element = node as? XMLElement {
-            for attribute in ["href", "src"] {
-                if let link = element.attribute(forName: attribute),
-                    let urlString = link.stringValue {
-                    if let url = URL(string: urlString, relativeTo: file) {
-                        var dead = true
-                        if url.isFileURL {
-                            if (try? url.checkResourceIsReachable()) == true {
-                                dead = false
-                            }
-                        } else {
-                            dead = false
-                        }
-                        if dead {
-                            results.append(ValidationError(description: UserFacing({ localization in
-                                switch localization {
-                                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                    return [
-                                        "Dead link:",
-                                        StrictString(urlString)
-                                    ]
-                                }
-                            })))
-                        }
-                    } else {
-                        results.append(ValidationError(description: UserFacing({ localization in
-                            switch localization {
-                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                return [
-                                    "Invalid URL:",
-                                    StrictString(urlString)
-                                ]
-                            }
-                        })))
-                    }
-                }
+            let document = DocumentSyntax.parse(source: source)
+            switch document {
+            case .failure(let error):
+                results[file] = [.syntaxError(error)]
+            case .success(let parsed):
+                results[file] = parsed.validate()
             }
-        }
-
-        for child in node.children ?? [] {
-            results += checkLinks(in: child, file: file)
         }
         return results
     }
