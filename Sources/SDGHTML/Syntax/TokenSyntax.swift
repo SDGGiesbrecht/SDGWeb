@@ -20,7 +20,7 @@ public struct TokenSyntax : Syntax {
 
     // MARK: - Parsing
 
-    private static func parse(fromEndOf source: inout String, while condition: (Unicode.Scalar) -> Bool) -> TokenSyntax? {
+    private static func parse(fromEndOf source: inout String, createToken: (String) -> TokenKind, while condition: (Unicode.Scalar) -> Bool) -> TokenSyntax? {
         var start = source.scalars.endIndex
         while start ≠ source.scalars.startIndex,
             condition(source.scalars[source.scalars.index(before: start)]) {
@@ -29,18 +29,20 @@ public struct TokenSyntax : Syntax {
         if start == source.scalars.endIndex {
             return nil // Empty
         }
-        let whitespace = String(source[start...])
+        let token = String(source[start...])
         source.scalars.removeSubrange(start...)
-        return TokenSyntax(kind: .whitespace(whitespace))
+        return TokenSyntax(kind: createToken(token))
     }
-    internal static func parseIdentifer(fromEndOf source: inout String) -> TokenSyntax? {
-        return parse(fromEndOf: &source, while: { ¬$0.properties.isWhitespace ∧ $0 ∉ Set(["<", "/"]) })
+    internal static func parseIdentifer(
+        fromEndOf source: inout String,
+        createToken: (String) -> TokenKind) -> TokenSyntax? {
+        return parse(fromEndOf: &source, createToken: createToken, while: { ¬$0.properties.isWhitespace ∧ $0 ∉ Set(["<", "/"]) })
     }
     internal static func parseAttribute(fromEndOf source: inout String) -> TokenSyntax? {
-        return parse(fromEndOf: &source, while: { $0 ≠ "\u{22}" })
+        return parse(fromEndOf: &source, createToken: { .attributeText($0) }, while: { $0 ≠ "\u{22}" })
     }
     internal static func parseWhitespace(fromEndOf source: inout String) -> TokenSyntax? {
-        return parse(fromEndOf: &source, while: { $0.properties.isWhitespace })
+        return parse(fromEndOf: &source, createToken: { .whitespace($0) }, while: { $0.properties.isWhitespace })
     }
 
     // MARK: - Initialization
