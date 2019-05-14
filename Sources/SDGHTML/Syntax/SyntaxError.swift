@@ -18,13 +18,6 @@ import SDGWebLocalizations
 
 public struct SyntaxError : PresentableError {
 
-    init() {
-        #warning("Temporary.")
-        line = 0
-        description = UserFacing({ _ in "" })
-        context = ""
-    }
-
     init(
         file: String,
         index: String.ScalarView.Index,
@@ -45,8 +38,22 @@ public struct SyntaxError : PresentableError {
 
     // MARK: - PresentableError
 
+    private func lineDescription() -> UserFacing<StrictString, InterfaceLocalization> {
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Line \(self.line.inDigits())"
+            }
+        })
+    }
+
     public func presentableDescription() -> StrictString {
-        #warning("Not implemented.")
-        return ""
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            return [
+                self.lineDescription().resolved(for: localization),
+                self.description.resolved(for: localization),
+                StrictString(self.context)
+            ].joined(separator: "\n")
+        }).resolved()
     }
 }
