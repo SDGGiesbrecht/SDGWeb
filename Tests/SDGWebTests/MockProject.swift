@@ -36,7 +36,7 @@ func generate<L>(forMock mockName: String, localization: L.Type, file: StaticStr
         reportProgress: { _ in })
 
     try site.generate().get()
-    let warnings = try site.validate()
+    let warnings = site.validate()
     // @endExample
 
     // Test HTML parsing.
