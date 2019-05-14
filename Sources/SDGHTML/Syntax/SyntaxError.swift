@@ -18,13 +18,13 @@ import SDGWebLocalizations
 
 public struct SyntaxError : PresentableError {
 
-    init(
+    public init<L>(
         file: String,
         index: String.ScalarView.Index,
-        description: UserFacing<StrictString, InterfaceLocalization>,
-        context: String) {
+        description: UserFacing<StrictString, L>,
+        context: String) where L : Localization {
 
-        self.description = description
+        self.description = { description.resolved() }
         self.context = context
 
         let lines = file.lines
@@ -32,9 +32,9 @@ public struct SyntaxError : PresentableError {
         self.line = lines.distance(from: lines.startIndex, to: line) + 1
     }
 
-    internal let line: Int
-    internal let description: UserFacing<StrictString, InterfaceLocalization>
-    internal let context: String
+    private let line: Int
+    private let description: () -> StrictString
+    private let context: String
 
     // MARK: - PresentableError
 
@@ -48,12 +48,10 @@ public struct SyntaxError : PresentableError {
     }
 
     public func presentableDescription() -> StrictString {
-        return UserFacing<StrictString, InterfaceLocalization>({ localization in
-            return [
-                self.lineDescription().resolved(for: localization),
-                self.description.resolved(for: localization),
-                StrictString(self.context)
+        return [
+            self.lineDescription().resolved(),
+            self.description(),
+            StrictString(self.context)
             ].joined(separator: "\n")
-        }).resolved()
     }
 }
