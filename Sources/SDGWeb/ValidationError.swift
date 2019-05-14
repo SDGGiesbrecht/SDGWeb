@@ -15,20 +15,26 @@
 import SDGLocalization
 
 import SDGWebLocalizations
+import SDGHTML
 
-internal struct ValidationError : PresentableError {
+public enum SiteValidationError : PresentableError {
 
-    // MARK: - Initialization
+    // MARK: - Cases
 
-    internal init(description: UserFacing<[StrictString], InterfaceLocalization>) {
-        self.description = description
-    }
+    /// Foundation encountered an error.
+    case foundationError(Error)
+
+    /// The file’s syntax could not be parsed.
+    case syntaxError(SyntaxError)
 
     // MARK: - Properties
 
-    let description: UserFacing<[StrictString], InterfaceLocalization>
-
-    func presentableDescription() -> StrictString {
-        return description.resolved().joined(separator: "\n")
+    public func presentableDescription() -> StrictString {
+        switch self {
+        case .foundationError(let error):
+            return StrictString(error.localizedDescription)
+        case .syntaxError(let error):
+            return error.presentableDescription()
+        }
     }
 }
