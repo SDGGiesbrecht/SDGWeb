@@ -47,12 +47,15 @@ func generate<L>(forMock mockName: String, localization: L.Type, file: StaticStr
             XCTAssertEqual(document.source(), source, file: file, line: line)
     }
 
-    func describe(_ warnings: [(URL, Error)]) -> String {
-        return warnings.map({ (url, error) in
-            return [
-                url.path(relativeTo: mock.result),
-                error.localizedDescription
-            ].joined(separator: "\n")
+    func describe(_ warnings: [URL : [SiteValidationError]]) -> String {
+        let files = warnings.keys.sorted()
+        return files.map({ url in
+            var fileMessage = url.path(relativeTo: mock.result)
+            let errors = warnings[url]!
+            fileMessage.append(contentsOf: errors.map({ error in
+                return error.localizedDescription
+            }).joined(separator: "\n"))
+            return fileMessage
         }).joined(separator: "\n\n")
     }
     XCTAssert(warnings.isEmpty, describe(warnings), file: file, line: line)
