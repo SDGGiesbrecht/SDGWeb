@@ -33,14 +33,11 @@ public struct AttributesSyntax : Syntax {
 
         var error: SyntaxError?
         func parse() -> AttributeSyntax? {
-            print("Parsing: \(source)")
             switch AttributeSyntax.parse(fromEndOf: &source) {
             case .failure(let caught):
-                print("None.")
                 error = caught
                 return nil
             case .success(let attribute):
-                print("Attribute: \(attribute)")
                 return attribute
             }
         }
