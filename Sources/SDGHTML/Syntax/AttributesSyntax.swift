@@ -96,11 +96,11 @@ public struct AttributesSyntax : Syntax {
     // MARK: - Children
 
     public var attributes: ListSyntax<AttributeSyntax>? {
-        return children[AttributesSyntax.indices[.attributes]!] as? ListSyntax<AttributeSyntax>
+        return _storage.children[AttributesSyntax.indices[.attributes]!] as? ListSyntax<AttributeSyntax>
     }
 
     public var trailingWhitespace: TokenSyntax? {
-        return children[AttributesSyntax.indices[.trailingWhitespace]!] as? TokenSyntax
+        return _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] as? TokenSyntax
     }
 
     // MARK: - Syntax

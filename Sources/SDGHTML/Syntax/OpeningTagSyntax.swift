@@ -36,19 +36,19 @@ public struct OpeningTagSyntax : Syntax {
     // MARK: - Children
 
     public var lessThan: TokenSyntax {
-        return children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
+        return _storage.children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
     }
 
     public var name: TokenSyntax {
-        return children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
+        return _storage.children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
     }
 
     public var attributes: AttributesSyntax? {
-        return children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
+        return _storage.children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
     }
 
     public var greaterThan: TokenSyntax {
-        return children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
+        return _storage.children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
     }
 
     // MARK: - Syntax

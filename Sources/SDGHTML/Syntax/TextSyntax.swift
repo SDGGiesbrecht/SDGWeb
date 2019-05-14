@@ -38,7 +38,7 @@ public struct TextSyntax : Syntax {
     // MARK: - Children
 
     public var text: TokenSyntax {
-        return children[TextSyntax.indices[.token]!] as! TokenSyntax
+        return _storage.children[TextSyntax.indices[.token]!] as! TokenSyntax
     }
 
     // MARK: - Syntax

@@ -73,19 +73,19 @@ public struct AttributeValueSyntax : Syntax {
     // MARK: - Children
 
     public var equals: TokenSyntax {
-        return children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
+        return _storage.children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
     }
 
     public var openingQuotationMark: TokenSyntax {
-        return children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
+        return _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
     }
 
     public var value: TokenSyntax {
-        return children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
+        return _storage.children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
     }
 
     public var closingQuotationMark: TokenSyntax {
-        return children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
+        return _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
     }
 
     // MARK: - Syntax

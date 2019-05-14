@@ -32,11 +32,11 @@ public struct ElementContinuationSyntax : Syntax {
     // MARK: - Children
 
     public var content: ContentSyntax {
-        return children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
+        return _storage.children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
     }
 
     public var closingTag: ClosingTagSyntax {
-        return children[ElementContinuationSyntax.indices[.closingTag]!] as! ClosingTagSyntax
+        return _storage.children[ElementContinuationSyntax.indices[.closingTag]!] as! ClosingTagSyntax
     }
 
     // MARK: - Syntax

@@ -53,7 +53,7 @@ public struct ContentSyntax : Syntax {
     // MARK: - Children
 
     public var elements: ListSyntax<ContentElementSyntax> {
-        return children[ContentSyntax.indices[.elements]!] as! ListSyntax<ContentElementSyntax>
+        return _storage.children[ContentSyntax.indices[.elements]!] as! ListSyntax<ContentElementSyntax>
     }
 
     // MARK: - Syntax

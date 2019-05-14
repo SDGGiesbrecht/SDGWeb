@@ -41,11 +41,11 @@ public struct AttributeSyntax : Syntax {
     // MARK: - Children
 
     public var name: TokenSyntax {
-        return children[AttributeSyntax.indices[.name]!] as! TokenSyntax
+        return _storage.children[AttributeSyntax.indices[.name]!] as! TokenSyntax
     }
 
     public var value: AttributeValueSyntax? {
-        return children[AttributeSyntax.indices[.value]!] as? AttributeValueSyntax
+        return _storage.children[AttributeSyntax.indices[.value]!] as? AttributeValueSyntax
     }
 
     // MARK: - Syntax

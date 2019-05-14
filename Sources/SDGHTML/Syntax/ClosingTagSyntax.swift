@@ -36,19 +36,19 @@ public struct ClosingTagSyntax : Syntax {
     // MARK: - Children
 
     public var lessThan: TokenSyntax {
-        return children[ClosingTagSyntax.indices[.lessThan]!] as! TokenSyntax
+        return _storage.children[ClosingTagSyntax.indices[.lessThan]!] as! TokenSyntax
     }
 
     public var slash: TokenSyntax {
-        return children[ClosingTagSyntax.indices[.slash]!] as! TokenSyntax
+        return _storage.children[ClosingTagSyntax.indices[.slash]!] as! TokenSyntax
     }
 
     public var name: TokenSyntax {
-        return children[ClosingTagSyntax.indices[.name]!] as! TokenSyntax
+        return _storage.children[ClosingTagSyntax.indices[.name]!] as! TokenSyntax
     }
 
     public var greaterThan: TokenSyntax {
-        return children[ClosingTagSyntax.indices[.greaterThan]!] as! TokenSyntax
+        return _storage.children[ClosingTagSyntax.indices[.greaterThan]!] as! TokenSyntax
     }
 
     // MARK: - Syntax

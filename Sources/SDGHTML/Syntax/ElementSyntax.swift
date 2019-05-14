@@ -85,11 +85,11 @@ public struct ElementSyntax : Syntax {
     // MARK: - Children
 
     public var openingTag: OpeningTagSyntax {
-        return children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
+        return _storage.children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
     }
 
     public var continuation: ElementContinuationSyntax? {
-        return children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
+        return _storage.children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
     }
 
     // MARK: - Syntax
