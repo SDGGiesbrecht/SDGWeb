@@ -26,7 +26,9 @@ public struct AttributeSyntax : Syntax {
 
     internal static func parse(fromEndOf source: inout String) -> Result<AttributeSyntax?, SyntaxError> {
         return AttributeValueSyntax.parse(fromEndOf: &source).map { value in
-            let name = TokenSyntax.parseIdentifer(fromEndOf: &source)
+            guard let name = TokenSyntax.parseIdentifer(fromEndOf: &source) else {
+                return nil
+            }
             return AttributeSyntax(_storage: SyntaxStorage(children: [
                 name,
                 value
