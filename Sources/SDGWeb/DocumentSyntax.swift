@@ -16,7 +16,7 @@ import SDGHTML
 
 extension DocumentSyntax {
 
-    internal func validate() -> [SiteValidationError] {
+    internal func validate(baseURL: URL) -> [SiteValidationError] {
         let file = source()
         var location = file.scalars.startIndex
         var result: [SiteValidationError] = []
@@ -27,7 +27,7 @@ extension DocumentSyntax {
                 }
             }
             if let attribute = node as? AttributeSyntax {
-                result.append(contentsOf: attribute.validate(location: location, parentFile: file))
+                result.append(contentsOf: attribute.validate(location: location, file: file, baseURL: baseURL))
             }
         }
         return []

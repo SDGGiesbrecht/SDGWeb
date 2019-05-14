@@ -183,7 +183,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             case .failure(let error):
                 results[file] = [.syntaxError(error)]
             case .success(let parsed):
-                results[file] = parsed.validate()
+                results[file] = parsed.validate(baseURL: file)
             }
         }
         return results

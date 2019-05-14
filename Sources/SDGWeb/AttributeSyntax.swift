@@ -21,19 +21,31 @@ import SDGHTML
 
 extension AttributeSyntax {
 
+    internal func validate(
+        location: String.ScalarView.Index,
+        file: String,
+        baseURL: URL) -> [SiteValidationError] {
+        var results: [SiteValidationError] = []
+        validateValuePresence(location: location, file: file, results: &results)
+        validateURLValue(
+            location: location,
+            file: file,
+            baseURL: baseURL,
+            results: &results)
+        return results
+    }
+
     private static let nonEmptyAttributes: Set<String> = []
     private static let emptyAttributes: Set<String> = []
-
-    private static let urlAttributes: Set<String> = ["href", "src"]
-
-    internal func validate(location: String.ScalarView.Index, parentFile: String) -> [SiteValidationError] {
-        var result: [SiteValidationError] = []
+    private func validateValuePresence(
+        location: String.ScalarView.Index,
+        file: String,
+        results: inout [SiteValidationError]) {
         let name = self.name.source()
-
         if name ∈ AttributeSyntax.nonEmptyAttributes {
             if value == nil {
-                result.append(SiteValidationError.syntaxError(SyntaxError(
-                    file: parentFile,
+                results.append(SiteValidationError.syntaxError(SyntaxError(
+                    file: file,
                     index: location,
                     description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
@@ -46,8 +58,8 @@ extension AttributeSyntax {
             }
         } else if name ∈ AttributeSyntax.emptyAttributes {
             if value ≠ nil {
-                result.append(SiteValidationError.syntaxError(SyntaxError(
-                    file: parentFile,
+                results.append(SiteValidationError.syntaxError(SyntaxError(
+                    file: file,
                     index: location,
                     description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
@@ -59,8 +71,8 @@ extension AttributeSyntax {
                     context: source())))
             }
         } else {
-            result.append(SiteValidationError.syntaxError(SyntaxError(
-                file: parentFile,
+            results.append(SiteValidationError.syntaxError(SyntaxError(
+                file: file,
                 index: location,
                 description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
@@ -71,63 +83,50 @@ extension AttributeSyntax {
                 }),
                 context: source())))
         }
-
-        if name ∈ AttributeSyntax.urlAttributes {
-            if let url = value?.value.source() {
-
-            } else {
-                // No value.
-
-            }
-        }
-        return result
     }
-}
 
-private func checkLinks(in node: XMLNode, file: URL) -> [Error] {
-    var results: [Error] = []
-
-    if let element = node as? XMLElement {
-        for attribute in ["href", "src"] {
-            if let link = element.attribute(forName: attribute),
-                let urlString = link.stringValue {
-                if let url = URL(string: urlString, relativeTo: file) {
-                    var dead = true
-                    if url.isFileURL {
-                        if (try? url.checkResourceIsReachable()) == true {
-                            dead = false
-                        }
-                    } else {
+    private static let urlAttributes: Set<String> = ["href", "src"]
+    private func validateURLValue(
+        location: String.ScalarView.Index,
+        file: String,
+        baseURL: URL,
+        results: inout [SiteValidationError]) {
+        if name.source() ∈ AttributeSyntax.urlAttributes,
+            let urlString = value?.value.source() {
+            if let url = URL(string: urlString, relativeTo: baseURL) {
+                var dead = true
+                if url.isFileURL {
+                    if (try? url.checkResourceIsReachable()) == true {
                         dead = false
                     }
-                    if dead {
-                        results.append(ValidationError(description: UserFacing({ localization in
+                } else {
+                    #warning("Can this be checked?")
+                    dead = false
+                }
+                if dead {
+                    results.append(SiteValidationError.syntaxError(SyntaxError(
+                        file: file,
+                        index: location,
+                        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                             switch localization {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                return [
-                                    "Dead link:",
-                                    StrictString(urlString)
-                                ]
+                                return "A link is dead: \(urlString)"
                             }
-                        })))
-                    }
-                } else {
-                    results.append(ValidationError(description: UserFacing({ localization in
+                        }),
+                        context: source())))
+                }
+            } else {
+                results.append(SiteValidationError.syntaxError(SyntaxError(
+                    file: file,
+                    index: location,
+                    description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return [
-                                "Invalid URL:",
-                                StrictString(urlString)
-                            ]
+                            return "A URL is invalid: \(urlString)"
                         }
-                    })))
-                }
+                    }),
+                    context: source())))
             }
         }
     }
-
-    for child in node.children ?? [] {
-        results += checkLinks(in: child, file: file)
-    }
-    return results
 }
