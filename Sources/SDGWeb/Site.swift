@@ -186,6 +186,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                 results[file] = parsed.validate(baseURL: file)
             }
         }
-        return results
+
+        return results.filter { _, value in ¬value.isEmpty }
     }
 }
