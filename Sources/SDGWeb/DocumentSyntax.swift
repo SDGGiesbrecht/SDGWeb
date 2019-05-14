@@ -17,10 +17,17 @@ import SDGHTML
 extension DocumentSyntax {
 
     internal func validate() -> [SiteValidationError] {
+        let file = source()
+        var location = file.scalars.startIndex
         var result: [SiteValidationError] = []
         for node in descendents() {
+            defer {
+                if node is TokenSyntax {
+                    location = file.index(location, offsetBy: node.source().scalars.count)
+                }
+            }
             if let attribute = node as? AttributeSyntax {
-                result.append(contentsOf: attribute.validate())
+                result.append(contentsOf: attribute.validate(location: location, parentFile: file))
             }
         }
         return []

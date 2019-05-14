@@ -22,18 +22,16 @@ extension AttributeSyntax {
 
     private static let urlAttributes: Set<String> = ["href", "src"]
 
-    internal func validate() -> [SiteValidationError] {
+    internal func validate(location: String.ScalarView.Index, parentFile: String) -> [SiteValidationError] {
         var result: [SiteValidationError] = []
         if name.source() ∈ AttributeSyntax.urlAttributes {
             if let url = value?.value.source() {
 
             } else {
                 // No value.
-                #warning("Empty file.")
-                #warning("Invalid index.")
                 result.append(SiteValidationError.syntaxError(SyntaxError(
-                    file: "",
-                    index: "".scalars.startIndex,
+                    file: parentFile,
+                    index: location,
                     description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
