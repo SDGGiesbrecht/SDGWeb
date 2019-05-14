@@ -33,6 +33,11 @@ extension Syntax {
         return _storage.children.compactMap { $0 }
     }
 
+    /// All the desendend nodes, at all nesting levels (including the node itself).
+    public func descendents() -> [Syntax] {
+        return children.lazy.flatMap({ $0.descendents() }).prepending(self)
+    }
+
     // MARK: - TextOutputStreamable
 
     public func write<Target>(to target: inout Target) where Target : TextOutputStream {
