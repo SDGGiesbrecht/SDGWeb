@@ -19,6 +19,7 @@ public struct AttributeSyntax : Syntax {
     // MARK: - Parsing
 
     private enum Child : CaseIterable {
+        case whitespace
         case name
         case value
     }
@@ -32,6 +33,7 @@ public struct AttributeSyntax : Syntax {
                 return nil
             }
             return AttributeSyntax(_storage: SyntaxStorage(children: [
+                TokenSyntax.parseWhitespace(fromEndOf: &source),
                 name,
                 value
                 ]))
@@ -39,6 +41,10 @@ public struct AttributeSyntax : Syntax {
     }
 
     // MARK: - Children
+
+    public var whitespace: TokenSyntax {
+        return _storage.children[AttributeSyntax.indices[.whitespace]!] as! TokenSyntax
+    }
 
     public var name: TokenSyntax {
         return _storage.children[AttributeSyntax.indices[.name]!] as! TokenSyntax
