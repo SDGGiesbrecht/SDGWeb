@@ -70,8 +70,20 @@ public struct ElementSyntax : Syntax {
                     case .failure(let error):
                         return .failure(error)
                     case .success(let (opening, content)):
+                        guard let tag = opening else {
+                            return .failure(SyntaxError(
+                                file: preservedSource,
+                                index: preservedSource.scalars.endIndex,
+                                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                                    switch localization {
+                                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                        return "A closing tag has no corresponding opening tag."
+                                    }
+                                }),
+                                context: preservedSource))
+                        }
                         return .success(ElementSyntax(_storage: SyntaxStorage(children: [
-                            opening,
+                            tag,
                             ElementContinuationSyntax(
                                 content: content,
                                 closingTag: ClosingTagSyntax(name: name))
