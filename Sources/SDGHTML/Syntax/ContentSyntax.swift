@@ -26,7 +26,9 @@ public struct ContentSyntax : Syntax {
         return parse(fromEndOf: &source, untilOpeningOf: nil).map { $0.content }
     }
 
-    internal static func parse(fromEndOf source: inout String, untilOpeningOf element: String?) -> Result<(tag: OpeningTagSyntax?, content: ContentSyntax), SyntaxError> {
+    internal static func parse(
+        fromEndOf source: inout String,
+        untilOpeningOf element: String?) -> Result<(tag: OpeningTagSyntax?, content: ContentSyntax), SyntaxError> {
         var tag: OpeningTagSyntax?
         var entries: [ContentElementSyntax] = []
         while ¬source.isEmpty {
