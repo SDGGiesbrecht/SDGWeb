@@ -15,6 +15,7 @@
 import SDGCollections
 import SDGLocalization
 
+import SDGWebLocalizations
 import SDGHTML
 
 extension AttributeSyntax {
@@ -28,13 +29,15 @@ extension AttributeSyntax {
 
             } else {
                 // No value.
+                #warning("Empty file.")
+                #warning("Invalid index.")
                 result.append(SiteValidationError.syntaxError(SyntaxError(
-                    file: <#T##String#>,
-                    index: <#T##String.ScalarView.Index#>,
+                    file: "",
+                    index: "".scalars.startIndex,
                     description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "An “\(name.source())” attribute has no value."
+                            return "An attribute value is missing."
                         }
 
                     }),
