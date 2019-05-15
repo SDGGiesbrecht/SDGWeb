@@ -74,8 +74,16 @@ public struct AttributeSyntax : Syntax {
         return results
     }
 
-    private static let nonEmptyAttributes: Set<String> = []
-    private static let emptyAttributes: Set<String> = []
+    private static let nonEmptyAttributes: Set<String> = [
+        "dir",
+        "charset",
+        "href",
+        "lang",
+        "rel"
+    ]
+    private static let emptyAttributes: Set<String> = [
+        "html" // DOCTYPE
+    ]
     private func validateValuePresence(
         location: String.ScalarView.Index,
         file: String,
