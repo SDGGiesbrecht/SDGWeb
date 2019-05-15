@@ -57,8 +57,8 @@ class SDGWebAPITests : TestCase {
         expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
     }
 
-    func testPoorHTML() {
-        expectErrorGenerating(forMock: "Poor HTML", localization: SingleLocalization.self)
+    func testPoorHTML() throws {
+        try generate(forMock: "Poor HTML", localization: SingleLocalization.self, expectValidationFailure: true)
     }
 
     func testRightToLeft() throws {

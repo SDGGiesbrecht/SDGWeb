@@ -20,7 +20,7 @@ import SDGWeb
 
 import XCTest
 
-func generate<L>(forMock mockName: String, localization: L.Type, file: StaticString = #file, line: UInt = #line) throws where L : InputLocalization {
+func generate<L>(forMock mockName: String, localization: L.Type, expectValidationFailure: Bool = false, file: StaticString = #file, line: UInt = #line) throws where L : InputLocalization {
     // @example(readMe🇨🇦EN)
     let mock = RepositoryStructure(
         root: URL(fileURLWithPath: #file)
@@ -58,7 +58,11 @@ func generate<L>(forMock mockName: String, localization: L.Type, file: StaticStr
             return fileMessage
         }).joined(separator: "\n\n")
     }
-    XCTAssert(warnings.isEmpty, describe(warnings), file: file, line: line)
+    if expectValidationFailure {
+        XCTAssert(¬warnings.isEmpty)
+    } else {
+        XCTAssert(warnings.isEmpty, describe(warnings), file: file, line: line)
+    }
 }
 
 func expectErrorGenerating<L>(forMock mockName: String, localization: L.Type, file: String = #file, line: Int = #line) where L : InputLocalization {
