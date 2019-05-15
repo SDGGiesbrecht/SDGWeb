@@ -53,7 +53,7 @@ class SDGHTMLAPITests : TestCase {
         }
 
         var document = try DocumentSyntax.parse(source:
-            "<tag attribute=\u{22}value\u{22}></tag>"
+            "<tag attribute=\u{22}value\u{22}>text</tag>"
             ).get()
         let element = document.descendents().first(where: { $0 is ElementSyntax }) as? ElementSyntax
         XCTAssert(element?.openingTag.lessThan.source() == "<")
@@ -64,11 +64,13 @@ class SDGHTMLAPITests : TestCase {
         XCTAssert(element?.openingTag.attributes?.attributes?.first?.value?.openingQuotationMark.source() == "\u{22}")
         XCTAssert(element?.openingTag.attributes?.attributes?.first?.value?.closingQuotationMark.source() == "\u{22}")
         XCTAssertNil(element?.openingTag.attributes?.trailingWhitespace)
-        XCTAssert(element?.continuation?.content.source() == "")
+        XCTAssert(element?.continuation?.content.source() == "text")
         XCTAssert(element?.continuation?.closingTag.lessThan.source() == "<")
         XCTAssert(element?.continuation?.closingTag.slash.source() == "/")
         XCTAssert(element?.continuation?.closingTag.name.source() == "tag")
         XCTAssert(element?.continuation?.closingTag.greaterThan.source() == ">")
+        let text = element?.descendents().first(where: { $0 is TextSyntax }) as? TextSyntax
+        XCTAssertEqual(text?.text.source(), "text")
 
         document = try DocumentSyntax.parse(source:
             "<a><b>"
