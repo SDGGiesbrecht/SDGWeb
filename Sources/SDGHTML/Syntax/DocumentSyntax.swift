@@ -35,6 +35,29 @@ public struct DocumentSyntax : Syntax {
         return _storage.children[DocumentSyntax.indices[.content]!] as! ContentSyntax
     }
 
+    // MARK: - Validation
+
+    /// Validates the document.
+    ///
+    /// - Parameters:
+    ///     - baseURL: The base URL to use for any relative links in the document.
+    public func validate(baseURL: URL) -> [SyntaxError] {
+        let file = source()
+        var location = file.scalars.startIndex
+        var result: [SyntaxError] = []
+        for node in descendents() {
+            defer {
+                if node is TokenSyntax {
+                    location = file.index(location, offsetBy: node.source().scalars.count)
+                }
+            }
+            if let attribute = node as? AttributeSyntax {
+                result.append(contentsOf: attribute.validate(location: location, file: file, baseURL: baseURL))
+            }
+        }
+        return []
+    }
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage
