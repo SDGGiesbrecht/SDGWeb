@@ -317,7 +317,7 @@ public struct AttributeSyntax : Syntax {
                         description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                             switch localization {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                return "A link is dead: \(url.relativeString)"
+                                return "A link is dead: \(url.absoluteString)"
                             }
                         }),
                         context: name.source() + value.source()))
