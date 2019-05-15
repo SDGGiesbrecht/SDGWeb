@@ -56,6 +56,8 @@ class SDGHTMLAPITests : TestCase {
             "<tag attribute=\u{22}value\u{22}></tag>"
             ).get()
         let element = document.descendents().first(where: { $0 is ElementSyntax }) as? ElementSyntax
+        XCTAssert(element?.openingTag.lessThan.source() == "<")
+        XCTAssert(element?.openingTag.greaterThan.source() == ">")
         XCTAssert(element?.openingTag.attributes?.attributes?.first?.whitespace.source() == " ")
         XCTAssert(element?.openingTag.attributes?.attributes?.first?.whitespace.source() == " ")
         XCTAssert(element?.openingTag.attributes?.attributes?.first?.value?.equals.source() == "=")
@@ -73,6 +75,10 @@ class SDGHTMLAPITests : TestCase {
             ).get()
         XCTAssertEqual(document.content.elements.dropFirst().count, 1)
         _ = document.content.elements.index(before: document.content.elements.endIndex)
+
+        var string: String = ""
+        document.write(to: &string)
+        XCTAssertEqual(string, document.source())
     }
 
     func testPercentEncoding() {
