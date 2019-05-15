@@ -66,11 +66,6 @@ public struct AttributeSyntax : Syntax {
         baseURL: URL) -> [SyntaxError] {
         var results: [SyntaxError] = []
         validateValuePresence(location: location, file: file, results: &results)
-        validateURLValue(
-            location: location,
-            file: file,
-            baseURL: baseURL,
-            results: &results)
         return results
     }
 
@@ -133,7 +128,7 @@ public struct AttributeSyntax : Syntax {
     }
 
     private static let urlAttributes: Set<String> = ["href", "src"]
-    private func validateURLValue(
+    internal func validateURLValue(
         location: String.ScalarView.Index,
         file: String,
         baseURL: URL,

@@ -51,8 +51,11 @@ public struct DocumentSyntax : Syntax {
                     location = file.index(location, offsetBy: node.source().scalars.count)
                 }
             }
+
             if let attribute = node as? AttributeSyntax {
                 result.append(contentsOf: attribute.validate(location: location, file: file, baseURL: baseURL))
+            } else if let element = node as? OpeningTagSyntax {
+                result.append(contentsOf: element.validate(location: location, file: file, baseURL: baseURL))
             }
         }
         return result
