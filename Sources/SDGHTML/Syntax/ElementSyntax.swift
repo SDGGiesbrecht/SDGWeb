@@ -17,6 +17,7 @@ import SDGLocalization
 
 import SDGWebLocalizations
 
+/// An HTML element.
 public struct ElementSyntax : Syntax {
 
     // MARK: - Parsing
@@ -96,10 +97,12 @@ public struct ElementSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The opening tag.
     public var openingTag: OpeningTagSyntax {
         return _storage.children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
     }
 
+    /// The content and closing tag, if the element is not empty.
     public var continuation: ElementContinuationSyntax? {
         return _storage.children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
     }

@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A closing tag.
 public struct ClosingTagSyntax : Syntax {
 
     // MARK: - Parsing
@@ -35,18 +36,22 @@ public struct ClosingTagSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The less‐than sign.
     public var lessThan: TokenSyntax {
         return _storage.children[ClosingTagSyntax.indices[.lessThan]!] as! TokenSyntax
     }
 
+    /// The slash.
     public var slash: TokenSyntax {
         return _storage.children[ClosingTagSyntax.indices[.slash]!] as! TokenSyntax
     }
 
+    /// The tag name.
     public var name: TokenSyntax {
         return _storage.children[ClosingTagSyntax.indices[.name]!] as! TokenSyntax
     }
 
+    /// The greater‐than sign.
     public var greaterThan: TokenSyntax {
         return _storage.children[ClosingTagSyntax.indices[.greaterThan]!] as! TokenSyntax
     }

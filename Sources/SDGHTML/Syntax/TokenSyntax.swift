@@ -49,6 +49,9 @@ public struct TokenSyntax : Syntax {
     // MARK: - Initialization
 
     /// Creates a token of the specified kind.
+    ///
+    /// - Parameters:
+    ///     - kind: The kind of token.
     public init(kind: TokenKind) {
         tokenKind = kind
         _storage = SyntaxStorage(children: [])

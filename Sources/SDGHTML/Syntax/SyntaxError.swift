@@ -16,8 +16,16 @@ import SDGLocalization
 
 import SDGWebLocalizations
 
+/// An HTML syntax error or a violation of best practices.
 public struct SyntaxError : PresentableError {
 
+    /// Creates a syntax error.
+    ///
+    /// - Parameters:
+    ///     - file: The source of the entire HTML document.
+    ///     - index: The location of the syntax error within the file.
+    ///     - description: A description of the error.
+    ///     - context: An exerpt of the file containing the error.
     public init<L>(
         file: String,
         index: String.ScalarView.Index,

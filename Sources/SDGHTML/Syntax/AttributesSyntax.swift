@@ -17,6 +17,7 @@ import SDGLocalization
 
 import SDGWebLocalizations
 
+/// An attribute list.
 public struct AttributesSyntax : Syntax {
 
     // MARK: - Parsing
@@ -95,10 +96,12 @@ public struct AttributesSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The attributes.
     public var attributes: ListSyntax<AttributeSyntax>? {
         return _storage.children[AttributesSyntax.indices[.attributes]!] as? ListSyntax<AttributeSyntax>
     }
 
+    /// Any trailing whitespace.
     public var trailingWhitespace: TokenSyntax? {
         return _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] as? TokenSyntax
     }

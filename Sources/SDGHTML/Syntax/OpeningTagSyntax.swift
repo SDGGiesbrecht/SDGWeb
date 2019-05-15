@@ -14,6 +14,7 @@
 
 import SDGLogic
 
+/// An opening tag.
 public struct OpeningTagSyntax : Syntax {
 
     // MARK: - Parsing
@@ -37,18 +38,22 @@ public struct OpeningTagSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The less‐than sign.
     public var lessThan: TokenSyntax {
         return _storage.children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
     }
 
+    /// The tag name.
     public var name: TokenSyntax {
         return _storage.children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
     }
 
+    /// Any attributes.
     public var attributes: AttributesSyntax? {
         return _storage.children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
     }
 
+    /// The greater‐than sign.
     public var greaterThan: TokenSyntax {
         return _storage.children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
     }

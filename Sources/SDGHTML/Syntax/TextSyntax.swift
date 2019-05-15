@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGCollections
 
+/// A text node.
 public struct TextSyntax : Syntax {
 
     // MARK: - Parsing
@@ -37,6 +38,7 @@ public struct TextSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The text.
     public var text: TokenSyntax {
         return _storage.children[TextSyntax.indices[.token]!] as! TokenSyntax
     }

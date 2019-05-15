@@ -17,6 +17,7 @@ import SDGLocalization
 
 import SDGWebLocalizations
 
+/// An attribute value.
 public struct AttributeValueSyntax : Syntax {
 
     // MARK: - Parsing
@@ -72,18 +73,22 @@ public struct AttributeValueSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The equals sign.
     public var equals: TokenSyntax {
         return _storage.children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
     }
 
+    /// The opening quotation mark.
     public var openingQuotationMark: TokenSyntax {
         return _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
     }
 
+    /// The value.
     public var value: TokenSyntax {
         return _storage.children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
     }
 
+    /// The closing quotation mark.
     public var closingQuotationMark: TokenSyntax {
         return _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
     }

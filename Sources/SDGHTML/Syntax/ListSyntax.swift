@@ -17,6 +17,9 @@ public struct ListSyntax<Entry> : RandomAccessCollection, Syntax
 where Entry : Syntax {
 
     /// Creates a list syntax node from an array of entries.
+    ///
+    /// - Parameters:
+    ///     - entries: The entries.
     public init(entries: [Entry]) {
         _storage = SyntaxStorage(children: entries)
     }

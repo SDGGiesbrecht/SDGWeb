@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A node representing content.
 public struct ContentSyntax : Syntax {
 
     // MARK: - Parsing
@@ -55,6 +56,7 @@ public struct ContentSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The child nodes.
     public var elements: ListSyntax<ContentElementSyntax> {
         return _storage.children[ContentSyntax.indices[.elements]!] as! ListSyntax<ContentElementSyntax>
     }

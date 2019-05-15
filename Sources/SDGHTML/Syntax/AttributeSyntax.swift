@@ -18,6 +18,7 @@ import SDGLocalization
 
 import SDGWebLocalizations
 
+/// An HTML attribute.
 public struct AttributeSyntax : Syntax {
 
     // MARK: - Parsing
@@ -46,14 +47,17 @@ public struct AttributeSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The leading whitespace.
     public var whitespace: TokenSyntax {
         return _storage.children[AttributeSyntax.indices[.whitespace]!] as! TokenSyntax
     }
 
+    /// The attribute name.
     public var name: TokenSyntax {
         return _storage.children[AttributeSyntax.indices[.name]!] as! TokenSyntax
     }
 
+    /// The attribute value.
     public var value: AttributeValueSyntax? {
         return _storage.children[AttributeSyntax.indices[.value]!] as? AttributeValueSyntax
     }

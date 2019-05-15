@@ -23,6 +23,9 @@ public struct DocumentSyntax : Syntax {
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     /// Parses the source into a syntax tree.
+    ///
+    /// - Parameters:
+    ///     - source: The source of the HTML document.
     public static func parse(source: String) -> Result<DocumentSyntax, SyntaxError> {
         return ContentSyntax.parse(source: source).map { content in
             return DocumentSyntax(_storage: SyntaxStorage(children: [content]))
@@ -31,6 +34,7 @@ public struct DocumentSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The content.
     public var content: ContentSyntax {
         return _storage.children[DocumentSyntax.indices[.content]!] as! ContentSyntax
     }

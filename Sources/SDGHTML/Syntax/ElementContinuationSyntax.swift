@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// The content and closing tag of an element.
 public struct ElementContinuationSyntax : Syntax {
 
     // MARK: - Parsing
@@ -31,10 +32,12 @@ public struct ElementContinuationSyntax : Syntax {
 
     // MARK: - Children
 
+    /// The content of the element.
     public var content: ContentSyntax {
         return _storage.children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
     }
 
+    /// The closing tag.
     public var closingTag: ClosingTagSyntax {
         return _storage.children[ElementContinuationSyntax.indices[.closingTag]!] as! ClosingTagSyntax
     }

@@ -12,11 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A child node of a content section.
 public struct ContentElementSyntax : Syntax {
 
     // MARK: - Initialization
 
-    public init(kind: ContentElementSyntaxKind) {
+    internal init(kind: ContentElementSyntaxKind) {
         self.kind = kind
         let child: Syntax
         switch kind {
@@ -30,6 +31,7 @@ public struct ContentElementSyntax : Syntax {
 
     // MARK: - Properties
 
+    /// The kind of node.
     public let kind: ContentElementSyntaxKind
 
     // MARK: - Syntax
