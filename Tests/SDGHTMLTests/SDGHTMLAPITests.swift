@@ -72,7 +72,9 @@ class SDGHTMLAPITests : TestCase {
             case .failure(let error):
                 errors.append(error)
             case .success(let document):
-                errors.append(contentsOf: document.validate(baseURL: URL(fileURLWithPath: "/")))
+                let validated = document.validate(baseURL: URL(fileURLWithPath: "/"))
+                XCTAssert(¬validated.isEmpty, "No error detected.", file: file, line: line)
+                errors.append(contentsOf: validated)
             }
             var report: [StrictString] = []
             for localization in InterfaceLocalization.allCases {
@@ -107,6 +109,10 @@ class SDGHTMLAPITests : TestCase {
         expectViolation(
             named: "Dead Relative Link",
             in: "<a href=\u{22}does/not/exist\u{22}></a>",
+            overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Invalid URL",
+            in: "<a href=\u{22}\u{22}></a>",
             overwriteSpecificationInsteadOfFailing: false)
     }
 
