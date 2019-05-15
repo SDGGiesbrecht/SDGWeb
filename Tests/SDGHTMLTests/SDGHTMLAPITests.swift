@@ -52,9 +52,14 @@ class SDGHTMLAPITests : TestCase {
             XCTFail()
         }
 
-        XCTAssert((try DocumentSyntax.parse(source:
+        let document = try DocumentSyntax.parse(source:
             "<tag attribute=\u{22}value\u{22}></tag>"
-            ).get().descendents().first(where: { $0 is AttributeSyntax }) as? AttributeSyntax)?.whitespace.source() == " ")
+            ).get()
+        let attribute = document.descendents().first(where: { $0 is AttributeSyntax }) as? AttributeSyntax
+        XCTAssert(attribute?.whitespace.source() == " ")
+        XCTAssert(attribute?.value?.equals.source() == "=")
+        XCTAssert(attribute?.value?.openingQuotationMark.source() == "\u{22}")
+        XCTAssert(attribute?.value?.closingQuotationMark.source() == "\u{22}")
     }
 
     func testPercentEncoding() {
