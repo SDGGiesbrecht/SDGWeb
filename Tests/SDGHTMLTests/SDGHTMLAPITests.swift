@@ -120,7 +120,7 @@ class SDGHTMLAPITests : TestCase {
 
     func testValidLink() throws {
         let document = try DocumentSyntax.parse(source:
-            "<a href=\u{22}http://www.google.com\u{22}></tag>"
+            "<a href=\u{22}http://www.google.com\u{22}></a>"
             ).get()
         XCTAssert(document.validate(baseURL: URL(string: "/")!).isEmpty)
     }
