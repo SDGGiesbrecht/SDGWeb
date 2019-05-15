@@ -14,8 +14,10 @@
 
 import SDGLocalization
 import SDGCalendar
-import SDGWeb
+
 import SDGWebLocalizations
+import SDGHTML
+import SDGWeb
 
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
@@ -69,17 +71,35 @@ class SDGWebAPITests : TestCase {
         _ = RepositoryStructure()
     }
 
-    func testSiteError() {
-        struct StandInError : PresentableError {
-            func presentableDescription() -> StrictString {
-                return "[...]"
-            }
+    struct StandInError : PresentableError {
+        func presentableDescription() -> StrictString {
+            return "[...]"
         }
+    }
+    func testSiteError() {
         let errors: [SiteGenerationError] = [
             .foundationError(StandInError()),
             .noMetadata(page: "[...]"),
             .metadataMissingColon(line: "[...]"),
             .missingTitle(page: "[...]")
+        ]
+        for index in errors.indices {
+            let error = errors[index]
+            testCustomStringConvertibleConformance(of: error, localizations: InterfaceLocalization.self, uniqueTestName: index.inDigits(), overwriteSpecificationInsteadOfFailing: false)
+        }
+    }
+    func testSiteValidationError() {
+        let parseFailure: SyntaxError
+        switch DocumentSyntax.parse(source: "html>") {
+        case .failure(let error):
+            parseFailure = error
+        case .success:
+            XCTFail("Should not have parsed successfully.")
+            return
+        }
+        let errors: [SiteValidationError] = [
+            .foundationError(StandInError()),
+            .syntaxError(parseFailure)
         ]
         for index in errors.indices {
             let error = errors[index]
