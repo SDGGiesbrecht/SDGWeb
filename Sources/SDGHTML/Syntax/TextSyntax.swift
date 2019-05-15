@@ -25,9 +25,9 @@ public struct TextSyntax : Syntax {
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     internal static func parse(fromEndOf source: inout String) -> TextSyntax {
-        var start = source.scalars.index(before: source.scalars.endIndex)
+        var start = source.scalars.endIndex
         while start ≠ source.scalars.startIndex,
-            source.scalars[start] ≠ ">" {
+            source[source.scalars.index(before: start)] ≠ ">" {
                 start = source.scalars.index(before: start)
         }
         let text = String(source[start...])
