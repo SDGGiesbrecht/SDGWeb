@@ -55,11 +55,17 @@ class SDGHTMLAPITests : TestCase {
         let document = try DocumentSyntax.parse(source:
             "<tag attribute=\u{22}value\u{22}></tag>"
             ).get()
-        let attribute = document.descendents().first(where: { $0 is AttributeSyntax }) as? AttributeSyntax
-        XCTAssert(attribute?.whitespace.source() == " ")
-        XCTAssert(attribute?.value?.equals.source() == "=")
-        XCTAssert(attribute?.value?.openingQuotationMark.source() == "\u{22}")
-        XCTAssert(attribute?.value?.closingQuotationMark.source() == "\u{22}")
+        let element = document.descendents().first(where: { $0 is ElementSyntax }) as? ElementSyntax
+        XCTAssert(element?.openingTag.attributes?.attributes?.first?.whitespace.source() == " ")
+        XCTAssert(element?.openingTag.attributes?.attributes?.first?.whitespace.source() == " ")
+        XCTAssert(element?.openingTag.attributes?.attributes?.first?.value?.equals.source() == "=")
+        XCTAssert(element?.openingTag.attributes?.attributes?.first?.value?.openingQuotationMark.source() == "\u{22}")
+        XCTAssert(element?.openingTag.attributes?.attributes?.first?.value?.closingQuotationMark.source() == "\u{22}")
+        XCTAssertNil(element?.openingTag.attributes?.trailingWhitespace)
+        XCTAssert(element?.continuation?.closingTag.lessThan.source() == "<")
+        XCTAssert(element?.continuation?.closingTag.slash.source() == "/")
+        XCTAssert(element?.continuation?.closingTag.name.source() == "tag")
+        XCTAssert(element?.continuation?.closingTag.greaterThan.source() == ">")
     }
 
     func testPercentEncoding() {
