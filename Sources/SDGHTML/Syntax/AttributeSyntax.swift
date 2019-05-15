@@ -13,6 +13,10 @@
  */
 
 import SDGLogic
+import SDGCollections
+import SDGLocalization
+
+import SDGWebLocalizations
 
 public struct AttributeSyntax : Syntax {
 
