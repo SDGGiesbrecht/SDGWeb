@@ -55,7 +55,7 @@ public struct DocumentSyntax : Syntax {
                 result.append(contentsOf: attribute.validate(location: location, file: file, baseURL: baseURL))
             }
         }
-        return []
+        return result
     }
 
     // MARK: - Syntax
