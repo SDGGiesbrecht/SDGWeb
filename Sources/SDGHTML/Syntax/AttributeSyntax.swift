@@ -285,7 +285,8 @@ public struct AttributeSyntax : Syntax {
         baseURL: URL,
         results: inout [SyntaxError]) {
         if name.source() ∈ AttributeSyntax.urlAttributes,
-            let urlString = value?.value.source() {
+            let value = self.value {
+            let urlString = value.value.source()
             if let url = URL(string: urlString, relativeTo: baseURL) {
                 var dead = true
                 if url.isFileURL {
@@ -319,7 +320,7 @@ public struct AttributeSyntax : Syntax {
                                 return "A link is dead: \(urlString)"
                             }
                         }),
-                        context: source()))
+                        context: name.source() + value.source()))
                 }
             } else {
                 results.append(SyntaxError(
