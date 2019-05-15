@@ -66,7 +66,7 @@ class SDGHTMLAPITests : TestCase {
     }
 
     func testSyntaxError() {
-        func expectViolation(named name: String, in string: String, file: StaticString = #file, line: UInt = #line) {
+        func expectViolation(named name: String, in string: String, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) {
             var errors: [SyntaxError] = []
             switch DocumentSyntax.parse(source: string) {
             case .failure(let error):
@@ -87,12 +87,23 @@ class SDGHTMLAPITests : TestCase {
             compare(
                 String(report.joined(separator: "\n")),
                 against: testSpecificationDirectory().appendingPathComponent("SyntaxError/\(name).txt"),
-                overwriteSpecificationInsteadOfFailing: false)
+                overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
+                file: file,
+                line: line)
         }
 
-        expectViolation(named: "Dead Remote Link", in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>")
-        expectViolation(named: "Missing Attribute Value", in: "<a href></a>")
-        expectViolation(named: "Invalid Attribute Value", in: "<a hidden=\u{22}value\u{22}></a>")
+        expectViolation(
+            named: "Dead Remote Link",
+            in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
+            overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Missing Attribute Value",
+            in: "<a href></a>",
+            overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Invalid Attribute Value",
+            in: "<a hidden=\u{22}value\u{22}></a>",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testTextDirection() {

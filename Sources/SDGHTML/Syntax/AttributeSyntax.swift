@@ -250,7 +250,7 @@ public struct AttributeSyntax : Syntax {
                     context: self.name.source()))
             }
         } else if name ∈ AttributeSyntax.emptyAttributes {
-            if value ≠ nil {
+            if let value = self.value {
                 results.append(SyntaxError(
                     file: file,
                     index: location,
@@ -261,7 +261,7 @@ public struct AttributeSyntax : Syntax {
                         }
 
                     }),
-                    context: source()))
+                    context: self.name.source() + value.source()))
             }
         } else {
             results.append(SyntaxError(
