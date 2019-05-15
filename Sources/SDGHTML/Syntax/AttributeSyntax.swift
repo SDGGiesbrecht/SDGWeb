@@ -278,7 +278,7 @@ public struct AttributeSyntax : Syntax {
                     }
 
                 }),
-                context: source()))
+                context: self.name.source() + (value?.source() ?? "")))
         }
     }
 

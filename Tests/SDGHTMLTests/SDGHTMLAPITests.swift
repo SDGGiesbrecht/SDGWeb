@@ -152,6 +152,10 @@ class SDGHTMLAPITests : TestCase {
             named: "Unpaired Tag Delimiters",
             in: "tag attribute=\u{22}value\u{22}>",
             overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Unknown Attribute",
+            in: "<tag doesnotexist>",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testTextDirection() {
