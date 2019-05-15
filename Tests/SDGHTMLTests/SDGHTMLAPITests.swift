@@ -52,7 +52,7 @@ class SDGHTMLAPITests : TestCase {
             XCTFail()
         }
 
-        let document = try DocumentSyntax.parse(source:
+        var document = try DocumentSyntax.parse(source:
             "<tag attribute=\u{22}value\u{22}></tag>"
             ).get()
         let element = document.descendents().first(where: { $0 is ElementSyntax }) as? ElementSyntax
@@ -67,6 +67,12 @@ class SDGHTMLAPITests : TestCase {
         XCTAssert(element?.continuation?.closingTag.slash.source() == "/")
         XCTAssert(element?.continuation?.closingTag.name.source() == "tag")
         XCTAssert(element?.continuation?.closingTag.greaterThan.source() == ">")
+
+        document = try DocumentSyntax.parse(source:
+            "<a><b>"
+            ).get()
+        XCTAssertEqual(document.content.elements.dropFirst().count, 1)
+        _ = document.content.elements.index(before: document.content.elements.endIndex)
     }
 
     func testPercentEncoding() {
