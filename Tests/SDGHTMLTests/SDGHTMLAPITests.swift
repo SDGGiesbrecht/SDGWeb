@@ -123,6 +123,5 @@ class SDGHTMLAPITests : TestCase {
             "<a href=\u{22}http://www.google.com\u{22}></a>"
             ).get()
         XCTAssert(document.validate(baseURL: URL(string: "/")!).isEmpty)
-        print(document.validate(baseURL: URL(string: "/")!))
     }
 }
