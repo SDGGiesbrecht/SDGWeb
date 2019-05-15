@@ -156,6 +156,10 @@ class SDGHTMLAPITests : TestCase {
             named: "Unknown Attribute",
             in: "<tag doesnotexist>",
             overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Nameless Tag with Attributes",
+            in: "<attribute=\u{22}value\u{22}>",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testTextDirection() {
