@@ -332,7 +332,7 @@ public struct AttributeSyntax : Syntax {
                             return "A URL is invalid: \(urlString)"
                         }
                     }),
-                    context: source()))
+                    context: name.source() + value.source()))
             }
         }
     }
