@@ -123,6 +123,10 @@ class SDGHTMLAPITests : TestCase {
             named: "Unpaired Quotation Mark",
             in: "<tag attribute=\u{22}>",
             overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Nameless Tag",
+            in: "<>",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testTextDirection() {
