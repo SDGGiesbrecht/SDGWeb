@@ -36,7 +36,7 @@ public struct AttributeValueSyntax : Syntax {
         source.scalars.removeLast()
         let value = TokenSyntax.parseAttribute(fromEndOf: &source)
         if source.scalars.last ≠ "\u{22}" {
-            let attributeSource = source + (value?.source() ?? "") + "\u{22}"
+            let attributeSource = source + value.source() + "\u{22}"
             return .failure(SyntaxError(
                 file: attributeSource,
                 index: attributeSource.scalars.index(before: attributeSource.scalars.endIndex),
@@ -59,7 +59,7 @@ public struct AttributeValueSyntax : Syntax {
                         return "Missing equals sign."
                     }
                 }),
-                context: "\u{22}" + (value?.source() ?? "") + "\u{22}"))
+                context: "\u{22}" + value.source() + "\u{22}"))
         }
         source.scalars.removeLast()
         return .success(AttributeValueSyntax(_storage: SyntaxStorage(children: [

@@ -38,8 +38,9 @@ public struct TokenSyntax : Syntax {
         createToken: (String) -> TokenKind) -> TokenSyntax? {
         return parse(fromEndOf: &source, createToken: createToken, while: { ¬$0.properties.isWhitespace ∧ $0 ∉ Set(["<", "/"]) })
     }
-    internal static func parseAttribute(fromEndOf source: inout String) -> TokenSyntax? {
+    internal static func parseAttribute(fromEndOf source: inout String) -> TokenSyntax {
         return parse(fromEndOf: &source, createToken: { .attributeText($0) }, while: { $0 ≠ "\u{22}" })
+            ?? TokenSyntax(kind: .attributeText(""))
     }
     internal static func parseWhitespace(fromEndOf source: inout String) -> TokenSyntax? {
         return parse(fromEndOf: &source, createToken: { .whitespace($0) }, while: { $0.properties.isWhitespace })
