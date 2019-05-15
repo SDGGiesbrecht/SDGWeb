@@ -104,6 +104,10 @@ class SDGHTMLAPITests : TestCase {
             named: "Invalid Attribute Value",
             in: "<a hidden=\u{22}value\u{22}></a>",
             overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Dead Relative Link",
+            in: "<a href=\u{22}does/not/exist\u{22}></a>",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testTextDirection() {

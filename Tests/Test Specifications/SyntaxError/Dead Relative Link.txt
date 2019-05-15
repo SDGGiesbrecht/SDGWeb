@@ -1,0 +1,15 @@
+🇬🇧EN
+
+Line 1
+A link is dead: file:///does/not/exist
+href="does/not/exist"
+🇺🇸EN
+
+Line 1
+A link is dead: file:///does/not/exist
+href="does/not/exist"
+🇨🇦EN
+
+Line 1
+A link is dead: file:///does/not/exist
+href="does/not/exist"
