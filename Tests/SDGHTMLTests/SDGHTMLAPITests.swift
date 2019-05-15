@@ -62,6 +62,7 @@ class SDGHTMLAPITests : TestCase {
         XCTAssert(element?.openingTag.attributes?.attributes?.first?.value?.openingQuotationMark.source() == "\u{22}")
         XCTAssert(element?.openingTag.attributes?.attributes?.first?.value?.closingQuotationMark.source() == "\u{22}")
         XCTAssertNil(element?.openingTag.attributes?.trailingWhitespace)
+        XCTAssert(element?.continuation?.content.source() == "")
         XCTAssert(element?.continuation?.closingTag.lessThan.source() == "<")
         XCTAssert(element?.continuation?.closingTag.slash.source() == "/")
         XCTAssert(element?.continuation?.closingTag.name.source() == "tag")
