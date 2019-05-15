@@ -92,6 +92,7 @@ class SDGHTMLAPITests : TestCase {
 
         expectViolation(named: "Dead Remote Link", in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>")
         expectViolation(named: "Missing Attribute Value", in: "<a href></a>")
+        expectViolation(named: "Invalid Attribute Value", in: "<a hidden=\u{22}value\u{22}></a>")
     }
 
     func testTextDirection() {
