@@ -50,6 +50,15 @@ class SDGHTMLAPITests : TestCase {
         case .text:
             XCTFail()
         }
+
+        func expectViolation(_ string: String, file: StaticString = #file, line: UInt = #line) {
+            let test: () throws -> Bool = {
+                let document = try DocumentSyntax.parse(source: string).get()
+                return ¬document.validate(baseURL: URL(fileURLWithPath: "/")).isEmpty
+            }
+            XCTAssert(try test(), "No violation triggered.", file: file, line: line)
+        }
+        expectViolation("<a href=\u{22}http://doesnotexist.invalid\u{22}></a>")
     }
 
     func testPercentEncoding() {
