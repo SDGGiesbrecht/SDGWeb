@@ -27,6 +27,10 @@ class SDGWebAPITests : TestCase {
         XCTAssert(copyrightDates(yearFirstPublished: 2000).contains(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()))
     }
 
+    func testInvalidHTML() {
+        expectErrorGenerating(forMock: "Invalid HTML", localization: SingleLocalization.self)
+    }
+
     func testLocalized() throws {
         try generate(forMock: "Localized", localization: DoubleLocalization.self)
     }
@@ -51,6 +55,10 @@ class SDGWebAPITests : TestCase {
 
     func testNoTitle() {
         expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
+    }
+
+    func testPoorHTML() {
+        expectErrorGenerating(forMock: "Poor HTML", localization: SingleLocalization.self)
     }
 
     func testRightToLeft() throws {

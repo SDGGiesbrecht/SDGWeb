@@ -165,6 +165,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         do {
             files = try FileManager.default.deepFileEnumeration(in: repositoryStructure.result)
         } catch {
+            // @exempt(from: tests)
             return [repositoryStructure.result: [.foundationError(error)]]
         }
 
@@ -174,6 +175,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             do {
                 source = try String(from: file)
             } catch {
+                // @exempt(from: tests)
                 results[file] = [.foundationError(error)]
                 break
             }
