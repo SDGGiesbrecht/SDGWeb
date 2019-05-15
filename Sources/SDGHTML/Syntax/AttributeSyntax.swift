@@ -247,7 +247,7 @@ public struct AttributeSyntax : Syntax {
                         }
 
                     }),
-                    context: source()))
+                    context: self.name.source()))
             }
         } else if name ∈ AttributeSyntax.emptyAttributes {
             if value ≠ nil {
