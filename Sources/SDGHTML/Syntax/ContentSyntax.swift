@@ -31,7 +31,7 @@ public struct ContentSyntax : Syntax {
         untilOpeningOf element: String?) -> Result<(tag: OpeningTagSyntax?, content: ContentSyntax), SyntaxError> {
         var tag: OpeningTagSyntax?
         var entries: [ContentElementSyntax] = []
-        while ¬source.isEmpty {
+        parsing: while ¬source.isEmpty {
             if source.scalars.last == ">" {
                 switch ElementSyntax.parse(fromEndOf: &source) {
                 case .failure(let error):
@@ -40,6 +40,7 @@ public struct ContentSyntax : Syntax {
                     if parsedElement.continuation == nil,
                         parsedElement.openingTag.name.source() == element {
                         tag = parsedElement.openingTag
+                        break parsing
                     } else {
                         entries.append(ContentElementSyntax(kind: .element(parsedElement)))
                     }
