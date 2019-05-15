@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGLocalization
 
+import SDGWebLocalizations
 import SDGHTML
 
 import SDGPersistenceTestUtilities
@@ -51,14 +52,9 @@ class SDGHTMLAPITests : TestCase {
             XCTFail()
         }
 
-        func expectViolation(_ string: String, file: StaticString = #file, line: UInt = #line) {
-            let test: () throws -> Bool = {
-                let document = try DocumentSyntax.parse(source: string).get()
-                return ¬document.validate(baseURL: URL(fileURLWithPath: "/")).isEmpty
-            }
-            XCTAssert(try test(), "No violation triggered.", file: file, line: line)
-        }
-        expectViolation("<a href=\u{22}http://doesnotexist.invalid\u{22}></a>")
+        XCTAssert((try DocumentSyntax.parse(source:
+            "<tag attribute=\u{22}value\u{22}></tag>"
+            ).get().descendents().first(where: { $0 is AttributeSyntax }) as? AttributeSyntax)?.whitespace.source() == " ")
     }
 
     func testPercentEncoding() {
@@ -67,6 +63,35 @@ class SDGHTMLAPITests : TestCase {
 
     func testRedirect() {
         compare(String(Redirect(target: "../").contents), against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"), overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testSyntaxError() {
+        func expectViolation(named name: String, in string: String, file: StaticString = #file, line: UInt = #line) {
+            var errors: [SyntaxError] = []
+            switch DocumentSyntax.parse(source: string) {
+            case .failure(let error):
+                errors.append(error)
+            case .success(let document):
+                errors.append(contentsOf: document.validate(baseURL: URL(fileURLWithPath: "/")))
+            }
+            var report: [StrictString] = []
+            for localization in InterfaceLocalization.allCases {
+                report.append(localization.icon ?? StrictString(localization.code))
+                LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                    for error in errors {
+                        report.append("")
+                        report.append(error.presentableDescription())
+                    }
+                }
+            }
+            compare(
+                String(report.joined(separator: "\n")),
+                against: testSpecificationDirectory().appendingPathComponent("SyntaxError/\(name).txt"),
+                overwriteSpecificationInsteadOfFailing: false)
+        }
+
+        expectViolation(named: "Dead Remote Link", in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>")
+        expectViolation(named: "Missing Attribute Value", in: "<a href></a>")
     }
 
     func testTextDirection() {

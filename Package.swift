@@ -106,6 +106,7 @@ let package = Package(
             ]),
 
         .testTarget(name: "SDGHTMLTests", dependencies: [
+            "SDGWebLocalizations",
             "SDGHTML",
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
