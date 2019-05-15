@@ -114,6 +114,10 @@ class SDGHTMLAPITests : TestCase {
             named: "Invalid URL",
             in: "<a href=\u{22}\u{22}></a>",
             overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Unpaired Quotation Mark",
+            in: "<tag attribute=\u{22}>",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testTextDirection() {
