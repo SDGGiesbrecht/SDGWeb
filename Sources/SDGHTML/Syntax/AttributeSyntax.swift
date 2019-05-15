@@ -70,9 +70,10 @@ public struct AttributeSyntax : Syntax {
     }
 
     private static let nonEmptyAttributes: Set<String> = [
-        "dir",
         "charset",
+        "dir",
         "href",
+        "id",
         "lang",
         "rel"
     ]
