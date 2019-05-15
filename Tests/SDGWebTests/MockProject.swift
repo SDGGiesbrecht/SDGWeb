@@ -47,7 +47,7 @@ func generate<L>(forMock mockName: String, localization: L.Type, expectValidatio
             XCTAssertEqual(document.source(), source, file: file, line: line)
     }
 
-    func describe(_ warnings: [URL : [SiteValidationError]]) -> String {
+    func describe(_ warnings: [URL: [SiteValidationError]]) -> String {
         let files = warnings.keys.sorted()
         return files.map({ url in
             var fileMessage = url.path(relativeTo: mock.result)
