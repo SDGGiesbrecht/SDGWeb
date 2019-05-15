@@ -7,15 +7,18 @@ extension SDGWebAPITests {
     // to regenerate.
     static let __allTests__SDGWebAPITests = [
         ("testCopyright", testCopyright),
+        ("testInvalidHTML", testInvalidHTML),
         ("testLocalized", testLocalized),
         ("testNoColon", testNoColon),
         ("testNoCSS", testNoCSS),
         ("testNoFrame", testNoFrame),
         ("testNoMetadata", testNoMetadata),
         ("testNoTitle", testNoTitle),
+        ("testPoorHTML", testPoorHTML),
         ("testRepositoryStructure", testRepositoryStructure),
         ("testRightToLeft", testRightToLeft),
         ("testSiteError", testSiteError),
+        ("testSiteValidationError", testSiteValidationError),
         ("testUnknownLocalization", testUnknownLocalization),
         ("testUnlocalized", testUnlocalized),
     ]
