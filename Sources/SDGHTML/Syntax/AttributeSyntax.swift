@@ -300,9 +300,9 @@ public struct AttributeSyntax : Syntax {
                         timeoutInterval: 10)
                     let semaphore = DispatchSemaphore(value: 0)
                     let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                        if error ≠ nil,
+                        if error == nil,
                             let status = (response as? HTTPURLResponse)?.statusCode,
-                            status.dividedAccordingToEuclid(by: 100) ≠ 2 {
+                            status.dividedAccordingToEuclid(by: 100) == 2 {
                             dead = false
                         }
                         semaphore.signal()
