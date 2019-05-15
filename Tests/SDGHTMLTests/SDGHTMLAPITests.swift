@@ -81,6 +81,7 @@ class SDGHTMLAPITests : TestCase {
         var string: String = ""
         document.write(to: &string)
         XCTAssertEqual(string, document.source())
+        XCTAssertEqual(document.wrappedInstance as? String, document.source())
     }
 
     func testPercentEncoding() {
