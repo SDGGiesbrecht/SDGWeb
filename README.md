@@ -79,7 +79,7 @@ let site = Site<L>(
     reportProgress: { _ in })
 
 try site.generate().get()
-let warnings = try site.validate()
+let warnings = site.validate()
 ```
 
 ## About
