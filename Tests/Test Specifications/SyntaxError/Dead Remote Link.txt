@@ -1,0 +1,15 @@
+🇬🇧EN
+
+Line 1
+A link is dead: http://doesnotexist.invalid
+href="http://doesnotexist.invalid"
+🇺🇸EN
+
+Line 1
+A link is dead: http://doesnotexist.invalid
+href="http://doesnotexist.invalid"
+🇨🇦EN
+
+Line 1
+A link is dead: http://doesnotexist.invalid
+href="http://doesnotexist.invalid"

@@ -14,8 +14,10 @@
 
 import SDGLocalization
 import SDGCalendar
-import SDGWeb
+
 import SDGWebLocalizations
+import SDGHTML
+import SDGWeb
 
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
@@ -25,6 +27,10 @@ class SDGWebAPITests : TestCase {
     func testCopyright() {
         XCTAssert(¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–"))
         XCTAssert(copyrightDates(yearFirstPublished: 2000).contains(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()))
+    }
+
+    func testInvalidHTML() {
+        expectErrorGenerating(forMock: "Invalid HTML", localization: SingleLocalization.self)
     }
 
     func testLocalized() throws {
@@ -53,6 +59,10 @@ class SDGWebAPITests : TestCase {
         expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
     }
 
+    func testPoorHTML() throws {
+        try generate(forMock: "Poor HTML", localization: SingleLocalization.self, expectValidationFailure: true)
+    }
+
     func testRightToLeft() throws {
         try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
     }
@@ -61,17 +71,35 @@ class SDGWebAPITests : TestCase {
         _ = RepositoryStructure()
     }
 
-    func testSiteError() {
-        struct StandInError : PresentableError {
-            func presentableDescription() -> StrictString {
-                return "[...]"
-            }
+    struct StandInError : PresentableError {
+        func presentableDescription() -> StrictString {
+            return "[...]"
         }
+    }
+    func testSiteError() {
         let errors: [SiteGenerationError] = [
             .foundationError(StandInError()),
             .noMetadata(page: "[...]"),
             .metadataMissingColon(line: "[...]"),
             .missingTitle(page: "[...]")
+        ]
+        for index in errors.indices {
+            let error = errors[index]
+            testCustomStringConvertibleConformance(of: error, localizations: InterfaceLocalization.self, uniqueTestName: index.inDigits(), overwriteSpecificationInsteadOfFailing: false)
+        }
+    }
+    func testSiteValidationError() {
+        let parseFailure: SyntaxError
+        switch DocumentSyntax.parse(source: "html>") {
+        case .failure(let error):
+            parseFailure = error
+        case .success:
+            XCTFail("Should not have parsed successfully.")
+            return
+        }
+        let errors: [SiteValidationError] = [
+            .foundationError(StandInError()),
+            .syntaxError(parseFailure)
         ]
         for index in errors.indices {
             let error = errors[index]

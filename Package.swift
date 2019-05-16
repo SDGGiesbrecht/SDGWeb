@@ -74,6 +74,8 @@ let package = Package(
         // #documentation(SDGHTML)
         /// General utilities for working with HTML source.
         .target(name: "SDGHTML", dependencies: [
+            "SDGWebLocalizations",
+            .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
@@ -93,6 +95,7 @@ let package = Package(
             ]),
 
         .testTarget(name: "SDGWebTests", dependencies: [
+            "SDGHTML",
             "SDGWeb",
             "SDGWebLocalizations",
             .product(name: "SDGText", package: "SDGCornerstone"),
@@ -103,6 +106,7 @@ let package = Package(
             ]),
 
         .testTarget(name: "SDGHTMLTests", dependencies: [
+            "SDGWebLocalizations",
             "SDGHTML",
             .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")

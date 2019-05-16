@@ -8,9 +8,12 @@ extension SDGHTMLAPITests {
     static let __allTests__SDGHTMLAPITests = [
         ("testEscaping", testEscaping),
         ("testHTMLElement", testHTMLElement),
+        ("testParsing", testParsing),
         ("testPercentEncoding", testPercentEncoding),
         ("testRedirect", testRedirect),
+        ("testSyntaxError", testSyntaxError),
         ("testTextDirection", testTextDirection),
+        ("testValidLink", testValidLink),
     ]
 }
 

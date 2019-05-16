@@ -20,6 +20,7 @@ import SDGText
 import SDGLocalization
 
 import SDGWebLocalizations
+import SDGHTML
 import SDGCSS
 
 /// A website.
@@ -154,5 +155,40 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             }
         }).resolved())
         try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
+    }
+
+    // MARK: - Validation
+
+    /// Validates the generated website.
+    public func validate() -> [URL: [SiteValidationError]] {
+        var files: [URL]
+        do {
+            files = try FileManager.default.deepFileEnumeration(in: repositoryStructure.result)
+        } catch {
+            // @exempt(from: tests)
+            return [repositoryStructure.result: [.foundationError(error)]]
+        }
+
+        var results: [URL: [SiteValidationError]] = [:]
+        for file in files where file.pathExtension == "html" {
+            let source: String
+            do {
+                source = try String(from: file)
+            } catch {
+                // @exempt(from: tests)
+                results[file] = [.foundationError(error)]
+                break
+            }
+
+            let document = DocumentSyntax.parse(source: source)
+            switch document {
+            case .failure(let error):
+                results[file] = [.syntaxError(error)]
+            case .success(let parsed):
+                results[file] = parsed.validate(baseURL: file).map { .syntaxError($0) }
+            }
+        }
+
+        return results.filter { _, value in ¬value.isEmpty }
     }
 }

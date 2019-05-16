@@ -65,14 +65,21 @@ import SDGCSS
 ## Example Usage
 
 ```swift
-let mock = RepositoryStructure(root: URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Mock Projects/\(mockName)"))
+let mock = RepositoryStructure(
+    root: URL(fileURLWithPath: #file)
+        .deletingLastPathComponent()
+        .deletingLastPathComponent()
+        .appendingPathComponent("Mock Projects/\(mockName)"))
+
 let site = Site<L>(
     repositoryStructure: mock,
     domain: UserFacing<StrictString, L>({ _ in return "http://example.com" }),
     localizationDirectories: UserFacing<StrictString, L>({ localization in return localization.icon ?? StrictString(localization.code) }),
     pageProcessor: Processor(),
     reportProgress: { _ in })
+
 try site.generate().get()
+let warnings = site.validate()
 ```
 
 ## About
