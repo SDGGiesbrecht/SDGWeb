@@ -165,6 +165,10 @@ class SDGHTMLAPITests : TestCase {
             named: "Extraneous Closing Tag",
             in: "Content</tag>",
             overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Nameless Tag with Multiple Attributes",
+            in: "<attribute=\u{22}value\u{22} attribute=\u{22}value\u{22}>",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testTextDirection() {
