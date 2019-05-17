@@ -84,8 +84,18 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertEqual(document.wrappedInstance as? String, document.source())
     }
 
-    func testPercentEncoding() {
+    func testPercentEncoding() throws {
         XCTAssertEqual(HTML.percentEncodeURLPath("Ελληνικό κείμενο"), "Ελληνικό%20κείμενο")
+
+        let url = "../Mock Projects"
+        let thisFile = URL(fileURLWithPath: #file)
+        func validate(url: String) throws -> [SyntaxError] {
+            let document = try DocumentSyntax.parse(
+                source: "<a href=\u{22}\(url)\u{22}>Space is not encoded.</a>").get()
+            return document.validate(baseURL: thisFile)
+        }
+        XCTAssert(try ¬validate(url: url).isEmpty, "Failed to warn about unencoded space.")
+        XCTAssert(try validate(url: HTML.percentEncodeURLPath(url)).isEmpty, "Unrelated warning occurred.")
     }
 
     func testRedirect() {
