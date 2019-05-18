@@ -91,22 +91,42 @@ public struct AttributeValueSyntax : Syntax {
 
     /// The equals sign.
     public var equals: TokenSyntax {
-        return _storage.children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeValueSyntax.indices[.equals]!] = newValue
+        }
     }
 
     /// The opening quotation mark.
     public var openingQuotationMark: TokenSyntax {
-        return _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] = newValue
+        }
     }
 
     /// The value.
     public var value: TokenSyntax {
-        return _storage.children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeValueSyntax.indices[.value]!] = newValue
+        }
     }
 
     /// The closing quotation mark.
     public var closingQuotationMark: TokenSyntax {
-        return _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] = newValue
+        }
     }
 
     // MARK: - Syntax

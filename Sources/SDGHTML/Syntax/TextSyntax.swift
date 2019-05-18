@@ -50,7 +50,12 @@ public struct TextSyntax : Syntax {
 
     /// The text.
     public var text: TokenSyntax {
-        return _storage.children[TextSyntax.indices[.token]!] as! TokenSyntax
+        get {
+            return _storage.children[TextSyntax.indices[.token]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[TextSyntax.indices[.token]!] = newValue
+        }
     }
 
     // MARK: - Syntax

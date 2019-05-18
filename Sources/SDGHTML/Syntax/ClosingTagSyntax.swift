@@ -46,22 +46,42 @@ public struct ClosingTagSyntax : Syntax {
 
     /// The less‐than sign.
     public var lessThan: TokenSyntax {
-        return _storage.children[ClosingTagSyntax.indices[.lessThan]!] as! TokenSyntax
+        get {
+            return _storage.children[ClosingTagSyntax.indices[.lessThan]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[ClosingTagSyntax.indices[.lessThan]!] = newValue
+        }
     }
 
     /// The slash.
     public var slash: TokenSyntax {
-        return _storage.children[ClosingTagSyntax.indices[.slash]!] as! TokenSyntax
+        get {
+            return _storage.children[ClosingTagSyntax.indices[.slash]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[ClosingTagSyntax.indices[.slash]!] = newValue
+        }
     }
 
     /// The tag name.
     public var name: TokenSyntax {
-        return _storage.children[ClosingTagSyntax.indices[.name]!] as! TokenSyntax
+        get {
+            return _storage.children[ClosingTagSyntax.indices[.name]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[ClosingTagSyntax.indices[.name]!] = newValue
+        }
     }
 
     /// The greater‐than sign.
     public var greaterThan: TokenSyntax {
-        return _storage.children[ClosingTagSyntax.indices[.greaterThan]!] as! TokenSyntax
+        get {
+            return _storage.children[ClosingTagSyntax.indices[.greaterThan]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[ClosingTagSyntax.indices[.greaterThan]!] = newValue
+        }
     }
 
     // MARK: - Syntax

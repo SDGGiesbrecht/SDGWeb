@@ -68,7 +68,12 @@ public struct ContentSyntax : Syntax {
 
     /// The child nodes.
     public var elements: ListSyntax<ContentElementSyntax> {
-        return _storage.children[ContentSyntax.indices[.elements]!] as! ListSyntax<ContentElementSyntax>
+        get {
+            return _storage.children[ContentSyntax.indices[.elements]!] as! ListSyntax<ContentElementSyntax>
+        }
+        set {
+            _storage.children[ContentSyntax.indices[.elements]!] = newValue
+        }
     }
 
     // MARK: - Syntax

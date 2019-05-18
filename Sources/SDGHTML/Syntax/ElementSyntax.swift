@@ -107,12 +107,22 @@ public struct ElementSyntax : Syntax {
 
     /// The opening tag.
     public var openingTag: OpeningTagSyntax {
-        return _storage.children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
+        get {
+            return _storage.children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
+        }
+        set {
+            _storage.children[ElementSyntax.indices[.openingTag]!] = newValue
+        }
     }
 
     /// The content and closing tag, if the element is not empty.
     public var continuation: ElementContinuationSyntax? {
-        return _storage.children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
+        get {
+            return _storage.children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
+        }
+        set {
+            _storage.children[ElementSyntax.indices[.continuation]!] = newValue
+        }
     }
 
     // MARK: - Syntax

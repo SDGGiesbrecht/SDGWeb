@@ -108,12 +108,22 @@ public struct AttributesSyntax : Syntax {
 
     /// The attributes.
     public var attributes: ListSyntax<AttributeSyntax>? {
-        return _storage.children[AttributesSyntax.indices[.attributes]!] as? ListSyntax<AttributeSyntax>
+        get {
+            return _storage.children[AttributesSyntax.indices[.attributes]!] as? ListSyntax<AttributeSyntax>
+        }
+        set {
+            _storage.children[AttributesSyntax.indices[.attributes]!] = newValue
+        }
     }
 
     /// Any trailing whitespace.
     public var trailingWhitespace: TokenSyntax? {
-        return _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] as? TokenSyntax
+        get {
+            return _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] as? TokenSyntax
+        }
+        set {
+            _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] = newValue
+        }
     }
 
     // MARK: - Syntax

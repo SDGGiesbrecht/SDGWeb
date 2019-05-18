@@ -46,7 +46,12 @@ public struct DocumentSyntax : Syntax {
 
     /// The content.
     public var content: ContentSyntax {
-        return _storage.children[DocumentSyntax.indices[.content]!] as! ContentSyntax
+        get {
+            return _storage.children[DocumentSyntax.indices[.content]!] as! ContentSyntax
+        }
+        set {
+            _storage.children[DocumentSyntax.indices[.content]!] = newValue
+        }
     }
 
     // MARK: - Validation

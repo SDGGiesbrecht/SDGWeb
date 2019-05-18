@@ -48,22 +48,42 @@ public struct OpeningTagSyntax : Syntax {
 
     /// The less‐than sign.
     public var lessThan: TokenSyntax {
-        return _storage.children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
+        get {
+            return _storage.children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[OpeningTagSyntax.indices[.lessThan]!] = newValue
+        }
     }
 
     /// The tag name.
     public var name: TokenSyntax {
-        return _storage.children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
+        get {
+            return _storage.children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[OpeningTagSyntax.indices[.name]!] = newValue
+        }
     }
 
     /// Any attributes.
     public var attributes: AttributesSyntax? {
-        return _storage.children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
+        get {
+            return _storage.children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
+        }
+        set {
+            _storage.children[OpeningTagSyntax.indices[.attributes]!] = newValue
+        }
     }
 
     /// The greater‐than sign.
     public var greaterThan: TokenSyntax {
-        return _storage.children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
+        get {
+            return _storage.children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[OpeningTagSyntax.indices[.greaterThan]!] = newValue
+        }
     }
 
     // MARK: - Validation

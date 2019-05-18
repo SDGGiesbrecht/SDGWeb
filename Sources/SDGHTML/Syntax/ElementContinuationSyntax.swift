@@ -38,12 +38,22 @@ public struct ElementContinuationSyntax : Syntax {
 
     /// The content of the element.
     public var content: ContentSyntax {
-        return _storage.children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
+        get {
+            return _storage.children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
+        }
+        set {
+            _storage.children[ElementContinuationSyntax.indices[.content]!] = newValue
+        }
     }
 
     /// The closing tag.
     public var closingTag: ClosingTagSyntax {
-        return _storage.children[ElementContinuationSyntax.indices[.closingTag]!] as! ClosingTagSyntax
+        get {
+            return _storage.children[ElementContinuationSyntax.indices[.closingTag]!] as! ClosingTagSyntax
+        }
+        set {
+            _storage.children[ElementContinuationSyntax.indices[.closingTag]!] = newValue
+        }
     }
 
     // MARK: - Syntax

@@ -68,17 +68,32 @@ public struct AttributeSyntax : Syntax {
 
     /// The leading whitespace.
     public var whitespace: TokenSyntax {
-        return _storage.children[AttributeSyntax.indices[.whitespace]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeSyntax.indices[.whitespace]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeSyntax.indices[.whitespace]!] = newValue
+        }
     }
 
     /// The attribute name.
     public var name: TokenSyntax {
-        return _storage.children[AttributeSyntax.indices[.name]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeSyntax.indices[.name]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeSyntax.indices[.name]!] = newValue
+        }
     }
 
     /// The attribute value.
     public var value: AttributeValueSyntax? {
-        return _storage.children[AttributeSyntax.indices[.value]!] as? AttributeValueSyntax
+        get {
+            return _storage.children[AttributeSyntax.indices[.value]!] as? AttributeValueSyntax
+        }
+        set {
+            _storage.children[AttributeSyntax.indices[.value]!] = newValue
+        }
     }
 
     // MARK: - Validation
