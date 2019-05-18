@@ -88,10 +88,20 @@ public struct AttributesSyntax : Syntax {
             list == nil {
             return .success((name, nil)) // Empty.
         }
-        return .success((name, AttributesSyntax(_storage: SyntaxStorage(children: [
-            list,
-            whitespace
-            ]))))
+        return .success((name, AttributesSyntax(attributes: list, trailingWhitespace: whitespace)))
+    }
+
+    // MARK: - Initialization
+
+    /// Creates an attribute list.
+    ///
+    /// - Parameters:
+    ///     - attributes: Any attributes.
+    ///     - trailingWhitespace: Any trailing whitespace.
+    public init(
+        attributes: ListSyntax<AttributeSyntax>?,
+        trailingWhitespace: TokenSyntax? = nil) {
+        _storage = SyntaxStorage(children: [attributes, trailingWhitespace])
     }
 
     // MARK: - Children

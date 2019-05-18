@@ -37,12 +37,31 @@ public struct AttributeSyntax : Syntax {
                 createToken: { .attributeName($0) }) else {
                 return nil
             }
-            return AttributeSyntax(_storage: SyntaxStorage(children: [
-                TokenSyntax.parseWhitespace(fromEndOf: &source),
-                name,
-                value
-                ]))
+            return AttributeSyntax(
+                whitespace: TokenSyntax.parseWhitespace(fromEndOf: &source),
+                name: name,
+                value: value)
         }
+    }
+
+    // MARK: - Initialization
+
+    /// Used only by transient instances during parsing.
+    private init(whitespace: TokenSyntax?, name: TokenSyntax, value: AttributeValueSyntax?) {
+        _storage = SyntaxStorage(children: [whitespace, name, value])
+    }
+
+    /// Creates an attribute.
+    ///
+    /// - Parameters:
+    ///     - whitespace: Leading whitespace. (Supplied automatically if omitted.)
+    ///     - name: The attribute name.
+    ///     - value: Optional. Any attribute value.
+    public init(
+        whitespace: TokenSyntax = TokenSyntax(kind: .whitespace(" ")),
+        name: TokenSyntax,
+        value: AttributeValueSyntax? = nil) {
+        _storage = SyntaxStorage(children: [whitespace, name, value])
     }
 
     // MARK: - Children

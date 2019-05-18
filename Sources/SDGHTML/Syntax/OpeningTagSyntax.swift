@@ -27,13 +27,21 @@ public struct OpeningTagSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal init(name: TokenSyntax, attributes: AttributesSyntax?) {
-        _storage = _SyntaxStorage(children: [
-            TokenSyntax(kind: .lessThan),
-            name,
-            attributes,
-            TokenSyntax(kind: .greaterThan)
-            ])
+    // MARK: - Initialization
+
+    /// Creates an opening tag.
+    ///
+    /// - Parameters:
+    ///     - lessThan: The less‐than sign. (Supplied automatically if omitted.)
+    ///     - name: The tag name.
+    ///     - attributes: Optional. Any attributes.
+    ///     - greaterThan: The greater‐than sign. (Supplied automatically if omitted.)
+    public init(
+        lessThan: TokenSyntax = TokenSyntax(kind: .lessThan),
+        name: TokenSyntax,
+        attributes: AttributesSyntax? = nil,
+        greaterThan: TokenSyntax = TokenSyntax(kind: .greaterThan)) {
+        _storage = _SyntaxStorage(children: [lessThan, name, attributes, greaterThan])
     }
 
     // MARK: - Children

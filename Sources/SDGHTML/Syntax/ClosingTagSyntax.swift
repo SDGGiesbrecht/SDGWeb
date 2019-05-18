@@ -25,13 +25,21 @@ public struct ClosingTagSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal init(name: TokenSyntax) {
-        _storage = _SyntaxStorage(children: [
-            TokenSyntax(kind: .lessThan),
-            TokenSyntax(kind: .slash),
-            name,
-            TokenSyntax(kind: .greaterThan)
-            ])
+    // MARK: - Initialization
+
+    /// Creates an closing tag.
+    ///
+    /// - Parameters:
+    ///     - lessThan: The less‐than sign. (Supplied automatically if omitted.)
+    ///     - slash: The slash. (Supplied automatically if omitted.)
+    ///     - name: The tag name.
+    ///     - greaterThan: The greater‐than sign. (Supplied automatically if omitted.)
+    public init(
+        lessThan: TokenSyntax = TokenSyntax(kind: .lessThan),
+        slash: TokenSyntax = TokenSyntax(kind: .slash),
+        name: TokenSyntax,
+        greaterThan: TokenSyntax = TokenSyntax(kind: .greaterThan)) {
+        _storage = SyntaxStorage(children: [lessThan, slash, name, greaterThan])
     }
 
     // MARK: - Children

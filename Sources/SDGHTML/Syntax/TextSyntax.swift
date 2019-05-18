@@ -33,7 +33,17 @@ public struct TextSyntax : Syntax {
         }
         let text = String(source[start...])
         source.scalars.removeSubrange(start...)
-        return TextSyntax(_storage: SyntaxStorage(children: [TokenSyntax(kind: .text(text))]))
+        return TextSyntax(text: TokenSyntax(kind: .text(text)))
+    }
+
+    // MARK: - Initialization
+
+    /// Creates text.
+    ///
+    /// - Parameters:
+    ///     - text: The text.
+    public init(text: TokenSyntax) {
+        _storage = _SyntaxStorage(children: [text])
     }
 
     // MARK: - Children

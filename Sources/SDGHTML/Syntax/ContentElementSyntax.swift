@@ -17,7 +17,11 @@ public struct ContentElementSyntax : Syntax {
 
     // MARK: - Initialization
 
-    internal init(kind: ContentElementSyntaxKind) {
+    /// Creates a content element node.
+    ///
+    /// - Parameters:
+    ///     - kind: The kind of node.
+    public init(kind: ContentElementSyntaxKind) {
         self.kind = kind
         let child: Syntax
         switch kind {
