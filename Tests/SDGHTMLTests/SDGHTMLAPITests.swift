@@ -23,6 +23,73 @@ import SDGXCTestUtilities
 
 class SDGHTMLAPITests : TestCase {
 
+    func testAttribute() {
+        var attribute = AttributeSyntax(name: TokenSyntax(kind: .attributeName("attribute")))
+        XCTAssertEqual(attribute.source(), " attribute")
+        attribute.whitespace = TokenSyntax(kind: .whitespace("  "))
+        attribute.name = TokenSyntax(kind: .attributeName("name"))
+        attribute.value = AttributeValueSyntax(value: TokenSyntax(kind: .attributeText("value")))
+        XCTAssertEqual(attribute.source(), "  name=\u{22}value\u{22}")
+    }
+
+    func testAttributes() {
+        var attributes = AttributesSyntax(attributes: nil)
+        XCTAssertEqual(attributes.source(), "")
+        attributes.attributes = ListSyntax<AttributeSyntax>(entries: [
+            AttributeSyntax(name: TokenSyntax(kind: .attributeName("one"))),
+            AttributeSyntax(name: TokenSyntax(kind: .attributeName("two"))),
+            ])
+        attributes.trailingWhitespace = TokenSyntax(kind: .whitespace(" "))
+        XCTAssertEqual(attributes.source(), " one two ")
+    }
+
+    func testAttributeValue() {
+        var value = AttributeValueSyntax(value: TokenSyntax(kind: .attributeText("value")))
+        XCTAssertEqual(value.source(), "=\u{22}value\u{22}")
+        value.equals = TokenSyntax(kind: .equalsSign)
+        value.openingQuotationMark = TokenSyntax(kind: .quotationMark)
+        value.value = TokenSyntax(kind: .attributeText("new value"))
+        value.closingQuotationMark = TokenSyntax(kind: .quotationMark)
+        XCTAssertEqual(value.source(), "=\u{22}new value\u{22}")
+    }
+
+    func testClosingTag() {
+        var tag = ClosingTagSyntax(name: TokenSyntax(kind: .elementName("tag")))
+        XCTAssertEqual(tag.source(), "</tag>")
+        tag.lessThan = TokenSyntax(kind: .lessThan)
+        tag.slash = TokenSyntax(kind: .slash)
+        tag.name = TokenSyntax(kind: .elementName("name"))
+        tag.greaterThan = TokenSyntax(kind: .greaterThan)
+        XCTAssertEqual(tag.source(), "</name>")
+    }
+
+    func testContent() {
+        var content = ContentSyntax(elements: ListSyntax<ContentElementSyntax>(entries: []))
+        XCTAssertEqual(content.source(), "")
+        content.elements.append(ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text."))))))
+        XCTAssertEqual(content.source(), "Text.")
+        content.elements[0] = ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Modified.")))))
+        XCTAssertEqual(content.source(), "Modified.")
+    }
+
+    func testDocument() {
+        var document = DocumentSyntax(content:
+            ContentSyntax(elements: ListSyntax<ContentElementSyntax>(entries: [])))
+        XCTAssertEqual(document.source(), "")
+        document.content.elements.append(ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text."))))))
+        XCTAssertEqual(document.source(), "Text.")
+    }
+
+    func testElementContinuation() {
+        var continuation = ElementContinuationSyntax(
+            content: ContentSyntax(elements: ListSyntax<ContentElementSyntax>(entries: [])),
+            closingTag: ClosingTagSyntax(name: TokenSyntax(kind: .elementName("tag"))))
+        XCTAssertEqual(continuation.source(), "</tag>")
+        continuation.content.elements.append(ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text."))))))
+        continuation.closingTag.name = TokenSyntax(kind: .elementName("name"))
+        XCTAssertEqual(continuation.source(), "Text.</name>")
+    }
+
     func testEscaping() {
         XCTAssertFalse(HTML.escapeTextForCharacterData("<").contains("<"))
         XCTAssertFalse(HTML.escapeTextForAttribute("\u{22}").contains("\u{22}"))
@@ -35,6 +102,16 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertEqual(
             HTMLElement("span", attributes: ["class": "\u{22}"], contents: "...", inline: true).source(),
             "<span class=\u{22}&#x0022;\u{22}>...</span>")
+    }
+
+    func testOpeningTag() {
+        var tag = OpeningTagSyntax(name: TokenSyntax(kind: .elementName("tag")))
+        XCTAssertEqual(tag.source(), "<tag>")
+        tag.lessThan = TokenSyntax(kind: .lessThan)
+        tag.name = TokenSyntax(kind: .elementName("name"))
+        tag.attributes = AttributesSyntax(attributes: nil, trailingWhitespace: TokenSyntax(kind: .whitespace(" ")))
+        tag.greaterThan = TokenSyntax(kind: .greaterThan)
+        XCTAssertEqual(tag.source(), "<name >")
     }
 
     func testParsing() throws {
@@ -191,6 +268,13 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertEqual(TestLocalization.עברית.textDirection.htmlAttribute, "rtl")
         XCTAssertEqual(TestLocalization.ελληνικά.textDirection.htmlAttribute, "ltr")
         XCTAssertEqual(TestLocalization.undefined.textDirection.htmlAttribute, "auto")
+    }
+
+    func testText() {
+        var text = TextSyntax(text: TokenSyntax(kind: .text("Text.")))
+        XCTAssertEqual(text.source(), "Text.")
+        text.text = TokenSyntax(kind: .text("Modified."))
+        XCTAssertEqual(text.source(), "Modified.")
     }
 
     func testValidLink() throws {
