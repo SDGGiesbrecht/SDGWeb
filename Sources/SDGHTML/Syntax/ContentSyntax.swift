@@ -51,14 +51,29 @@ public struct ContentSyntax : Syntax {
             }
         }
         let list = ListSyntax<ContentElementSyntax>(entries: entries.reversed())
-        return .success((tag, ContentSyntax(_storage: SyntaxStorage(children: [list]))))
+        return .success((tag, ContentSyntax(elements: list)))
+    }
+
+    // MARK: - Initialization
+
+    /// Creates content.
+    ///
+    /// - Parameters:
+    ///     - elements: The distinct elements of content.
+    public init(elements: ListSyntax<ContentElementSyntax>) {
+        _storage = SyntaxStorage(children: [elements])
     }
 
     // MARK: - Children
 
     /// The child nodes.
     public var elements: ListSyntax<ContentElementSyntax> {
-        return _storage.children[ContentSyntax.indices[.elements]!] as! ListSyntax<ContentElementSyntax>
+        get {
+            return _storage.children[ContentSyntax.indices[.elements]!] as! ListSyntax<ContentElementSyntax>
+        }
+        set {
+            _storage.children[ContentSyntax.indices[.elements]!] = newValue
+        }
     }
 
     // MARK: - Syntax

@@ -13,7 +13,7 @@
  */
 
 /// A node representing a consecutive list of other nodes.
-public struct ListSyntax<Entry> : RandomAccessCollection, Syntax
+public struct ListSyntax<Entry> : MutableCollection, RandomAccessCollection, RangeReplaceableCollection, Syntax
 where Entry : Syntax {
 
     /// Creates a list syntax node from an array of entries.
@@ -47,13 +47,28 @@ where Entry : Syntax {
     }
 
     public subscript(position: Index) -> Entry {
-        return _storage.children[position] as! Entry
+        get {
+            return _storage.children[position] as! Entry
+        }
+        set {
+            _storage.children[position] = newValue
+        }
     }
 
     // MARK: - RandomAccessCollection
 
     public func index(_ i: Index, offsetBy distance: Int) -> Index {
         return _storage.children.index(i, offsetBy: distance)
+    }
+
+    // MARK: - RangeReplaceableCollection
+
+    public init() {
+        self.init(entries: [])
+    }
+
+    public mutating func replaceSubrange<S>(_ subrange: Range<Index>, with newElements: S) where S : Sequence, S.Element == Entry {
+        _storage.children.replaceSubrange(subrange, with: newElements.lazy.map({ $0 }))
     }
 
     // MARK: - Syntax

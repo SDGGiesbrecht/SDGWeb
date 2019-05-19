@@ -27,35 +27,63 @@ public struct OpeningTagSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal init(name: TokenSyntax, attributes: AttributesSyntax?) {
-        _storage = _SyntaxStorage(children: [
-            TokenSyntax(kind: .lessThan),
-            name,
-            attributes,
-            TokenSyntax(kind: .greaterThan)
-            ])
+    // MARK: - Initialization
+
+    /// Creates an opening tag.
+    ///
+    /// - Parameters:
+    ///     - lessThan: The less‐than sign. (Supplied automatically if omitted.)
+    ///     - name: The tag name.
+    ///     - attributes: Optional. Any attributes.
+    ///     - greaterThan: The greater‐than sign. (Supplied automatically if omitted.)
+    public init(
+        lessThan: TokenSyntax = TokenSyntax(kind: .lessThan),
+        name: TokenSyntax,
+        attributes: AttributesSyntax? = nil,
+        greaterThan: TokenSyntax = TokenSyntax(kind: .greaterThan)) {
+        _storage = _SyntaxStorage(children: [lessThan, name, attributes, greaterThan])
     }
 
     // MARK: - Children
 
     /// The less‐than sign.
     public var lessThan: TokenSyntax {
-        return _storage.children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
+        get {
+            return _storage.children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[OpeningTagSyntax.indices[.lessThan]!] = newValue
+        }
     }
 
     /// The tag name.
     public var name: TokenSyntax {
-        return _storage.children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
+        get {
+            return _storage.children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[OpeningTagSyntax.indices[.name]!] = newValue
+        }
     }
 
     /// Any attributes.
     public var attributes: AttributesSyntax? {
-        return _storage.children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
+        get {
+            return _storage.children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
+        }
+        set {
+            _storage.children[OpeningTagSyntax.indices[.attributes]!] = newValue
+        }
     }
 
     /// The greater‐than sign.
     public var greaterThan: TokenSyntax {
-        return _storage.children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
+        get {
+            return _storage.children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[OpeningTagSyntax.indices[.greaterThan]!] = newValue
+        }
     }
 
     // MARK: - Validation

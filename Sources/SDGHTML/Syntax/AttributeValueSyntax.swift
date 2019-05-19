@@ -63,34 +63,70 @@ public struct AttributeValueSyntax : Syntax {
                 context: "\u{22}" + value.source() + "\u{22}"))
         }
         source.scalars.removeLast()
-        return .success(AttributeValueSyntax(_storage: SyntaxStorage(children: [
-            TokenSyntax(kind: .equalsSign),
-            TokenSyntax(kind: .quotationMark),
-            value,
-            TokenSyntax(kind: .quotationMark),
-            ])))
+        return .success(AttributeValueSyntax(
+            equals: TokenSyntax(kind: .equalsSign),
+            openingQuotationMark: TokenSyntax(kind: .quotationMark),
+            value: value,
+            closingQuotationMark: TokenSyntax(kind: .quotationMark)))
+    }
+
+    // MARK: - Initialization
+
+    /// Creates an attribute value.
+    ///
+    /// - Parameters:
+    ///     - equals: The equals sign. (Supplied automatically if omitted.)
+    ///     - openingQuotationMark: The opening quotation mark. (Supplied automatically if omitted.)
+    ///     - value: The value.
+    ///     - closingQuotationMark: The closing quotation mark. (Supplied automatically if omitted.)
+    public init(
+        equals: TokenSyntax = TokenSyntax(kind: .equalsSign),
+        openingQuotationMark: TokenSyntax = TokenSyntax(kind: .quotationMark),
+        value: TokenSyntax,
+        closingQuotationMark: TokenSyntax = TokenSyntax(kind: .quotationMark)) {
+        _storage = SyntaxStorage(children: [equals, openingQuotationMark, value, closingQuotationMark])
     }
 
     // MARK: - Children
 
     /// The equals sign.
     public var equals: TokenSyntax {
-        return _storage.children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeValueSyntax.indices[.equals]!] = newValue
+        }
     }
 
     /// The opening quotation mark.
     public var openingQuotationMark: TokenSyntax {
-        return _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] = newValue
+        }
     }
 
     /// The value.
     public var value: TokenSyntax {
-        return _storage.children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeValueSyntax.indices[.value]!] = newValue
+        }
     }
 
     /// The closing quotation mark.
     public var closingQuotationMark: TokenSyntax {
-        return _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
+        get {
+            return _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] = newValue
+        }
     }
 
     // MARK: - Syntax

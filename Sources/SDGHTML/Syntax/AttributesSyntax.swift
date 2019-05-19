@@ -88,22 +88,42 @@ public struct AttributesSyntax : Syntax {
             list == nil {
             return .success((name, nil)) // Empty.
         }
-        return .success((name, AttributesSyntax(_storage: SyntaxStorage(children: [
-            list,
-            whitespace
-            ]))))
+        return .success((name, AttributesSyntax(attributes: list, trailingWhitespace: whitespace)))
+    }
+
+    // MARK: - Initialization
+
+    /// Creates an attribute list.
+    ///
+    /// - Parameters:
+    ///     - attributes: Any attributes.
+    ///     - trailingWhitespace: Any trailing whitespace.
+    public init(
+        attributes: ListSyntax<AttributeSyntax>?,
+        trailingWhitespace: TokenSyntax? = nil) {
+        _storage = SyntaxStorage(children: [attributes, trailingWhitespace])
     }
 
     // MARK: - Children
 
     /// The attributes.
     public var attributes: ListSyntax<AttributeSyntax>? {
-        return _storage.children[AttributesSyntax.indices[.attributes]!] as? ListSyntax<AttributeSyntax>
+        get {
+            return _storage.children[AttributesSyntax.indices[.attributes]!] as? ListSyntax<AttributeSyntax>
+        }
+        set {
+            _storage.children[AttributesSyntax.indices[.attributes]!] = newValue
+        }
     }
 
     /// Any trailing whitespace.
     public var trailingWhitespace: TokenSyntax? {
-        return _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] as? TokenSyntax
+        get {
+            return _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] as? TokenSyntax
+        }
+        set {
+            _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] = newValue
+        }
     }
 
     // MARK: - Syntax

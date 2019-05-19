@@ -28,15 +28,30 @@ public struct DocumentSyntax : Syntax {
     ///     - source: The source of the HTML document.
     public static func parse(source: String) -> Result<DocumentSyntax, SyntaxError> {
         return ContentSyntax.parse(source: source).map { content in
-            return DocumentSyntax(_storage: SyntaxStorage(children: [content]))
+            return DocumentSyntax(content: content)
         }
+    }
+
+    // MARK: - Initialization
+
+    /// Creates a document.
+    ///
+    /// - Parameters:
+    ///     - content: The content.
+    public init(content: ContentSyntax) {
+        _storage = SyntaxStorage(children: [content])
     }
 
     // MARK: - Children
 
     /// The content.
     public var content: ContentSyntax {
-        return _storage.children[DocumentSyntax.indices[.content]!] as! ContentSyntax
+        get {
+            return _storage.children[DocumentSyntax.indices[.content]!] as! ContentSyntax
+        }
+        set {
+            _storage.children[DocumentSyntax.indices[.content]!] = newValue
+        }
     }
 
     // MARK: - Validation

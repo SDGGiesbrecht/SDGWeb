@@ -53,10 +53,8 @@ public struct ElementSyntax : Syntax {
             }
             if source.scalars.last ≠ "/" {
                 source.scalars.removeLast() // “<”
-                return .success(ElementSyntax(_storage: SyntaxStorage(children: [
-                    OpeningTagSyntax(name: name, attributes: attributes),
-                    nil
-                    ])))
+                return .success(ElementSyntax(
+                    openingTag: OpeningTagSyntax(name: name, attributes: attributes)))
             } else {
                 source.scalars.removeLast() // “/”
                 if source.scalars.last ≠ "<" {
@@ -83,28 +81,48 @@ public struct ElementSyntax : Syntax {
                                 }),
                                 context: preservedSource))
                         }
-                        return .success(ElementSyntax(_storage: SyntaxStorage(children: [
-                            tag,
-                            ElementContinuationSyntax(
+                        return .success(ElementSyntax(
+                            openingTag: tag,
+                            continuation: ElementContinuationSyntax(
                                 content: content,
-                                closingTag: ClosingTagSyntax(name: name))
-                            ])))
+                                closingTag: ClosingTagSyntax(name: name))))
                     }
                 }
             }
         }
     }
 
+    // MARK: - Initialization
+
+    /// Creates an element.
+    ///
+    /// - Parameters:
+    ///     - openingTag: The opening tag.
+    ///     - continuation: Optional. Any continuation node.
+    public init(openingTag: OpeningTagSyntax, continuation: ElementContinuationSyntax? = nil) {
+        _storage = _SyntaxStorage(children: [openingTag, continuation])
+    }
+
     // MARK: - Children
 
     /// The opening tag.
     public var openingTag: OpeningTagSyntax {
-        return _storage.children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
+        get {
+            return _storage.children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
+        }
+        set {
+            _storage.children[ElementSyntax.indices[.openingTag]!] = newValue
+        }
     }
 
     /// The content and closing tag, if the element is not empty.
     public var continuation: ElementContinuationSyntax? {
-        return _storage.children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
+        get {
+            return _storage.children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
+        }
+        set {
+            _storage.children[ElementSyntax.indices[.continuation]!] = newValue
+        }
     }
 
     // MARK: - Syntax

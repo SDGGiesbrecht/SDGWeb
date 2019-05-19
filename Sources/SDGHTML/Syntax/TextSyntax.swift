@@ -33,14 +33,29 @@ public struct TextSyntax : Syntax {
         }
         let text = String(source[start...])
         source.scalars.removeSubrange(start...)
-        return TextSyntax(_storage: SyntaxStorage(children: [TokenSyntax(kind: .text(text))]))
+        return TextSyntax(text: TokenSyntax(kind: .text(text)))
+    }
+
+    // MARK: - Initialization
+
+    /// Creates text.
+    ///
+    /// - Parameters:
+    ///     - text: The text.
+    public init(text: TokenSyntax) {
+        _storage = _SyntaxStorage(children: [text])
     }
 
     // MARK: - Children
 
     /// The text.
     public var text: TokenSyntax {
-        return _storage.children[TextSyntax.indices[.token]!] as! TokenSyntax
+        get {
+            return _storage.children[TextSyntax.indices[.token]!] as! TokenSyntax
+        }
+        set {
+            _storage.children[TextSyntax.indices[.token]!] = newValue
+        }
     }
 
     // MARK: - Syntax

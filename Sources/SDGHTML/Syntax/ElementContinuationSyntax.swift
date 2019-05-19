@@ -23,23 +23,37 @@ public struct ElementContinuationSyntax : Syntax {
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
 
-    internal init(content: ContentSyntax, closingTag: ClosingTagSyntax) {
-        _storage = _SyntaxStorage(children: [
-            content,
-            closingTag,
-            ])
+    // MARK: - Initialization
+
+    /// Creates an element continuation node.
+    ///
+    /// - Parameters:
+    ///     - content: The content.
+    ///     - closingTag: The closing tag.
+    public init(content: ContentSyntax, closingTag: ClosingTagSyntax) {
+        _storage = _SyntaxStorage(children: [content, closingTag])
     }
 
     // MARK: - Children
 
     /// The content of the element.
     public var content: ContentSyntax {
-        return _storage.children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
+        get {
+            return _storage.children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
+        }
+        set {
+            _storage.children[ElementContinuationSyntax.indices[.content]!] = newValue
+        }
     }
 
     /// The closing tag.
     public var closingTag: ClosingTagSyntax {
-        return _storage.children[ElementContinuationSyntax.indices[.closingTag]!] as! ClosingTagSyntax
+        get {
+            return _storage.children[ElementContinuationSyntax.indices[.closingTag]!] as! ClosingTagSyntax
+        }
+        set {
+            _storage.children[ElementContinuationSyntax.indices[.closingTag]!] = newValue
+        }
     }
 
     // MARK: - Syntax
