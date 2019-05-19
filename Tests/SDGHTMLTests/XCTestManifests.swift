@@ -6,12 +6,21 @@ extension SDGHTMLAPITests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__SDGHTMLAPITests = [
+        ("testAttribute", testAttribute),
+        ("testAttributes", testAttributes),
+        ("testAttributeValue", testAttributeValue),
+        ("testClosingTag", testClosingTag),
+        ("testContent", testContent),
+        ("testDocument", testDocument),
+        ("testElementContinuation", testElementContinuation),
         ("testEscaping", testEscaping),
         ("testHTMLElement", testHTMLElement),
+        ("testOpeningTag", testOpeningTag),
         ("testParsing", testParsing),
         ("testPercentEncoding", testPercentEncoding),
         ("testRedirect", testRedirect),
         ("testSyntaxError", testSyntaxError),
+        ("testText", testText),
         ("testTextDirection", testTextDirection),
         ("testValidLink", testValidLink),
     ]
