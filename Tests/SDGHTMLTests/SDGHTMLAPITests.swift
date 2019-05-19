@@ -80,6 +80,16 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertEqual(document.source(), "Text.")
     }
 
+    func testElement() {
+        var element = ElementSyntax(openingTag: OpeningTagSyntax(name: TokenSyntax(kind: .elementName("element"))))
+        XCTAssertEqual(element.source(), "<element>")
+        element.openingTag.name = TokenSyntax(kind: .elementName("name"))
+        element.continuation = ElementContinuationSyntax(
+            content: ContentSyntax(elements: ListSyntax()),
+            closingTag: ClosingTagSyntax(name: TokenSyntax(kind: .elementName("name"))))
+        XCTAssertEqual(element.source(), "<name></name>")
+    }
+
     func testElementContinuation() {
         var continuation = ElementContinuationSyntax(
             content: ContentSyntax(elements: ListSyntax<ContentElementSyntax>(entries: [])),
@@ -102,6 +112,10 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertEqual(
             HTMLElement("span", attributes: ["class": "\u{22}"], contents: "...", inline: true).source(),
             "<span class=\u{22}&#x0022;\u{22}>...</span>")
+    }
+
+    func testListSyntax() {
+        XCTAssertEqual(ListSyntax<ContentElementSyntax>().source(), "")
     }
 
     func testOpeningTag() {
