@@ -13,7 +13,7 @@
  */
 
 /// A node representing a consecutive list of other nodes.
-public struct ListSyntax<Entry> : RandomAccessCollection, RangeReplaceableCollection, Syntax
+public struct ListSyntax<Entry> : MutableCollection, RandomAccessCollection, RangeReplaceableCollection, Syntax
 where Entry : Syntax {
 
     /// Creates a list syntax node from an array of entries.
@@ -47,7 +47,12 @@ where Entry : Syntax {
     }
 
     public subscript(position: Index) -> Entry {
-        return _storage.children[position] as! Entry
+        get {
+            return _storage.children[position] as! Entry
+        }
+        set {
+            _storage.children[position] = newValue
+        }
     }
 
     // MARK: - RandomAccessCollection
