@@ -325,7 +325,9 @@ public struct AttributeSyntax : Syntax {
         if name.source() ∈ AttributeSyntax.urlAttributes,
             let value = self.value {
             let urlString = value.value.source()
-            if let url = URL(string: urlString, relativeTo: baseURL) {
+            let legacySpecification = urlString.addingPercentEncoding(
+                withAllowedCharacters: CharacterSet(charactersIn: Unicode.Scalar(0) ..< Unicode.Scalar(0x80)))!
+            if let url = URL(string: legacySpecification, relativeTo: baseURL) {
                 var dead = true
                 if url.isFileURL {
                     if (try? url.checkResourceIsReachable()) == true {
