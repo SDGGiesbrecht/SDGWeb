@@ -42,7 +42,7 @@ Simply add SDGWeb as a dependency in `Package.swift` and specify which of the li
 let package = Package(
     name: "MyPackage",
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .upToNextMinor(from: Version(0, 0, 3))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .upToNextMinor(from: Version(0, 1, 0))),
     ],
     targets: [
         .target(name: "MyTarget", dependencies: [
