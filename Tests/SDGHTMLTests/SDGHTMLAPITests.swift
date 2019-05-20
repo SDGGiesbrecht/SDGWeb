@@ -105,15 +105,6 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertFalse(HTML.escapeTextForAttribute("\u{22}").contains("\u{22}"))
     }
 
-    func testHTMLElement() {
-        XCTAssertEqual(
-            HTMLElement("html", attributes: ["lang": "en"], contents: "<body></body>", inline: false).source(),
-            "<html lang=\u{22}en\u{22}>\n<body></body>\n</html>")
-        XCTAssertEqual(
-            HTMLElement("span", attributes: ["class": "\u{22}"], contents: "...", inline: true).source(),
-            "<span class=\u{22}&#x0022;\u{22}>...</span>")
-    }
-
     func testListSyntax() {
         XCTAssertEqual(ListSyntax<ContentElementSyntax>().source(), "")
     }

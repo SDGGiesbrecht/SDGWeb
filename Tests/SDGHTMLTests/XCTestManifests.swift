@@ -15,7 +15,6 @@ extension SDGHTMLAPITests {
         ("testElement", testElement),
         ("testElementContinuation", testElementContinuation),
         ("testEscaping", testEscaping),
-        ("testHTMLElement", testHTMLElement),
         ("testListSyntax", testListSyntax),
         ("testOpeningTag", testOpeningTag),
         ("testParsing", testParsing),
