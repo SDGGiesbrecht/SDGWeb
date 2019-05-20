@@ -67,7 +67,7 @@ public struct DocumentSyntax : Syntax {
         for node in descendents() {
             defer {
                 if node is TokenSyntax {
-                    location = file.index(location, offsetBy: node.source().scalars.count)
+                    location = file.scalars.index(location, offsetBy: node.source().scalars.count)
                 }
             }
 
