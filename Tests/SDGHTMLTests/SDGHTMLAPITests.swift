@@ -18,6 +18,8 @@ import SDGLocalization
 import SDGWebLocalizations
 import SDGHTML
 
+import XCTest
+
 import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 

@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGLogic
 import SDGMathematics
 import SDGCollections
 import SDGText

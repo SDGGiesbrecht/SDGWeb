@@ -14,7 +14,9 @@
 
 import Foundation
 
+import SDGLogic
 import SDGLocalization
+
 import SDGHTML
 import SDGWeb
 

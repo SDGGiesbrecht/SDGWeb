@@ -85,6 +85,7 @@ let package = Package(
         // #documentation(SDGCSS)
         /// General utilities for working with CSS source.
         .target(name: "SDGCSS", dependencies: [
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone")
             ]),
 
@@ -98,6 +99,7 @@ let package = Package(
             "SDGHTML",
             "SDGWeb",
             "SDGWebLocalizations",
+            .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGCalendar", package: "SDGCornerstone"),

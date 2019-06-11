@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import SDGText
 
 /// An HTML page functioning as a redirect.
