@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGText
+import SDGLocalization
 
 import SDGWebLocalizations
 
