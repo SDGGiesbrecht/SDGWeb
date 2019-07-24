@@ -34,6 +34,8 @@ public struct ElementSyntax : Syntax {
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "A greater‐than sign has no corresponding less‐than sign."
+            case .deutschDeutschland:
+                return "Ein Größer‐als‐Zeichen hat kein entsprechendes Kleiner‐als‐Zeichen."
             }
         })
     }

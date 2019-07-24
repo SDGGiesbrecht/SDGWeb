@@ -52,6 +52,8 @@ public struct SyntaxError : PresentableError {
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Line \(self.line.inDigits())"
+            case .deutschDeutschland:
+                return "Zeile \(self.line.inDigits())"
             }
         })
     }
