@@ -193,8 +193,12 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
         let reportedPath = url.path(relativeTo: site.repositoryStructure.result)
         site.reportProgress(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom:
+                return "Writing to ‘\(reportedPath)’..."
+            case .englishUnitedStates, .englishCanada:
                 return "Writing to “\(reportedPath)”..."
+            case .deutschDeutschland:
+                return "„\(reportedPath)“ wird hergestellt ..."
             }
         }).resolved())
 

@@ -141,6 +141,8 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Copying CSS..."
+            case .deutschDeutschland:
+                return "CSS wird kopiert ..."
             }
         }).resolved())
         try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))
@@ -152,6 +154,8 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Copying resources..."
+            case .deutschDeutschland:
+                return "Ressourcen werden kopiert ..."
             }
         }).resolved())
         try FileManager.default.copy(repositoryStructure.resources, to: repositoryStructure.result.appendingPathComponent("Resources"))
