@@ -10,3 +10,7 @@ Metadata entry has no colon:
 Metadata entry has no colon:
 [...]
 
+🇩🇪DE
+Bei einem Eintrag der Metadaten fehlt ein Doppelpunkt:
+[...]
+
