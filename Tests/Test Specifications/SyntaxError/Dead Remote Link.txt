@@ -13,3 +13,8 @@ href="http://doesnotexist.invalid"
 Line 1
 A link is dead: http://doesnotexist.invalid
 href="http://doesnotexist.invalid"
+🇩🇪DE
+
+Zeile 1
+Ein Verweis ist tot: http://doesnotexist.invalid
+href="http://doesnotexist.invalid"

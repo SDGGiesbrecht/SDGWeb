@@ -81,7 +81,7 @@ public struct ElementSyntax : Syntax {
                                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                         return "A closing tag has no corresponding opening tag."
                                     case .deutschDeutschland:
-                                        return "Eine schließende Markierung hat keine entsprechenede öffnende Markierung."
+                                        return "Eine schließende Markierung hat keine entsprechende öffnende Markierung."
                                     }
                                 }),
                                 context: preservedSource))

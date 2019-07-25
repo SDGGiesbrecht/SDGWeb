@@ -13,3 +13,8 @@ tag attribute="value">
 Line 2
 A greater‐than sign has no corresponding less‐than sign.
 tag attribute="value">
+🇩🇪DE
+
+Zeile 2
+Ein Größer‐als‐Zeichen hat kein entsprechendes Kleiner‐als‐Zeichen.
+tag attribute="value">
