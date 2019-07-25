@@ -285,8 +285,9 @@ public struct AttributeSyntax : Syntax {
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "An attribute value is missing."
+                        case .deutschDeutschland:
+                            return "Eine Eigenschaft hat keinen Wert."
                         }
-
                     }),
                     context: self.name.source()))
             }
@@ -299,8 +300,9 @@ public struct AttributeSyntax : Syntax {
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "An attribute has an invalid value."
+                        case .deutschDeutschland:
+                            return "Der Wert einer Eigenschaft is ungültig."
                         }
-
                     }),
                     context: self.name.source() + value.source()))
             }
@@ -311,7 +313,9 @@ public struct AttributeSyntax : Syntax {
                 description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Unknown attribute."
+                        return "An attribute is unknown."
+                    case .deutschDeutschland:
+                        return "Eine Eigenschaft is unbekannt."
                     }
 
                 }),
@@ -361,6 +365,8 @@ public struct AttributeSyntax : Syntax {
                             switch localization {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                 return "A link is dead: \(url.absoluteString)"
+                            case .deutschDeutschland:
+                                return "Ein Verweis ist tot: \(url.absoluteString)"
                             }
                         }),
                         context: name.source() + value.source()))
@@ -373,6 +379,8 @@ public struct AttributeSyntax : Syntax {
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "A URL is invalid: \(urlString)"
+                        case .deutschDeutschland:
+                            return "Eine URL ist ungültig: \(urlString)"
                         }
                     }),
                     context: name.source() + value.source()))

@@ -58,6 +58,8 @@ public struct AttributesSyntax : Syntax {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "A tag is empty."
+                    case .deutschDeutschland:
+                        return "Eine Markierung ist lehr."
                     }
                 }),
                 context: "<>"))
@@ -79,6 +81,8 @@ public struct AttributesSyntax : Syntax {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "A tag has no name."
+                    case .deutschDeutschland:
+                        return "Eine Markierung hat keinen Namen."
                     }
                 }),
                 context: context))

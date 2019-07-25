@@ -80,6 +80,8 @@ public struct ElementSyntax : Syntax {
                                     switch localization {
                                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                         return "A closing tag has no corresponding opening tag."
+                                    case .deutschDeutschland:
+                                        return "Eine schließende Markierung hat keine entsprechenede öffnende Markierung."
                                     }
                                 }),
                                 context: preservedSource))
