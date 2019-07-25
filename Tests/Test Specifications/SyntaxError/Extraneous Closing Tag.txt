@@ -13,3 +13,8 @@ Content</tag>
 Line 2
 A closing tag has no corresponding opening tag.
 Content</tag>
+🇩🇪DE
+
+Zeile 2
+Eine schließende Markierung hat keine entsprechende öffnende Markierung.
+Content</tag>
