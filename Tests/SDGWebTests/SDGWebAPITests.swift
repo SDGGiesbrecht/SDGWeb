@@ -38,7 +38,11 @@ class SDGWebAPITests : TestCase {
     }
 
     func testLocalized() throws {
-        try generate(forMock: "Localized", localization: DoubleLocalization.self)
+        for localization in InterfaceLocalization.allCases {
+            try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                try generate(forMock: "Localized", localization: DoubleLocalization.self)
+            }
+        }
     }
 
     func testNoColon() {
