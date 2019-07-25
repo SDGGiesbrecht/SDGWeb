@@ -16,5 +16,5 @@ href=""
 🇩🇪DE
 
 Zeile 1
-Eine URL ist ungültig: 
+Ein Ressourcenzeiger ist ungültig: 
 href=""

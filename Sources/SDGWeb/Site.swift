@@ -142,7 +142,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Copying CSS..."
             case .deutschDeutschland:
-                return "CSS wird kopiert ..."
+                return "Gestaltungsbögen werden kopiert ..."
             }
         }).resolved())
         try FileManager.default.copy(repositoryStructure.css, to: repositoryStructure.result.appendingPathComponent("CSS"))

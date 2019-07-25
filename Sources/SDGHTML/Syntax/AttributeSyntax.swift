@@ -380,7 +380,7 @@ public struct AttributeSyntax : Syntax {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "A URL is invalid: \(urlString)"
                         case .deutschDeutschland:
-                            return "Eine URL ist ungültig: \(urlString)"
+                            return "Ein Ressourcenzeiger ist ungültig: \(urlString)"
                         }
                     }),
                     context: name.source() + value.source()))
