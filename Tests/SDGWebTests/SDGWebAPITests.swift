@@ -120,6 +120,10 @@ class SDGWebAPITests : TestCase {
     }
 
     func testUnlocalized() throws {
-        try generate(forMock: "Unlocalized", localization: SingleLocalization.self)
+        for localization in InterfaceLocalization.allCases {
+            try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                try generate(forMock: "Unlocalized", localization: SingleLocalization.self)
+            }
+        }
     }
 }
