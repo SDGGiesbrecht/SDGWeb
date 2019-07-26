@@ -13,3 +13,8 @@ href="does/not/exist"
 Line 1
 A link is dead: file:///does/not/exist
 href="does/not/exist"
+🇩🇪DE
+
+Zeile 1
+Ein Verweis ist tot: file:///does/not/exist
+href="does/not/exist"

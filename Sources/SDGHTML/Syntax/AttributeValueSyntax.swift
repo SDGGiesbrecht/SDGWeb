@@ -46,6 +46,8 @@ public struct AttributeValueSyntax : Syntax {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "A quotation mark is not paired."
+                    case .deutschDeutschland:
+                        return "Ein Anführungszeichen steht allein."
                     }
                 }),
                 context: attributeSource))
@@ -58,7 +60,9 @@ public struct AttributeValueSyntax : Syntax {
                 description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Missing equals sign."
+                        return "An equals sign is missing."
+                    case .deutschDeutschland:
+                        return "Ein Gleichheitszeichen fehlt."
                     }
                 }),
                 context: "\u{22}" + value.source() + "\u{22}"))

@@ -13,3 +13,8 @@ A quotation mark is not paired.
 Line 1
 A quotation mark is not paired.
 <tag attribute="
+🇩🇪DE
+
+Zeile 1
+Ein Anführungszeichen steht allein.
+<tag attribute="

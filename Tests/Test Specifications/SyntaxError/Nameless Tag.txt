@@ -13,3 +13,8 @@ A tag is empty.
 Line 2
 A tag is empty.
 <>
+🇩🇪DE
+
+Zeile 2
+Eine Markierung ist lehr.
+<>

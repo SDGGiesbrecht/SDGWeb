@@ -34,6 +34,8 @@ public struct ElementSyntax : Syntax {
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "A greater‐than sign has no corresponding less‐than sign."
+            case .deutschDeutschland:
+                return "Ein Größer‐als‐Zeichen hat kein entsprechendes Kleiner‐als‐Zeichen."
             }
         })
     }
@@ -78,6 +80,8 @@ public struct ElementSyntax : Syntax {
                                     switch localization {
                                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                         return "A closing tag has no corresponding opening tag."
+                                    case .deutschDeutschland:
+                                        return "Eine schließende Markierung hat keine entsprechende öffnende Markierung."
                                     }
                                 }),
                                 context: preservedSource))

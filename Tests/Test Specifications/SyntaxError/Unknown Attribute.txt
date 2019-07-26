@@ -1,15 +1,20 @@
 🇬🇧EN
 
 Line 1
-Unknown attribute.
+An attribute is unknown.
 doesnotexist
 🇺🇸EN
 
 Line 1
-Unknown attribute.
+An attribute is unknown.
 doesnotexist
 🇨🇦EN
 
 Line 1
-Unknown attribute.
+An attribute is unknown.
+doesnotexist
+🇩🇪DE
+
+Zeile 1
+Eine Eigenschaft is unbekannt.
 doesnotexist

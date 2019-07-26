@@ -43,18 +43,28 @@ public enum SiteGenerationError : PresentableError {
                 return StrictString(error.localizedDescription)
             case .noMetadata(page: let page):
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                case .englishUnitedKingdom:
+                    return "‘\(page)’ has no metadata (‘<!\u{2D}\u{2D} ... \u{2D}\u{2D}>’)."
+                case .englishUnitedStates, .englishCanada:
                     return "“\(page)” has no metadata (“<!\u{2D}\u{2D} ... \u{2D}\u{2D}>”)."
+                case .deutschDeutschland:
+                    return "„\(page)“ hat keine Metadaten („<!\u{2D}\u{2D} ... \u{2D}\u{2D}>“)."
                 }
             case .metadataMissingColon(line: let line):
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Metadata entry has no colon:\n\(line)"
+                case .deutschDeutschland:
+                    return "Bei einem Eintrag der Metadaten fehlt ein Doppelpunkt:\n\(line)"
                 }
             case .missingTitle(page: let page):
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                case .englishUnitedKingdom:
+                    return "‘\(page)’ has no title."
+                case .englishUnitedStates, .englishCanada:
                     return "“\(page)” has no title."
+                case .deutschDeutschland:
+                    return "„\(page)“ hat keinen Titel."
                 }
             }
         }).resolved()

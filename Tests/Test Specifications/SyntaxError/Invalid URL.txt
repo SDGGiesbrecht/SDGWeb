@@ -13,3 +13,8 @@ href=""
 Line 1
 A URL is invalid: 
 href=""
+🇩🇪DE
+
+Zeile 1
+Ein Ressourcenzeiger ist ungültig: 
+href=""
