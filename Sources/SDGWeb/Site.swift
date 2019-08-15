@@ -163,14 +163,17 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
 
     // MARK: - Validation
 
-    /// Validates the generated website.
-    public func validate() -> [URL: [SiteValidationError]] {
+    /// Validates any website.
+    ///
+    /// - Parameters:
+    ///     - site: The URL of a site in the local file system.
+    public static func validate(site: URL) -> [URL: [SiteValidationError]] {
         var files: [URL]
         do {
-            files = try FileManager.default.deepFileEnumeration(in: repositoryStructure.result)
+            files = try FileManager.default.deepFileEnumeration(in: site)
         } catch {
             // @exempt(from: tests)
-            return [repositoryStructure.result: [.foundationError(error)]]
+            return [site: [.foundationError(error)]]
         }
 
         var results: [URL: [SiteValidationError]] = [:]
@@ -194,5 +197,10 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         }
 
         return results.filter { _, value in ¬value.isEmpty }
+    }
+
+    /// Validates the generated website.
+    public func validate() -> [URL: [SiteValidationError]] {
+        return Site.validate(site: repositoryStructure.result)
     }
 }
