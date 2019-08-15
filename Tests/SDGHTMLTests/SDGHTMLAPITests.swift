@@ -167,6 +167,10 @@ class SDGHTMLAPITests : TestCase {
         document.write(to: &string)
         XCTAssertEqual(string, document.source())
         XCTAssertEqual(document.wrappedInstance as? String, document.source())
+
+        XCTAssert(try DocumentSyntax.parse(source:
+            "<!\u{2D}\u{2D} Comment {2D}\u{2D}{2D}\u{2D}>"
+            ).get().descendents().contains(where: { $0 is CommentSyntax }))
     }
 
     func testPercentEncoding() throws {
