@@ -63,8 +63,11 @@ class SDGHTMLAPITests : TestCase {
             closingToken: TokenSyntax(kind: .commentEnd))
         XCTAssertEqual(comment.source(), "<!\u{2D}\u{2D}...\u{2D}\u{2D}>")
         comment.openingToken = TokenSyntax(kind: .commentStart)
+        XCTAssertEqual(comment.openingToken.source(), "<!\u{2D}\u{2D}")
         comment.contents = TokenSyntax(kind: .commentText("..."))
+        XCTAssertEqual(comment.contents.source(), "...")
         comment.closingToken = TokenSyntax(kind: .commentEnd)
+        XCTAssertEqual(comment.closingToken.source(), "\u{2D}\u{2D}>")
         XCTAssertEqual(comment.source(), "<!\u{2D}\u{2D}...\u{2D}\u{2D}>")
     }
 
