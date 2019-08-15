@@ -133,7 +133,7 @@ class SDGHTMLAPITests : TestCase {
             ).get().content.elements.first!.kind {
         case .element(let element):
             XCTAssertEqual(element.openingTag.name.source(), "empty")
-        case .text:
+        case .text, .comment:
             XCTFail()
         }
 
@@ -169,7 +169,7 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertEqual(document.wrappedInstance as? String, document.source())
 
         XCTAssert(try DocumentSyntax.parse(source:
-            "<!\u{2D}\u{2D} Comment {2D}\u{2D}{2D}\u{2D}>"
+            "<!\u{2D}\u{2D} Comment \u{2D}\u{2D}>"
             ).get().descendents().contains(where: { $0 is CommentSyntax }))
     }
 
