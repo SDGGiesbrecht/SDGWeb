@@ -268,6 +268,10 @@ class SDGHTMLAPITests : TestCase {
             named: "Nameless Tag with Multiple Attributes",
             in: "<attribute=\u{22}value\u{22} attribute=\u{22}value\u{22}>",
             overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Unpaired Comment Markers",
+            in: "Comment \u{2D}\u{2D}>",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testTextDirection() {
