@@ -10,6 +10,7 @@ extension SDGHTMLAPITests {
         ("testAttributes", testAttributes),
         ("testAttributeValue", testAttributeValue),
         ("testClosingTag", testClosingTag),
+        ("testComment", testComment),
         ("testContent", testContent),
         ("testDocument", testDocument),
         ("testElement", testElement),

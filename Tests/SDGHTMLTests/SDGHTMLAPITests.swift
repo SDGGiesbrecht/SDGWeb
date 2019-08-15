@@ -56,6 +56,18 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertEqual(value.source(), "=\u{22}new value\u{22}")
     }
 
+    func testComment() {
+        var comment = CommentSyntax(
+            openingToken: TokenSyntax(kind: .commentStart),
+            contents: TokenSyntax(kind: .commentText("...")),
+            closingToken: TokenSyntax(kind: .commentEnd))
+        XCTAssertEqual(comment.source(), "<!\u{2D}\u{2D}...\u{2D}\u{2D}>")
+        comment.openingToken = TokenSyntax(kind: .commentStart)
+        comment.contents = TokenSyntax(kind: .commentText("..."))
+        comment.closingToken = TokenSyntax(kind: .commentEnd)
+        XCTAssertEqual(comment.source(), "<!\u{2D}\u{2D}...\u{2D}\u{2D}>")
+    }
+
     func testClosingTag() {
         var tag = ClosingTagSyntax(name: TokenSyntax(kind: .elementName("tag")))
         XCTAssertEqual(tag.source(), "</tag>")
