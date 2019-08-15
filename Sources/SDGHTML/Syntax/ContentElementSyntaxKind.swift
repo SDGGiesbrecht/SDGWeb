@@ -20,4 +20,7 @@ public enum ContentElementSyntaxKind {
 
     /// An element.
     case element(ElementSyntax)
+
+    /// A comment.
+    case comment(CommentSyntax)
 }

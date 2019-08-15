@@ -12,6 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+import SDGLocalization
+
+import SDGWebLocalizations
+
 /// An comment.
 public struct CommentSyntax : Syntax {
 
@@ -23,6 +28,31 @@ public struct CommentSyntax : Syntax {
         case closingToken
     }
     private static let indices = Child.allCases.bijectiveIndexMapping
+
+    internal static func parse(fromEndOf source: inout String) -> Result<CommentSyntax, SyntaxError> {
+        var preservedSource = source
+        source.scalars.removeLast(3) // “‐‐>”
+        guard let start = source.lastMatch(for: "<!\u{2D}\u{2D}") else {
+            return .failure(SyntaxError(
+                file: preservedSource,
+                index: preservedSource.scalars.endIndex,
+                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "A comment end marker has no corresponding start marker."
+                    case .deutschDeutschland:
+                        return "Ein Kommentarsendzeichen hat kein entsprechendes Anfangszeichen."
+                    }
+                }),
+                context: preservedSource))
+        }
+        let text = String(source[start.range.upperBound...])
+        source.scalars.truncate(at: start.range.lowerBound)
+        return .success(CommentSyntax(
+            openingToken: TokenSyntax(kind: .commentStart),
+            contents: TokenSyntax(kind: .commentText(text)),
+            closingToken: TokenSyntax(kind: .commentEnd)))
+    }
 
     // MARK: - Initialization
 

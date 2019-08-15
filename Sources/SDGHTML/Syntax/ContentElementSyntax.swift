@@ -29,6 +29,8 @@ public struct ContentElementSyntax : Syntax {
             child = text
         case .element(let element):
             child = element
+        case .comment(let comment):
+            child = comment
         }
         self._storage = SyntaxStorage(children: [child])
     }

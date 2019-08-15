@@ -36,16 +36,25 @@ public struct ContentSyntax : Syntax {
         var entries: [ContentElementSyntax] = []
         parsing: while ¬source.isEmpty {
             if source.scalars.last == ">" {
-                switch ElementSyntax.parse(fromEndOf: &source) {
-                case .failure(let error):
-                    return .failure(error)
-                case .success(let parsedElement):
-                    if parsedElement.continuation == nil,
-                        parsedElement.openingTag.name.source() == element {
-                        tag = parsedElement.openingTag
-                        break parsing
-                    } else {
-                        entries.append(ContentElementSyntax(kind: .element(parsedElement)))
+                if source.scalars.hasSuffix("\u{2D}\u{2D}>".scalars) {
+                    switch CommentSyntax.parse(fromEndOf: &source) {
+                    case .failure(let error):
+                        return .failure(error)
+                    case .success(let parsedComment):
+                        entries.append(ContentElementSyntax(kind: .comment(parsedComment)))
+                    }
+                } else {
+                    switch ElementSyntax.parse(fromEndOf: &source) {
+                    case .failure(let error):
+                        return .failure(error)
+                    case .success(let parsedElement):
+                        if parsedElement.continuation == nil,
+                            parsedElement.openingTag.name.source() == element {
+                            tag = parsedElement.openingTag
+                            break parsing
+                        } else {
+                            entries.append(ContentElementSyntax(kind: .element(parsedElement)))
+                        }
                     }
                 }
             } else {
