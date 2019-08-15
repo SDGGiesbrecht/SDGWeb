@@ -189,6 +189,8 @@ public struct AttributeSyntax : Syntax {
         "onloadedmetadata",
         "onloadstart",
         "onmousedown",
+        "onmouseenter",
+        "onmouseleave",
         "onmousemove",
         "onmouseout",
         "onmouseover",
