@@ -33,6 +33,7 @@ public enum HTML {
         var text = text
         sharedEscape(&text)
         text.scalars.replaceMatches(for: "<".scalars, with: "&#x003C;".scalars)
+        text.scalars.replaceMatches(for: ">".scalars, with: "&#x003E;".scalars)
         text.scalars.replaceMatches(for: "\u{2066}".scalars, with: "<bdi dir=\u{22}ltr\u{22}>".scalars)
         text.scalars.replaceMatches(for: "\u{2067}".scalars, with: "<bdi dir=\u{22}rtl\u{22}>".scalars)
         text.scalars.replaceMatches(for: "\u{2068}".scalars, with: "<bdi dir=\u{22}auto\u{22}>".scalars)
