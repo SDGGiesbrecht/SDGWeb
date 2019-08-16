@@ -71,12 +71,21 @@ class SDGWebAPITests : TestCase {
         try generate(forMock: "Poor HTML", localization: SingleLocalization.self, expectValidationFailure: true)
     }
 
-    func testRightToLeft() throws {
-        try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
+    func testRedirect() throws {
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
+            let redirectFile = Redirect(target: "../").contents
+            try redirectFile.save(to: url.appendingPathComponent("Redirect.html"))
+            let warnings = Site<InterfaceLocalization>.validate(site: url)
+            XCTAssert(warnings.isEmpty, "\(warnings)")
+        }
     }
 
     func testRepositoryStructure() {
         _ = RepositoryStructure()
+    }
+
+    func testRightToLeft() throws {
+        try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
     }
 
     struct StandInError : PresentableError {
