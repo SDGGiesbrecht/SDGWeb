@@ -1,5 +1,5 @@
 /*
- SDGWebAPITests.swift
+ APITests.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -26,7 +26,7 @@ import XCTest
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
-class SDGWebAPITests : TestCase {
+class APITests : TestCase {
 
     func testCopyright() {
         XCTAssert(¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–"))
@@ -71,12 +71,12 @@ class SDGWebAPITests : TestCase {
         try generate(forMock: "Poor HTML", localization: SingleLocalization.self, expectValidationFailure: true)
     }
 
-    func testRightToLeft() throws {
-        try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
-    }
-
     func testRepositoryStructure() {
         _ = RepositoryStructure()
+    }
+
+    func testRightToLeft() throws {
+        try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
     }
 
     struct StandInError : PresentableError {

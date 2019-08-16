@@ -1,5 +1,5 @@
 /*
- SDGHTMLRegressionTests.swift
+ RegressionTests.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -18,7 +18,7 @@ import SDGHTML
 
 import SDGXCTestUtilities
 
-class SDGHTMLRegressionTests : TestCase {
+class RegressionTests : TestCase {
 
     func testValidationOfMultiScalarClusters() throws {
         // Untracked
