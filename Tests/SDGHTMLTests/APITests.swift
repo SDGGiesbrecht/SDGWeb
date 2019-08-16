@@ -1,5 +1,5 @@
 /*
- SDGHTMLAPITests.swift
+ APITests.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -24,7 +24,7 @@ import XCTest
 import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
-class SDGHTMLAPITests : TestCase {
+class APITests : TestCase {
 
     func testAttribute() {
         var attribute = AttributeSyntax(name: TokenSyntax(kind: .attributeName("attribute")))
