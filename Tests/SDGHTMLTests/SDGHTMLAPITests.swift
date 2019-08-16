@@ -56,6 +56,21 @@ class SDGHTMLAPITests : TestCase {
         XCTAssertEqual(value.source(), "=\u{22}new value\u{22}")
     }
 
+    func testComment() {
+        var comment = CommentSyntax(
+            openingToken: TokenSyntax(kind: .commentStart),
+            contents: TokenSyntax(kind: .commentText("...")),
+            closingToken: TokenSyntax(kind: .commentEnd))
+        XCTAssertEqual(comment.source(), "<!\u{2D}\u{2D}...\u{2D}\u{2D}>")
+        comment.openingToken = TokenSyntax(kind: .commentStart)
+        XCTAssertEqual(comment.openingToken.source(), "<!\u{2D}\u{2D}")
+        comment.contents = TokenSyntax(kind: .commentText("..."))
+        XCTAssertEqual(comment.contents.source(), "...")
+        comment.closingToken = TokenSyntax(kind: .commentEnd)
+        XCTAssertEqual(comment.closingToken.source(), "\u{2D}\u{2D}>")
+        XCTAssertEqual(comment.source(), "<!\u{2D}\u{2D}...\u{2D}\u{2D}>")
+    }
+
     func testClosingTag() {
         var tag = ClosingTagSyntax(name: TokenSyntax(kind: .elementName("tag")))
         XCTAssertEqual(tag.source(), "</tag>")
@@ -133,7 +148,7 @@ class SDGHTMLAPITests : TestCase {
             ).get().content.elements.first!.kind {
         case .element(let element):
             XCTAssertEqual(element.openingTag.name.source(), "empty")
-        case .text:
+        case .text, .comment:
             XCTFail()
         }
 
@@ -167,6 +182,10 @@ class SDGHTMLAPITests : TestCase {
         document.write(to: &string)
         XCTAssertEqual(string, document.source())
         XCTAssertEqual(document.wrappedInstance as? String, document.source())
+
+        XCTAssert(try DocumentSyntax.parse(source:
+            "<!\u{2D}\u{2D} Comment \u{2D}\u{2D}>"
+            ).get().descendents().contains(where: { $0 is CommentSyntax }))
     }
 
     func testPercentEncoding() throws {
@@ -263,6 +282,10 @@ class SDGHTMLAPITests : TestCase {
         expectViolation(
             named: "Nameless Tag with Multiple Attributes",
             in: "<attribute=\u{22}value\u{22} attribute=\u{22}value\u{22}>",
+            overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Unpaired Comment Markers",
+            in: "Comment \u{2D}\u{2D}>",
             overwriteSpecificationInsteadOfFailing: false)
     }
 

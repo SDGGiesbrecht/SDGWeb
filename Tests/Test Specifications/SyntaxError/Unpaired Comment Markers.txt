@@ -1,0 +1,20 @@
+🇬🇧EN
+
+Line 2
+A comment end marker has no corresponding start marker.
+Comment -->
+🇺🇸EN
+
+Line 2
+A comment end marker has no corresponding start marker.
+Comment -->
+🇨🇦EN
+
+Line 2
+A comment end marker has no corresponding start marker.
+Comment -->
+🇩🇪DE
+
+Zeile 2
+Ein Kommentarsendzeichen hat kein entsprechendes Anfangszeichen.
+Comment -->

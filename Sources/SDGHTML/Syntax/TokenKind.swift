@@ -41,6 +41,13 @@ public enum TokenKind : Equatable, Hashable {
     /// Text of an attribute value.
     case attributeText(String)
 
+    /// A comment start marker.
+    case commentStart
+    /// Comment text.
+    case commentText(String)
+    /// A comment end marker.
+    case commentEnd
+
     // MARK: - Properties
 
     /// The textual representation of this token kind.
@@ -50,7 +57,8 @@ public enum TokenKind : Equatable, Hashable {
              .whitespace(let text),
              .elementName(let text),
              .attributeName(let text),
-             .attributeText(let text):
+             .attributeText(let text),
+             .commentText(let text):
             return text
         case .lessThan:
             return "<"
@@ -62,6 +70,10 @@ public enum TokenKind : Equatable, Hashable {
             return "="
         case .quotationMark:
             return "\u{22}"
+        case .commentStart:
+            return "<!\u{2D}\u{2D}"
+        case .commentEnd:
+            return "\u{2D}\u{2D}>"
         }
     }
 }
