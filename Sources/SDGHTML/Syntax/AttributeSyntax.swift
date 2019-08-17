@@ -309,19 +309,20 @@ public struct AttributeSyntax : Syntax {
                     context: self.name.source() + value.source()))
             }
         } else {
-            results.append(SyntaxError(
-                file: file,
-                index: location,
-                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "An attribute is unknown."
-                    case .deutschDeutschland:
-                        return "Eine Eigenschaft is unbekannt."
-                    }
-
-                }),
-                context: self.name.source() + (value?.source() ?? "")))
+            if ¬name.hasPrefix("data\u{2D}") {
+                results.append(SyntaxError(
+                    file: file,
+                    index: location,
+                    description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "An attribute is unknown."
+                        case .deutschDeutschland:
+                            return "Eine Eigenschaft is unbekannt."
+                        }
+                    }),
+                    context: self.name.source() + (value?.source() ?? "")))
+            }
         }
     }
 

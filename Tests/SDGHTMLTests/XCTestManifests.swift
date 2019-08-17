@@ -33,6 +33,7 @@ extension RegressionTests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__RegressionTests = [
+        ("testDataAttributesAllowed", testDataAttributesAllowed),
         ("testValidationOfMultiScalarClusters", testValidationOfMultiScalarClusters),
     ]
 }
