@@ -118,6 +118,13 @@ class APITests : TestCase {
         XCTAssertEqual(continuation.source(), "Text.</name>")
     }
 
+    func testExampleURL() throws {
+        let document = try DocumentSyntax.parse(source:
+            "<a href=\u{22}http://example.com\u{22}></a>"
+            ).get()
+        XCTAssert(document.validate(baseURL: URL(string: "/")!).isEmpty)
+    }
+
     func testEscaping() {
         XCTAssertFalse(HTML.escapeTextForCharacterData("<").contains("<"))
         XCTAssertFalse(HTML.escapeTextForAttribute("\u{22}").contains("\u{22}"))

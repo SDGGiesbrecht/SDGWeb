@@ -343,6 +343,8 @@ public struct AttributeSyntax : Syntax {
                     if (try? url.checkResourceIsReachable()) == true {
                         dead = false
                     }
+                } else if url.host == "example.com" {
+                    dead = false
                 } else {
                     let request = URLRequest(
                         url: url,
