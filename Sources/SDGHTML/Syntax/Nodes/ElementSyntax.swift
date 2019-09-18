@@ -19,7 +19,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An HTML element.
-public struct ElementSyntax : Syntax {
+public struct ElementSyntax : AttributedSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -156,14 +156,23 @@ public struct ElementSyntax : Syntax {
         }
     }
 
-    /// The element’s attributes.
-    public var attributes: [String: String] {
+    // MARK: - AttributedSyntax
+
+    public var attributeDictionary: [String: String] {
         get {
             return openingTag.attributeDictionary
         }
         set {
             openingTag.attributeDictionary = newValue
         }
+    }
+
+    public func attribute(named name: String) -> AttributeSyntax? {
+        return openingTag.attribute(named: name)
+    }
+
+    public mutating func apply(attribute: AttributeSyntax) {
+        openingTag.apply(attribute: attribute)
     }
 
     // MARK: - Syntax
