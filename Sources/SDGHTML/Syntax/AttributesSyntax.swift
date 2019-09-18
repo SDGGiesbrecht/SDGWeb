@@ -109,6 +109,22 @@ public struct AttributesSyntax : Syntax {
         _storage = SyntaxStorage(children: [attributes, trailingWhitespace])
     }
 
+    /// Creates an empty attribute list.
+    public init() {
+        self.init(attributes: nil)
+    }
+
+    /// Creates an attribute list from a dictionary.
+    ///
+    /// - Parameters:
+    ///     - dictionary: The attributes in dictionary form.
+    public init?(dictionary: [String: String]) {
+        guard let list = ListSyntax<AttributeSyntax>(dictionary: dictionary) else {
+            return nil
+        }
+        self.init(attributes: list)
+    }
+
     // MARK: - Children
 
     /// The attributes.
@@ -128,6 +144,18 @@ public struct AttributesSyntax : Syntax {
         }
         set {
             _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] = newValue
+        }
+    }
+
+    // MARK: - Computed Properties
+
+    /// The attributes in dictionary form.
+    public var dictionary: [String: String] {
+        get {
+            return attributes?.dictionary ?? [:]
+        }
+        set {
+            attributes = ListSyntax<AttributeSyntax>(dictionary: newValue)
         }
     }
 

@@ -50,16 +50,18 @@ public struct OpeningTagSyntax : Syntax {
     ///
     /// - Parameters:
     ///     - name: The tag name.
-    public init(name: TokenKind) {
-        self.init(name: TokenSyntax(kind: name))
+    ///     - attributes: Optional. The attributes.
+    public init(name: TokenKind, attributes: AttributesSyntax? = nil) {
+        self.init(name: TokenSyntax(kind: name), attributes: attributes)
     }
 
     /// Creates an opening tag.
     ///
     /// - Parameters:
     ///     - name: The tag name.
-    public init(name: String) {
-        self.init(name: .elementName(name))
+    ///     - attributes: Optional. The attributes.
+    public init(name: String, attributes: [String: String] = [:]) {
+        self.init(name: .elementName(name), attributes: AttributesSyntax(dictionary: attributes))
     }
 
     // MARK: - Children
@@ -101,6 +103,18 @@ public struct OpeningTagSyntax : Syntax {
         }
         set {
             _storage.children[OpeningTagSyntax.indices[.greaterThan]!] = newValue
+        }
+    }
+
+    // MARK: - Computed Properties
+
+    /// The element’s attributes.
+    public var attributeDictionary: [String: String] {
+        get {
+            return attributes?.dictionary ?? [:]
+        }
+        set {
+            attributes = AttributesSyntax(dictionary: newValue)
         }
     }
 

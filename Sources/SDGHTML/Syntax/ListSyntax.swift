@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 /// A node representing a consecutive list of other nodes.
 public struct ListSyntax<Entry> : ExpressibleByArrayLiteral, MutableCollection, RandomAccessCollection, RangeReplaceableCollection, Syntax
 where Entry : Syntax {
@@ -80,4 +82,43 @@ where Entry : Syntax {
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage
+}
+
+extension ListSyntax where Entry == AttributeSyntax {
+
+    private mutating func append(from dictionary: [String: String]) {
+        for key in dictionary.keys.sorted() {
+            let value = dictionary[key]
+            append(AttributeSyntax(name: key, value: value))
+        }
+    }
+
+    /// Creates an attribute list from a dictionary.
+    ///
+    /// - Parameters:
+    ///     - dictionary: The attributes in dictionary form.
+    public init?(dictionary: [String: String]) {
+        guard ¬dictionary.isEmpty else {
+            return nil
+        }
+        self.init()
+        append(from: dictionary)
+    }
+
+    // MARK: - Computed Properties
+
+    /// The attributes.
+    public var dictionary: [String: String] {
+        get {
+            var result: [String: String] = [:]
+            for attribute in self {
+                result[attribute.nameText] = attribute.valueText ?? ""
+            }
+            return result
+        }
+        set {
+            self = ListSyntax<AttributeSyntax>()
+            append(from: newValue)
+        }
+    }
 }

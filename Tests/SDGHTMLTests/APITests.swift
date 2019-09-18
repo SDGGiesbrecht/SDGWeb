@@ -111,6 +111,18 @@ class APITests : TestCase {
         XCTAssertEqual(element.source(), "<name></name>")
         element = ElementSyntax(name: "name", empty: true)
         XCTAssertEqual(element.source(), "<name>")
+
+        element = ElementSyntax(
+            name: "name",
+            attributes: ["attribute": "value", "eigenschaft": "wert"],
+            empty: true)
+        XCTAssertEqual(element.source(), "<name attribute=\u{22}value\u{22} eigenschaft=\u{22}wert\u{22}>")
+        let newAttributes = ["attribute": "new value", "eigenschaft": "neuer wert"]
+        element.attributes = newAttributes
+        XCTAssertEqual(
+            element.source(),
+            "<name attribute=\u{22}new value\u{22} eigenschaft=\u{22}neuer wert\u{22}>")
+        XCTAssertEqual(element.attributes, newAttributes)
     }
 
     func testElementContinuation() {

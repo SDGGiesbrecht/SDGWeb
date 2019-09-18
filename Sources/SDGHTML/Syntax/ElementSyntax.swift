@@ -112,10 +112,11 @@ public struct ElementSyntax : Syntax {
     ///
     /// - Parameters:
     ///     - name: The tag name.
+    ///     - attributes: Optional. The attributes.
     ///     - empty: Whether the element should be created empty (without a continuation node).
-    public init(name: String, empty: Bool) {
+    public init(name: String, attributes: [String: String] = [:], empty: Bool) {
         self.init(
-            openingTag: OpeningTagSyntax(name: name),
+            openingTag: OpeningTagSyntax(name: name, attributes: attributes),
             continuation: empty ? nil : ElementContinuationSyntax(elementName: name))
     }
 
@@ -138,6 +139,18 @@ public struct ElementSyntax : Syntax {
         }
         set {
             _storage.children[ElementSyntax.indices[.continuation]!] = newValue
+        }
+    }
+
+    // MARK: - Computed Properties
+
+    /// The element’s attributes.
+    public var attributes: [String: String] {
+        get {
+            return openingTag.attributeDictionary
+        }
+        set {
+            openingTag.attributeDictionary = newValue
         }
     }
 
