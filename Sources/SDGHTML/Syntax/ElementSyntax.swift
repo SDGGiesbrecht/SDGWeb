@@ -144,6 +144,18 @@ public struct ElementSyntax : Syntax {
 
     // MARK: - Computed Properties
 
+    /// The tag name.
+    public var name: String {
+        get {
+            return openingTag.name.tokenKind.text
+        }
+        set {
+            let token = TokenSyntax(kind: .elementName(newValue))
+            openingTag.name = token
+            continuation?.closingTag.name = token
+        }
+    }
+
     /// The element’s attributes.
     public var attributes: [String: String] {
         get {
