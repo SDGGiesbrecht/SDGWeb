@@ -108,6 +108,17 @@ public struct ElementSyntax : Syntax {
         _storage = _SyntaxStorage(children: [openingTag, continuation])
     }
 
+    /// Creates an element.
+    ///
+    /// - Parameters:
+    ///     - name: The tag name.
+    ///     - empty: Whether the element should be created empty (without a continuation node).
+    public init(name: String, empty: Bool) {
+        self.init(
+            openingTag: OpeningTagSyntax(name: name),
+            continuation: empty ? nil : ElementContinuationSyntax(elementName: name))
+    }
+
     // MARK: - Children
 
     /// The opening tag.

@@ -46,6 +46,22 @@ public struct OpeningTagSyntax : Syntax {
         _storage = _SyntaxStorage(children: [lessThan, name, attributes, greaterThan])
     }
 
+    /// Creates an opening tag.
+    ///
+    /// - Parameters:
+    ///     - name: The tag name.
+    public init(name: TokenKind) {
+        self.init(name: TokenSyntax(kind: name))
+    }
+
+    /// Creates an opening tag.
+    ///
+    /// - Parameters:
+    ///     - name: The tag name.
+    public init(name: String) {
+        self.init(name: .elementName(name))
+    }
+
     // MARK: - Children
 
     /// The less‐than sign.

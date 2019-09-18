@@ -106,6 +106,11 @@ class APITests : TestCase {
             content: ContentSyntax(elements: ListSyntax()),
             closingTag: ClosingTagSyntax(name: TokenSyntax(kind: .elementName("name"))))
         XCTAssertEqual(element.source(), "<name></name>")
+
+        element = ElementSyntax(name: "name", empty: false)
+        XCTAssertEqual(element.source(), "<name></name>")
+        element = ElementSyntax(name: "name", empty: true)
+        XCTAssertEqual(element.source(), "<name>")
     }
 
     func testElementContinuation() {
