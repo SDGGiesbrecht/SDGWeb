@@ -57,10 +57,10 @@ class APITests : TestCase {
         XCTAssertEqual(attributes.source(), " one two ")
         attributes = AttributesSyntax()
         XCTAssertEqual(attributes.source(), "")
-        attributes.dictionary = ["name": "value"]
-        XCTAssertEqual(attributes.dictionary, ["name": "value"])
+        attributes.attributeDictionary = ["name": "value"]
+        XCTAssertEqual(attributes.attributeDictionary, ["name": "value"])
         attributes = AttributesSyntax(attributes: nil, trailingWhitespace: TokenSyntax(kind: .whitespace(" ")))
-        XCTAssertEqual(attributes.dictionary, [:])
+        XCTAssertEqual(attributes.attributeDictionary, [:])
     }
 
     func testAttributeValue() {
@@ -139,11 +139,11 @@ class APITests : TestCase {
             empty: true)
         XCTAssertEqual(element.source(), "<name attribute=\u{22}value\u{22} eigenschaft=\u{22}wert\u{22}>")
         let newAttributes = ["attribute": "new value", "eigenschaft": "neuer wert"]
-        element.attributes = newAttributes
+        element.attributeDictionary = newAttributes
         XCTAssertEqual(
             element.source(),
             "<name attribute=\u{22}new value\u{22} eigenschaft=\u{22}neuer wert\u{22}>")
-        XCTAssertEqual(element.attributes, newAttributes)
+        XCTAssertEqual(element.attributeDictionary, newAttributes)
 
         element = ElementSyntax(name: "original", empty: false)
         element.name = "changed"
@@ -176,12 +176,12 @@ class APITests : TestCase {
     func testListSyntax() {
         XCTAssertEqual(ListSyntax<ContentElementSyntax>().source(), "")
         var attributeList: ListSyntax<AttributeSyntax> = []
-        XCTAssertEqual(attributeList.dictionary, [:])
+        XCTAssertEqual(attributeList.attributeDictionary, [:])
         attributeList.append(AttributeSyntax(name: "hidden"))
         XCTAssertEqual(attributeList.source(), " hidden")
-        XCTAssertEqual(attributeList.dictionary, ["hidden": ""])
-        attributeList.dictionary = ["attribute": "value"]
-        XCTAssertEqual(attributeList.dictionary, ["attribute": "value"])
+        XCTAssertEqual(attributeList.attributeDictionary, ["hidden": ""])
+        attributeList.attributeDictionary = ["attribute": "value"]
+        XCTAssertEqual(attributeList.attributeDictionary, ["attribute": "value"])
     }
 
     func testOpeningTag() {
