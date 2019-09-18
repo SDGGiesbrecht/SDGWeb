@@ -78,7 +78,7 @@ where Entry : Syntax {
     public var _storage: _SyntaxStorage
 }
 
-extension ListSyntax where Entry == AttributeSyntax {
+extension ListSyntax : AttributedSyntax where Entry == AttributeSyntax {
 
     private mutating func append(from dictionary: [String: String]) {
         for key in dictionary.keys.sorted() {
@@ -99,9 +99,8 @@ extension ListSyntax where Entry == AttributeSyntax {
         append(from: dictionary)
     }
 
-    // MARK: - Computed Properties
+    // MARK: - AttributedSyntax
 
-    /// The attributes.
     public var dictionary: [String: String] {
         get {
             var result: [String: String] = [:]
@@ -116,93 +115,16 @@ extension ListSyntax where Entry == AttributeSyntax {
         }
     }
 
-    #warning("Propagate these up to element.")
-    /// Returns the attribute with the specified name.
-    ///
-    /// - Parameters:
-    ///     - name: The name.
     public func attribute(named name: String) -> AttributeSyntax? {
         return first(where: { $0.nameText == name })
     }
 
-    /// Returns the value of the attribute with the specified name.
-    ///
-    /// - Parameters:
-    ///     - name: The name.
-    public func valueOfAttribute(named name: String) -> String? {
-        return attribute(named: name)?.valueText
-    }
-
-    /// Applies the attribute.
-    ///
-    /// If the attribute already exists, it will be overwritten with the new node. Otherwise the new node will be appended to the end of the list.
-    ///
-    /// - Parameters:
-    ///     - name: The name.
     public mutating func apply(attribute: AttributeSyntax) {
         let name = attribute.nameText
         if let index = indices.first(where: { self[$0].nameText == name }) {
             self[index] = attribute
         } else {
             append(attribute)
-        }
-    }
-    /// Sets the attribute to the provided value.
-    ///
-    /// - Parameters:
-    ///     - name: The name of the attribute.
-    ///     - value: The value of the attribute.
-    public mutating func set(attribute name: String, to value: String?) {
-        apply(attribute: AttributeSyntax(name: name, value: value))
-    }
-
-    /// The value of the identifier attribute.
-    public var identifier: String? {
-        get {
-            return valueOfAttribute(named: "id")
-        }
-        set {
-            set(attribute: "id", to: newValue)
-        }
-    }
-
-    /// The value of the class attribute.
-    public var `class`: String? {
-        get {
-            return valueOfAttribute(named: "class")
-        }
-        set {
-            set(attribute: "class", to: newValue)
-        }
-    }
-
-    /// The value of the language attribute.
-    public var language: String? {
-        get {
-            return valueOfAttribute(named: "lang")
-        }
-        set {
-            set(attribute: "lang", to: newValue)
-        }
-    }
-
-    /// The value of the text direction attribute.
-    public var textDirection: String? {
-        get {
-            return valueOfAttribute(named: "dir")
-        }
-        set {
-            set(attribute: "dir", to: newValue)
-        }
-    }
-
-    /// The value of the attribute which declares translation intent.
-    public var shouldTranslate: String? {
-        get {
-            return valueOfAttribute(named: "translate")
-        }
-        set {
-            set(attribute: "translate", to: newValue)
         }
     }
 }

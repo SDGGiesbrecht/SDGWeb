@@ -19,7 +19,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An attribute list.
-public struct AttributesSyntax : Syntax {
+public struct AttributesSyntax : AttributedSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -147,9 +147,8 @@ public struct AttributesSyntax : Syntax {
         }
     }
 
-    // MARK: - Computed Properties
+    // MARK: - AttributedSyntax
 
-    /// The attributes in dictionary form.
     public var dictionary: [String: String] {
         get {
             return attributes?.dictionary ?? [:]
@@ -157,6 +156,17 @@ public struct AttributesSyntax : Syntax {
         set {
             attributes = ListSyntax<AttributeSyntax>(dictionary: newValue)
         }
+    }
+
+    public func attribute(named name: String) -> AttributeSyntax? {
+        return attributes?.attribute(named: name)
+    }
+
+    public mutating func apply(attribute: AttributeSyntax) {
+        if attributes == nil {
+            attributes = []
+        }
+        attributes?.apply(attribute: attribute)
     }
 
     // MARK: - Syntax
