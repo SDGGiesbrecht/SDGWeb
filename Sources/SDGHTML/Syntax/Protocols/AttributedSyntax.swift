@@ -2,7 +2,7 @@
 public protocol AttributedSyntax : Syntax {
 
     /// The attributes in dictionary form.
-    var dictionary: [String: String] { get set }
+    var attributeDictionary: [String: String] { get set }
 
     /// Returns the attribute with the specified name.
     ///

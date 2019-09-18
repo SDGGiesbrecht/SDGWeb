@@ -19,7 +19,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An attribute list.
-public struct AttributesSyntax : AttributedSyntax, Syntax {
+public struct AttributesSyntax : AttributedSyntax, ExpressibleByArrayLiteral, Syntax {
 
     // MARK: - Parsing
 
@@ -149,9 +149,9 @@ public struct AttributesSyntax : AttributedSyntax, Syntax {
 
     // MARK: - AttributedSyntax
 
-    public var dictionary: [String: String] {
+    public var attributeDictionary: [String: String] {
         get {
-            return attributes?.dictionary ?? [:]
+            return attributes?.attributeDictionary ?? [:]
         }
         set {
             attributes = ListSyntax<AttributeSyntax>(dictionary: newValue)
@@ -167,6 +167,12 @@ public struct AttributesSyntax : AttributedSyntax, Syntax {
             attributes = []
         }
         attributes?.apply(attribute: attribute)
+    }
+
+    // MARK: - ExpressibleByArrayLiteral
+
+    public init(arrayLiteral elements: AttributeSyntax...) {
+        self.init(attributes: ListSyntax(entries: elements))
     }
 
     // MARK: - Syntax

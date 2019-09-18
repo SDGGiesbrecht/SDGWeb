@@ -101,7 +101,7 @@ extension ListSyntax : AttributedSyntax where Entry == AttributeSyntax {
 
     // MARK: - AttributedSyntax
 
-    public var dictionary: [String: String] {
+    public var attributeDictionary: [String: String] {
         get {
             var result: [String: String] = [:]
             for attribute in self {

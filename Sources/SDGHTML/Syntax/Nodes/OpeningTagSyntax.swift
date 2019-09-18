@@ -17,7 +17,7 @@ import Foundation
 import SDGLogic
 
 /// An opening tag.
-public struct OpeningTagSyntax : Syntax {
+public struct OpeningTagSyntax : AttributedSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -106,18 +106,6 @@ public struct OpeningTagSyntax : Syntax {
         }
     }
 
-    // MARK: - Computed Properties
-
-    /// The element’s attributes.
-    public var attributeDictionary: [String: String] {
-        get {
-            return attributes?.dictionary ?? [:]
-        }
-        set {
-            attributes = AttributesSyntax(dictionary: newValue)
-        }
-    }
-
     // MARK: - Validation
 
     internal func validate(
@@ -150,6 +138,28 @@ public struct OpeningTagSyntax : Syntax {
                 }
             }
         }
+    }
+
+    // MARK: - AttributedSyntax
+
+    public var attributeDictionary: [String: String] {
+        get {
+            return attributes?.attributeDictionary ?? [:]
+        }
+        set {
+            attributes = AttributesSyntax(dictionary: newValue)
+        }
+    }
+
+    public func attribute(named name: String) -> AttributeSyntax? {
+        return attributes?.attribute(named: name)
+    }
+
+    public mutating func apply(attribute: AttributeSyntax) {
+        if attributes == nil {
+            attributes = []
+        }
+        attributes?.apply(attribute: attribute)
     }
 
     // MARK: - Syntax
