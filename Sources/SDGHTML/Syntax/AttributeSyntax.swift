@@ -78,7 +78,7 @@ public struct AttributeSyntax : Syntax {
             name.text ∈ AttributeSyntax.emptyAttributes {
             valueSyntax = nil
         } else {
-            valueSyntax = AttributeValueSyntax(value: value)
+            valueSyntax = AttributeValueSyntax(valueText: value)
         }
         self.init(name: TokenSyntax(kind: name), value: valueSyntax)
     }
@@ -142,7 +142,7 @@ public struct AttributeSyntax : Syntax {
             return value?.value.tokenKind.text
         }
         set {
-            value = AttributeValueSyntax(value: newValue)
+            value = AttributeValueSyntax(valueText: newValue)
         }
     }
 

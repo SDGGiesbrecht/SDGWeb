@@ -103,9 +103,9 @@ public struct AttributeValueSyntax : Syntax {
     /// Creates an attribute value.
     ///
     /// - Parameters:
-    ///     - value: Optional. The attribute value.
-    public init(value: String? = nil) {
-        self.init(value: TokenKind.attributeText(value ?? ""))
+    ///     - valueText: Optional. The attribute value.
+    public init(valueText: String? = nil) {
+        self.init(value: TokenKind.attributeText(valueText ?? ""))
     }
 
     // MARK: - Children

@@ -33,6 +33,17 @@ class APITests : TestCase {
         attribute.name = TokenSyntax(kind: .attributeName("name"))
         attribute.value = AttributeValueSyntax(value: TokenSyntax(kind: .attributeText("value")))
         XCTAssertEqual(attribute.source(), "  name=\u{22}value\u{22}")
+
+        attribute = AttributeSyntax(name: "title") // Better empty
+        XCTAssertEqual(attribute.source(), " title=\u{22}\u{22}")
+        attribute = AttributeSyntax(name: "hidden") // Better none
+        XCTAssertEqual(attribute.source(), " hidden")
+
+        attribute = AttributeSyntax(name: "name", value: "value")
+        attribute.nameText = "renamed"
+        XCTAssertEqual(attribute.nameText, "renamed")
+        attribute.valueText = "changed"
+        XCTAssertEqual(attribute.valueText, "changed")
     }
 
     func testAttributes() {
@@ -44,6 +55,12 @@ class APITests : TestCase {
             ])
         attributes.trailingWhitespace = TokenSyntax(kind: .whitespace(" "))
         XCTAssertEqual(attributes.source(), " one two ")
+        attributes = AttributesSyntax()
+        XCTAssertEqual(attributes.source(), "")
+        attributes.dictionary = ["name": "value"]
+        XCTAssertEqual(attributes.dictionary, ["name": "value"])
+        attributes = AttributesSyntax(attributes: nil, trailingWhitespace: TokenSyntax(kind: .whitespace(" ")))
+        XCTAssertEqual(attributes.dictionary, [:])
     }
 
     func testAttributeValue() {
@@ -54,6 +71,10 @@ class APITests : TestCase {
         value.value = TokenSyntax(kind: .attributeText("new value"))
         value.closingQuotationMark = TokenSyntax(kind: .quotationMark)
         XCTAssertEqual(value.source(), "=\u{22}new value\u{22}")
+
+        _ = AttributeValueSyntax(value: nil)
+        value.valueText = "text"
+        XCTAssertEqual(value.valueText, "text")
     }
 
     func testComment() {
@@ -149,6 +170,13 @@ class APITests : TestCase {
 
     func testListSyntax() {
         XCTAssertEqual(ListSyntax<ContentElementSyntax>().source(), "")
+        var attributeList: ListSyntax<AttributeSyntax> = []
+        XCTAssertEqual(attributeList.dictionary, [:])
+        attributeList.append(AttributeSyntax(name: "hidden"))
+        XCTAssertEqual(attributeList.source(), " hidden")
+        XCTAssertEqual(attributeList.dictionary, ["hidden": ""])
+        attributeList.dictionary = ["attribute": "value"]
+        XCTAssertEqual(attributeList.dictionary, ["attribute": "value"])
     }
 
     func testOpeningTag() {
@@ -159,6 +187,9 @@ class APITests : TestCase {
         tag.attributes = AttributesSyntax(attributes: nil, trailingWhitespace: TokenSyntax(kind: .whitespace(" ")))
         tag.greaterThan = TokenSyntax(kind: .greaterThan)
         XCTAssertEqual(tag.source(), "<name >")
+
+        tag = OpeningTagSyntax(name: "name")
+        XCTAssertEqual(tag.attributeDictionary, [:])
     }
 
     func testParsing() throws {

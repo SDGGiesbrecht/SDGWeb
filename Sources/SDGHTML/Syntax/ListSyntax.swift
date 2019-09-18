@@ -57,12 +57,6 @@ where Entry : Syntax {
         }
     }
 
-    // MARK: - ExpressibleByArrayLiteral
-
-    public init(arrayLiteral: [Entry]) {
-        self.init(entries: arrayLiteral)
-    }
-
     // MARK: - RandomAccessCollection
 
     public func index(_ i: Index, offsetBy distance: Int) -> Index {
