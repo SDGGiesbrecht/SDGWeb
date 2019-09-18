@@ -17,6 +17,12 @@ public protocol AttributedSyntax : Syntax {
     /// - Parameters:
     ///     - name: The name.
     mutating func apply(attribute: AttributeSyntax)
+
+    /// Removes the attribute with the specified name.
+    ///
+    /// - Parameters:
+    ///     - name: The name.
+    mutating func removeAttribute(named name: String)
 }
 
 extension AttributedSyntax {
@@ -29,13 +35,17 @@ extension AttributedSyntax {
         return attribute(named: name)?.valueText
     }
 
-    /// Sets the attribute to the provided value.
+    /// Sets the attribute to the provided value, or removes it if the provided value is `nil`.
     ///
     /// - Parameters:
     ///     - name: The name of the attribute.
     ///     - value: The value of the attribute.
     public mutating func set(attribute name: String, to value: String?) {
-        apply(attribute: AttributeSyntax(name: name, value: value))
+        if let insert = value {
+            apply(attribute: AttributeSyntax(name: name, value: insert))
+        } else {
+            removeAttribute(named: name)
+        }
     }
 
     private var identifierName: String { return "id" }

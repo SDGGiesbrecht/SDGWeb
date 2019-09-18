@@ -162,6 +162,13 @@ public struct OpeningTagSyntax : AttributedSyntax, Syntax {
         attributes?.apply(attribute: attribute)
     }
 
+    public mutating func removeAttribute(named name: String) {
+        attributes?.removeAttribute(named: name)
+        if attributes?.attributes?.isEmpty ≠ false {
+            attributes = nil
+        }
+    }
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage

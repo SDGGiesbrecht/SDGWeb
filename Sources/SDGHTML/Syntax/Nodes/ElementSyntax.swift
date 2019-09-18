@@ -175,6 +175,10 @@ public struct ElementSyntax : AttributedSyntax, Syntax {
         openingTag.apply(attribute: attribute)
     }
 
+    public mutating func removeAttribute(named name: String) {
+        openingTag.removeAttribute(named: name)
+    }
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage

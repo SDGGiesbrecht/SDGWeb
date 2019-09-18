@@ -46,6 +46,14 @@ class APITests : TestCase {
         XCTAssertEqual(attribute.valueText, "changed")
     }
 
+    func testAttributed() {
+        var element = ElementSyntax(name: "name", empty: true)
+        element.set(attribute: "attribute", to: "value")
+        XCTAssertEqual(element.source(), "<name attribute=\u{22}value\u{22}>")
+        element.set(attribute: "attribute", to: nil)
+        XCTAssertEqual(element.source(), "<name>")
+    }
+
     func testAttributes() {
         var attributes = AttributesSyntax(attributes: nil)
         XCTAssertEqual(attributes.source(), "")

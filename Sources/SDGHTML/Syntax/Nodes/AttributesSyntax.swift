@@ -169,6 +169,13 @@ public struct AttributesSyntax : AttributedSyntax, ExpressibleByArrayLiteral, Sy
         attributes?.apply(attribute: attribute)
     }
 
+    public mutating func removeAttribute(named name: String) {
+        attributes?.removeAttribute(named: name)
+        if attributes?.isEmpty ≠ false {
+            attributes = nil
+        }
+    }
+
     // MARK: - ExpressibleByArrayLiteral
 
     public init(arrayLiteral elements: AttributeSyntax...) {

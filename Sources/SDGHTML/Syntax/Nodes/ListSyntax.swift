@@ -127,4 +127,10 @@ extension ListSyntax : AttributedSyntax where Entry == AttributeSyntax {
             append(attribute)
         }
     }
+
+    public mutating func removeAttribute(named name: String) {
+        if let index = indices.first(where: { self[$0].nameText == name }) {
+            remove(at: index)
+        }
+    }
 }
