@@ -172,6 +172,15 @@ class APITests : TestCase {
         XCTAssertEqual(element.source(), "<changed></changed>")
         element.attributeDictionary = ["name": "value"]
         XCTAssertEqual(element.attribute(named: "name")?.value?.valueText, "value")
+
+        element = ElementSyntax(name: "name", empty: true)
+        element.content.append(ContentSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("content"))))))
+        XCTAssertEqual(element.source(), "<name>content</name>")
+        element.content = []
+        XCTAssertEqual(element.source(), "<name></name>")
+        element = ElementSyntax(name: "name", empty: true)
+        element.content = []
+        XCTAssertEqual(element.source(), "<name>")
     }
 
     func testElementContinuation() {
