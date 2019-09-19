@@ -30,7 +30,7 @@ public struct ElementContinuationSyntax : Syntax {
     /// - Parameters:
     ///     - content: The content.
     ///     - closingTag: The closing tag.
-    public init(content: ContentSyntax, closingTag: ClosingTagSyntax) {
+    public init(content: ListSyntax<ContentElementSyntax>, closingTag: ClosingTagSyntax) {
         _storage = _SyntaxStorage(children: [content, closingTag])
     }
 
@@ -39,15 +39,16 @@ public struct ElementContinuationSyntax : Syntax {
     /// - Parameters:
     ///     - elementName: The tag name.
     public init(elementName: String) {
-        self.init(content: ContentSyntax(), closingTag: ClosingTagSyntax(name: elementName))
+        self.init(content: [], closingTag: ClosingTagSyntax(name: elementName))
     }
 
     // MARK: - Children
 
     /// The content of the element.
-    public var content: ContentSyntax {
+    public var content: ListSyntax<ContentElementSyntax> {
         get {
-            return _storage.children[ElementContinuationSyntax.indices[.content]!] as! ContentSyntax
+            return _storage.children[ElementContinuationSyntax.indices[.content]!]
+                as! ListSyntax<ContentElementSyntax>
         }
         set {
             _storage.children[ElementContinuationSyntax.indices[.content]!] = newValue

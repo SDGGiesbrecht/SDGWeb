@@ -142,10 +142,10 @@ class APITests : TestCase {
     }
 
     func testDocument() {
-        var document = DocumentSyntax(content:
-            ContentSyntax(elements: ListSyntax<ContentElementSyntax>(entries: [])))
+        var document = DocumentSyntax(content: ListSyntax<ContentElementSyntax>(entries: []))
         XCTAssertEqual(document.source(), "")
-        document.content.elements.append(ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text."))))))
+        document.content.append(
+            ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text."))))))
         XCTAssertEqual(document.source(), "Text.")
     }
 
@@ -154,7 +154,7 @@ class APITests : TestCase {
         XCTAssertEqual(element.source(), "<element>")
         element.openingTag.name = TokenSyntax(kind: .elementName("name"))
         element.continuation = ElementContinuationSyntax(
-            content: ContentSyntax(elements: ListSyntax()),
+            content: ListSyntax(),
             closingTag: ClosingTagSyntax(name: TokenSyntax(kind: .elementName("name"))))
         XCTAssertEqual(element.source(), "<name></name>")
 
@@ -185,10 +185,10 @@ class APITests : TestCase {
 
     func testElementContinuation() {
         var continuation = ElementContinuationSyntax(
-            content: ContentSyntax(elements: ListSyntax<ContentElementSyntax>(entries: [])),
+            content: ListSyntax<ContentElementSyntax>(entries: []),
             closingTag: ClosingTagSyntax(name: TokenSyntax(kind: .elementName("tag"))))
         XCTAssertEqual(continuation.source(), "</tag>")
-        continuation.content.elements.append(ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text."))))))
+        continuation.content.append(ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text."))))))
         continuation.closingTag.name = TokenSyntax(kind: .elementName("name"))
         XCTAssertEqual(continuation.source(), "Text.</name>")
     }
@@ -241,7 +241,7 @@ class APITests : TestCase {
 
         switch try DocumentSyntax.parse(source:
             "<empty attribute>\n<tag>\n</tag>"
-            ).get().content.elements.first!.kind {
+            ).get().content.first!.kind {
         case .element(let element):
             XCTAssertEqual(element.openingTag.name.source(), "empty")
         case .text, .comment:
@@ -271,8 +271,8 @@ class APITests : TestCase {
         document = try DocumentSyntax.parse(source:
             "<a><b>"
             ).get()
-        XCTAssertEqual(document.content.elements.dropFirst().count, 1)
-        _ = document.content.elements.index(before: document.content.elements.endIndex)
+        XCTAssertEqual(document.content.dropFirst().count, 1)
+        _ = document.content.index(before: document.content.endIndex)
 
         var string: String = ""
         document.write(to: &string)
