@@ -62,8 +62,12 @@ class APITests : TestCase {
         XCTAssertEqual(element.language, "he")
         element.textDirection = "rtl"
         XCTAssertEqual(element.textDirection, "rtl")
-        element.translationIntent = "no"
-        XCTAssertEqual(element.translationIntent, "no")
+        element.translationIntent = false
+        XCTAssertEqual(element.translationIntent, false)
+        element.translationIntent = true
+        XCTAssertEqual(element.translationIntent, true)
+        element.translationIntent = nil
+        XCTAssertEqual(element.translationIntent, nil)
     }
 
     func testAttributes() {

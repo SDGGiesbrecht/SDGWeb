@@ -108,12 +108,34 @@ extension AttributedSyntax {
 
     private var translationIntentName: String { return "translate" }
     /// The value of the attribute which declares translation intent.
-    public var translationIntent: String? {
+    public var translationIntentValue: String? {
         get {
             return valueOfAttribute(named: translationIntentName)
         }
         set {
             set(attribute: translationIntentName, to: newValue)
+        }
+    }
+    private var yesValue: String { return "yes" }
+    private var noValue: String { return "no" }
+    /// The value of the attribute which declares translation intent.
+    public var translationIntent: Bool? {
+        get {
+            switch translationIntentValue {
+            case yesValue:
+                return true
+            case noValue:
+                return false
+            default:
+                return nil
+            }
+        }
+        set {
+            var value: String?
+            if let new = newValue {
+                value = new ? yesValue : noValue
+            }
+            translationIntentValue = value
         }
     }
 }
