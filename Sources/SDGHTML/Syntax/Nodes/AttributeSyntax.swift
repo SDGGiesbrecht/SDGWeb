@@ -67,6 +67,31 @@ public struct AttributeSyntax : Syntax {
         _storage = SyntaxStorage(children: [whitespace, name, value])
     }
 
+    /// Creates an attribute.
+    ///
+    /// - Parameters:
+    ///     - name: The attribute name.
+    ///     - value: Optional. Any attribute value.
+    public init(name: TokenKind, value: String? = nil) {
+        let valueSyntax: AttributeValueSyntax?
+        if value ?? "" == "",
+            name.text ∈ AttributeSyntax.emptyAttributes {
+            valueSyntax = nil
+        } else {
+            valueSyntax = AttributeValueSyntax(valueText: value)
+        }
+        self.init(name: TokenSyntax(kind: name), value: valueSyntax)
+    }
+
+    /// Creates an attribute.
+    ///
+    /// - Parameters:
+    ///     - name: The attribute name.
+    ///     - value: Optional. Any attribute value.
+    public init(name: String, value: String? = nil) {
+        self.init(name: TokenKind.attributeName(name), value: value)
+    }
+
     // MARK: - Children
 
     /// The leading whitespace.
@@ -96,6 +121,28 @@ public struct AttributeSyntax : Syntax {
         }
         set {
             _storage.children[AttributeSyntax.indices[.value]!] = newValue
+        }
+    }
+
+    // MARK: - Computed Properties
+
+    /// The attribute name.
+    public var nameText: String {
+        get {
+            return name.tokenKind.text
+        }
+        set {
+            name = TokenSyntax(kind: .attributeName(newValue))
+        }
+    }
+
+    /// The value.
+    public var valueText: String? {
+        get {
+            return value?.value.tokenKind.text
+        }
+        set {
+            value = AttributeValueSyntax(valueText: newValue)
         }
     }
 

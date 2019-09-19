@@ -34,6 +34,14 @@ public struct ElementContinuationSyntax : Syntax {
         _storage = _SyntaxStorage(children: [content, closingTag])
     }
 
+    /// Creates an element continuation node.
+    ///
+    /// - Parameters:
+    ///     - elementName: The tag name.
+    public init(elementName: String) {
+        self.init(content: ContentSyntax(), closingTag: ClosingTagSyntax(name: elementName))
+    }
+
     // MARK: - Children
 
     /// The content of the element.

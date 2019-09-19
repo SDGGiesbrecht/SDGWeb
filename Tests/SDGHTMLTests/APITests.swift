@@ -33,6 +33,41 @@ class APITests : TestCase {
         attribute.name = TokenSyntax(kind: .attributeName("name"))
         attribute.value = AttributeValueSyntax(value: TokenSyntax(kind: .attributeText("value")))
         XCTAssertEqual(attribute.source(), "  name=\u{22}value\u{22}")
+
+        attribute = AttributeSyntax(name: "title") // Better empty
+        XCTAssertEqual(attribute.source(), " title=\u{22}\u{22}")
+        attribute = AttributeSyntax(name: "hidden") // Better none
+        XCTAssertEqual(attribute.source(), " hidden")
+
+        attribute = AttributeSyntax(name: "name", value: "value")
+        attribute.nameText = "renamed"
+        XCTAssertEqual(attribute.nameText, "renamed")
+        attribute.valueText = "changed"
+        XCTAssertEqual(attribute.valueText, "changed")
+    }
+
+    func testAttributed() {
+        var element = ElementSyntax(name: "name", empty: true)
+        element.set(attribute: "attribute", to: "value")
+        XCTAssertEqual(element.source(), "<name attribute=\u{22}value\u{22}>")
+        element.set(attribute: "attribute", to: nil)
+        XCTAssertEqual(element.source(), "<name>")
+        element.set(attribute: "attribute", to: "value")
+        XCTAssertEqual(element.valueOfAttribute(named: "attribute"), "value")
+        element.identifier = "identifier"
+        XCTAssertEqual(element.identifier, "identifier")
+        element.class = "class"
+        XCTAssertEqual(element.class, "class")
+        element.language = "he"
+        XCTAssertEqual(element.language, "he")
+        element.textDirection = "rtl"
+        XCTAssertEqual(element.textDirection, "rtl")
+        element.translationIntent = false
+        XCTAssertEqual(element.translationIntent, false)
+        element.translationIntent = true
+        XCTAssertEqual(element.translationIntent, true)
+        element.translationIntent = nil
+        XCTAssertEqual(element.translationIntent, nil)
     }
 
     func testAttributes() {
@@ -44,6 +79,18 @@ class APITests : TestCase {
             ])
         attributes.trailingWhitespace = TokenSyntax(kind: .whitespace(" "))
         XCTAssertEqual(attributes.source(), " one two ")
+        attributes = AttributesSyntax()
+        XCTAssertEqual(attributes.source(), "")
+        attributes.attributeDictionary = ["name": "value"]
+        XCTAssertEqual(attributes.attributeDictionary, ["name": "value"])
+        attributes = AttributesSyntax(attributes: nil, trailingWhitespace: TokenSyntax(kind: .whitespace(" ")))
+        XCTAssertEqual(attributes.attributeDictionary, [:])
+
+        attributes = AttributesSyntax(dictionary: ["name": "value"])!
+        XCTAssertEqual(attributes.attribute(named: "name")?.source(), " name=\u{22}value\u{22}")
+        attributes = AttributesSyntax(attributes: nil, trailingWhitespace: TokenSyntax(kind: .whitespace(" ")))
+        attributes.apply(attribute: AttributeSyntax(name: "name", value: "value"))
+        XCTAssertEqual(attributes.attributeDictionary, ["name": "value"])
     }
 
     func testAttributeValue() {
@@ -54,6 +101,10 @@ class APITests : TestCase {
         value.value = TokenSyntax(kind: .attributeText("new value"))
         value.closingQuotationMark = TokenSyntax(kind: .quotationMark)
         XCTAssertEqual(value.source(), "=\u{22}new value\u{22}")
+
+        _ = AttributeValueSyntax(value: nil)
+        value.valueText = "text"
+        XCTAssertEqual(value.valueText, "text")
     }
 
     func testComment() {
@@ -106,6 +157,30 @@ class APITests : TestCase {
             content: ContentSyntax(elements: ListSyntax()),
             closingTag: ClosingTagSyntax(name: TokenSyntax(kind: .elementName("name"))))
         XCTAssertEqual(element.source(), "<name></name>")
+
+        element = ElementSyntax(name: "name", empty: false)
+        XCTAssertEqual(element.source(), "<name></name>")
+        element = ElementSyntax(name: "name", empty: true)
+        XCTAssertEqual(element.source(), "<name>")
+
+        element = ElementSyntax(
+            name: "name",
+            attributes: ["attribute": "value", "eigenschaft": "wert"],
+            empty: true)
+        XCTAssertEqual(element.source(), "<name attribute=\u{22}value\u{22} eigenschaft=\u{22}wert\u{22}>")
+        let newAttributes = ["attribute": "new value", "eigenschaft": "neuer wert"]
+        element.attributeDictionary = newAttributes
+        XCTAssertEqual(
+            element.source(),
+            "<name attribute=\u{22}new value\u{22} eigenschaft=\u{22}neuer wert\u{22}>")
+        XCTAssertEqual(element.attributeDictionary, newAttributes)
+
+        element = ElementSyntax(name: "original", empty: false)
+        element.name = "changed"
+        XCTAssertEqual(element.name, "changed")
+        XCTAssertEqual(element.source(), "<changed></changed>")
+        element.attributeDictionary = ["name": "value"]
+        XCTAssertEqual(element.attribute(named: "name")?.value?.valueText, "value")
     }
 
     func testElementContinuation() {
@@ -132,6 +207,17 @@ class APITests : TestCase {
 
     func testListSyntax() {
         XCTAssertEqual(ListSyntax<ContentElementSyntax>().source(), "")
+        var attributeList: ListSyntax<AttributeSyntax> = []
+        XCTAssertEqual(attributeList.attributeDictionary, [:])
+        attributeList.append(AttributeSyntax(name: "hidden"))
+        XCTAssertEqual(attributeList.source(), " hidden")
+        XCTAssertEqual(attributeList.attributeDictionary, ["hidden": ""])
+        attributeList.attributeDictionary = ["attribute": "value"]
+        XCTAssertEqual(attributeList.attributeDictionary, ["attribute": "value"])
+        attributeList.attributeDictionary = [:]
+        attributeList.apply(attribute: AttributeSyntax(name: "attribute"))
+        attributeList.apply(attribute: AttributeSyntax(name: "attribute"))
+        XCTAssertEqual(attributeList.attributeDictionary.count, 1)
     }
 
     func testOpeningTag() {
@@ -142,6 +228,9 @@ class APITests : TestCase {
         tag.attributes = AttributesSyntax(attributes: nil, trailingWhitespace: TokenSyntax(kind: .whitespace(" ")))
         tag.greaterThan = TokenSyntax(kind: .greaterThan)
         XCTAssertEqual(tag.source(), "<name >")
+
+        tag = OpeningTagSyntax(name: "name")
+        XCTAssertEqual(tag.attributeDictionary, [:])
     }
 
     func testParsing() throws {

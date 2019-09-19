@@ -17,7 +17,7 @@ import Foundation
 import SDGLogic
 
 /// An opening tag.
-public struct OpeningTagSyntax : Syntax {
+public struct OpeningTagSyntax : AttributedSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -44,6 +44,24 @@ public struct OpeningTagSyntax : Syntax {
         attributes: AttributesSyntax? = nil,
         greaterThan: TokenSyntax = TokenSyntax(kind: .greaterThan)) {
         _storage = _SyntaxStorage(children: [lessThan, name, attributes, greaterThan])
+    }
+
+    /// Creates an opening tag.
+    ///
+    /// - Parameters:
+    ///     - name: The tag name.
+    ///     - attributes: Optional. The attributes.
+    public init(name: TokenKind, attributes: AttributesSyntax? = nil) {
+        self.init(name: TokenSyntax(kind: name), attributes: attributes)
+    }
+
+    /// Creates an opening tag.
+    ///
+    /// - Parameters:
+    ///     - name: The tag name.
+    ///     - attributes: Optional. The attributes.
+    public init(name: String, attributes: [String: String] = [:]) {
+        self.init(name: .elementName(name), attributes: AttributesSyntax(dictionary: attributes))
     }
 
     // MARK: - Children
@@ -119,6 +137,35 @@ public struct OpeningTagSyntax : Syntax {
                     attribute.validateURLValue(location: location, file: file, baseURL: baseURL, results: &results)
                 }
             }
+        }
+    }
+
+    // MARK: - AttributedSyntax
+
+    public var attributeDictionary: [String: String] {
+        get {
+            return attributes?.attributeDictionary ?? [:]
+        }
+        set {
+            attributes = AttributesSyntax(dictionary: newValue)
+        }
+    }
+
+    public func attribute(named name: String) -> AttributeSyntax? {
+        return attributes?.attribute(named: name)
+    }
+
+    public mutating func apply(attribute: AttributeSyntax) {
+        if attributes == nil {
+            attributes = []
+        }
+        attributes?.apply(attribute: attribute)
+    }
+
+    public mutating func removeAttribute(named name: String) {
+        attributes?.removeAttribute(named: name)
+        if attributes?.attributes?.isEmpty ≠ false {
+            attributes = nil
         }
     }
 

@@ -42,6 +42,22 @@ public struct ClosingTagSyntax : Syntax {
         _storage = SyntaxStorage(children: [lessThan, slash, name, greaterThan])
     }
 
+    /// Creates an closing tag.
+    ///
+    /// - Parameters:
+    ///     - name: The element name.
+    public init(name: TokenKind) {
+        self.init(name: TokenSyntax(kind: name))
+    }
+
+    /// Creates an closing tag.
+    ///
+    /// - Parameters:
+    ///     - name: The element name.
+    public init(name: String) {
+        self.init(name: .elementName(name))
+    }
+
     // MARK: - Children
 
     /// The less‐than sign.

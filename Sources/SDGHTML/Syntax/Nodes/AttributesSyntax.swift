@@ -19,7 +19,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An attribute list.
-public struct AttributesSyntax : Syntax {
+public struct AttributesSyntax : AttributedSyntax, ExpressibleByArrayLiteral, Syntax {
 
     // MARK: - Parsing
 
@@ -109,6 +109,22 @@ public struct AttributesSyntax : Syntax {
         _storage = SyntaxStorage(children: [attributes, trailingWhitespace])
     }
 
+    /// Creates an empty attribute list.
+    public init() {
+        self.init(attributes: nil)
+    }
+
+    /// Creates an attribute list from a dictionary. Returns `nil` if the dictionary is empty.
+    ///
+    /// - Parameters:
+    ///     - dictionary: The attributes in dictionary form.
+    public init?(dictionary: [String: String]) {
+        guard let list = ListSyntax<AttributeSyntax>(dictionary: dictionary) else {
+            return nil
+        }
+        self.init(attributes: list)
+    }
+
     // MARK: - Children
 
     /// The attributes.
@@ -129,6 +145,41 @@ public struct AttributesSyntax : Syntax {
         set {
             _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] = newValue
         }
+    }
+
+    // MARK: - AttributedSyntax
+
+    public var attributeDictionary: [String: String] {
+        get {
+            return attributes?.attributeDictionary ?? [:]
+        }
+        set {
+            attributes = ListSyntax<AttributeSyntax>(dictionary: newValue)
+        }
+    }
+
+    public func attribute(named name: String) -> AttributeSyntax? {
+        return attributes?.attribute(named: name)
+    }
+
+    public mutating func apply(attribute: AttributeSyntax) {
+        if attributes == nil {
+            attributes = []
+        }
+        attributes?.apply(attribute: attribute)
+    }
+
+    public mutating func removeAttribute(named name: String) {
+        attributes?.removeAttribute(named: name)
+        if attributes?.isEmpty ≠ false {
+            attributes = nil
+        }
+    }
+
+    // MARK: - ExpressibleByArrayLiteral
+
+    public init(arrayLiteral elements: AttributeSyntax...) {
+        self.init(attributes: ListSyntax(entries: elements))
     }
 
     // MARK: - Syntax

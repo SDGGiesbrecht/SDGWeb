@@ -7,6 +7,7 @@ extension APITests {
     // to regenerate.
     static let __allTests__APITests = [
         ("testAttribute", testAttribute),
+        ("testAttributed", testAttributed),
         ("testAttributes", testAttributes),
         ("testAttributeValue", testAttributeValue),
         ("testClosingTag", testClosingTag),

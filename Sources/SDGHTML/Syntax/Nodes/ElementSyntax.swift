@@ -19,7 +19,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An HTML element.
-public struct ElementSyntax : Syntax {
+public struct ElementSyntax : AttributedSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -108,6 +108,18 @@ public struct ElementSyntax : Syntax {
         _storage = _SyntaxStorage(children: [openingTag, continuation])
     }
 
+    /// Creates an element.
+    ///
+    /// - Parameters:
+    ///     - name: The tag name.
+    ///     - attributes: Optional. The attributes.
+    ///     - empty: Whether the element should be created empty (without a continuation node).
+    public init(name: String, attributes: [String: String] = [:], empty: Bool) {
+        self.init(
+            openingTag: OpeningTagSyntax(name: name, attributes: attributes),
+            continuation: empty ? nil : ElementContinuationSyntax(elementName: name))
+    }
+
     // MARK: - Children
 
     /// The opening tag.
@@ -128,6 +140,43 @@ public struct ElementSyntax : Syntax {
         set {
             _storage.children[ElementSyntax.indices[.continuation]!] = newValue
         }
+    }
+
+    // MARK: - Computed Properties
+
+    /// The tag name.
+    public var name: String {
+        get {
+            return openingTag.name.tokenKind.text
+        }
+        set {
+            let token = TokenSyntax(kind: .elementName(newValue))
+            openingTag.name = token
+            continuation?.closingTag.name = token
+        }
+    }
+
+    // MARK: - AttributedSyntax
+
+    public var attributeDictionary: [String: String] {
+        get {
+            return openingTag.attributeDictionary
+        }
+        set {
+            openingTag.attributeDictionary = newValue
+        }
+    }
+
+    public func attribute(named name: String) -> AttributeSyntax? {
+        return openingTag.attribute(named: name)
+    }
+
+    public mutating func apply(attribute: AttributeSyntax) {
+        openingTag.apply(attribute: attribute)
+    }
+
+    public mutating func removeAttribute(named name: String) {
+        openingTag.removeAttribute(named: name)
     }
 
     // MARK: - Syntax

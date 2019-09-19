@@ -70,8 +70,8 @@ public struct ContentSyntax : Syntax {
     /// Creates content.
     ///
     /// - Parameters:
-    ///     - elements: The distinct elements of content.
-    public init(elements: ListSyntax<ContentElementSyntax>) {
+    ///     - elements: Optional. The distinct elements of content.
+    public init(elements: ListSyntax<ContentElementSyntax> = []) {
         _storage = SyntaxStorage(children: [elements])
     }
 

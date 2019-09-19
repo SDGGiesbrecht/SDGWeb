@@ -92,6 +92,22 @@ public struct AttributeValueSyntax : Syntax {
         _storage = SyntaxStorage(children: [equals, openingQuotationMark, value, closingQuotationMark])
     }
 
+    /// Creates an attribute value.
+    ///
+    /// - Parameters:
+    ///     - value: Optional. The attribute value.
+    public init(value: TokenKind? = nil) {
+        self.init(value: value.map({ TokenSyntax(kind: $0) }) ?? TokenSyntax(kind: .attributeText("")))
+    }
+
+    /// Creates an attribute value.
+    ///
+    /// - Parameters:
+    ///     - valueText: Optional. The attribute value.
+    public init(valueText: String? = nil) {
+        self.init(value: TokenKind.attributeText(valueText ?? ""))
+    }
+
     // MARK: - Children
 
     /// The equals sign.
@@ -131,6 +147,18 @@ public struct AttributeValueSyntax : Syntax {
         }
         set {
             _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] = newValue
+        }
+    }
+
+    // MARK: - Computed Properties
+
+    /// The value.
+    public var valueText: String {
+        get {
+            return value.tokenKind.text
+        }
+        set {
+            value = TokenSyntax(kind: .attributeText(newValue))
         }
     }
 
