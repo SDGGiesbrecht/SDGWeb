@@ -1,4 +1,18 @@
+/*
+ AttributedSyntax.swift
 
+ This source file is part of the SDGWeb open source project.
+ https://sdggiesbrecht.github.io/SDGWeb
+
+ Copyright ©2019 Jeremy David Giesbrecht and the SDGWeb project contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
+
+/// A node which has an associated set of attributes, either directly or through one of its children.
 public protocol AttributedSyntax : Syntax {
 
     /// The attributes in dictionary form.
@@ -15,7 +29,7 @@ public protocol AttributedSyntax : Syntax {
     /// If the attribute already exists, it will be overwritten with the new node. Otherwise the new node will be appended to the end of the list.
     ///
     /// - Parameters:
-    ///     - name: The name.
+    ///     - attribute: The attribute.
     mutating func apply(attribute: AttributeSyntax)
 
     /// Removes the attribute with the specified name.
