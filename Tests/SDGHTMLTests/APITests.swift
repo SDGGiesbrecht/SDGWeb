@@ -163,6 +163,8 @@ class APITests : TestCase {
         element.name = "changed"
         XCTAssertEqual(element.name, "changed")
         XCTAssertEqual(element.source(), "<changed></changed>")
+        element.attributeDictionary = ["name": "value"]
+        XCTAssertEqual(element.attribute(named: "name")?.value?.valueText, "value")
     }
 
     func testElementContinuation() {
