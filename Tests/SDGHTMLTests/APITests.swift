@@ -52,6 +52,18 @@ class APITests : TestCase {
         XCTAssertEqual(element.source(), "<name attribute=\u{22}value\u{22}>")
         element.set(attribute: "attribute", to: nil)
         XCTAssertEqual(element.source(), "<name>")
+        element.set(attribute: "attribute", to: "value")
+        XCTAssertEqual(element.valueOfAttribute(named: "attribute"), "value")
+        element.identifier = "identifier"
+        XCTAssertEqual(element.identifier, "identifier")
+        element.class = "class"
+        XCTAssertEqual(element.class, "class")
+        element.language = "he"
+        XCTAssertEqual(element.language, "he")
+        element.textDirection = "rtl"
+        XCTAssertEqual(element.textDirection, "rtl")
+        element.translationIntent = "no"
+        XCTAssertEqual(element.translationIntent, "no")
     }
 
     func testAttributes() {
@@ -198,6 +210,10 @@ class APITests : TestCase {
         XCTAssertEqual(attributeList.attributeDictionary, ["hidden": ""])
         attributeList.attributeDictionary = ["attribute": "value"]
         XCTAssertEqual(attributeList.attributeDictionary, ["attribute": "value"])
+        attributeList.attributeDictionary = [:]
+        attributeList.apply(attribute: AttributeSyntax(name: "attribute"))
+        attributeList.apply(attribute: AttributeSyntax(name: "attribute"))
+        XCTAssertEqual(attributeList.attributeDictionary.count, 1)
     }
 
     func testOpeningTag() {
