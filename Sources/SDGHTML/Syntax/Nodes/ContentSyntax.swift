@@ -12,80 +12,33 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
-
-/// A node representing content.
+/// A child node of a content section.
 public struct ContentSyntax : Syntax {
-
-    // MARK: - Parsing
-
-    private enum Child : CaseIterable {
-        case elements
-    }
-    private static let indices = Child.allCases.bijectiveIndexMapping
-
-    internal static func parse(source: String) -> Result<ContentSyntax, SyntaxError> {
-        var source = source
-        return parse(fromEndOf: &source, untilOpeningOf: nil).map { $0.content }
-    }
-
-    internal static func parse(
-        fromEndOf source: inout String,
-        untilOpeningOf element: String?) -> Result<(tag: OpeningTagSyntax?, content: ContentSyntax), SyntaxError> {
-        var tag: OpeningTagSyntax?
-        var entries: [ContentElementSyntax] = []
-        parsing: while ¬source.isEmpty {
-            if source.scalars.last == ">" {
-                if source.scalars.hasSuffix("\u{2D}\u{2D}>".scalars) {
-                    switch CommentSyntax.parse(fromEndOf: &source) {
-                    case .failure(let error):
-                        return .failure(error)
-                    case .success(let parsedComment):
-                        entries.append(ContentElementSyntax(kind: .comment(parsedComment)))
-                    }
-                } else {
-                    switch ElementSyntax.parse(fromEndOf: &source) {
-                    case .failure(let error):
-                        return .failure(error)
-                    case .success(let parsedElement):
-                        if parsedElement.continuation == nil,
-                            parsedElement.openingTag.name.source() == element {
-                            tag = parsedElement.openingTag
-                            break parsing
-                        } else {
-                            entries.append(ContentElementSyntax(kind: .element(parsedElement)))
-                        }
-                    }
-                }
-            } else {
-                entries.append(ContentElementSyntax(kind: .text(TextSyntax.parse(fromEndOf: &source))))
-            }
-        }
-        let list = ListSyntax<ContentElementSyntax>(entries: entries.reversed())
-        return .success((tag, ContentSyntax(elements: list)))
-    }
 
     // MARK: - Initialization
 
-    /// Creates content.
+    /// Creates a content element node.
     ///
     /// - Parameters:
-    ///     - elements: Optional. The distinct elements of content.
-    public init(elements: ListSyntax<ContentElementSyntax> = []) {
-        _storage = SyntaxStorage(children: [elements])
+    ///     - kind: The kind of node.
+    public init(kind: ContentSyntaxKind) {
+        self.kind = kind
+        let child: Syntax
+        switch kind {
+        case .text(let text):
+            child = text
+        case .element(let element):
+            child = element
+        case .comment(let comment):
+            child = comment
+        }
+        self._storage = SyntaxStorage(children: [child])
     }
 
-    // MARK: - Children
+    // MARK: - Properties
 
-    /// The child nodes.
-    public var elements: ListSyntax<ContentElementSyntax> {
-        get {
-            return _storage.children[ContentSyntax.indices[.elements]!] as! ListSyntax<ContentElementSyntax>
-        }
-        set {
-            _storage.children[ContentSyntax.indices[.elements]!] = newValue
-        }
-    }
+    /// The kind of node.
+    public let kind: ContentSyntaxKind
 
     // MARK: - Syntax
 

@@ -12,7 +12,6 @@ extension APITests {
         ("testAttributeValue", testAttributeValue),
         ("testClosingTag", testClosingTag),
         ("testComment", testComment),
-        ("testContent", testContent),
         ("testDocument", testDocument),
         ("testElement", testElement),
         ("testElementContinuation", testElementContinuation),

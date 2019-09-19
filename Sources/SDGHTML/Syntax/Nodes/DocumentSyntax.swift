@@ -29,7 +29,7 @@ public struct DocumentSyntax : Syntax {
     /// - Parameters:
     ///     - source: The source of the HTML document.
     public static func parse(source: String) -> Result<DocumentSyntax, SyntaxError> {
-        return ContentSyntax.parse(source: source).map { content in
+        return ListSyntax<ContentSyntax>.parse(source: source).map { content in
             return DocumentSyntax(content: content)
         }
     }
@@ -40,16 +40,16 @@ public struct DocumentSyntax : Syntax {
     ///
     /// - Parameters:
     ///     - content: The content.
-    public init(content: ContentSyntax) {
+    public init(content: ListSyntax<ContentSyntax>) {
         _storage = SyntaxStorage(children: [content])
     }
 
     // MARK: - Children
 
     /// The content.
-    public var content: ContentSyntax {
+    public var content: ListSyntax<ContentSyntax> {
         get {
-            return _storage.children[DocumentSyntax.indices[.content]!] as! ContentSyntax
+            return _storage.children[DocumentSyntax.indices[.content]!] as! ListSyntax<ContentSyntax>
         }
         set {
             _storage.children[DocumentSyntax.indices[.content]!] = newValue

@@ -1,5 +1,5 @@
 /*
- ContentElementSyntaxKind.swift
+ ContentSyntaxKind.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -13,7 +13,7 @@
  */
 
 /// Enumerates the kinds of content piece.
-public enum ContentElementSyntaxKind {
+public enum ContentSyntaxKind {
 
     /// A `TextSyntax` instance.
     case text(TextSyntax)
