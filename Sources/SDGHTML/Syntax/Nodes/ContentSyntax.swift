@@ -1,5 +1,5 @@
 /*
- ContentElementSyntax.swift
+ ContentSyntax.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -13,7 +13,7 @@
  */
 
 /// A child node of a content section.
-public struct ContentElementSyntax : Syntax {
+public struct ContentSyntax : Syntax {
 
     // MARK: - Initialization
 
@@ -21,7 +21,7 @@ public struct ContentElementSyntax : Syntax {
     ///
     /// - Parameters:
     ///     - kind: The kind of node.
-    public init(kind: ContentElementSyntaxKind) {
+    public init(kind: ContentSyntaxKind) {
         self.kind = kind
         let child: Syntax
         switch kind {
@@ -38,7 +38,7 @@ public struct ContentElementSyntax : Syntax {
     // MARK: - Properties
 
     /// The kind of node.
-    public let kind: ContentElementSyntaxKind
+    public let kind: ContentSyntaxKind
 
     // MARK: - Syntax
 

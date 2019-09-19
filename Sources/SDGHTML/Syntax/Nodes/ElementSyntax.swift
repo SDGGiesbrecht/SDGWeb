@@ -68,7 +68,7 @@ public struct ElementSyntax : AttributedSyntax, Syntax {
                         context: preservedSource))
                 } else {
                     source.scalars.removeLast() // “<”
-                    switch ListSyntax<ContentElementSyntax>.parse(
+                    switch ListSyntax<ContentSyntax>.parse(
                         fromEndOf: &source, untilOpeningOf: name.source()) {
                     case .failure(let error):
                         return .failure(error)
