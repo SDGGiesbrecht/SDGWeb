@@ -69,6 +69,9 @@ class APITests : TestCase {
         XCTAssertEqual(attributes.attributeDictionary, ["name": "value"])
         attributes = AttributesSyntax(attributes: nil, trailingWhitespace: TokenSyntax(kind: .whitespace(" ")))
         XCTAssertEqual(attributes.attributeDictionary, [:])
+
+        attributes = AttributesSyntax(dictionary: ["name": "value"])!
+        XCTAssertEqual(attributes.attribute(named: "name")?.source(), " name=\u{22}value\u{22}")
     }
 
     func testAttributeValue() {
