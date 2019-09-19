@@ -19,7 +19,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An HTML element.
-public struct ElementSyntax : AttributedSyntax, Syntax {
+public struct ElementSyntax : AttributedSyntax, ContainerSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -178,6 +178,24 @@ public struct ElementSyntax : AttributedSyntax, Syntax {
 
     public mutating func removeAttribute(named name: String) {
         openingTag.removeAttribute(named: name)
+    }
+
+    // MARK: - ContainerSyntax
+
+    public var content: ListSyntax<ContentSyntax> {
+        get {
+            return continuation?.content ?? []
+        }
+        set {
+            if ¬newValue.isEmpty,
+                continuation == nil {
+                continuation = ElementContinuationSyntax(
+                    content: newValue,
+                    closingTag: ClosingTagSyntax(name: openingTag.name))
+            } else {
+                continuation?.content = newValue
+            }
+        }
     }
 
     // MARK: - Syntax
