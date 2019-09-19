@@ -132,15 +132,6 @@ class APITests : TestCase {
         XCTAssertEqual(tag.source(), "</name>")
     }
 
-    func testContent() {
-        var content = ContentSyntax(elements: ListSyntax<ContentElementSyntax>(entries: []))
-        XCTAssertEqual(content.source(), "")
-        content.elements.append(ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text."))))))
-        XCTAssertEqual(content.source(), "Text.")
-        content.elements[0] = ContentElementSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Modified.")))))
-        XCTAssertEqual(content.source(), "Modified.")
-    }
-
     func testDocument() {
         var document = DocumentSyntax(content: ListSyntax<ContentElementSyntax>(entries: []))
         XCTAssertEqual(document.source(), "")
