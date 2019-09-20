@@ -13,7 +13,7 @@
  */
 
 /// The content and closing tag of an element.
-public struct ElementContinuationSyntax : Syntax {
+public struct ElementContinuationSyntax : ContainerSyntax, Syntax {
 
     // MARK: - Parsing
 

@@ -15,7 +15,7 @@
 import Foundation
 
 /// A syntax node representing an HTML document.
-public struct DocumentSyntax : Syntax {
+public struct DocumentSyntax : ContainerSyntax, Syntax {
 
     // MARK: - Parsing
 
