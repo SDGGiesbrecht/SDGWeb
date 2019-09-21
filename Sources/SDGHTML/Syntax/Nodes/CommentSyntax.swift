@@ -30,7 +30,7 @@ public struct CommentSyntax : Syntax {
     private static let indices = Child.allCases.bijectiveIndexMapping
 
     internal static func parse(fromEndOf source: inout String) -> Result<CommentSyntax, SyntaxError> {
-        var preservedSource = source
+        let preservedSource = source
         source.scalars.removeLast(3) // “‐‐>”
         guard let start = source.lastMatch(for: "<!\u{2D}\u{2D}") else {
             return .failure(SyntaxError(
