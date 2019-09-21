@@ -34,12 +34,12 @@ matrix:
         - "xcodebuild test -destination 'name=iPhone 11' -scheme SDGWeb-Package"
     - name: "watchOS"
       os: osx
-      osx_image: xcode10.2
+      osx_image: xcode11
       script:
         - "xcodebuild build -sdk watchos -scheme SDGWeb-Package"
     - name: "tvOS"
       os: osx
-      osx_image: xcode10.2
+      osx_image: xcode11
       language: objective-c
       xcode_sdk: appletvsimulator
       script:
