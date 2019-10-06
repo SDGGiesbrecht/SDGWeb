@@ -130,6 +130,8 @@ class APITests : TestCase {
         tag.name = TokenSyntax(kind: .elementName("name"))
         tag.greaterThan = TokenSyntax(kind: .greaterThan)
         XCTAssertEqual(tag.source(), "</name>")
+        tag.nameText = "changed"
+        XCTAssertEqual(tag.nameText, "changed")
     }
 
     func testDocument() {

@@ -129,16 +129,6 @@ public struct AttributeSyntax : NamedSyntax, Syntax {
 
     // MARK: - Computed Properties
 
-    /// The attribute name.
-    public var nameText: String {
-        get {
-            return name.tokenKind.text
-        }
-        set {
-            name = TokenSyntax(kind: .attributeName(newValue))
-        }
-    }
-
     /// The value.
     public var valueText: String? {
         get {
