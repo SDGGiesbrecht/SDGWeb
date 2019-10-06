@@ -383,6 +383,10 @@ class APITests : TestCase {
             named: "Unpaired Comment Markers",
             in: "Comment \u{2D}\u{2D}>",
             overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Skipped Heading",
+            in: "<html><h1>...</h1><h3>...</h3></html>",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testTextDirection() {
