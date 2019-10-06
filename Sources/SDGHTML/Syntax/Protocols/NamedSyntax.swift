@@ -16,6 +16,9 @@
 public protocol NamedSyntax : Syntax {
 
     /// Creates the appropriate token kind containing the provided text.
+    ///
+    /// - Parameters:
+    ///     - text: The text for the token.
     static func nameTokenKind(_ text: String) -> TokenKind
 
     /// The name token.
