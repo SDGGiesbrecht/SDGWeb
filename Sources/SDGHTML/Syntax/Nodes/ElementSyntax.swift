@@ -19,7 +19,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An HTML element.
-public struct ElementSyntax : AttributedSyntax, ContainerSyntax, Syntax {
+public struct ElementSyntax : AttributedSyntax, ContainerSyntax, NamedSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -143,20 +143,6 @@ public struct ElementSyntax : AttributedSyntax, ContainerSyntax, Syntax {
         }
     }
 
-    // MARK: - Computed Properties
-
-    /// The tag name.
-    public var name: String {
-        get {
-            return openingTag.name.tokenKind.text
-        }
-        set {
-            let token = TokenSyntax(kind: .elementName(newValue))
-            openingTag.name = token
-            continuation?.closingTag.name = token
-        }
-    }
-
     // MARK: - AttributedSyntax
 
     public var attributeDictionary: [String: String] {
@@ -195,6 +181,22 @@ public struct ElementSyntax : AttributedSyntax, ContainerSyntax, Syntax {
             } else {
                 continuation?.content = newValue
             }
+        }
+    }
+
+    // MARK: - NamedSyntax
+
+    public static func nameTokenKind(_ text: String) -> TokenKind {
+        return OpeningTagSyntax.nameTokenKind(text)
+    }
+
+    public var name: TokenSyntax {
+        get {
+            return openingTag.name
+        }
+        set {
+            openingTag.name = newValue
+            continuation?.closingTag.name = newValue
         }
     }
 

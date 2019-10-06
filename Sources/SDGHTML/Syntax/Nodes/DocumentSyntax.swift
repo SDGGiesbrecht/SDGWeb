@@ -14,6 +14,11 @@
 
 import Foundation
 
+import SDGText
+import SDGLocalization
+
+import SDGWebLocalizations
+
 /// A syntax node representing an HTML document.
 public struct DocumentSyntax : ContainerSyntax, Syntax {
 
@@ -66,6 +71,10 @@ public struct DocumentSyntax : ContainerSyntax, Syntax {
         let file = source()
         var location = file.scalars.startIndex
         var result: [SyntaxError] = []
+
+        let headerNames: [String: Int] = Dictionary(uniqueKeysWithValues: (1 ... 6).map({ ("h\($0)", $0) } ))
+        var maxHeaderLevel = 0
+
         for node in descendents() {
             defer {
                 if node is TokenSyntax {
@@ -77,6 +86,27 @@ public struct DocumentSyntax : ContainerSyntax, Syntax {
                 result.append(contentsOf: attribute.validate(location: location, file: file, baseURL: baseURL))
             } else if let element = node as? OpeningTagSyntax {
                 result.append(contentsOf: element.validate(location: location, file: file, baseURL: baseURL))
+            } else if let element = node as? ElementSyntax {
+                let elementName = element.nameText
+                if let level = headerNames[elementName],
+                    level > maxHeaderLevel {
+                    defer { maxHeaderLevel = level }
+                    let expectedLevel = maxHeaderLevel + 1
+                    if level > expectedLevel {
+                        result.append(SyntaxError.init(
+                            file: file,
+                            index: location,
+                            description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                                switch localization {
+                                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                    return "A level \(level.inDigits()) heading appears before any level \(expectedLevel.inDigits()) heading."
+                                case .deutschDeutschland:
+                                    return "Eine Überschrift der \(level.inDigits()). Ebene kommt vor irgendeine Überschrift der \(expectedLevel.inDigits()). Ebene."
+                                }
+                            }),
+                            context: element.source()))
+                    }
+                }
             }
         }
         return result

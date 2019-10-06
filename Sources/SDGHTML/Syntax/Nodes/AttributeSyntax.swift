@@ -25,7 +25,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An HTML attribute.
-public struct AttributeSyntax : Syntax {
+public struct AttributeSyntax : NamedSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -441,6 +441,12 @@ public struct AttributeSyntax : Syntax {
                     context: name.source() + value.source()))
             }
         }
+    }
+
+    // MARK: - NamedSyntax
+
+    public static func nameTokenKind(_ text: String) -> TokenKind {
+        return .attributeName(text)
     }
 
     // MARK: - Syntax

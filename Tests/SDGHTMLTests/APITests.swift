@@ -167,8 +167,8 @@ class APITests : TestCase {
         XCTAssertEqual(element.attributeDictionary, newAttributes)
 
         element = ElementSyntax(name: "original", empty: false)
-        element.name = "changed"
-        XCTAssertEqual(element.name, "changed")
+        element.nameText = "changed"
+        XCTAssertEqual(element.nameText, "changed")
         XCTAssertEqual(element.source(), "<changed></changed>")
         element.attributeDictionary = ["name": "value"]
         XCTAssertEqual(element.attribute(named: "name")?.value?.valueText, "value")

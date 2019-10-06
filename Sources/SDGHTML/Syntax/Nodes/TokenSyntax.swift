@@ -60,7 +60,7 @@ public struct TokenSyntax : Syntax {
     // MARK: - Properties
 
     /// The kind of token this node represents.
-    public let tokenKind: TokenKind
+    public var tokenKind: TokenKind
 
     // MARK: - Syntax
 

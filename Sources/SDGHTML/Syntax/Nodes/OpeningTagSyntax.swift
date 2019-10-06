@@ -17,7 +17,7 @@ import Foundation
 import SDGLogic
 
 /// An opening tag.
-public struct OpeningTagSyntax : AttributedSyntax, Syntax {
+public struct OpeningTagSyntax : AttributedSyntax, NamedSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -167,6 +167,12 @@ public struct OpeningTagSyntax : AttributedSyntax, Syntax {
         if attributes?.attributes?.isEmpty ≠ false {
             attributes = nil
         }
+    }
+
+    // MARK: - NamedSyntax
+
+    public static func nameTokenKind(_ text: String) -> TokenKind {
+        return .elementName(text)
     }
 
     // MARK: - Syntax
