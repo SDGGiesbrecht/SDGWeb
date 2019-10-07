@@ -13,7 +13,7 @@
  */
 
 /// A closing tag.
-public struct ClosingTagSyntax : Syntax {
+public struct ClosingTagSyntax : NamedSyntax, Syntax {
 
     // MARK: - Parsing
 
@@ -98,6 +98,12 @@ public struct ClosingTagSyntax : Syntax {
         set {
             _storage.children[ClosingTagSyntax.indices[.greaterThan]!] = newValue
         }
+    }
+
+    // MARK: - NamedSyntax
+
+    public static func nameTokenKind(_ text: String) -> TokenKind {
+        return OpeningTagSyntax.nameTokenKind(text)
     }
 
     // MARK: - Syntax

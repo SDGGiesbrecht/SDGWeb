@@ -1,0 +1,20 @@
+🇬🇧EN
+
+Line 1
+A level 3 heading appears before any level 2 heading.
+<h3>...</h3>
+🇺🇸EN
+
+Line 1
+A level 3 heading appears before any level 2 heading.
+<h3>...</h3>
+🇨🇦EN
+
+Line 1
+A level 3 heading appears before any level 2 heading.
+<h3>...</h3>
+🇩🇪DE
+
+Zeile 1
+Eine Überschrift der 3. Ebene kommt vor irgendeine Überschrift der 2. Ebene.
+<h3>...</h3>

@@ -130,6 +130,8 @@ class APITests : TestCase {
         tag.name = TokenSyntax(kind: .elementName("name"))
         tag.greaterThan = TokenSyntax(kind: .greaterThan)
         XCTAssertEqual(tag.source(), "</name>")
+        tag.nameText = "changed"
+        XCTAssertEqual(tag.nameText, "changed")
     }
 
     func testDocument() {
@@ -167,8 +169,8 @@ class APITests : TestCase {
         XCTAssertEqual(element.attributeDictionary, newAttributes)
 
         element = ElementSyntax(name: "original", empty: false)
-        element.name = "changed"
-        XCTAssertEqual(element.name, "changed")
+        element.nameText = "changed"
+        XCTAssertEqual(element.nameText, "changed")
         XCTAssertEqual(element.source(), "<changed></changed>")
         element.attributeDictionary = ["name": "value"]
         XCTAssertEqual(element.attribute(named: "name")?.value?.valueText, "value")
@@ -382,6 +384,10 @@ class APITests : TestCase {
         expectViolation(
             named: "Unpaired Comment Markers",
             in: "Comment \u{2D}\u{2D}>",
+            overwriteSpecificationInsteadOfFailing: false)
+        expectViolation(
+            named: "Skipped Heading",
+            in: "<html><h1>...</h1><h3>...</h3></html>",
             overwriteSpecificationInsteadOfFailing: false)
     }
 
