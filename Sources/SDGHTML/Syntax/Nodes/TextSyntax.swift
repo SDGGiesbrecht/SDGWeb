@@ -76,6 +76,10 @@ public struct TextSyntax : Syntax {
         text.whereMeaningfulSetLeadingWhitespace(to: whitespace)
     }
 
+    internal mutating func setTrailingWhitespace(to whitespace: String) {
+        text.whereMeaningfulSetTrailingWhitespace(to: whitespace)
+    }
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage

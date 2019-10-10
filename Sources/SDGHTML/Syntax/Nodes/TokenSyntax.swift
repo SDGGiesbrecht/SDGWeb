@@ -72,6 +72,10 @@ public struct TokenSyntax : Syntax {
         tokenKind.whereMeaningfulSetLeadingWhitespace(to: whitespace)
     }
 
+    internal mutating func whereMeaningfulSetTrailingWhitespace(to whitespace: String) {
+        tokenKind.whereMeaningfulSetTrailingWhitespace(to: whitespace)
+    }
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage

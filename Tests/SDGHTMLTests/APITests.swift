@@ -217,8 +217,7 @@ class APITests : TestCase {
             " <head>",
             "  <title>...</title>",
             " </head>",
-            " <body>",
-            " </body>",
+            " <body></body>",
             "</html>"
             ].joined(separator: "\n"))
     }

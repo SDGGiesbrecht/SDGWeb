@@ -80,6 +80,7 @@ extension ListSyntax where Entry == ContentSyntax {
         } else {
             // Block style.
             let leadingWhitespace = "\n" + String(repeating: " ", count: indentationLevel)
+            let trailingWhitespace = "\n" + String(repeating: " ", count: indentationLevel − 1)
             if ¬forDocument {
                 if let leadingTextNode = first,
                     case .text = leadingTextNode.kind {
@@ -90,6 +91,9 @@ extension ListSyntax where Entry == ContentSyntax {
             for index in self.indices {
                 self[index].format(indentationLevel: indentationLevel)
                 self[index].whereMeaningfulSetLeadingWhitespace(to: leadingWhitespace)
+                if index == self.indices.last {
+                    self[index].whereMeaningfulSetTrailingWhitespace(to: trailingWhitespace)
+                }
             }
         }
     }

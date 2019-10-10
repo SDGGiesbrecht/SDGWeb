@@ -26,13 +26,25 @@ public enum ContentSyntaxKind {
 
     // MARK: - Formatting
 
-    internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
+    private mutating func onlyOnTextNodes(closure: (inout TextSyntax) -> Void) {
         switch self {
         case .text(var text):
-            text.setLeadingWhitespace(to: whitespace)
+            closure(&text)
             self = .text(text)
         case .element, .comment:
             break
+        }
+    }
+
+    internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
+        onlyOnTextNodes { text in
+            text.setLeadingWhitespace(to: whitespace)
+        }
+    }
+
+    internal mutating func whereMeaningfulSetTrailingWhitespace(to whitespace: String) {
+        onlyOnTextNodes { text in
+            text.setTrailingWhitespace(to: whitespace)
         }
     }
 }

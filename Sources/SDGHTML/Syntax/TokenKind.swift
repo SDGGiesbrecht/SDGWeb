@@ -79,15 +79,10 @@ public enum TokenKind : Equatable, Hashable {
 
     // MARK: - Formatting
 
-    internal mutating func whereMeaningfulTrimWhitespace() {
+    private mutating func onlyOnTextTokens(closure: (inout String) -> Void) {
         switch self {
         case .text(var text):
-            while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
-                text.scalars.removeFirst()
-            }
-            while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
-                text.scalars.removeLast()
-            }
+            closure(&text)
             self = .text(text)
         self = .text(text)
         case .lessThan, .greaterThan, .elementName, .slash, .whitespace, .attributeName, .equalsSign, .quotationMark, .attributeText, .commentStart, .commentText, .commentEnd:
@@ -95,16 +90,32 @@ public enum TokenKind : Equatable, Hashable {
         }
     }
 
+    internal mutating func whereMeaningfulTrimWhitespace() {
+        onlyOnTextTokens { text in
+            while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
+                text.scalars.removeFirst()
+            }
+            while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
+                text.scalars.removeLast()
+            }
+        }
+    }
+
     internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
-        switch self {
-        case .text(var text):
+        onlyOnTextTokens { text in
             while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
                 text.scalars.removeFirst()
             }
             text.scalars.prepend(contentsOf: whitespace.scalars)
-            self = .text(text)
-        case .lessThan, .greaterThan, .elementName, .slash, .whitespace, .attributeName, .equalsSign, .quotationMark, .attributeText, .commentStart, .commentText, .commentEnd:
-            break
+        }
+    }
+
+    internal mutating func whereMeaningfulSetTrailingWhitespace(to whitespace: String) {
+        onlyOnTextTokens { text in
+            while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
+                text.scalars.removeLast()
+            }
+            text.scalars.append(contentsOf: whitespace.scalars)
         }
     }
 }

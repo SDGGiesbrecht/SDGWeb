@@ -75,6 +75,10 @@ public struct ContentSyntax : Syntax {
         kind.whereMeaningfulSetLeadingWhitespace(to: whitespace)
     }
 
+    internal mutating func whereMeaningfulSetTrailingWhitespace(to whitespace: String) {
+        kind.whereMeaningfulSetTrailingWhitespace(to: whitespace)
+    }
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage
