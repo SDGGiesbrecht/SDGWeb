@@ -16,7 +16,10 @@ import SDGControlFlow
 
 /// A Syntax node.
 public protocol Syntax : TransparentWrapper, TextOutputStreamable {
-    var _storage: _SyntaxStorage { get }
+    var _storage: _SyntaxStorage { get set }
+
+    /// Applies systematic formatting to the HTML source node.
+    mutating func format()
 }
 
 extension Syntax {
@@ -36,6 +39,17 @@ extension Syntax {
     /// All the desendend nodes, at all nesting levels (including the node itself).
     public func descendents() -> [Syntax] {
         return children.lazy.flatMap({ $0.descendents() }).prepending(self)
+    }
+
+    public mutating func format() {
+        for index in _storage.children.indices {
+            _storage.children[index]?.format()
+        }
+    }
+
+    /// Returns the HTML node with systematic formatting applied to its source.
+    public func formatted() -> Self {
+        return nonmutatingVariant(of: { $0.format() }, on: self)
     }
 
     // MARK: - TextOutputStreamable
