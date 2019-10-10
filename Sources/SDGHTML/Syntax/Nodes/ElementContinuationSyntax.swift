@@ -70,7 +70,7 @@ public struct ElementContinuationSyntax : ContainerSyntax, Syntax {
     public var _storage: _SyntaxStorage
 
     public mutating func format(indentationLevel: Int) {
-        content.formatContentList(indentationLevel: indentationLevel, forDocument: false)
+        content.formatContentList(indentationLevel: indentationLevel + 1, forDocument: false)
         closingTag.format(indentationLevel: indentationLevel)
     }
 }
