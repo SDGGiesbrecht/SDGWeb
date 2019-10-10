@@ -68,6 +68,10 @@ public struct TextSyntax : Syntax {
 
     // MARK: - Formatting
 
+    internal mutating func trimWhitespace() {
+        text.whereMeaningfulTrimWhitespace()
+    }
+
     internal mutating func setLeadingWhitespace(to whitespace: String) {
         text.whereMeaningfulSetLeadingWhitespace(to: whitespace)
     }

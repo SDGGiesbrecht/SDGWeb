@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGMathematics
 
 extension ListSyntax where Entry == ContentSyntax {
 
@@ -62,17 +63,34 @@ extension ListSyntax where Entry == ContentSyntax {
     // MARK: - Formatting
 
     internal mutating func formatContentList(indentationLevel: Int, forDocument: Bool) {
-        let leadingWhitespace = "\n" + String(repeating: " ", count: indentationLevel)
-        if ¬forDocument {
-            if let leadingTextNode = first,
-                case .text = leadingTextNode.kind {
-            } else {
-                prepend(ContentSyntax(kind: .text(TextSyntax())))
+        if count ≤ 1,
+            allSatisfy({ node in
+                if case .text = node.kind {
+                    return true
+                } else {
+                    return false
+                }
+            }) {
+            // Inline style.
+            if case .text(var text) = first?.kind {
+                text.trimWhitespace()
+                text.format(indentationLevel: indentationLevel)
+                self = [ContentSyntax(kind: .text(text))]
             }
-        }
-        for index in self.indices {
-            self[index].format(indentationLevel: indentationLevel)
-            self[index].whereMeaningfulSetLeadingWhitespace(to: leadingWhitespace)
+        } else {
+            // Block style.
+            let leadingWhitespace = "\n" + String(repeating: " ", count: indentationLevel)
+            if ¬forDocument {
+                if let leadingTextNode = first,
+                    case .text = leadingTextNode.kind {
+                } else {
+                    prepend(ContentSyntax(kind: .text(TextSyntax())))
+                }
+            }
+            for index in self.indices {
+                self[index].format(indentationLevel: indentationLevel)
+                self[index].whereMeaningfulSetLeadingWhitespace(to: leadingWhitespace)
+            }
         }
     }
 }
