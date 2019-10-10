@@ -442,4 +442,10 @@ public struct AttributeSyntax : NamedSyntax, Syntax {
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage
+
+    public mutating func format(indentationLevel: Int) {
+        whitespace = TokenSyntax(kind: .whitespace(" "))
+        name.format(indentationLevel: indentationLevel)
+        value?.format(indentationLevel: indentationLevel)
+    }
 }
