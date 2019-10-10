@@ -23,4 +23,16 @@ public enum ContentSyntaxKind {
 
     /// A comment.
     case comment(CommentSyntax)
+
+    // MARK: - Formatting
+
+    internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
+        switch self {
+        case .text(var text):
+            text.setLeadingWhitespace(to: whitespace)
+            self = .text(text)
+        case .element, .comment:
+            break
+        }
+    }
 }

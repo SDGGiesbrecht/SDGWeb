@@ -69,7 +69,7 @@ extension ListSyntax where Entry == ContentSyntax {
             prepend(ContentSyntax(kind: .text(TextSyntax())))
         }
         for index in self.indices {
-            self[index].setLeadingWhitespace(to: leadingWhitespace)
+            self[index].whereMeaningfulSetLeadingWhitespace(to: leadingWhitespace)
         }
     }
 }

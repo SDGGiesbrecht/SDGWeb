@@ -66,6 +66,12 @@ public struct TextSyntax : Syntax {
         }
     }
 
+    // MARK: - Formatting
+
+    internal mutating func setLeadingWhitespace(to whitespace: String) {
+
+    }
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage

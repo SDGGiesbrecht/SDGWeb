@@ -62,6 +62,12 @@ public struct TokenSyntax : Syntax {
     /// The kind of token this node represents.
     public var tokenKind: TokenKind
 
+    // MARK: - Formatting
+
+    internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
+        tokenKind.whereMeaningfulSetLeadingWhitespace(to: whitespace)
+    }
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage

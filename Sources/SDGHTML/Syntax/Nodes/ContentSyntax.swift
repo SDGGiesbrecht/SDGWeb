@@ -38,13 +38,12 @@ public struct ContentSyntax : Syntax {
     // MARK: - Properties
 
     /// The kind of node.
-    public let kind: ContentSyntaxKind
+    public var kind: ContentSyntaxKind
 
     // MARK: - Formatting
 
-    /// Only affects text; other kinds will do nothing.
-    internal mutating func setLeadingWhitespace(to whitespace: String) {
-        #warning("Not implemented yet.")
+    internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
+        kind.whereMeaningfulSetLeadingWhitespace(to: whitespace)
     }
 
     // MARK: - Syntax

@@ -12,6 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGLogic
+import SDGCollections
+
 /// Enumerates the kinds of tokens in HTML.
 public enum TokenKind : Equatable, Hashable {
 
@@ -74,6 +79,20 @@ public enum TokenKind : Equatable, Hashable {
             return "<!\u{2D}\u{2D}"
         case .commentEnd:
             return "\u{2D}\u{2D}>"
+        }
+    }
+
+    // MARK: - Formatting
+
+    internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
+        switch self {
+        case .text(var text):
+            text.scalars = String.ScalarView(
+                text.scalars.drop(while: { $0.value < 0x80 ∧ $0 ∈ CharacterSet.whitespacesAndNewlines }))
+            text.scalars.prepend(contentsOf: whitespace.scalars)
+            self = .text(text)
+        case .lessThan, .greaterThan, .elementName, .slash, .whitespace, .attributeName, .equalsSign, .quotationMark, .attributeText, .commentStart, .commentText, .commentEnd:
+            break
         }
     }
 }
