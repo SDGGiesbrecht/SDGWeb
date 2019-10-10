@@ -61,12 +61,14 @@ extension ListSyntax where Entry == ContentSyntax {
 
     // MARK: - Formatting
 
-    internal mutating func formatContentList(indentationLevel: Int) {
+    internal mutating func formatContentList(indentationLevel: Int, forDocument: Bool) {
         let leadingWhitespace = "\n" + String(repeating: " ", count: indentationLevel)
-        if let leadingTextNode = first,
-            case .text = leadingTextNode.kind {
-        } else {
-            prepend(ContentSyntax(kind: .text(TextSyntax())))
+        if ¬forDocument {
+            if let leadingTextNode = first,
+                case .text = leadingTextNode.kind {
+            } else {
+                prepend(ContentSyntax(kind: .text(TextSyntax())))
+            }
         }
         for index in self.indices {
             self[index].format(indentationLevel: indentationLevel)

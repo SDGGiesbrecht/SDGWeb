@@ -117,6 +117,6 @@ public struct DocumentSyntax : ContainerSyntax, Syntax {
     public var _storage: _SyntaxStorage
 
     public mutating func format(indentationLevel: Int) {
-        content.formatContentList(indentationLevel: indentationLevel)
+        content.formatContentList(indentationLevel: indentationLevel, forDocument: true)
     }
 }
