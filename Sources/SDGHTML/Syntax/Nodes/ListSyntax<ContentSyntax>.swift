@@ -69,6 +69,7 @@ extension ListSyntax where Entry == ContentSyntax {
             prepend(ContentSyntax(kind: .text(TextSyntax())))
         }
         for index in self.indices {
+            self[index].format(indentationLevel: indentationLevel)
             self[index].whereMeaningfulSetLeadingWhitespace(to: leadingWhitespace)
         }
     }
