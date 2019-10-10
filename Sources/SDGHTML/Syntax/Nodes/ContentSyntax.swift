@@ -22,7 +22,20 @@ public struct ContentSyntax : Syntax {
     /// - Parameters:
     ///     - kind: The kind of node.
     public init(kind: ContentSyntaxKind) {
+        _storage = _SyntaxStorage(children: [])
         self.kind = kind
+        didSetKind()
+    }
+
+    // MARK: - Properties
+
+    /// The kind of node.
+    public var kind: ContentSyntaxKind {
+        didSet {
+            didSetKind()
+        }
+    }
+    private mutating func didSetKind() {
         let child: Syntax
         switch kind {
         case .text(let text):
@@ -34,11 +47,6 @@ public struct ContentSyntax : Syntax {
         }
         self._storage = SyntaxStorage(children: [child])
     }
-
-    // MARK: - Properties
-
-    /// The kind of node.
-    public var kind: ContentSyntaxKind
 
     // MARK: - Formatting
 
