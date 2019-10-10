@@ -208,16 +208,17 @@ class APITests : TestCase {
     }
 
     func testFormatting() throws {
-        let documentSource = "< !DOCTYPE  html > < html lang="zxx" > <head> <title> Title </title> </head> <body> </body> </html>"
+        let documentSource = "<!DOCTYPE  html > <html lang=\u{22}zxx\u{22} > <head> <title> ... </title> </head> <body> </body> </html>"
         let document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
         XCTAssertEqual(document.formatted().source(), [
-            "<!DOCTYPE html >",
-            "<html lang="zxx">",
+            "<!DOCTYPE html>",
+            "<html lang=\u{22}zxx\u{22}>",
             " <head>",
-            "  <title>Title</title>",
+            "  <title>...</title>",
             " </head>",
             " <body>",
-            " </body>,
+            " </body>",
             "</html>"
             ].joined(separator: "\n"))
     }
