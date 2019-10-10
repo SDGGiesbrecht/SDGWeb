@@ -37,7 +37,7 @@ public struct ContentSyntax : Syntax {
     // MARK: - Properties
 
     /// The kind of node.
-    public private(set) var kind: ContentSyntaxKind {
+    public var kind: ContentSyntaxKind {
         get {
             return ContentSyntax.kind(of: _storage.children[ContentSyntax.indices[.kind]!]!)
         }
