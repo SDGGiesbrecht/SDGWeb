@@ -207,6 +207,21 @@ class APITests : TestCase {
         XCTAssertFalse(HTML.escapeTextForAttribute("\u{22}").contains("\u{22}"))
     }
 
+    func testFormatting() throws {
+        let documentSource = "< !DOCTYPE  html > < html lang="zxx" > <head> <title> Title </title> </head> <body> </body> </html>"
+        let document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.formatted().source(), [
+            "<!DOCTYPE html >",
+            "<html lang="zxx">",
+            " <head>",
+            "  <title>Title</title>",
+            " </head>",
+            " <body>",
+            " </body>,
+            "</html>"
+            ].joined(separator: "\n"))
+    }
+
     func testListSyntax() {
         XCTAssertEqual(ListSyntax<ContentSyntax>().source(), "")
         var attributeList: ListSyntax<AttributeSyntax> = []
