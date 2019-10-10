@@ -58,4 +58,18 @@ extension ListSyntax where Entry == ContentSyntax {
         let list = ListSyntax<ContentSyntax>(entries: entries.reversed())
         return .success((tag, list))
     }
+
+    // MARK: - Formatting
+
+    internal mutating func formatContentList(indentationLevel: Int) {
+        let leadingWhitespace = "\n" + String(repeating: " ", count: indentationLevel)
+        if let leadingTextNode = first,
+            case .text = leadingTextNode.kind {
+        } else {
+            prepend(ContentSyntax(kind: .text(TextSyntax())))
+        }
+        for index in self.indices {
+            self[index].setLeadingWhitespace(to: leadingWhitespace)
+        }
+    }
 }

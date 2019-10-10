@@ -46,6 +46,14 @@ public struct TextSyntax : Syntax {
         _storage = _SyntaxStorage(children: [text])
     }
 
+    /// Creates text.
+    ///
+    /// - Parameters:
+    ///     - text: The text.
+    public init(text: String = "") {
+        self.init(text: TokenSyntax(kind: .text(text)))
+    }
+
     // MARK: - Children
 
     /// The text.

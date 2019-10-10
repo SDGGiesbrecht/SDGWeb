@@ -40,6 +40,13 @@ public struct ContentSyntax : Syntax {
     /// The kind of node.
     public let kind: ContentSyntaxKind
 
+    // MARK: - Formatting
+
+    /// Only affects text; other kinds will do nothing.
+    internal mutating func setLeadingWhitespace(to whitespace: String) {
+        #warning("Not implemented yet.")
+    }
+
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage
