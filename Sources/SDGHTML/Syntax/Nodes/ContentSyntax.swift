@@ -12,8 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLocalization
+
 /// A child node of a content section.
 public struct ContentSyntax : Syntax {
+
+    // MARK: - Parsing
+
+    private enum Child : CaseIterable {
+        case kind
+    }
+    private static let indices = Child.allCases.bijectiveIndexMapping
 
     // MARK: - Initialization
 
@@ -22,30 +31,42 @@ public struct ContentSyntax : Syntax {
     /// - Parameters:
     ///     - kind: The kind of node.
     public init(kind: ContentSyntaxKind) {
-        _storage = _SyntaxStorage(children: [])
-        self.kind = kind
-        didSetKind()
+        _storage = _SyntaxStorage(children: [ContentSyntax.syntax(of: kind)])
     }
 
     // MARK: - Properties
 
     /// The kind of node.
-    public var kind: ContentSyntaxKind {
-        didSet {
-            didSetKind()
+    public private(set) var kind: ContentSyntaxKind {
+        get {
+            return ContentSyntax.kind(of: _storage.children[ContentSyntax.indices[.kind]!]!)
+        }
+        set {
+            _storage.children[ContentSyntax.indices[.kind]!] = ContentSyntax.syntax(of: newValue)
         }
     }
-    private mutating func didSetKind() {
-        let child: Syntax
+
+    private static func syntax(of kind: ContentSyntaxKind) -> Syntax {
         switch kind {
         case .text(let text):
-            child = text
+            return text
         case .element(let element):
-            child = element
+            return element
         case .comment(let comment):
-            child = comment
+            return comment
         }
-        self._storage = SyntaxStorage(children: [child])
+    }
+    private static func kind(of syntax: Syntax) -> ContentSyntaxKind {
+        switch syntax {
+        case let text as TextSyntax:
+            return .text(text)
+        case let element as ElementSyntax:
+            return .element(element)
+        case let comment as CommentSyntax:
+            return .comment(comment)
+        default:
+            unreachable()
+        }
     }
 
     // MARK: - Formatting
