@@ -80,7 +80,7 @@ extension ListSyntax where Entry == ContentSyntax {
         } else {
             // Block style.
             let leadingWhitespace = "\n" + String(repeating: " ", count: indentationLevel)
-            let trailingWhitespace = "\n" + String(repeating: " ", count: indentationLevel − 1)
+            let trailingWhitespace = "\n" + String(repeating: " ", count: Swift.max(0, indentationLevel − 1))
             if ¬forDocument {
                 if let leadingTextNode = first,
                     case .text = leadingTextNode.kind {
