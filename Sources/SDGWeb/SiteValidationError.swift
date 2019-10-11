@@ -31,6 +31,8 @@ public enum SiteValidationError : PresentableError {
 
     // MARK: - Properties
 
+    // #workaround(workspace version 0.23.1, SDGLocalization inheritance is skipped due to parser crash.)
+    /// Returns a localized description of the error.
     public func presentableDescription() -> StrictString {
         switch self {
         case .foundationError(let error):

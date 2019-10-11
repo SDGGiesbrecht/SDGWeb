@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGMathematics
 
 extension ListSyntax where Entry == ContentSyntax {
 
@@ -57,5 +58,61 @@ extension ListSyntax where Entry == ContentSyntax {
         }
         let list = ListSyntax<ContentSyntax>(entries: entries.reversed())
         return .success((tag, list))
+    }
+
+    // MARK: - Formatting
+
+    internal mutating func formatContentList(indentationLevel: Int, forDocument: Bool) {
+        if count ≤ 1,
+            allSatisfy({ node in
+                if case .text = node.kind {
+                    return true
+                } else {
+                    return false
+                }
+            }) {
+            // Inline style.
+            if case .text(var text) = first?.kind {
+                text.trimWhitespace()
+                text.format(indentationLevel: indentationLevel)
+                self = [ContentSyntax(kind: .text(text))]
+            }
+        } else {
+            // Block style.
+            let leadingWhitespace = "\n" + String(repeating: " ", count: indentationLevel)
+            let trailingWhitespace = "\n" + String(repeating: " ", count: Swift.max(0, indentationLevel − 1))
+
+            // Add medial whitespace if missing.
+            var hasPrecedingTextNode = false
+            var index: Int = startIndex
+            while index ≠ endIndex {
+                defer { index = self.index(after: index) }
+                if forDocument ∧ index == startIndex {
+                    continue
+                }
+                let entry = self[index]
+                if case .text = entry.kind {
+                    hasPrecedingTextNode = true
+                } else {
+                    if hasPrecedingTextNode {
+                        // ✓; turn it off for the next node.
+                        hasPrecedingTextNode = false
+                    } else {
+                        // ✗; insert a text node here.
+                        self.insert(ContentSyntax(kind: .text(TextSyntax())), at: index)
+                        hasPrecedingTextNode = true
+                    }
+                }
+            }
+
+            // Indent.
+            for index in self.indices {
+                self[index].format(indentationLevel: indentationLevel)
+                self[index].whereMeaningfulSetLeadingWhitespace(to: leadingWhitespace)
+                if index == self.indices.last {
+                    self[index].whereMeaningfulSetTrailingWhitespace(to: trailingWhitespace)
+                }
+            }
+        }
     }
 }

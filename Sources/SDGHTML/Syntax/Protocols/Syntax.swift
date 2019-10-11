@@ -16,7 +16,13 @@ import SDGControlFlow
 
 /// A Syntax node.
 public protocol Syntax : TransparentWrapper, TextOutputStreamable {
-    var _storage: _SyntaxStorage { get }
+    var _storage: _SyntaxStorage { get set }
+
+    /// Applies systematic formatting to the HTML source node.
+    ///
+    /// - Parameters:
+    ///     - indentationLevel: How deep the node is indented.
+    mutating func format(indentationLevel: Int)
 }
 
 extension Syntax {
@@ -36,6 +42,25 @@ extension Syntax {
     /// All the desendend nodes, at all nesting levels (including the node itself).
     public func descendents() -> [Syntax] {
         return children.lazy.flatMap({ $0.descendents() }).prepending(self)
+    }
+
+    /// Applies systematic formatting to the HTML source node.
+    public mutating func format() {
+        format(indentationLevel: 0)
+    }
+
+    public mutating func format(indentationLevel: Int) {
+        for index in _storage.children.indices {
+            _storage.children[index]?.format(indentationLevel: indentationLevel)
+        }
+    }
+
+    /// Returns the HTML node with systematic formatting applied to its source.
+    ///
+    /// - Parameters:
+    ///     - indentationLevel: Optional. How deep the node is nested.
+    public func formatted(indentationLevel: Int = 0) -> Self {
+        return nonmutatingVariant(of: { $0.format(indentationLevel: indentationLevel) }, on: self)
     }
 
     // MARK: - TextOutputStreamable

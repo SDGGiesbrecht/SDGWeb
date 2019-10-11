@@ -46,6 +46,14 @@ public struct TextSyntax : Syntax {
         _storage = _SyntaxStorage(children: [text])
     }
 
+    /// Creates text.
+    ///
+    /// - Parameters:
+    ///     - text: The text.
+    public init(text: String = "") {
+        self.init(text: TokenSyntax(kind: .text(text)))
+    }
+
     // MARK: - Children
 
     /// The text.
@@ -56,6 +64,20 @@ public struct TextSyntax : Syntax {
         set {
             _storage.children[TextSyntax.indices[.token]!] = newValue
         }
+    }
+
+    // MARK: - Formatting
+
+    internal mutating func trimWhitespace() {
+        text.whereMeaningfulTrimWhitespace()
+    }
+
+    internal mutating func setLeadingWhitespace(to whitespace: String) {
+        text.whereMeaningfulSetLeadingWhitespace(to: whitespace)
+    }
+
+    internal mutating func setTrailingWhitespace(to whitespace: String) {
+        text.whereMeaningfulSetTrailingWhitespace(to: whitespace)
     }
 
     // MARK: - Syntax

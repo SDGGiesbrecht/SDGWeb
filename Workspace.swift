@@ -33,3 +33,25 @@ configuration._applySDGOverrides()
 configuration._validateSDGStandards()
 
 configuration.repository.ignoredPaths.insert("Tests/Mock Projects")
+
+configuration.documentation.api.ignoredDependencies = [
+    // Swift
+    "Dispatch",
+    "Foundation",
+    "XCTest",
+
+    // SDGCornerstone
+    "SDGLogic",
+    "SDGCalendar",
+    "SDGCollections",
+    "SDGCornerstoneLocalizations",
+    "SDGLocalization",
+    "SDGLocalizationTestUtilities",
+    "SDGLogic",
+    "SDGMathematics",
+    "SDGPersistence",
+    "SDGPersistenceTestUtilities",
+    "SDGTesting",
+    "SDGText",
+    "SDGXCTestUtilities"
+]

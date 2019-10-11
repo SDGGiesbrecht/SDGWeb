@@ -101,4 +101,12 @@ public struct CommentSyntax : Syntax {
     // MARK: - Syntax
 
     public var _storage: _SyntaxStorage
+
+    public mutating func format(indentationLevel: Int) {
+        openingToken.format(indentationLevel: indentationLevel)
+        contents.format(indentationLevel: indentationLevel)
+        contents.whereMeaningfulSetLeadingWhitespace(to: " ")
+        contents.whereMeaningfulSetTrailingWhitespace(to: " ")
+        closingToken.format(indentationLevel: indentationLevel)
+    }
 }
