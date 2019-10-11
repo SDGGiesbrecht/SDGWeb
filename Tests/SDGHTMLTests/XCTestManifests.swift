@@ -17,6 +17,7 @@ extension APITests {
         ("testElementContinuation", testElementContinuation),
         ("testEscaping", testEscaping),
         ("testExampleURL", testExampleURL),
+        ("testFormatting", testFormatting),
         ("testListSyntax", testListSyntax),
         ("testOpeningTag", testOpeningTag),
         ("testParsing", testParsing),
