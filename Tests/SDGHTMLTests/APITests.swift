@@ -208,8 +208,8 @@ class APITests : TestCase {
     }
 
     func testFormatting() throws {
-        let documentSource = "<!DOCTYPE  html > <html lang=\u{22}zxx\u{22} > <head> <title> ... </title> </head> <body> </body> </html>"
-        let document = try DocumentSyntax.parse(source: documentSource).get()
+        var documentSource = "<!DOCTYPE  html > <html lang=\u{22}zxx\u{22} > <head> <title> ... </title> </head> <body> </body> </html>"
+        var document = try DocumentSyntax.parse(source: documentSource).get()
         XCTAssertEqual(document.source(), documentSource)
         XCTAssertEqual(document.formatted().source(), [
             "<!DOCTYPE html>",
@@ -219,6 +219,15 @@ class APITests : TestCase {
             " </head>",
             " <body></body>",
             "</html>"
+            ].joined(separator: "\n"))
+
+        documentSource = "<!DOCTYPE html><!\u{2D}\u{2D}Comment\u{2D}\u{2D}><html></html>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<!DOCTYPE html>",
+            "<!\u{2D}\u{2D} Comment \u{2D}\u{2D}>",
+            "<html></html>"
             ].joined(separator: "\n"))
     }
 

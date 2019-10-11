@@ -81,13 +81,31 @@ extension ListSyntax where Entry == ContentSyntax {
             // Block style.
             let leadingWhitespace = "\n" + String(repeating: " ", count: indentationLevel)
             let trailingWhitespace = "\n" + String(repeating: " ", count: Swift.max(0, indentationLevel − 1))
-            if ¬forDocument {
-                if let leadingTextNode = first,
-                    case .text = leadingTextNode.kind {
+
+            // Add medial whitespace if missing.
+            var hasPrecedingTextNode = false
+            var index: Int = startIndex
+            while index ≠ endIndex {
+                defer { index = self.index(after: index) }
+                if forDocument ∧ index == startIndex {
+                    break
+                }
+                let entry = self[index]
+                if case .text = entry.kind {
+                    hasPrecedingTextNode = true
                 } else {
-                    prepend(ContentSyntax(kind: .text(TextSyntax())))
+                    if hasPrecedingTextNode {
+                        // ✓; turn it off for the next node.
+                        hasPrecedingTextNode = false
+                    } else {
+                        // ✗; insert a text node here.
+                        self.insert(ContentSyntax(kind: .text(TextSyntax())), at: index)
+                        hasPrecedingTextNode = true
+                    }
                 }
             }
+
+            // Indent.
             for index in self.indices {
                 self[index].format(indentationLevel: indentationLevel)
                 self[index].whereMeaningfulSetLeadingWhitespace(to: leadingWhitespace)
