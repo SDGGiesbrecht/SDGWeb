@@ -88,7 +88,7 @@ extension ListSyntax where Entry == ContentSyntax {
             while index ≠ endIndex {
                 defer { index = self.index(after: index) }
                 if forDocument ∧ index == startIndex {
-                    break
+                    continue
                 }
                 let entry = self[index]
                 if case .text = entry.kind {
