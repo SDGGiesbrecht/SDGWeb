@@ -220,6 +220,7 @@ class APITests : TestCase {
             " <body></body>",
             "</html>"
             ].joined(separator: "\n"))
+        document.format()
 
         documentSource = "<!DOCTYPE html><!\u{2D}\u{2D}Comment\u{2D}\u{2D}><html></html>"
         document = try DocumentSyntax.parse(source: documentSource).get()
@@ -228,6 +229,13 @@ class APITests : TestCase {
             "<!DOCTYPE html>",
             "<!\u{2D}\u{2D} Comment \u{2D}\u{2D}>",
             "<html></html>"
+            ].joined(separator: "\n"))
+
+        documentSource = "<!DOCTYPE html>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<!DOCTYPE html>"
             ].joined(separator: "\n"))
     }
 

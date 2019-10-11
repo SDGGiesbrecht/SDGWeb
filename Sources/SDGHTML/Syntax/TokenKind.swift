@@ -85,7 +85,7 @@ public enum TokenKind : Equatable, Hashable {
             closure(&text)
             self = .text(text)
         self = .text(text)
-        case .lessThan, .greaterThan, .elementName, .slash, .whitespace, .attributeName, .equalsSign, .quotationMark, .attributeText, .commentStart, .commentEnd:
+        case .lessThan, .greaterThan, .elementName, .slash, .whitespace, .attributeName, .equalsSign, .quotationMark, .attributeText, .commentStart, .commentEnd: // @exempt(from: tests) Not reachable.
             break
         case .commentText(var text):
             closure(&text)
