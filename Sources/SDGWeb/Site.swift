@@ -73,11 +73,14 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
     // MARK: - Processing
 
     /// Generates the website in its result directory.
-    public func generate() -> Result<Void, SiteGenerationError> {
+    ///
+    /// - Parameters:
+    ///     - formatting: Whether the resulting HTML source should be formatted.
+    public func generate(formatting: Bool = true) -> Result<Void, SiteGenerationError> {
 
         clean()
 
-        switch writePages() {
+        switch writePages(formatting: formatting) {
         case .failure(let error):
             switch error {
             case .foundationError(let error):
@@ -109,7 +112,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
         try? FileManager.default.removeItem(at: repositoryStructure.result)
     }
 
-    private func writePages() -> Result<Void, PageTemplateLoadingError> {
+    private func writePages(formatting: Bool) -> Result<Void, PageTemplateLoadingError> {
         let fileEnumeration: [URL]
         do {
             fileEnumeration = try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
@@ -126,7 +129,7 @@ public struct Site<Localization> where Localization : SDGLocalization.InputLocal
                 case .success(let template):
                     for localization in Localization.allCases {
                         do {
-                            try template.writeResult(for: localization, of: self)
+                            try template.writeResult(for: localization, of: self, formatting: formatting)
                         } catch {
                             return .failure(.foundationError(error))
                         }

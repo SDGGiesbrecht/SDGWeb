@@ -177,7 +177,11 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
 
     // MARK: - Saving
 
-    internal func writeResult(for localization: Localization, of site: Site<Localization>) throws {
+    internal func writeResult(
+        for localization: Localization,
+        of site: Site<Localization>,
+        formatting: Bool) throws {
+
         var relativePath = self.relativePath
         if Localization.allCases.count > 1 {
             relativePath.prepend(contentsOf: site.localizationDirectories.resolved(for: localization) + "/")
@@ -202,6 +206,12 @@ internal class PageTemplate<Localization> where Localization : SDGLocalization.I
             }
         }).resolved())
 
-        try processedResult(for: relativePath, localization: localization, site: site).save(to: url)
+        var result = try processedResult(for: relativePath, localization: localization, site: site)
+        if formatting,
+            var parsed = try? DocumentSyntax.parse(source: String(result)).get() {
+            parsed.format()
+            result = StrictString(parsed.source())
+        }
+        try result.save(to: url)
     }
 }
