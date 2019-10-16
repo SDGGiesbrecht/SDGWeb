@@ -35,6 +35,13 @@ extension ListSyntax : AttributedSyntax where Entry == AttributeSyntax {
         append(from: dictionary)
     }
 
+    // MARK: - Formatting
+
+    internal mutating func formatAttributeList(indentationLevel: Int) {
+        format(indentationLevel: indentationLevel)
+        sort(by: { $0.nameText < $1.nameText })
+    }
+
     // MARK: - AttributedSyntax
 
     public var attributeDictionary: [String: String] {

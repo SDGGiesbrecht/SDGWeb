@@ -237,6 +237,13 @@ class APITests : TestCase {
         XCTAssertEqual(document.formatted().source(), [
             "<!DOCTYPE html>"
             ].joined(separator: "\n"))
+
+        documentSource = "<link rel=\u{22}...\u{22} href=\u{22}...\u{22}>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<link href=\u{22}...\u{22} rel=\u{22}...\u{22}>"
+            ].joined(separator: "\n"))
     }
 
     func testListSyntax() {

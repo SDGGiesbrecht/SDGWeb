@@ -187,7 +187,7 @@ public struct AttributesSyntax : AttributedSyntax, ExpressibleByArrayLiteral, Sy
     public var _storage: _SyntaxStorage
 
     public mutating func format(indentationLevel: Int) {
-        attributes?.format(indentationLevel: indentationLevel)
+        attributes?.formatAttributeList(indentationLevel: indentationLevel)
         trailingWhitespace = nil
     }
 }
