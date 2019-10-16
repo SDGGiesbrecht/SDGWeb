@@ -119,6 +119,7 @@ public enum TokenKind : Equatable, Hashable {
     internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
         onlyOnTextTokens { text in
             while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
+                // @exempt(from: tests) Not currently reachable.
                 text.scalars.removeFirst()
             }
             text.scalars.prepend(contentsOf: whitespace.scalars)
