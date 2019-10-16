@@ -104,6 +104,9 @@ extension ListSyntax where Entry == ContentSyntax {
                     }
                 }
             }
+            if ¬forDocument ∧ ¬hasPrecedingTextNode { // Trailing text node.
+                self.append(ContentSyntax(kind: .text(TextSyntax())))
+            }
 
             // Indent.
             for index in self.indices {
