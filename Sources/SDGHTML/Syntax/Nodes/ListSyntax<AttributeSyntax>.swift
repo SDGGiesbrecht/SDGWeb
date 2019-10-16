@@ -42,6 +42,12 @@ extension ListSyntax : AttributedSyntax where Entry == AttributeSyntax {
         sort(by: { $0.nameText < $1.nameText })
     }
 
+    internal mutating func setAllLeadingWhitespace(to whitespace: String) {
+        for index in self.indices {
+            self[index].whitespace = TokenSyntax(kind: .whitespace(whitespace))
+        }
+    }
+
     // MARK: - AttributedSyntax
 
     public var attributeDictionary: [String: String] {

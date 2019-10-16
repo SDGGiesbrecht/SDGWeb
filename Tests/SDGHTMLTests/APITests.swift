@@ -244,6 +244,17 @@ class APITests : TestCase {
         XCTAssertEqual(document.formatted().source(), [
             "<link href=\u{22}...\u{22} rel=\u{22}...\u{22}>"
             ].joined(separator: "\n"))
+
+        documentSource = "<img alt=\u{22}... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...\u{22} id=\u{22}... ... ...\u{22} src=\u{22}... ... ... ... ... ... ... ... ... ...\u{22}>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<img",
+            " alt=\u{22}... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...\u{22}",
+            " id=\u{22}... ... ...\u{22}",
+            " src=\u{22}... ... ... ... ... ... ... ... ... ...\u{22}",
+            ">"
+            ].joined(separator: "\n"))
     }
 
     func testListSyntax() {
