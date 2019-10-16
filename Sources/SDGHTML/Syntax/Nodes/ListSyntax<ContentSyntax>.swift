@@ -109,6 +109,7 @@ extension ListSyntax where Entry == ContentSyntax {
             for index in self.indices {
                 self[index].format(indentationLevel: indentationLevel)
                 self[index].whereMeaningfulSetLeadingWhitespace(to: leadingWhitespace)
+                self[index].whereMeaningfulSetTrailingWhitespace(to: leadingWhitespace)
                 if index == self.indices.last {
                     self[index].whereMeaningfulSetTrailingWhitespace(to: trailingWhitespace)
                 }

@@ -255,6 +255,16 @@ class APITests : TestCase {
             " src=\u{22}... ... ... ... ... ... ... ... ... ...\u{22}",
             ">"
             ].joined(separator: "\n"))
+
+        documentSource = "<div>Label: <a>Field</a></div>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<div>",
+            " Label:",
+            " <a>Field</a>",
+            "</div>"
+            ].joined(separator: "\n"))
     }
 
     func testListSyntax() {
