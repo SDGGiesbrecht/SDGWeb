@@ -237,6 +237,48 @@ class APITests : TestCase {
         XCTAssertEqual(document.formatted().source(), [
             "<!DOCTYPE html>"
             ].joined(separator: "\n"))
+
+        documentSource = "<link rel=\u{22}...\u{22} href=\u{22}...\u{22}>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<link href=\u{22}...\u{22} rel=\u{22}...\u{22}>"
+            ].joined(separator: "\n"))
+
+        documentSource = "<img alt=\u{22}... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...\u{22} id=\u{22}... ... ...\u{22} src=\u{22}... ... ... ... ... ... ... ... ... ...\u{22}>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<img",
+            " alt=\u{22}... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...\u{22}",
+            " id=\u{22}... ... ...\u{22}",
+            " src=\u{22}... ... ... ... ... ... ... ... ... ...\u{22}",
+            ">"
+            ].joined(separator: "\n"))
+
+        documentSource = "<div>Label: <a>Field</a></div>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<div>",
+            " Label:",
+            " <a>Field</a>",
+            "</div>"
+            ].joined(separator: "\n"))
+
+        documentSource = "<h4>Excessive whitespace     in the middle.</h4>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<h4>Excessive whitespace in the middle.</h4>"
+            ].joined(separator: "\n"))
+
+        documentSource = "<p ></p>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<p></p>"
+            ].joined(separator: "\n"))
     }
 
     func testListSyntax() {

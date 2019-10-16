@@ -64,6 +64,10 @@ public struct TokenSyntax : Syntax {
 
     // MARK: - Formatting
 
+    public mutating func format(indentationLevel: Int) {
+        tokenKind.whereMeaninfulNormalizeWhitespace()
+    }
+
     internal mutating func whereMeaningfulTrimWhitespace() {
         tokenKind.whereMeaningfulTrimWhitespace()
     }

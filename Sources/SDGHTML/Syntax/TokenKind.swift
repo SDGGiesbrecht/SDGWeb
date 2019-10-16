@@ -12,6 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGCollections
+
 /// Enumerates the kinds of tokens in HTML.
 public enum TokenKind : Equatable, Hashable {
 
@@ -93,6 +96,15 @@ public enum TokenKind : Equatable, Hashable {
         }
     }
 
+    internal mutating func whereMeaninfulNormalizeWhitespace() {
+        onlyOnTextTokens { text in
+            let words = text.scalars.components(separatedBy: ConditionalPattern({ $0.isHTMLWhitespaceOrNewline }))
+                .lazy.map { $0.contents }
+            let scalars = words.lazy.filter({ ¬$0.isEmpty }).joined(separator: " ".scalars)
+            text = String(String.UnicodeScalarView(scalars))
+        }
+    }
+
     internal mutating func whereMeaningfulTrimWhitespace() {
         onlyOnTextTokens { text in
             while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
@@ -107,6 +119,7 @@ public enum TokenKind : Equatable, Hashable {
     internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
         onlyOnTextTokens { text in
             while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
+                // @exempt(from: tests) Not currently reachable.
                 text.scalars.removeFirst()
             }
             text.scalars.prepend(contentsOf: whitespace.scalars)

@@ -187,7 +187,12 @@ public struct AttributesSyntax : AttributedSyntax, ExpressibleByArrayLiteral, Sy
     public var _storage: _SyntaxStorage
 
     public mutating func format(indentationLevel: Int) {
-        attributes?.format(indentationLevel: indentationLevel)
-        trailingWhitespace = nil
+        attributes?.formatAttributeList(indentationLevel: indentationLevel)
+        if attributes?.source().count ?? 0 > 100 {
+            attributes?.setAllLeadingWhitespace(to: "\n" + String(repeating: " ", count: indentationLevel + 1))
+            trailingWhitespace = TokenSyntax(kind: .whitespace("\n" + String(repeating: " ", count: indentationLevel)))
+        } else {
+            trailingWhitespace = nil
+        }
     }
 }
