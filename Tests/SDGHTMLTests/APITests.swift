@@ -265,6 +265,13 @@ class APITests : TestCase {
             " <a>Field</a>",
             "</div>"
             ].joined(separator: "\n"))
+
+        documentSource = "<h4>Excessive whitespace     in the middle.</h4>"
+        document = try DocumentSyntax.parse(source: documentSource).get()
+        XCTAssertEqual(document.source(), documentSource)
+        XCTAssertEqual(document.formatted().source(), [
+            "<h4>Excessive whitespace in the middle.</h4>"
+            ].joined(separator: "\n"))
     }
 
     func testListSyntax() {
