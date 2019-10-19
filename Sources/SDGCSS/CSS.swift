@@ -21,11 +21,11 @@ public enum CSS {
     /// A recommended root CSS file.
     public static let root: StrictString = {
         var result = StrictString(Resources.root)
-        result.replaceMatches(for: CompositePattern([
-            LiteralPattern("/*".scalars),
-            RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy),
-            LiteralPattern("*/\n\n".scalars)
-            ]), with: "".scalars)
+        result.replaceMatches(
+            for: "/*".scalars
+                + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
+                + "*/\n\n".scalars,
+            with: "".scalars)
         return result
     }()
 }
