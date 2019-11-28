@@ -16,29 +16,29 @@ import SDGLocalization
 
 extension TextDirection {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// The HTML attribute value corresponding to this text direction.
-    public var htmlAttribute: String {
-        switch self {
-        case .rightToLeftTopToBottom:
-            return "rtl"
-        case .leftToRightTopToBottom, .topToBottomRightToLeft:
-            return "ltr"
-        }
+  /// The HTML attribute value corresponding to this text direction.
+  public var htmlAttribute: String {
+    switch self {
+    case .rightToLeftTopToBottom:
+      return "rtl"
+    case .leftToRightTopToBottom, .topToBottomRightToLeft:
+      return "ltr"
     }
+  }
 }
 
 extension Optional where Wrapped == TextDirection {
 
-    /// The HTML attribute value corresponding to this text direction, or the `auto` HTML attribute value if the text direction is `nil`.
-    public var htmlAttribute: String {
-        switch self {
-        case .some(let direction):
-            return direction.htmlAttribute
-        case .none:
-            return "auto"
-        }
+  /// The HTML attribute value corresponding to this text direction, or the `auto` HTML attribute value if the text direction is `nil`.
+  public var htmlAttribute: String {
+    switch self {
+    case .some(let direction):
+      return direction.htmlAttribute
+    case .none:
+      return "auto"
     }
+  }
 
 }

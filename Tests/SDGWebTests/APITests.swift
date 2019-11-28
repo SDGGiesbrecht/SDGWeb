@@ -26,104 +26,124 @@ import XCTest
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
-class APITests : TestCase {
+class APITests: TestCase {
 
-    func testCopyright() {
-        XCTAssert(¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–"))
-        XCTAssert(copyrightDates(yearFirstPublished: 2000).contains(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()))
-    }
+  func testCopyright() {
+    XCTAssert(
+      ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
+    )
+    XCTAssert(
+      copyrightDates(yearFirstPublished: 2000).contains(
+        CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
+      )
+    )
+  }
 
-    func testInvalidHTML() {
-        expectErrorGenerating(forMock: "Invalid HTML", localization: SingleLocalization.self)
-    }
+  func testInvalidHTML() {
+    expectErrorGenerating(forMock: "Invalid HTML", localization: SingleLocalization.self)
+  }
 
-    func testLocalized() throws {
-        for localization in InterfaceLocalization.allCases {
-            try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                try generate(forMock: "Localized", localization: DoubleLocalization.self)
-            }
-        }
+  func testLocalized() throws {
+    for localization in InterfaceLocalization.allCases {
+      try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+        try generate(forMock: "Localized", localization: DoubleLocalization.self)
+      }
     }
+  }
 
-    func testNoColon() {
-        expectErrorGenerating(forMock: "No Colon", localization: SingleLocalization.self)
-    }
+  func testNoColon() {
+    expectErrorGenerating(forMock: "No Colon", localization: SingleLocalization.self)
+  }
 
-    func testNoCSS() {
-        #if !os(Linux) // Foundation fails to error on Linux.
-        expectErrorGenerating(forMock: "No CSS", localization: SingleLocalization.self)
-        #endif
-    }
+  func testNoCSS() {
+    #if !os(Linux)  // Foundation fails to error on Linux.
+      expectErrorGenerating(forMock: "No CSS", localization: SingleLocalization.self)
+    #endif
+  }
 
-    func testNoFrame() {
-        expectErrorGenerating(forMock: "No Frame", localization: SingleLocalization.self)
-    }
+  func testNoFrame() {
+    expectErrorGenerating(forMock: "No Frame", localization: SingleLocalization.self)
+  }
 
-    func testNoMetadata() {
-        expectErrorGenerating(forMock: "No Metadata", localization: SingleLocalization.self)
-    }
+  func testNoMetadata() {
+    expectErrorGenerating(forMock: "No Metadata", localization: SingleLocalization.self)
+  }
 
-    func testNoTitle() {
-        expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
-    }
+  func testNoTitle() {
+    expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
+  }
 
-    func testPoorHTML() throws {
-        try generate(forMock: "Poor HTML", localization: SingleLocalization.self, expectValidationFailure: true)
-    }
+  func testPoorHTML() throws {
+    try generate(
+      forMock: "Poor HTML",
+      localization: SingleLocalization.self,
+      expectValidationFailure: true
+    )
+  }
 
-    func testRepositoryStructure() {
-        _ = RepositoryStructure()
-    }
+  func testRepositoryStructure() {
+    _ = RepositoryStructure()
+  }
 
-    func testRightToLeft() throws {
-        try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
-    }
+  func testRightToLeft() throws {
+    try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
+  }
 
-    struct StandInError : PresentableError {
-        func presentableDescription() -> StrictString {
-            return "[...]"
-        }
+  struct StandInError: PresentableError {
+    func presentableDescription() -> StrictString {
+      return "[...]"
     }
-    func testSiteError() {
-        let errors: [SiteGenerationError] = [
-            .foundationError(StandInError()),
-            .noMetadata(page: "[...]"),
-            .metadataMissingColon(line: "[...]"),
-            .missingTitle(page: "[...]")
-        ]
-        for index in errors.indices {
-            let error = errors[index]
-            testCustomStringConvertibleConformance(of: error, localizations: InterfaceLocalization.self, uniqueTestName: index.inDigits(), overwriteSpecificationInsteadOfFailing: false)
-        }
+  }
+  func testSiteError() {
+    let errors: [SiteGenerationError] = [
+      .foundationError(StandInError()),
+      .noMetadata(page: "[...]"),
+      .metadataMissingColon(line: "[...]"),
+      .missingTitle(page: "[...]")
+    ]
+    for index in errors.indices {
+      let error = errors[index]
+      testCustomStringConvertibleConformance(
+        of: error,
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: index.inDigits(),
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
-    func testSiteValidationError() {
-        let parseFailure: SyntaxError
-        switch DocumentSyntax.parse(source: "html>") {
-        case .failure(let error):
-            parseFailure = error
-        case .success:
-            XCTFail("Should not have parsed successfully.")
-            return
-        }
-        let errors: [SiteValidationError] = [
-            .foundationError(StandInError()),
-            .syntaxError(parseFailure)
-        ]
-        for index in errors.indices {
-            let error = errors[index]
-            testCustomStringConvertibleConformance(of: error, localizations: InterfaceLocalization.self, uniqueTestName: index.inDigits(), overwriteSpecificationInsteadOfFailing: false)
-        }
+  }
+  func testSiteValidationError() {
+    let parseFailure: SyntaxError
+    switch DocumentSyntax.parse(source: "html>") {
+    case .failure(let error):
+      parseFailure = error
+    case .success:
+      XCTFail("Should not have parsed successfully.")
+      return
     }
+    let errors: [SiteValidationError] = [
+      .foundationError(StandInError()),
+      .syntaxError(parseFailure)
+    ]
+    for index in errors.indices {
+      let error = errors[index]
+      testCustomStringConvertibleConformance(
+        of: error,
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: index.inDigits(),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    }
+  }
 
-    func testUnknownLocalization() throws {
-        try generate(forMock: "Unknown Localization", localization: UnknownLocalization.self)
-    }
+  func testUnknownLocalization() throws {
+    try generate(forMock: "Unknown Localization", localization: UnknownLocalization.self)
+  }
 
-    func testUnlocalized() throws {
-        for localization in InterfaceLocalization.allCases {
-            try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                try generate(forMock: "Unlocalized", localization: SingleLocalization.self)
-            }
-        }
+  func testUnlocalized() throws {
+    for localization in InterfaceLocalization.allCases {
+      try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+        try generate(forMock: "Unlocalized", localization: SingleLocalization.self)
+      }
     }
+  }
 }

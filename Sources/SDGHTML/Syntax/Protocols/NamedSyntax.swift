@@ -13,27 +13,27 @@
  */
 
 /// A node which has a single associated name.
-public protocol NamedSyntax : Syntax {
+public protocol NamedSyntax: Syntax {
 
-    /// Creates the appropriate token kind containing the provided text.
-    ///
-    /// - Parameters:
-    ///     - text: The text for the token.
-    static func nameTokenKind(_ text: String) -> TokenKind
+  /// Creates the appropriate token kind containing the provided text.
+  ///
+  /// - Parameters:
+  ///     - text: The text for the token.
+  static func nameTokenKind(_ text: String) -> TokenKind
 
-    /// The name token.
-    var name: TokenSyntax { get set }
+  /// The name token.
+  var name: TokenSyntax { get set }
 }
 
 extension NamedSyntax {
 
-    /// The name text.
-    public var nameText: String {
-        get {
-            return name.tokenKind.text
-        }
-        set {
-            name.tokenKind = Self.nameTokenKind(newValue)
-        }
+  /// The name text.
+  public var nameText: String {
+    get {
+      return name.tokenKind.text
     }
+    set {
+      name.tokenKind = Self.nameTokenKind(newValue)
+    }
+  }
 }

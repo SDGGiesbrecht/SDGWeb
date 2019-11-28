@@ -23,16 +23,16 @@ import XCTest
 
 import SDGXCTestUtilities
 
-class RegressionTests : TestCase {
+class RegressionTests: TestCase {
 
-    func testRedirect() throws {
-        // Untracked.
+  func testRedirect() throws {
+    // Untracked.
 
-        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
-            let redirectFile = Redirect(target: "../").contents
-            try redirectFile.save(to: url.appendingPathComponent("Redirect.html"))
-            let warnings = Site<InterfaceLocalization>.validate(site: url)
-            XCTAssert(warnings.isEmpty, "\(warnings)")
-        }
+    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
+      let redirectFile = Redirect(target: "../").contents
+      try redirectFile.save(to: url.appendingPathComponent("Redirect.html"))
+      let warnings = Site<InterfaceLocalization>.validate(site: url)
+      XCTAssert(warnings.isEmpty, "\(warnings)")
     }
+  }
 }

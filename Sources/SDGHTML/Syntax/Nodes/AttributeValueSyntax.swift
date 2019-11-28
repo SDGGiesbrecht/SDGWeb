@@ -19,150 +19,162 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An attribute value.
-public struct AttributeValueSyntax : Syntax {
+public struct AttributeValueSyntax: Syntax {
 
-    // MARK: - Parsing
+  // MARK: - Parsing
 
-    private enum Child : CaseIterable {
-        case equals
-        case openingQuotationMark
-        case value
-        case closingQuotationMark
+  private enum Child: CaseIterable {
+    case equals
+    case openingQuotationMark
+    case value
+    case closingQuotationMark
+  }
+  private static let indices = Child.allCases.bijectiveIndexMapping
+
+  internal static func parse(fromEndOf source: inout String) -> Result<
+    AttributeValueSyntax?, SyntaxError
+  > {
+    if source.scalars.last ≠ "\u{22}" {
+      return .success(nil)
     }
-    private static let indices = Child.allCases.bijectiveIndexMapping
-
-    internal static func parse(fromEndOf source: inout String) -> Result<AttributeValueSyntax?, SyntaxError> {
-        if source.scalars.last ≠ "\u{22}" {
-            return .success(nil)
-        }
-        source.scalars.removeLast()
-        let value = TokenSyntax.parseAttribute(fromEndOf: &source)
-        if source.scalars.last ≠ "\u{22}" {
-            let attributeSource = source + value.source() + "\u{22}"
-            return .failure(SyntaxError(
-                file: attributeSource,
-                index: attributeSource.scalars.index(before: attributeSource.scalars.endIndex),
-                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "A quotation mark is not paired."
-                    case .deutschDeutschland:
-                        return "Ein Anführungszeichen steht allein."
-                    }
-                }),
-                context: attributeSource))
-        }
-        source.scalars.removeLast()
-        if source.scalars.last ≠ "=" {
-            return .failure(SyntaxError(
-                file: source,
-                index: source.scalars.endIndex,
-                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "An equals sign is missing."
-                    case .deutschDeutschland:
-                        return "Ein Gleichheitszeichen fehlt."
-                    }
-                }),
-                context: "\u{22}" + value.source() + "\u{22}"))
-        }
-        source.scalars.removeLast()
-        return .success(AttributeValueSyntax(
-            equals: TokenSyntax(kind: .equalsSign),
-            openingQuotationMark: TokenSyntax(kind: .quotationMark),
-            value: value,
-            closingQuotationMark: TokenSyntax(kind: .quotationMark)))
+    source.scalars.removeLast()
+    let value = TokenSyntax.parseAttribute(fromEndOf: &source)
+    if source.scalars.last ≠ "\u{22}" {
+      let attributeSource = source + value.source() + "\u{22}"
+      return .failure(
+        SyntaxError(
+          file: attributeSource,
+          index: attributeSource.scalars.index(before: attributeSource.scalars.endIndex),
+          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "A quotation mark is not paired."
+            case .deutschDeutschland:
+              return "Ein Anführungszeichen steht allein."
+            }
+          }),
+          context: attributeSource
+        )
+      )
     }
-
-    // MARK: - Initialization
-
-    /// Creates an attribute value.
-    ///
-    /// - Parameters:
-    ///     - equals: The equals sign. (Supplied automatically if omitted.)
-    ///     - openingQuotationMark: The opening quotation mark. (Supplied automatically if omitted.)
-    ///     - value: The value.
-    ///     - closingQuotationMark: The closing quotation mark. (Supplied automatically if omitted.)
-    public init(
-        equals: TokenSyntax = TokenSyntax(kind: .equalsSign),
-        openingQuotationMark: TokenSyntax = TokenSyntax(kind: .quotationMark),
-        value: TokenSyntax,
-        closingQuotationMark: TokenSyntax = TokenSyntax(kind: .quotationMark)) {
-        _storage = SyntaxStorage(children: [equals, openingQuotationMark, value, closingQuotationMark])
+    source.scalars.removeLast()
+    if source.scalars.last ≠ "=" {
+      return .failure(
+        SyntaxError(
+          file: source,
+          index: source.scalars.endIndex,
+          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "An equals sign is missing."
+            case .deutschDeutschland:
+              return "Ein Gleichheitszeichen fehlt."
+            }
+          }),
+          context: "\u{22}" + value.source() + "\u{22}"
+        )
+      )
     }
+    source.scalars.removeLast()
+    return .success(
+      AttributeValueSyntax(
+        equals: TokenSyntax(kind: .equalsSign),
+        openingQuotationMark: TokenSyntax(kind: .quotationMark),
+        value: value,
+        closingQuotationMark: TokenSyntax(kind: .quotationMark)
+      )
+    )
+  }
 
-    /// Creates an attribute value.
-    ///
-    /// - Parameters:
-    ///     - value: Optional. The attribute value.
-    public init(value: TokenKind? = nil) {
-        self.init(value: value.map({ TokenSyntax(kind: $0) }) ?? TokenSyntax(kind: .attributeText("")))
+  // MARK: - Initialization
+
+  /// Creates an attribute value.
+  ///
+  /// - Parameters:
+  ///     - equals: The equals sign. (Supplied automatically if omitted.)
+  ///     - openingQuotationMark: The opening quotation mark. (Supplied automatically if omitted.)
+  ///     - value: The value.
+  ///     - closingQuotationMark: The closing quotation mark. (Supplied automatically if omitted.)
+  public init(
+    equals: TokenSyntax = TokenSyntax(kind: .equalsSign),
+    openingQuotationMark: TokenSyntax = TokenSyntax(kind: .quotationMark),
+    value: TokenSyntax,
+    closingQuotationMark: TokenSyntax = TokenSyntax(kind: .quotationMark)
+  ) {
+    _storage = SyntaxStorage(children: [equals, openingQuotationMark, value, closingQuotationMark])
+  }
+
+  /// Creates an attribute value.
+  ///
+  /// - Parameters:
+  ///     - value: Optional. The attribute value.
+  public init(value: TokenKind? = nil) {
+    self.init(value: value.map({ TokenSyntax(kind: $0) }) ?? TokenSyntax(kind: .attributeText("")))
+  }
+
+  /// Creates an attribute value.
+  ///
+  /// - Parameters:
+  ///     - valueText: Optional. The attribute value.
+  public init(valueText: String? = nil) {
+    self.init(value: TokenKind.attributeText(valueText ?? ""))
+  }
+
+  // MARK: - Children
+
+  /// The equals sign.
+  public var equals: TokenSyntax {
+    get {
+      return _storage.children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
     }
-
-    /// Creates an attribute value.
-    ///
-    /// - Parameters:
-    ///     - valueText: Optional. The attribute value.
-    public init(valueText: String? = nil) {
-        self.init(value: TokenKind.attributeText(valueText ?? ""))
+    set {
+      _storage.children[AttributeValueSyntax.indices[.equals]!] = newValue
     }
+  }
 
-    // MARK: - Children
-
-    /// The equals sign.
-    public var equals: TokenSyntax {
-        get {
-            return _storage.children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
-        }
-        set {
-            _storage.children[AttributeValueSyntax.indices[.equals]!] = newValue
-        }
+  /// The opening quotation mark.
+  public var openingQuotationMark: TokenSyntax {
+    get {
+      return _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
     }
-
-    /// The opening quotation mark.
-    public var openingQuotationMark: TokenSyntax {
-        get {
-            return _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
-        }
-        set {
-            _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] = newValue
-        }
+    set {
+      _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] = newValue
     }
+  }
 
-    /// The value.
-    public var value: TokenSyntax {
-        get {
-            return _storage.children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
-        }
-        set {
-            _storage.children[AttributeValueSyntax.indices[.value]!] = newValue
-        }
+  /// The value.
+  public var value: TokenSyntax {
+    get {
+      return _storage.children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
     }
-
-    /// The closing quotation mark.
-    public var closingQuotationMark: TokenSyntax {
-        get {
-            return _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
-        }
-        set {
-            _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] = newValue
-        }
+    set {
+      _storage.children[AttributeValueSyntax.indices[.value]!] = newValue
     }
+  }
 
-    // MARK: - Computed Properties
-
-    /// The value.
-    public var valueText: String {
-        get {
-            return value.tokenKind.text
-        }
-        set {
-            value = TokenSyntax(kind: .attributeText(newValue))
-        }
+  /// The closing quotation mark.
+  public var closingQuotationMark: TokenSyntax {
+    get {
+      return _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
     }
+    set {
+      _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] = newValue
+    }
+  }
 
-    // MARK: - Syntax
+  // MARK: - Computed Properties
 
-    public var _storage: _SyntaxStorage
+  /// The value.
+  public var valueText: String {
+    get {
+      return value.tokenKind.text
+    }
+    set {
+      value = TokenSyntax(kind: .attributeText(newValue))
+    }
+  }
+
+  // MARK: - Syntax
+
+  public var _storage: _SyntaxStorage
 }

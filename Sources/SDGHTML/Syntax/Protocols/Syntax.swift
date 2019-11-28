@@ -15,69 +15,69 @@
 import SDGControlFlow
 
 /// A Syntax node.
-public protocol Syntax : TransparentWrapper, TextOutputStreamable {
-    var _storage: _SyntaxStorage { get set }
+public protocol Syntax: TransparentWrapper, TextOutputStreamable {
+  var _storage: _SyntaxStorage { get set }
 
-    /// Applies systematic formatting to the HTML source node.
-    ///
-    /// - Parameters:
-    ///     - indentationLevel: How deep the node is indented.
-    mutating func format(indentationLevel: Int)
+  /// Applies systematic formatting to the HTML source node.
+  ///
+  /// - Parameters:
+  ///     - indentationLevel: How deep the node is indented.
+  mutating func format(indentationLevel: Int)
 }
 
 extension Syntax {
 
-    /// The source of this node.
-    public func source() -> String {
-        var result = ""
-        write(to: &result)
-        return result
+  /// The source of this node.
+  public func source() -> String {
+    var result = ""
+    write(to: &result)
+    return result
+  }
+
+  /// The children of this node.
+  public var children: [Syntax] {
+    return _storage.children.compactMap { $0 }
+  }
+
+  /// All the desendend nodes, at all nesting levels (including the node itself).
+  public func descendents() -> [Syntax] {
+    return children.lazy.flatMap({ $0.descendents() }).prepending(self)
+  }
+
+  /// Applies systematic formatting to the HTML source node.
+  public mutating func format() {
+    format(indentationLevel: 0)
+  }
+
+  public mutating func format(indentationLevel: Int) {
+    for index in _storage.children.indices {
+      _storage.children[index]?.format(indentationLevel: indentationLevel)
     }
+  }
 
-    /// The children of this node.
-    public var children: [Syntax] {
-        return _storage.children.compactMap { $0 }
+  /// Returns the HTML node with systematic formatting applied to its source.
+  ///
+  /// - Parameters:
+  ///     - indentationLevel: Optional. How deep the node is nested.
+  public func formatted(indentationLevel: Int = 0) -> Self {
+    return nonmutatingVariant(of: { $0.format(indentationLevel: indentationLevel) }, on: self)
+  }
+
+  // MARK: - TextOutputStreamable
+
+  public func write<Target>(to target: inout Target) where Target: TextOutputStream {
+    if case let token as TokenSyntax = self {
+      token.tokenKind.text.write(to: &target)
+    } else {
+      for child in children {
+        child.write(to: &target)
+      }
     }
+  }
 
-    /// All the desendend nodes, at all nesting levels (including the node itself).
-    public func descendents() -> [Syntax] {
-        return children.lazy.flatMap({ $0.descendents() }).prepending(self)
-    }
+  // MARK: - TransparentWrapper
 
-    /// Applies systematic formatting to the HTML source node.
-    public mutating func format() {
-        format(indentationLevel: 0)
-    }
-
-    public mutating func format(indentationLevel: Int) {
-        for index in _storage.children.indices {
-            _storage.children[index]?.format(indentationLevel: indentationLevel)
-        }
-    }
-
-    /// Returns the HTML node with systematic formatting applied to its source.
-    ///
-    /// - Parameters:
-    ///     - indentationLevel: Optional. How deep the node is nested.
-    public func formatted(indentationLevel: Int = 0) -> Self {
-        return nonmutatingVariant(of: { $0.format(indentationLevel: indentationLevel) }, on: self)
-    }
-
-    // MARK: - TextOutputStreamable
-
-    public func write<Target>(to target: inout Target) where Target : TextOutputStream {
-        if case let token as TokenSyntax = self {
-            token.tokenKind.text.write(to: &target)
-        } else {
-            for child in children {
-                child.write(to: &target)
-            }
-        }
-    }
-
-    // MARK: - TransparentWrapper
-
-    public var wrappedInstance: Any {
-        return source()
-    }
+  public var wrappedInstance: Any {
+    return source()
+  }
 }

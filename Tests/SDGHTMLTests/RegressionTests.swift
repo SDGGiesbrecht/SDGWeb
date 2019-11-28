@@ -20,18 +20,18 @@ import XCTest
 
 import SDGXCTestUtilities
 
-class RegressionTests : TestCase {
+class RegressionTests: TestCase {
 
-    func testDataAttributesAllowed() throws {
-        let thisFile = URL(fileURLWithPath: #file)
-        let document = try DocumentSyntax.parse(source: "<div data\u{2D}custom></div>").get()
-        let report = document.validate(baseURL: thisFile)
-        XCTAssert(report.isEmpty, "\(report)")
-    }
+  func testDataAttributesAllowed() throws {
+    let thisFile = URL(fileURLWithPath: #file)
+    let document = try DocumentSyntax.parse(source: "<div data\u{2D}custom></div>").get()
+    let report = document.validate(baseURL: thisFile)
+    XCTAssert(report.isEmpty, "\(report)")
+  }
 
-    func testValidationOfMultiScalarClusters() throws {
-        // Untracked
+  func testValidationOfMultiScalarClusters() throws {
+    // Untracked
 
-        _ = try DocumentSyntax.parse(source: "🇮🇱").get().validate(baseURL: URL(fileURLWithPath: "/"))
-    }
+    _ = try DocumentSyntax.parse(source: "🇮🇱").get().validate(baseURL: URL(fileURLWithPath: "/"))
+  }
 }

@@ -15,9 +15,9 @@
 import SDGText
 import SDGLocalization
 
-internal enum PageTemplateLoadingError : Error {
-    case foundationError(Swift.Error)
-    case metaDataExtractionError(PageTemplateMetaDataExtractionError)
-    case metaDataParsingError(PageTemplateMetaDataParsingError)
-    case missingTitle(page: StrictString)
+internal enum PageTemplateLoadingError: Error {
+  case foundationError(Swift.Error)
+  case metaDataExtractionError(PageTemplateMetaDataExtractionError)
+  case metaDataParsingError(PageTemplateMetaDataParsingError)
+  case missingTitle(page: StrictString)
 }

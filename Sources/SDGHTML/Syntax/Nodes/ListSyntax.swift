@@ -15,65 +15,67 @@
 import SDGLogic
 
 /// A node representing a consecutive list of other nodes.
-public struct ListSyntax<Entry> : ExpressibleByArrayLiteral, MutableCollection, RandomAccessCollection, RangeReplaceableCollection, Syntax
-where Entry : Syntax {
+public struct ListSyntax<Entry>: ExpressibleByArrayLiteral, MutableCollection,
+  RandomAccessCollection, RangeReplaceableCollection, Syntax
+where Entry: Syntax {
 
-    /// Creates a list syntax node from an array of entries.
-    ///
-    /// - Parameters:
-    ///     - entries: The entries.
-    public init(entries: [Entry]) {
-        _storage = SyntaxStorage(children: entries)
+  /// Creates a list syntax node from an array of entries.
+  ///
+  /// - Parameters:
+  ///     - entries: The entries.
+  public init(entries: [Entry]) {
+    _storage = SyntaxStorage(children: entries)
+  }
+
+  // MARK: - BidirectionalCollection
+
+  public func index(before i: Index) -> Index {
+    return _storage.children.index(before: i)
+  }
+
+  // MARK: - Collection
+
+  public typealias Index = Array<Entry>.Index
+
+  public var startIndex: Index {
+    return _storage.children.startIndex
+  }
+
+  public var endIndex: Index {
+    return _storage.children.endIndex
+  }
+
+  public func index(after i: Index) -> Index {
+    return _storage.children.index(after: i)
+  }
+
+  public subscript(position: Index) -> Entry {
+    get {
+      return _storage.children[position] as! Entry
     }
-
-    // MARK: - BidirectionalCollection
-
-    public func index(before i: Index) -> Index {
-        return _storage.children.index(before: i)
+    set {
+      _storage.children[position] = newValue
     }
+  }
 
-    // MARK: - Collection
+  // MARK: - RandomAccessCollection
 
-    public typealias Index = Array<Entry>.Index
+  public func index(_ i: Index, offsetBy distance: Int) -> Index {
+    return _storage.children.index(i, offsetBy: distance)
+  }
 
-    public var startIndex: Index {
-        return _storage.children.startIndex
-    }
+  // MARK: - RangeReplaceableCollection
 
-    public var endIndex: Index {
-        return _storage.children.endIndex
-    }
+  public init() {
+    self.init(entries: [])
+  }
 
-    public func index(after i: Index) -> Index {
-        return _storage.children.index(after: i)
-    }
+  public mutating func replaceSubrange<S>(_ subrange: Range<Index>, with newElements: S)
+  where S: Sequence, S.Element == Entry {
+    _storage.children.replaceSubrange(subrange, with: newElements.lazy.map({ $0 }))
+  }
 
-    public subscript(position: Index) -> Entry {
-        get {
-            return _storage.children[position] as! Entry
-        }
-        set {
-            _storage.children[position] = newValue
-        }
-    }
+  // MARK: - Syntax
 
-    // MARK: - RandomAccessCollection
-
-    public func index(_ i: Index, offsetBy distance: Int) -> Index {
-        return _storage.children.index(i, offsetBy: distance)
-    }
-
-    // MARK: - RangeReplaceableCollection
-
-    public init() {
-        self.init(entries: [])
-    }
-
-    public mutating func replaceSubrange<S>(_ subrange: Range<Index>, with newElements: S) where S : Sequence, S.Element == Entry {
-        _storage.children.replaceSubrange(subrange, with: newElements.lazy.map({ $0 }))
-    }
-
-    // MARK: - Syntax
-
-    public var _storage: _SyntaxStorage
+  public var _storage: _SyntaxStorage
 }

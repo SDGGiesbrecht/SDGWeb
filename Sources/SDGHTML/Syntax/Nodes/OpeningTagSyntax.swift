@@ -17,165 +17,175 @@ import Foundation
 import SDGLogic
 
 /// An opening tag.
-public struct OpeningTagSyntax : AttributedSyntax, NamedSyntax, Syntax {
+public struct OpeningTagSyntax: AttributedSyntax, NamedSyntax, Syntax {
 
-    // MARK: - Parsing
+  // MARK: - Parsing
 
-    private enum Child : CaseIterable {
-        case lessThan
-        case name
-        case attributes
-        case greaterThan
+  private enum Child: CaseIterable {
+    case lessThan
+    case name
+    case attributes
+    case greaterThan
+  }
+  private static let indices = Child.allCases.bijectiveIndexMapping
+
+  // MARK: - Initialization
+
+  /// Creates an opening tag.
+  ///
+  /// - Parameters:
+  ///     - lessThan: The less‐than sign. (Supplied automatically if omitted.)
+  ///     - name: The tag name.
+  ///     - attributes: Optional. Any attributes.
+  ///     - greaterThan: The greater‐than sign. (Supplied automatically if omitted.)
+  public init(
+    lessThan: TokenSyntax = TokenSyntax(kind: .lessThan),
+    name: TokenSyntax,
+    attributes: AttributesSyntax? = nil,
+    greaterThan: TokenSyntax = TokenSyntax(kind: .greaterThan)
+  ) {
+    _storage = _SyntaxStorage(children: [lessThan, name, attributes, greaterThan])
+  }
+
+  /// Creates an opening tag.
+  ///
+  /// - Parameters:
+  ///     - name: The tag name.
+  ///     - attributes: Optional. The attributes.
+  public init(name: TokenKind, attributes: AttributesSyntax? = nil) {
+    self.init(name: TokenSyntax(kind: name), attributes: attributes)
+  }
+
+  /// Creates an opening tag.
+  ///
+  /// - Parameters:
+  ///     - name: The tag name.
+  ///     - attributes: Optional. The attributes.
+  public init(name: String, attributes: [String: String] = [:]) {
+    self.init(name: .elementName(name), attributes: AttributesSyntax(dictionary: attributes))
+  }
+
+  // MARK: - Children
+
+  /// The less‐than sign.
+  public var lessThan: TokenSyntax {
+    get {
+      return _storage.children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
     }
-    private static let indices = Child.allCases.bijectiveIndexMapping
-
-    // MARK: - Initialization
-
-    /// Creates an opening tag.
-    ///
-    /// - Parameters:
-    ///     - lessThan: The less‐than sign. (Supplied automatically if omitted.)
-    ///     - name: The tag name.
-    ///     - attributes: Optional. Any attributes.
-    ///     - greaterThan: The greater‐than sign. (Supplied automatically if omitted.)
-    public init(
-        lessThan: TokenSyntax = TokenSyntax(kind: .lessThan),
-        name: TokenSyntax,
-        attributes: AttributesSyntax? = nil,
-        greaterThan: TokenSyntax = TokenSyntax(kind: .greaterThan)) {
-        _storage = _SyntaxStorage(children: [lessThan, name, attributes, greaterThan])
+    set {
+      _storage.children[OpeningTagSyntax.indices[.lessThan]!] = newValue
     }
+  }
 
-    /// Creates an opening tag.
-    ///
-    /// - Parameters:
-    ///     - name: The tag name.
-    ///     - attributes: Optional. The attributes.
-    public init(name: TokenKind, attributes: AttributesSyntax? = nil) {
-        self.init(name: TokenSyntax(kind: name), attributes: attributes)
+  /// The tag name.
+  public var name: TokenSyntax {
+    get {
+      return _storage.children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
     }
-
-    /// Creates an opening tag.
-    ///
-    /// - Parameters:
-    ///     - name: The tag name.
-    ///     - attributes: Optional. The attributes.
-    public init(name: String, attributes: [String: String] = [:]) {
-        self.init(name: .elementName(name), attributes: AttributesSyntax(dictionary: attributes))
+    set {
+      _storage.children[OpeningTagSyntax.indices[.name]!] = newValue
     }
+  }
 
-    // MARK: - Children
-
-    /// The less‐than sign.
-    public var lessThan: TokenSyntax {
-        get {
-            return _storage.children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
-        }
-        set {
-            _storage.children[OpeningTagSyntax.indices[.lessThan]!] = newValue
-        }
+  /// Any attributes.
+  public var attributes: AttributesSyntax? {
+    get {
+      return _storage.children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
     }
-
-    /// The tag name.
-    public var name: TokenSyntax {
-        get {
-            return _storage.children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
-        }
-        set {
-            _storage.children[OpeningTagSyntax.indices[.name]!] = newValue
-        }
+    set {
+      _storage.children[OpeningTagSyntax.indices[.attributes]!] = newValue
     }
+  }
 
-    /// Any attributes.
-    public var attributes: AttributesSyntax? {
-        get {
-            return _storage.children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
-        }
-        set {
-            _storage.children[OpeningTagSyntax.indices[.attributes]!] = newValue
-        }
+  /// The greater‐than sign.
+  public var greaterThan: TokenSyntax {
+    get {
+      return _storage.children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
     }
-
-    /// The greater‐than sign.
-    public var greaterThan: TokenSyntax {
-        get {
-            return _storage.children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
-        }
-        set {
-            _storage.children[OpeningTagSyntax.indices[.greaterThan]!] = newValue
-        }
+    set {
+      _storage.children[OpeningTagSyntax.indices[.greaterThan]!] = newValue
     }
+  }
 
-    // MARK: - Validation
+  // MARK: - Validation
 
-    internal func validate(
-        location: String.ScalarView.Index,
-        file: String,
-        baseURL: URL) -> [SyntaxError] {
-        var results: [SyntaxError] = []
-        validateURLValues(
+  internal func validate(
+    location: String.ScalarView.Index,
+    file: String,
+    baseURL: URL
+  ) -> [SyntaxError] {
+    var results: [SyntaxError] = []
+    validateURLValues(
+      location: location,
+      file: file,
+      baseURL: baseURL,
+      results: &results
+    )
+    return results
+  }
+
+  private func validateURLValues(
+    location: String.ScalarView.Index,
+    file: String,
+    baseURL: URL,
+    results: inout [SyntaxError]
+  ) {
+    if let attributes = self.attributes?.attributes {
+      if name.source() == "link",
+        attributes.contains(where: { attribute in
+          attribute.name.source() == "rel" ∧ attribute.value?.value.source() == "canonical"
+        })
+      {
+        // Skip
+      } else {
+        for attribute in attributes {
+          attribute.validateURLValue(
             location: location,
             file: file,
             baseURL: baseURL,
-            results: &results)
-        return results
-    }
-
-    private func validateURLValues(
-        location: String.ScalarView.Index,
-        file: String,
-        baseURL: URL,
-        results: inout [SyntaxError]) {
-        if let attributes = self.attributes?.attributes {
-            if name.source() == "link",
-                attributes.contains(where: { attribute in
-                    attribute.name.source() == "rel" ∧ attribute.value?.value.source() == "canonical"
-                }) {
-                // Skip
-            } else {
-                for attribute in attributes {
-                    attribute.validateURLValue(location: location, file: file, baseURL: baseURL, results: &results)
-                }
-            }
+            results: &results
+          )
         }
+      }
     }
+  }
 
-    // MARK: - AttributedSyntax
+  // MARK: - AttributedSyntax
 
-    public var attributeDictionary: [String: String] {
-        get {
-            return attributes?.attributeDictionary ?? [:]
-        }
-        set {
-            attributes = AttributesSyntax(dictionary: newValue)
-        }
+  public var attributeDictionary: [String: String] {
+    get {
+      return attributes?.attributeDictionary ?? [:]
     }
-
-    public func attribute(named name: String) -> AttributeSyntax? {
-        return attributes?.attribute(named: name)
+    set {
+      attributes = AttributesSyntax(dictionary: newValue)
     }
+  }
 
-    public mutating func apply(attribute: AttributeSyntax) {
-        if attributes == nil {
-            attributes = []
-        }
-        attributes?.apply(attribute: attribute)
+  public func attribute(named name: String) -> AttributeSyntax? {
+    return attributes?.attribute(named: name)
+  }
+
+  public mutating func apply(attribute: AttributeSyntax) {
+    if attributes == nil {
+      attributes = []
     }
+    attributes?.apply(attribute: attribute)
+  }
 
-    public mutating func removeAttribute(named name: String) {
-        attributes?.removeAttribute(named: name)
-        if attributes?.attributes?.isEmpty ≠ false {
-            attributes = nil
-        }
+  public mutating func removeAttribute(named name: String) {
+    attributes?.removeAttribute(named: name)
+    if attributes?.attributes?.isEmpty ≠ false {
+      attributes = nil
     }
+  }
 
-    // MARK: - NamedSyntax
+  // MARK: - NamedSyntax
 
-    public static func nameTokenKind(_ text: String) -> TokenKind {
-        return .elementName(text)
-    }
+  public static func nameTokenKind(_ text: String) -> TokenKind {
+    return .elementName(text)
+  }
 
-    // MARK: - Syntax
+  // MARK: - Syntax
 
-    public var _storage: _SyntaxStorage
+  public var _storage: _SyntaxStorage
 }

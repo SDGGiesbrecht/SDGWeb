@@ -14,7 +14,7 @@
 
 import SDGLocalization
 
-enum RightToLeftLocalization : String, InputLocalization {
-    case עברית = "he"
-    static var fallbackLocalization = RightToLeftLocalization.עברית
+enum RightToLeftLocalization: String, InputLocalization {
+  case עברית = "he"
+  static var fallbackLocalization = RightToLeftLocalization.עברית
 }

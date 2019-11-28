@@ -21,38 +21,39 @@ import SDGText
 /// This kind of redirect should only be used as a fallback when the server configuration is unavailable for modification.
 public struct Redirect {
 
-    // MARK: - Static Properties
+  // MARK: - Static Properties
 
-    private static let template: StrictString = {
-        var result = StrictString(Resources.redirect)
-        let header = result.firstMatch(
-            for: "\n\n<!\u{2D}\u{2D}".scalars
-                + RepetitionPattern(ConditionalPattern({ $0 ≠ ">" }))
-                + "\u{2D}\u{2D}>\n".scalars)!
-        result.removeSubrange(header.range)
-        return result
-    }()
+  private static let template: StrictString = {
+    var result = StrictString(Resources.redirect)
+    let header = result.firstMatch(
+      for: "\n\n<!\u{2D}\u{2D}".scalars
+        + RepetitionPattern(ConditionalPattern({ $0 ≠ ">" }))
+        + "\u{2D}\u{2D}>\n".scalars
+    )!
+    result.removeSubrange(header.range)
+    return result
+  }()
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates a redirect.
-    ///
-    /// - Parameters:
-    ///     - target: The URL to redirect to.
-    public init(target: String) {
-        var mutable = String(Redirect.template)
+  /// Creates a redirect.
+  ///
+  /// - Parameters:
+  ///     - target: The URL to redirect to.
+  public init(target: String) {
+    var mutable = String(Redirect.template)
 
-        let encoded: String = HTML.escapeTextForAttribute(HTML.percentEncodeURLPath(target))
-        mutable.scalars.replaceMatches(for: "[*encoded*]".scalars, with: encoded.scalars)
+    let encoded: String = HTML.escapeTextForAttribute(HTML.percentEncodeURLPath(target))
+    mutable.scalars.replaceMatches(for: "[*encoded*]".scalars, with: encoded.scalars)
 
-        let readable = HTML.escapeTextForCharacterData(StrictString(target))
-        mutable.scalars.replaceMatches(for: "[*readable*]".scalars, with: readable)
+    let readable = HTML.escapeTextForCharacterData(StrictString(target))
+    mutable.scalars.replaceMatches(for: "[*readable*]".scalars, with: readable)
 
-        contents = mutable
-    }
+    contents = mutable
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    /// The source of the HTML file.
-    public let contents: String
+  /// The source of the HTML file.
+  public let contents: String
 }
