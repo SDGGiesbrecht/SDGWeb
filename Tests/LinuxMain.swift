@@ -11,14 +11,3 @@
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
-
-import XCTest
-
-import SDGHTMLTests
-import SDGWebTests
-
-var tests = [XCTestCaseEntry]()
-tests += SDGHTMLTests.__allTests()
-tests += SDGWebTests.__allTests()
-
-XCTMain(tests)

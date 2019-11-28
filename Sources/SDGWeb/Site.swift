@@ -90,7 +90,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
         return .failure(.noMetadata(page: error.page))
       case .metaDataParsingError(let error):
         return .failure(.metadataMissingColon(line: error.line))
-      case .missingTitle(page: let page):
+      case .missingTitle(let page):
         return .failure(.missingTitle(page: page))
       }
     case .success:

@@ -124,7 +124,9 @@ public struct AttributesSyntax: AttributedSyntax, ExpressibleByArrayLiteral, Syn
     self.init(attributes: nil)
   }
 
-  /// Creates an attribute list from a dictionary. Returns `nil` if the dictionary is empty.
+  /// Creates an attribute list from a dictionary.
+  ///
+  /// `nil` will be returned if the dictionary is empty.
   ///
   /// - Parameters:
   ///     - dictionary: The attributes in dictionary form.
