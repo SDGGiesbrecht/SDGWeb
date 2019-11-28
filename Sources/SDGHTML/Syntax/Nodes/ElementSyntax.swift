@@ -19,188 +19,210 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An HTML element.
-public struct ElementSyntax : AttributedSyntax, ContainerSyntax, NamedSyntax, Syntax {
+public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syntax {
 
-    // MARK: - Parsing
+  // MARK: - Parsing
 
-    private enum Child : CaseIterable {
-        case openingTag
-        case continuation
-    }
-    private static let indices = Child.allCases.bijectiveIndexMapping
+  private enum Child: CaseIterable {
+    case openingTag
+    case continuation
+  }
+  private static let indices = Child.allCases.bijectiveIndexMapping
 
-    private static func unpairedGreaterThan() -> UserFacing<StrictString, InterfaceLocalization> {
-        return UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "A greater‐than sign has no corresponding less‐than sign."
-            case .deutschDeutschland:
-                return "Ein Größer‐als‐Zeichen hat kein entsprechendes Kleiner‐als‐Zeichen."
-            }
-        })
-    }
+  private static func unpairedGreaterThan() -> UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "A greater‐than sign has no corresponding less‐than sign."
+      case .deutschDeutschland:
+        return "Ein Größer‐als‐Zeichen hat kein entsprechendes Kleiner‐als‐Zeichen."
+      }
+    })
+  }
 
-    internal static func parse(fromEndOf source: inout String) -> Result<ElementSyntax, SyntaxError> {
-        let preservedSource = source
-        source.scalars.removeLast() // “>”
-        switch AttributesSyntax.parse(fromEndOf: &source) {
-        case .failure(let error):
+  internal static func parse(fromEndOf source: inout String) -> Result<ElementSyntax, SyntaxError> {
+    let preservedSource = source
+    source.scalars.removeLast()  // “>”
+    switch AttributesSyntax.parse(fromEndOf: &source) {
+    case .failure(let error):
+      return .failure(error)
+    case .success(let (name, attributes)):
+      if source.scalars.isEmpty {
+        return .failure(
+          SyntaxError(
+            file: preservedSource,
+            index: preservedSource.scalars.endIndex,
+            description: unpairedGreaterThan(),
+            context: preservedSource
+          )
+        )
+      }
+      if source.scalars.last ≠ "/" {
+        source.scalars.removeLast()  // “<”
+        return .success(
+          ElementSyntax(
+            openingTag: OpeningTagSyntax(name: name, attributes: attributes)
+          )
+        )
+      } else {
+        source.scalars.removeLast()  // “/”
+        if source.scalars.last ≠ "<" {
+          return .failure(
+            SyntaxError(
+              file: preservedSource,
+              index: preservedSource.scalars.endIndex,
+              description: unpairedGreaterThan(),
+              context: preservedSource
+            )
+          )
+        } else {
+          source.scalars.removeLast()  // “<”
+          switch ListSyntax<ContentSyntax>.parse(
+            fromEndOf: &source,
+            untilOpeningOf: name.source()
+          ) {
+          case .failure(let error):
             return .failure(error)
-        case .success(let (name, attributes)):
-            if source.scalars.isEmpty {
-                return .failure(SyntaxError(
-                    file: preservedSource,
-                    index: preservedSource.scalars.endIndex,
-                    description: unpairedGreaterThan(),
-                    context: preservedSource))
-            }
-            if source.scalars.last ≠ "/" {
-                source.scalars.removeLast() // “<”
-                return .success(ElementSyntax(
-                    openingTag: OpeningTagSyntax(name: name, attributes: attributes)))
-            } else {
-                source.scalars.removeLast() // “/”
-                if source.scalars.last ≠ "<" {
-                    return .failure(SyntaxError(
-                        file: preservedSource,
-                        index: preservedSource.scalars.endIndex,
-                        description: unpairedGreaterThan(),
-                        context: preservedSource))
-                } else {
-                    source.scalars.removeLast() // “<”
-                    switch ListSyntax<ContentSyntax>.parse(
-                        fromEndOf: &source, untilOpeningOf: name.source()) {
-                    case .failure(let error):
-                        return .failure(error)
-                    case .success(let (opening, content)):
-                        guard let tag = opening else {
-                            return .failure(SyntaxError(
-                                file: preservedSource,
-                                index: preservedSource.scalars.endIndex,
-                                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                                    switch localization {
-                                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                        return "A closing tag has no corresponding opening tag."
-                                    case .deutschDeutschland:
-                                        return "Eine schließende Markierung hat keine entsprechende öffnende Markierung."
-                                    }
-                                }),
-                                context: preservedSource))
-                        }
-                        return .success(ElementSyntax(
-                            openingTag: tag,
-                            continuation: ElementContinuationSyntax(
-                                content: content,
-                                closingTag: ClosingTagSyntax(name: name))))
+          case .success(let (opening, content)):
+            guard let tag = opening else {
+              return .failure(
+                SyntaxError(
+                  file: preservedSource,
+                  index: preservedSource.scalars.endIndex,
+                  description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                      return "A closing tag has no corresponding opening tag."
+                    case .deutschDeutschland:
+                      return
+                        "Eine schließende Markierung hat keine entsprechende öffnende Markierung."
                     }
-                }
+                  }),
+                  context: preservedSource
+                )
+              )
             }
+            return .success(
+              ElementSyntax(
+                openingTag: tag,
+                continuation: ElementContinuationSyntax(
+                  content: content,
+                  closingTag: ClosingTagSyntax(name: name)
+                )
+              )
+            )
+          }
         }
+      }
     }
+  }
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    /// Creates an element.
-    ///
-    /// - Parameters:
-    ///     - openingTag: The opening tag.
-    ///     - continuation: Optional. Any continuation node.
-    public init(openingTag: OpeningTagSyntax, continuation: ElementContinuationSyntax? = nil) {
-        _storage = _SyntaxStorage(children: [openingTag, continuation])
+  /// Creates an element.
+  ///
+  /// - Parameters:
+  ///     - openingTag: The opening tag.
+  ///     - continuation: Optional. Any continuation node.
+  public init(openingTag: OpeningTagSyntax, continuation: ElementContinuationSyntax? = nil) {
+    _storage = _SyntaxStorage(children: [openingTag, continuation])
+  }
+
+  /// Creates an element.
+  ///
+  /// - Parameters:
+  ///     - name: The tag name.
+  ///     - attributes: Optional. The attributes.
+  ///     - empty: Whether the element should be created empty (without a continuation node).
+  public init(name: String, attributes: [String: String] = [:], empty: Bool) {
+    self.init(
+      openingTag: OpeningTagSyntax(name: name, attributes: attributes),
+      continuation: empty ? nil : ElementContinuationSyntax(elementName: name)
+    )
+  }
+
+  // MARK: - Children
+
+  /// The opening tag.
+  public var openingTag: OpeningTagSyntax {
+    get {
+      return _storage.children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
     }
-
-    /// Creates an element.
-    ///
-    /// - Parameters:
-    ///     - name: The tag name.
-    ///     - attributes: Optional. The attributes.
-    ///     - empty: Whether the element should be created empty (without a continuation node).
-    public init(name: String, attributes: [String: String] = [:], empty: Bool) {
-        self.init(
-            openingTag: OpeningTagSyntax(name: name, attributes: attributes),
-            continuation: empty ? nil : ElementContinuationSyntax(elementName: name))
+    set {
+      _storage.children[ElementSyntax.indices[.openingTag]!] = newValue
     }
+  }
 
-    // MARK: - Children
-
-    /// The opening tag.
-    public var openingTag: OpeningTagSyntax {
-        get {
-            return _storage.children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
-        }
-        set {
-            _storage.children[ElementSyntax.indices[.openingTag]!] = newValue
-        }
+  /// The content and closing tag, if the element is not empty.
+  public var continuation: ElementContinuationSyntax? {
+    get {
+      return _storage.children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
     }
-
-    /// The content and closing tag, if the element is not empty.
-    public var continuation: ElementContinuationSyntax? {
-        get {
-            return _storage.children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
-        }
-        set {
-            _storage.children[ElementSyntax.indices[.continuation]!] = newValue
-        }
+    set {
+      _storage.children[ElementSyntax.indices[.continuation]!] = newValue
     }
+  }
 
-    // MARK: - AttributedSyntax
+  // MARK: - AttributedSyntax
 
-    public var attributeDictionary: [String: String] {
-        get {
-            return openingTag.attributeDictionary
-        }
-        set {
-            openingTag.attributeDictionary = newValue
-        }
+  public var attributeDictionary: [String: String] {
+    get {
+      return openingTag.attributeDictionary
     }
-
-    public func attribute(named name: String) -> AttributeSyntax? {
-        return openingTag.attribute(named: name)
+    set {
+      openingTag.attributeDictionary = newValue
     }
+  }
 
-    public mutating func apply(attribute: AttributeSyntax) {
-        openingTag.apply(attribute: attribute)
+  public func attribute(named name: String) -> AttributeSyntax? {
+    return openingTag.attribute(named: name)
+  }
+
+  public mutating func apply(attribute: AttributeSyntax) {
+    openingTag.apply(attribute: attribute)
+  }
+
+  public mutating func removeAttribute(named name: String) {
+    openingTag.removeAttribute(named: name)
+  }
+
+  // MARK: - ContainerSyntax
+
+  public var content: ListSyntax<ContentSyntax> {
+    get {
+      return continuation?.content ?? []
     }
-
-    public mutating func removeAttribute(named name: String) {
-        openingTag.removeAttribute(named: name)
+    set {
+      if ¬newValue.isEmpty,
+        continuation == nil
+      {
+        continuation = ElementContinuationSyntax(
+          content: newValue,
+          closingTag: ClosingTagSyntax(name: openingTag.name)
+        )
+      } else {
+        continuation?.content = newValue
+      }
     }
+  }
 
-    // MARK: - ContainerSyntax
+  // MARK: - NamedSyntax
 
-    public var content: ListSyntax<ContentSyntax> {
-        get {
-            return continuation?.content ?? []
-        }
-        set {
-            if ¬newValue.isEmpty,
-                continuation == nil {
-                continuation = ElementContinuationSyntax(
-                    content: newValue,
-                    closingTag: ClosingTagSyntax(name: openingTag.name))
-            } else {
-                continuation?.content = newValue
-            }
-        }
+  public static func nameTokenKind(_ text: String) -> TokenKind {
+    return OpeningTagSyntax.nameTokenKind(text)
+  }
+
+  public var name: TokenSyntax {
+    get {
+      return openingTag.name
     }
-
-    // MARK: - NamedSyntax
-
-    public static func nameTokenKind(_ text: String) -> TokenKind {
-        return OpeningTagSyntax.nameTokenKind(text)
+    set {
+      openingTag.name = newValue
+      continuation?.closingTag.name = newValue
     }
+  }
 
-    public var name: TokenSyntax {
-        get {
-            return openingTag.name
-        }
-        set {
-            openingTag.name = newValue
-            continuation?.closingTag.name = newValue
-        }
-    }
+  // MARK: - Syntax
 
-    // MARK: - Syntax
-
-    public var _storage: _SyntaxStorage
+  public var _storage: _SyntaxStorage
 }

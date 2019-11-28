@@ -14,8 +14,8 @@
 
 import SDGLocalization
 
-enum DoubleLocalization : String, InputLocalization {
-    case english = "en"
-    case deutsch = "de"
-    static var fallbackLocalization = DoubleLocalization.english
+enum DoubleLocalization: String, InputLocalization {
+  case english = "en"
+  case deutsch = "de"
+  static var fallbackLocalization = DoubleLocalization.english
 }

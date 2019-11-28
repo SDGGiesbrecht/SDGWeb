@@ -14,7 +14,7 @@
 
 import SDGLocalization
 
-enum SingleLocalization : String, InputLocalization {
-    case english = "en"
-    static var fallbackLocalization = SingleLocalization.english
+enum SingleLocalization: String, InputLocalization {
+  case english = "en"
+  static var fallbackLocalization = SingleLocalization.english
 }

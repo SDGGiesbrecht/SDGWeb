@@ -15,7 +15,7 @@
 internal typealias SyntaxStorage = _SyntaxStorage
 public struct _SyntaxStorage {
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    var children: [Syntax?]
+  var children: [Syntax?]
 }

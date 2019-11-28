@@ -17,14 +17,15 @@ import SDGText
 
 internal enum Frame {
 
-    internal static let frame: StrictString = {
-        var result = StrictString(Resources.frame)
-        result.replaceMatches(
-            for: "\n<\u{21}\u{2D}\u{2D}".scalars
-                + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
-                + "\u{2D}\u{2D}>\n\n".scalars,
-            with: "".scalars)
-        result.replaceMatches(for: "[*UTF‐8*]", with: "utf\u{2D}8")
-        return result
-    }()
+  internal static let frame: StrictString = {
+    var result = StrictString(Resources.frame)
+    result.replaceMatches(
+      for: "\n<\u{21}\u{2D}\u{2D}".scalars
+        + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
+        + "\u{2D}\u{2D}>\n\n".scalars,
+      with: "".scalars
+    )
+    result.replaceMatches(for: "[*UTF‐8*]", with: "utf\u{2D}8")
+    return result
+  }()
 }

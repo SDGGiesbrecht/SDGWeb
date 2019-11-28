@@ -14,7 +14,7 @@
 
 import SDGLocalization
 
-enum UnknownLocalization : String, InputLocalization {
-    case unknown = "zxx"
-    static var fallbackLocalization = UnknownLocalization.unknown
+enum UnknownLocalization: String, InputLocalization {
+  case unknown = "zxx"
+  static var fallbackLocalization = UnknownLocalization.unknown
 }

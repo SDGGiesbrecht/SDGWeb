@@ -23,10 +23,10 @@ import SDGCalendar
 /// - Parameters:
 ///     - yearFirstPublished: The year the site was first published.
 public func copyrightDates(yearFirstPublished: GregorianYear) -> StrictString {
-    let now = CalendarDate.gregorianNow().gregorianYear
-    if now == yearFirstPublished {
-        return yearFirstPublished.inEnglishDigits()
-    } else {
-        return yearFirstPublished.inEnglishDigits() + "–" + now.inEnglishDigits()
-    }
+  let now = CalendarDate.gregorianNow().gregorianYear
+  if now == yearFirstPublished {
+    return yearFirstPublished.inEnglishDigits()
+  } else {
+    return yearFirstPublished.inEnglishDigits() + "–" + now.inEnglishDigits()
+  }
 }

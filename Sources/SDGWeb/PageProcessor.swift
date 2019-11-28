@@ -19,41 +19,42 @@ import SDGWebLocalizations
 /// A page processor.
 public protocol PageProcessor {
 
-    /// Returns the frame to use for each page of the site.
-    ///
-    /// - Parameters:
-    ///     - repositoryStructure: The repository structure to get the frame from.
-    func frame(repositoryStructure: RepositoryStructure) throws -> StrictString
+  /// Returns the frame to use for each page of the site.
+  ///
+  /// - Parameters:
+  ///     - repositoryStructure: The repository structure to get the frame from.
+  func frame(repositoryStructure: RepositoryStructure) throws -> StrictString
 
-    /// Processes the page template, inserting its components into the frame.
-    ///
-    /// - Parameters:
-    ///     - pageTemplate: The template to process.
-    ///     - title: The title of the page.
-    ///     - content: The content of the page.
-    ///     - siteRoot: The relative path from the page to the site root.
-    ///     - localizationRoot: The relative path from the page to the root of its localization.
-    ///     - relativePath: The relative path from the site root to the page.
-    func process(
-        pageTemplate: inout StrictString,
-        title: StrictString,
-        content: StrictString,
-        siteRoot: StrictString,
-        localizationRoot: StrictString,
-        relativePath: StrictString)
+  /// Processes the page template, inserting its components into the frame.
+  ///
+  /// - Parameters:
+  ///     - pageTemplate: The template to process.
+  ///     - title: The title of the page.
+  ///     - content: The content of the page.
+  ///     - siteRoot: The relative path from the page to the site root.
+  ///     - localizationRoot: The relative path from the page to the root of its localization.
+  ///     - relativePath: The relative path from the site root to the page.
+  func process(
+    pageTemplate: inout StrictString,
+    title: StrictString,
+    content: StrictString,
+    siteRoot: StrictString,
+    localizationRoot: StrictString,
+    relativePath: StrictString
+  )
 }
 
 extension PageProcessor {
 
-    public func frame(repositoryStructure: RepositoryStructure) throws -> StrictString {
-        return try StrictString(from: repositoryStructure.frame)
-    }
+  public func frame(repositoryStructure: RepositoryStructure) throws -> StrictString {
+    return try StrictString(from: repositoryStructure.frame)
+  }
 
-    func trimmedFrame(repositoryStructure: RepositoryStructure) throws -> StrictString {
-        var result = try frame(repositoryStructure: repositoryStructure)
-        if result.last == "\n" {
-            result.removeLast()
-        }
-        return result
+  func trimmedFrame(repositoryStructure: RepositoryStructure) throws -> StrictString {
+    var result = try frame(repositoryStructure: repositoryStructure)
+    if result.last == "\n" {
+      result.removeLast()
     }
+    return result
+  }
 }

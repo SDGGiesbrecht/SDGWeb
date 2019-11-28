@@ -19,26 +19,26 @@ import SDGWebLocalizations
 import SDGHTML
 
 /// An error detected while validating a website.
-public enum SiteValidationError : PresentableError {
+public enum SiteValidationError: PresentableError {
 
-    // MARK: - Cases
+  // MARK: - Cases
 
-    /// Foundation encountered an error.
-    case foundationError(Error)
+  /// Foundation encountered an error.
+  case foundationError(Error)
 
-    /// The file’s syntax could not be parsed.
-    case syntaxError(SyntaxError)
+  /// The file’s syntax could not be parsed.
+  case syntaxError(SyntaxError)
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    // #workaround(workspace version 0.23.1, SDGLocalization inheritance is skipped due to parser crash.)
-    /// Returns a localized description of the error.
-    public func presentableDescription() -> StrictString {
-        switch self {
-        case .foundationError(let error):
-            return StrictString(error.localizedDescription)
-        case .syntaxError(let error):
-            return error.presentableDescription()
-        }
+  // #workaround(workspace version 0.23.1, SDGLocalization inheritance is skipped due to parser crash.)
+  /// Returns a localized description of the error.
+  public func presentableDescription() -> StrictString {
+    switch self {
+    case .foundationError(let error):
+      return StrictString(error.localizedDescription)
+    case .syntaxError(let error):
+      return error.presentableDescription()
     }
+  }
 }

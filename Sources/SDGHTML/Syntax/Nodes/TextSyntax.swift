@@ -16,71 +16,71 @@ import SDGLogic
 import SDGCollections
 
 /// A text node.
-public struct TextSyntax : Syntax {
+public struct TextSyntax: Syntax {
 
-    // MARK: - Parsing
+  // MARK: - Parsing
 
-    private enum Child : CaseIterable {
-        case token
+  private enum Child: CaseIterable {
+    case token
+  }
+  private static let indices = Child.allCases.bijectiveIndexMapping
+
+  internal static func parse(fromEndOf source: inout String) -> TextSyntax {
+    var start = source.scalars.endIndex
+    while start ≠ source.scalars.startIndex,
+    source[source.scalars.index(before: start)] ≠ ">" {
+      start = source.scalars.index(before: start)
     }
-    private static let indices = Child.allCases.bijectiveIndexMapping
+    let text = String(source[start...])
+    source.scalars.removeSubrange(start...)
+    return TextSyntax(text: TokenSyntax(kind: .text(text)))
+  }
 
-    internal static func parse(fromEndOf source: inout String) -> TextSyntax {
-        var start = source.scalars.endIndex
-        while start ≠ source.scalars.startIndex,
-            source[source.scalars.index(before: start)] ≠ ">" {
-                start = source.scalars.index(before: start)
-        }
-        let text = String(source[start...])
-        source.scalars.removeSubrange(start...)
-        return TextSyntax(text: TokenSyntax(kind: .text(text)))
+  // MARK: - Initialization
+
+  /// Creates text.
+  ///
+  /// - Parameters:
+  ///     - text: The text.
+  public init(text: TokenSyntax) {
+    _storage = _SyntaxStorage(children: [text])
+  }
+
+  /// Creates text.
+  ///
+  /// - Parameters:
+  ///     - text: The text.
+  public init(text: String = "") {
+    self.init(text: TokenSyntax(kind: .text(text)))
+  }
+
+  // MARK: - Children
+
+  /// The text.
+  public var text: TokenSyntax {
+    get {
+      return _storage.children[TextSyntax.indices[.token]!] as! TokenSyntax
     }
-
-    // MARK: - Initialization
-
-    /// Creates text.
-    ///
-    /// - Parameters:
-    ///     - text: The text.
-    public init(text: TokenSyntax) {
-        _storage = _SyntaxStorage(children: [text])
+    set {
+      _storage.children[TextSyntax.indices[.token]!] = newValue
     }
+  }
 
-    /// Creates text.
-    ///
-    /// - Parameters:
-    ///     - text: The text.
-    public init(text: String = "") {
-        self.init(text: TokenSyntax(kind: .text(text)))
-    }
+  // MARK: - Formatting
 
-    // MARK: - Children
+  internal mutating func trimWhitespace() {
+    text.whereMeaningfulTrimWhitespace()
+  }
 
-    /// The text.
-    public var text: TokenSyntax {
-        get {
-            return _storage.children[TextSyntax.indices[.token]!] as! TokenSyntax
-        }
-        set {
-            _storage.children[TextSyntax.indices[.token]!] = newValue
-        }
-    }
+  internal mutating func setLeadingWhitespace(to whitespace: String) {
+    text.whereMeaningfulSetLeadingWhitespace(to: whitespace)
+  }
 
-    // MARK: - Formatting
+  internal mutating func setTrailingWhitespace(to whitespace: String) {
+    text.whereMeaningfulSetTrailingWhitespace(to: whitespace)
+  }
 
-    internal mutating func trimWhitespace() {
-        text.whereMeaningfulTrimWhitespace()
-    }
+  // MARK: - Syntax
 
-    internal mutating func setLeadingWhitespace(to whitespace: String) {
-        text.whereMeaningfulSetLeadingWhitespace(to: whitespace)
-    }
-
-    internal mutating func setTrailingWhitespace(to whitespace: String) {
-        text.whereMeaningfulSetTrailingWhitespace(to: whitespace)
-    }
-
-    // MARK: - Syntax
-
-    public var _storage: _SyntaxStorage
+  public var _storage: _SyntaxStorage
 }

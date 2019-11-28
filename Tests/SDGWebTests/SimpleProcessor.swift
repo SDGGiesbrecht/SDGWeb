@@ -15,8 +15,15 @@
 import SDGText
 import SDGWeb
 
-struct Processor : PageProcessor {
-    func process(pageTemplate: inout StrictString, title: StrictString, content: StrictString, siteRoot: StrictString, localizationRoot: StrictString, relativePath: StrictString) {
-        pageTemplate.replaceMatches(for: "[*content*]", with: content)
-    }
+struct Processor: PageProcessor {
+  func process(
+    pageTemplate: inout StrictString,
+    title: StrictString,
+    content: StrictString,
+    siteRoot: StrictString,
+    localizationRoot: StrictString,
+    relativePath: StrictString
+  ) {
+    pageTemplate.replaceMatches(for: "[*content*]", with: content)
+  }
 }
