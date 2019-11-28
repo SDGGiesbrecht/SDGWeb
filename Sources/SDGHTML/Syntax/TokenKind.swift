@@ -89,12 +89,12 @@ public enum TokenKind: Equatable, Hashable {
       self = .text(text)
       self = .text(text)
     case .lessThan,
-         .greaterThan,
-         .elementName,
-         .slash,
-         .whitespace,
-         .attributeName,
-         .equalsSign,
+      .greaterThan,
+      .elementName,
+      .slash,
+      .whitespace,
+      .attributeName,
+      .equalsSign,
       .quotationMark,
       .attributeText,
       .commentStart,
