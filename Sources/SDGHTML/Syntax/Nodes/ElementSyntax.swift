@@ -117,32 +117,6 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
     }
   }
 
-  // MARK: - Factory Methods
-
-  /// Creates an article element.
-  ///
-  /// - Parameters:
-  ///   - attributes: Optional. The attributes.
-  public static func article(attributes: [String: String] = [:]) -> ElementSyntax {
-    return ElementSyntax(name: "article", attributes: attributes, empty: false)
-  }
-
-  /// Creates a metadata entry.
-  ///
-  /// - Parameters:
-  ///   - value: The value of the metadata entry.
-  ///   - name: The name of the metadata entry.
-  public static func metadata(value: String, for name: String) -> ElementSyntax {
-    return ElementSyntax(
-      name: "meta",
-      attributes: [
-        "name": name,
-        "content": value
-      ],
-      empty: true
-    )
-  }
-
   // MARK: - Initialization
 
   /// Creates an element.
