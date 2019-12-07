@@ -37,9 +37,10 @@ public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
   /// Creates an element continuation node.
   ///
   /// - Parameters:
-  ///     - elementName: The tag name.
-  public init(elementName: String) {
-    self.init(content: [], closingTag: ClosingTagSyntax(name: elementName))
+  ///   - elementName: The tag name.
+  ///   - contents: Optional. The contents of the element.
+  public init(elementName: String, contents: ListSyntax<ContentSyntax> = []) {
+    self.init(content: contents, closingTag: ClosingTagSyntax(name: elementName))
   }
 
   // MARK: - Children
