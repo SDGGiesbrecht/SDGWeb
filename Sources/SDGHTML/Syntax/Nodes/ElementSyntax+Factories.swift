@@ -36,7 +36,7 @@ extension ElementSyntax {
   public static func author(_ documentAuthor: String, attributes: [String: String] = [:])
     -> ElementSyntax
   {
-    return metadata(value: author, for: "author", attributes: attributes)
+    return metadata(value: documentAuthor, for: "author", attributes: attributes)
   }
 
   /// Creates a body element.
