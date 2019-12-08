@@ -101,7 +101,7 @@ extension ElementSyntax {
     return .metadata(attributes: attributes)
   }
 
-  /// Creates a header element.
+  /// Creates a header element (`<header>`).
   ///
   /// - Parameters:
   ///   - attributes: Optional. The attributes.
@@ -122,6 +122,24 @@ extension ElementSyntax {
       name: "meta",
       attributes: attributes,
       empty: true
+    )
+  }
+
+  /// Creates a metadata title element (`<title>`).
+  ///
+  /// - Parameters:
+  ///   - attributes: The attributes.
+  ///   - title: The title.
+  public static func metadataTitle(
+    attributes: [String: String] = [:],
+    title: String
+  ) -> ElementSyntax {
+    return ElementSyntax(
+      name: "title",
+      attributes: attributes,
+      contents: [
+        .text(title)
+      ]
     )
   }
 
