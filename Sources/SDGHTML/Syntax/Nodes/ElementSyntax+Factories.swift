@@ -31,9 +31,11 @@ extension ElementSyntax {
   /// Creates an author metadata entry.
   ///
   /// - Parameters:
-  ///   - author: The author.
+  ///   - documentAuthor: The author.
   ///   - attributes: Optional. Additional attributes.
-  public static func author(_ author: String, attributes: [String: String] = [:]) -> ElementSyntax {
+  public static func author(_ documentAuthor: String, attributes: [String: String] = [:])
+    -> ElementSyntax
+  {
     return metadata(value: author, for: "author", attributes: attributes)
   }
 
@@ -102,8 +104,8 @@ extension ElementSyntax {
   /// Creates a header element.
   ///
   /// - Parameters:
+  ///   - attributes: Optional. The attributes. 
   ///   - contents: The contents of the header.
-  ///   - attributes: Optional. The attributes.
   public static func header(
     attributes: [String: String] = [:],
     contents: ListSyntax<ContentSyntax> = []

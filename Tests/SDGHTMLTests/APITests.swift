@@ -216,6 +216,34 @@ class APITests: TestCase {
     XCTAssertEqual(continuation.source(), "Text.</name>")
   }
 
+  func testElementFactories() {
+    func compare(
+      _ element: ElementSyntax,
+      to specification: String,
+      file: StaticString = #file,
+      line: UInt = #line
+    ) {
+      let formatted = element.formatted()
+      let source = formatted.source()
+      SDGPersistenceTestUtilities.compare(
+        source,
+        against: testSpecificationDirectory()
+          .appendingPathComponent("ElementSyntax").appendingPathComponent(specification + ".txt"),
+        overwriteSpecificationInsteadOfFailing: false,
+        file: file,
+        line: line
+      )
+    }
+    compare(.article(), to: "Article")
+    compare(.author("John Doe"), to: "Author")
+    compare(.body(), to: "Body")
+    compare(.css(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès/CSS.css")), to: "CSS")
+    compare(.description("A document."), to: "Description")
+    compare(.division(), to: "Division")
+    compare(.encoding(), to: "Encoding")
+    compare(.header(), to: "Header")
+  }
+
   func testExampleURL() throws {
     let document = try DocumentSyntax.parse(
       source:
