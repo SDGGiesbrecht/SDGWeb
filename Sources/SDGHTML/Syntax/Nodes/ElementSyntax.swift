@@ -141,6 +141,20 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
     )
   }
 
+  /// Creates an element.
+  ///
+  /// - Parameters:
+  ///     - name: The tag name.
+  ///     - attributes: Optional. The attributes.
+  ///     - contents: Optional. The contents of the element.
+  public init(name: String, attributes: [String: String] = [:], contents: ListSyntax<ContentSyntax>)
+  {
+    self.init(
+      openingTag: OpeningTagSyntax(name: name, attributes: attributes),
+      continuation: ElementContinuationSyntax(elementName: name, contents: contents)
+    )
+  }
+
   // MARK: - Children
 
   /// The opening tag.
