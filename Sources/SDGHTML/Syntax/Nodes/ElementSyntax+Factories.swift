@@ -132,7 +132,7 @@ extension ElementSyntax {
   ///   - title: The title.
   public static func metadataTitle(
     attributes: [String: String] = [:],
-    title: String
+    _ title: String
   ) -> ElementSyntax {
     return ElementSyntax(
       name: "title",

@@ -242,6 +242,7 @@ class APITests: TestCase {
     compare(.division(), to: "Division")
     compare(.encoding(), to: "Encoding")
     compare(.header(), to: "Header")
+    compare(.metadataTitle("Title < Symbols"), to: "Metadata Title")
   }
 
   func testExampleURL() throws {
