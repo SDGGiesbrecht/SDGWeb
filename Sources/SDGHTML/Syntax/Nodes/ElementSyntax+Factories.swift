@@ -104,7 +104,7 @@ extension ElementSyntax {
   /// Creates a header element.
   ///
   /// - Parameters:
-  ///   - attributes: Optional. The attributes. 
+  ///   - attributes: Optional. The attributes.
   ///   - contents: The contents of the header.
   public static func header(
     attributes: [String: String] = [:],
