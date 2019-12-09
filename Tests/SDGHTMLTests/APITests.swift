@@ -243,6 +243,18 @@ class APITests: TestCase {
     compare(.encoding(), to: "Encoding")
     compare(.header(), to: "Header")
     compare(.metadataTitle("Title < Symbols"), to: "Metadata Title")
+    compare(
+      .document(
+        header: .metadataHeader(
+          title: .metadataTitle("Title"),
+          description: .description("A description."),
+          keywords: .keywords(["keyword", "Schlüsselwort"]),
+          author: .author("John Doe")
+        ),
+        body: .body()
+      ),
+      to: "Document"
+    )
   }
 
   func testExampleURL() throws {

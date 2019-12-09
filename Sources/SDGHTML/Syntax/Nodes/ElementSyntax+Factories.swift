@@ -93,7 +93,7 @@ extension ElementSyntax {
   ///   - attributes: Optional. The attributes.
   ///   - header: The header.
   ///   - body: The body.
-  public static func metadataHeader(
+  public static func document(
     attributes: [String: String] = [:],
     header: ElementSyntax,
     body: ElementSyntax
