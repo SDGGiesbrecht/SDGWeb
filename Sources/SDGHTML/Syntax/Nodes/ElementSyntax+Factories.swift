@@ -180,7 +180,7 @@ extension ElementSyntax {
     title: ElementSyntax,
     description: ElementSyntax,
     keywords: ElementSyntax,
-    documentAuthor: ElementSyntax,
+    author documentAuthor: ElementSyntax,
     css: [ElementSyntax] = [],
     additionalChildren: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
