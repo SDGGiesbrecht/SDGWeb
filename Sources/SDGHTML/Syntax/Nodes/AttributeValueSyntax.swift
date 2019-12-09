@@ -117,7 +117,7 @@ public struct AttributeValueSyntax: Syntax {
   /// - Parameters:
   ///     - valueText: Optional. The attribute value.
   public init(valueText: String? = nil) {
-    self.init(value: TokenKind.attributeText(valueText ?? ""))
+    self.init(value: TokenKind.attributeText(HTML.escapeTextForAttribute(valueText ?? "")))
   }
 
   // MARK: - Children
@@ -167,10 +167,10 @@ public struct AttributeValueSyntax: Syntax {
   /// The value.
   public var valueText: String {
     get {
-      return value.tokenKind.text
+      return HTML.unescapeTextForAttribute(value.tokenKind.text)
     }
     set {
-      value = TokenSyntax(kind: .attributeText(newValue))
+      value = TokenSyntax(kind: .attributeText(HTML.escapeTextForAttribute(newValue)))
     }
   }
 

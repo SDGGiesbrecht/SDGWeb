@@ -1,0 +1,10 @@
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <meta content="A description." name="description">
+  <meta content="keyword, Schlüsselwort" name="keywords">
+  <meta content="John Doe" name="author">
+ </head>
+ <body></body>
+</html>

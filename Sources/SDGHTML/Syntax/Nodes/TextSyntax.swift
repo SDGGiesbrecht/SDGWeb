@@ -51,7 +51,7 @@ public struct TextSyntax: Syntax {
   /// - Parameters:
   ///     - text: The text.
   public init(text: String = "") {
-    self.init(text: TokenSyntax(kind: .text(text)))
+    self.init(text: TokenSyntax(kind: .text(HTML.escapeTextForCharacterData(text))))
   }
 
   // MARK: - Children

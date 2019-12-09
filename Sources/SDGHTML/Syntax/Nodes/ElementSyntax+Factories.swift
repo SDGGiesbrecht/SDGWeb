@@ -87,6 +87,27 @@ extension ElementSyntax {
     return ElementSyntax(name: "div", attributes: attributes, contents: contents)
   }
 
+  /// Creates a document element (`<html>`).
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - header: The header.
+  ///   - body: The body.
+  public static func document(
+    attributes: [String: String] = [:],
+    header: ElementSyntax,
+    body: ElementSyntax
+  ) -> ElementSyntax {
+    return ElementSyntax(
+      name: "html",
+      attributes: attributes,
+      contents: [
+        .element(header),
+        .element(body),
+      ]
+    ).formatted()
+  }
+
   /// Creates an encoding metadata entry.
   ///
   /// - Parameters:
@@ -101,7 +122,7 @@ extension ElementSyntax {
     return .metadata(attributes: attributes)
   }
 
-  /// Creates a header element.
+  /// Creates a header element (`<header>`).
   ///
   /// - Parameters:
   ///   - attributes: Optional. The attributes.
@@ -140,5 +161,73 @@ extension ElementSyntax {
     attributes["name"] = name
     attributes["content"] = value
     return .metadata(attributes: attributes)
+  }
+
+  /// Creates a metadata header element (`<head>`).
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - encoding: Optional. The encoding.
+  ///   - title: The metadata title.
+  ///   - description: The description.
+  ///   - keywords: The keywords.
+  ///   - documentAuthor: The author.
+  ///   - css: Optional. CSS links.
+  ///   - additionalChildren: Optional. Additional children.
+  public static func metadataHeader(
+    attributes: [String: String] = [:],
+    encoding: ElementSyntax = .encoding(),
+    title: ElementSyntax,
+    description: ElementSyntax,
+    keywords: ElementSyntax,
+    author documentAuthor: ElementSyntax,
+    css: [ElementSyntax] = [],
+    additionalChildren: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(
+      name: "head",
+      attributes: attributes,
+      contents: [
+        .element(encoding),
+        .element(title),
+        .element(description),
+        .element(keywords),
+        .element(documentAuthor),
+      ] + additionalChildren
+    ).formatted()
+  }
+
+  /// Creates a metadata title element (`<title>`).
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - title: The title.
+  public static func metadataTitle(
+    attributes: [String: String] = [:],
+    _ title: String
+  ) -> ElementSyntax {
+    return ElementSyntax(
+      name: "title",
+      attributes: attributes,
+      contents: [
+        .text(title)
+      ]
+    )
+  }
+
+  /// Creates a keywords metadata entry.
+  ///
+  /// - Parameters:
+  ///   - keywords: The keywords.
+  ///   - attributes: Optional. Additional attributes.
+  public static func keywords(
+    _ keywords: [String],
+    attributes: [String: String] = [:]
+  ) -> ElementSyntax {
+    return metadata(
+      value: keywords.joined(separator: ", "),
+      for: "keywords",
+      attributes: attributes
+    )
   }
 }
