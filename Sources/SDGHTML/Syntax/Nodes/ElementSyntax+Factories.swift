@@ -142,10 +142,38 @@ extension ElementSyntax {
     return .metadata(attributes: attributes)
   }
 
+  /// Creates a metadata header element (`<head>`).
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - additionalChildren: Optional. Additional children.
+  public static func metadataTitle(
+    attributes: [String: String] = [:],
+    encoding: ElementSyntax = .encoding(),
+    title: ElementSyntax,
+    description: ElementSyntax,
+    keywords: ElementSyntax,
+    author: ElementSyntax,
+    css: [ElementSyntax] = [],
+    additionalChildren: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(
+      name: "head",
+      attributes: attributes,
+      contents: [
+        .element(encoding),
+        .element(title),
+        .element(description),
+        .element(keywords),
+        .element(author),
+      ] + additionalChildren
+    ).formatted()
+  }
+
   /// Creates a metadata title element (`<title>`).
   ///
   /// - Parameters:
-  ///   - attributes: The attributes.
+  ///   - attributes: Optional. The attributes.
   ///   - title: The title.
   public static func metadataTitle(
     attributes: [String: String] = [:],

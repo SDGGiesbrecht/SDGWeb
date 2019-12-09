@@ -15,7 +15,18 @@
 extension ContentSyntax {
 
   /// Creates text.
+  ///
+  /// - Parameters:
+  ///   - element: The text.
   public static func text(_ text: String) -> ContentSyntax {
     return ContentSyntax(kind: .text(TextSyntax(text: text)))
+  }
+
+  /// Creates an element.
+  ///
+  /// - Parameters:
+  ///   - element: The element.
+  public static func element(_ element: ElementSyntax) -> ContentSyntax {
+    return ContentSyntax(kind: .element(element)).formatted()
   }
 }
