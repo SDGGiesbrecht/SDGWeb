@@ -87,6 +87,27 @@ extension ElementSyntax {
     return ElementSyntax(name: "div", attributes: attributes, contents: contents)
   }
 
+  /// Creates a document element (`<html>`).
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - header: The header.
+  ///   - body: The body.
+  public static func metadataHeader(
+    attributes: [String: String] = [:],
+    header: ElementSyntax,
+    body: ElementSyntax
+  ) -> ElementSyntax {
+    return ElementSyntax(
+      name: "html",
+      attributes: attributes,
+      contents: [
+        .element(header),
+        .element(body),
+      ]
+    ).formatted()
+  }
+
   /// Creates an encoding metadata entry.
   ///
   /// - Parameters:
@@ -146,8 +167,14 @@ extension ElementSyntax {
   ///
   /// - Parameters:
   ///   - attributes: Optional. The attributes.
+  ///   - encoding: Optional. The encoding.
+  ///   - title: The metadata title.
+  ///   - description: The description.
+  ///   - keywords: The keywords.
+  ///   - author: The author.
+  ///   - css: Optional. CSS links.
   ///   - additionalChildren: Optional. Additional children.
-  public static func metadataTitle(
+  public static func metadataHeader(
     attributes: [String: String] = [:],
     encoding: ElementSyntax = .encoding(),
     title: ElementSyntax,
