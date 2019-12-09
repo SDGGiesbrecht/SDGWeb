@@ -24,6 +24,10 @@ public enum HTML {
   @inlinable internal static func sharedEscape<S>(_ text: inout S) where S: StringFamily {
     text.scalars.replaceMatches(for: "&".scalars, with: "&#x0026;".scalars)
   }
+  /// This method only undoes the work of `sharedEscape`. It does not resolve all entities.
+  @inlinable internal static func sharedUnescape<S>(_ text: inout S) where S: StringFamily {
+    text.scalars.replaceMatches(for: "&#x0026;".scalars, with: "&".scalars)
+  }
 
   /// Escapes text intended to for HTML character data, referencing characters like “&” by their entities, and converting bidirectional controls to HTML elements.
   ///
@@ -50,6 +54,19 @@ public enum HTML {
     var text = text
     sharedEscape(&text)
     text.scalars.replaceMatches(for: "\u{22}".scalars, with: "&#x0022;".scalars)
+    return text
+  }
+  /// Unescapes text from an attribute value, resolving entities.
+  ///
+  /// This method only undoes the work of `unescapeTextForAttribute`. It does not resolve all entities.
+  ///
+  /// - Parameters:
+  ///     - text: The text to escape.
+  @inlinable internal static func unescapeTextForAttribute<S>(_ text: S) -> S
+  where S: StringFamily {
+    var text = text
+    text.scalars.replaceMatches(for: "&#x0022;".scalars, with: "\u{22}".scalars)
+    sharedUnescape(&text)
     return text
   }
 

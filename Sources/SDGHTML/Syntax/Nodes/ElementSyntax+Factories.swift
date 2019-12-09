@@ -125,6 +125,23 @@ extension ElementSyntax {
     )
   }
 
+  /// Creates a metadata entry.
+  ///
+  /// - Parameters:
+  ///   - value: The value of the metadata entry.
+  ///   - name: The name of the metadata entry.
+  ///   - attributes: Optional. Additional attributes.
+  public static func metadata(
+    value: String,
+    for name: String,
+    attributes: [String: String] = [:]
+  ) -> ElementSyntax {
+    var attributes = attributes
+    attributes["name"] = name
+    attributes["content"] = value
+    return .metadata(attributes: attributes)
+  }
+
   /// Creates a metadata title element (`<title>`).
   ///
   /// - Parameters:
@@ -143,20 +160,19 @@ extension ElementSyntax {
     )
   }
 
-  /// Creates a metadata entry.
+  /// Creates a keywords metadata entry.
   ///
   /// - Parameters:
-  ///   - value: The value of the metadata entry.
-  ///   - name: The name of the metadata entry.
+  ///   - keywords: The keywords.
   ///   - attributes: Optional. Additional attributes.
-  public static func metadata(
-    value: String,
-    for name: String,
+  public static func keywords(
+    _ keywords: [String],
     attributes: [String: String] = [:]
   ) -> ElementSyntax {
-    var attributes = attributes
-    attributes["name"] = name
-    attributes["content"] = value
-    return .metadata(attributes: attributes)
+    return metadata(
+      value: keywords.joined(separator: ", "),
+      for: "keywords",
+      attributes: attributes
+    )
   }
 }
