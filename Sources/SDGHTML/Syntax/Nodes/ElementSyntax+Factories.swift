@@ -171,7 +171,7 @@ extension ElementSyntax {
   ///   - title: The metadata title.
   ///   - description: The description.
   ///   - keywords: The keywords.
-  ///   - author: The author.
+  ///   - documentAuthor: The author.
   ///   - css: Optional. CSS links.
   ///   - additionalChildren: Optional. Additional children.
   public static func metadataHeader(
@@ -180,7 +180,7 @@ extension ElementSyntax {
     title: ElementSyntax,
     description: ElementSyntax,
     keywords: ElementSyntax,
-    author: ElementSyntax,
+    documentAuthor: ElementSyntax,
     css: [ElementSyntax] = [],
     additionalChildren: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
@@ -192,7 +192,7 @@ extension ElementSyntax {
         .element(title),
         .element(description),
         .element(keywords),
-        .element(author),
+        .element(documentAuthor),
       ] + additionalChildren
     ).formatted()
   }
