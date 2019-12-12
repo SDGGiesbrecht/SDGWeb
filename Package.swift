@@ -55,86 +55,104 @@ import PackageDescription
 /// let warnings = site.validate()
 /// ```
 let package = Package(
-    name: "SDGWeb",
-    products: [
-        // @documentation(SDGWeb)
-        /// The API to set up a generator.
-        .library(name: "SDGWeb", targets: ["SDGWeb"]),
+  name: "SDGWeb",
+  products: [
+    // @documentation(SDGWeb)
+    /// The API to set up a generator.
+    .library(name: "SDGWeb", targets: ["SDGWeb"]),
 
-        // @documentation(SDGHTML)
-        /// General utilities for working with HTML source.
-        .library(name: "SDGHTML", targets: ["SDGHTML"]),
+    // @documentation(SDGHTML)
+    /// General utilities for working with HTML source.
+    .library(name: "SDGHTML", targets: ["SDGHTML"]),
 
-        // @documentation(SDGCSS)
-        /// General utilities for working with CSS source.
-        .library(name: "SDGCSS", targets: ["SDGCSS"])
-    ],
-    dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(4, 0, 0))
-    ],
-    targets: [
-        // Products
+    // @documentation(SDGCSS)
+    /// General utilities for working with CSS source.
+    .library(name: "SDGCSS", targets: ["SDGCSS"])
+  ],
+  dependencies: [
+    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(4, 0, 0))
+  ],
+  targets: [
+    // Products
 
-        // #documentation(SDGWeb)
-        /// The API to set up a generator.
-        .target(name: "SDGWeb", dependencies: [
-            "SDGWebLocalizations",
-            "SDGHTML",
-            "SDGCSS",
-            .product(name: "SDGControlFlow", package: "SDGCornerstone"),
-            .product(name: "SDGLogic", package: "SDGCornerstone"),
-            .product(name: "SDGMathematics", package: "SDGCornerstone"),
-            .product(name: "SDGCollections", package: "SDGCornerstone"),
-            .product(name: "SDGText", package: "SDGCornerstone"),
-            .product(name: "SDGLocalization", package: "SDGCornerstone"),
-            .product(name: "SDGCalendar", package: "SDGCornerstone")
-            ]),
+    // #documentation(SDGWeb)
+    /// The API to set up a generator.
+    .target(
+      name: "SDGWeb",
+      dependencies: [
+        "SDGWebLocalizations",
+        "SDGHTML",
+        "SDGCSS",
+        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGMathematics", package: "SDGCornerstone"),
+        .product(name: "SDGCollections", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
+        .product(name: "SDGCalendar", package: "SDGCornerstone")
+      ]
+    ),
 
-        // #documentation(SDGHTML)
-        /// General utilities for working with HTML source.
-        .target(name: "SDGHTML", dependencies: [
-            "SDGWebLocalizations",
-            .product(name: "SDGControlFlow", package: "SDGCornerstone"),
-            .product(name: "SDGLogic", package: "SDGCornerstone"),
-            .product(name: "SDGMathematics", package: "SDGCornerstone"),
-            .product(name: "SDGCollections", package: "SDGCornerstone"),
-            .product(name: "SDGText", package: "SDGCornerstone"),
-            .product(name: "SDGLocalization", package: "SDGCornerstone")
-            ]),
+    // #documentation(SDGHTML)
+    /// General utilities for working with HTML source.
+    .target(
+      name: "SDGHTML",
+      dependencies: [
+        "SDGWebLocalizations",
+        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGMathematics", package: "SDGCornerstone"),
+        .product(name: "SDGCollections", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone")
+      ]
+    ),
 
-        // #documentation(SDGCSS)
-        /// General utilities for working with CSS source.
-        .target(name: "SDGCSS", dependencies: [
-            .product(name: "SDGCollections", package: "SDGCornerstone"),
-            .product(name: "SDGText", package: "SDGCornerstone")
-            ]),
+    // #documentation(SDGCSS)
+    /// General utilities for working with CSS source.
+    .target(
+      name: "SDGCSS",
+      dependencies: [
+        .product(name: "SDGCollections", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone")
+      ]
+    ),
 
-        // Internal
+    // Internal
 
-        .target(name: "SDGWebLocalizations", dependencies: [
-            .product(name: "SDGLocalization", package: "SDGCornerstone")
-            ]),
+    .target(
+      name: "SDGWebLocalizations",
+      dependencies: [
+        .product(name: "SDGLocalization", package: "SDGCornerstone")
+      ]
+    ),
 
-        .testTarget(name: "SDGWebTests", dependencies: [
-            "SDGHTML",
-            "SDGWeb",
-            "SDGWebLocalizations",
-            .product(name: "SDGLogic", package: "SDGCornerstone"),
-            .product(name: "SDGText", package: "SDGCornerstone"),
-            .product(name: "SDGLocalization", package: "SDGCornerstone"),
-            .product(name: "SDGCalendar", package: "SDGCornerstone"),
-            .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
-            ]),
+    .testTarget(
+      name: "SDGWebTests",
+      dependencies: [
+        "SDGHTML",
+        "SDGWeb",
+        "SDGWebLocalizations",
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
+        .product(name: "SDGCalendar", package: "SDGCornerstone"),
+        .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+      ]
+    ),
 
-        .testTarget(name: "SDGHTMLTests", dependencies: [
-            "SDGWebLocalizations",
-            "SDGHTML",
-            .product(name: "SDGLogic", package: "SDGCornerstone"),
-            .product(name: "SDGText", package: "SDGCornerstone"),
-            .product(name: "SDGLocalization", package: "SDGCornerstone"),
-            .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-            .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
-            ])
-    ]
+    .testTarget(
+      name: "SDGHTMLTests",
+      dependencies: [
+        "SDGWebLocalizations",
+        "SDGHTML",
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+      ]
+    )
+  ]
 )

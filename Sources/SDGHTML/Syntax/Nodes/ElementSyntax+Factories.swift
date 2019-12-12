@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGLocalization
+
 extension ElementSyntax {
 
   /// Creates an article element.
@@ -134,6 +136,50 @@ extension ElementSyntax {
     return ElementSyntax(name: "header", attributes: attributes, contents: contents)
   }
 
+  /// Creates a keywords metadata entry.
+  ///
+  /// - Parameters:
+  ///   - keywords: The keywords.
+  ///   - attributes: Optional. Additional attributes.
+  public static func keywords(
+    _ keywords: [String],
+    attributes: [String: String] = [:]
+  ) -> ElementSyntax {
+    return metadata(
+      value: keywords.joined(separator: ", "),
+      for: "keywords",
+      attributes: attributes
+    )
+  }
+
+  /// Creates a line break element.
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  public static func lineBreak(attributes: [String: String] = [:]) -> ElementSyntax {
+    return ElementSyntax(name: "br", attributes: attributes, empty: true)
+  }
+
+  /// Creates a link.
+  ///
+  /// - Parameters:
+  ///   - target: The target URL.
+  ///   - language: The language of the target file.
+  ///   - attributes: Optional. Additional attributes.
+  ///   - contents: Optional. The contents of the link element.
+  public static func link<L>(
+    target: URL,
+    language: L,
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax
+  where L: Localization {
+    var attributes = attributes
+    attributes["href"] = target.relativeString
+    attributes["hreflang"] = language.code
+    return ElementSyntax(name: "a", attributes: attributes, contents: contents)
+  }
+
   /// Creates a metadata entry.
   ///
   /// - Parameters:
@@ -215,19 +261,15 @@ extension ElementSyntax {
     )
   }
 
-  /// Creates a keywords metadata entry.
+  /// Creates a navigation element.
   ///
   /// - Parameters:
-  ///   - keywords: The keywords.
-  ///   - attributes: Optional. Additional attributes.
-  public static func keywords(
-    _ keywords: [String],
-    attributes: [String: String] = [:]
+  ///   - attributes: Optional. The attributes.
+  ///   - contents: Optional. The contents of the body.
+  public static func navigation(
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
-    return metadata(
-      value: keywords.joined(separator: ", "),
-      for: "keywords",
-      attributes: attributes
-    )
+    return ElementSyntax(name: "nav", attributes: attributes, contents: contents)
   }
 }
