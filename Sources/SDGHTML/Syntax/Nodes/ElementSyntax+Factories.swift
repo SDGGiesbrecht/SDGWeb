@@ -163,8 +163,10 @@ extension ElementSyntax {
   /// Creates a link.
   ///
   /// - Parameters:
-  ///   - target: The targe URL.
+  ///   - target: The target URL.
+  ///   - language: The language of the target file.
   ///   - attributes: Optional. Additional attributes.
+  ///   - contents: Optional. The contents of the link element.
   public static func link<L>(
     target: URL,
     language: L,
