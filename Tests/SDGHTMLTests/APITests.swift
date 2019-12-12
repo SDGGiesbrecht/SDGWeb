@@ -256,7 +256,13 @@ class APITests: TestCase {
       to: "Document"
     )
     compare(.lineBreak(), to: "Line Break")
-    compare(.link(target: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.html"), language: InterfaceLocalization.englishUnitedKingdom), to: "Link")
+    compare(
+      .link(
+        target: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.html"),
+        language: InterfaceLocalization.englishUnitedKingdom
+      ),
+      to: "Link"
+    )
     compare(.navigation(), to: "Navigation")
   }
 
