@@ -171,7 +171,7 @@ extension ElementSyntax {
     attributes: [String: String] = [:],
     contents: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax
-    where L: Localization {
+  where L: Localization {
     var attributes = attributes
     attributes["href"] = target.relativeString
     attributes["hreflang"] = language.code
