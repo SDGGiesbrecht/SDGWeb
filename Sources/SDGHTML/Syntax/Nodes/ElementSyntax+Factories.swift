@@ -272,4 +272,45 @@ extension ElementSyntax {
   ) -> ElementSyntax {
     return ElementSyntax(name: "nav", attributes: attributes, contents: contents)
   }
+
+  /// Creates an embedded object.
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - contents: Optional. The fallback representation of the object.
+  public static func object(
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(name: "object", attributes: attributes, contents: contents)
+  }
+
+  /// Creates a paragraph.
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - contents: Optional. The text of the paragraph.
+  public static func paragraph(
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(name: "paragraph", attributes: attributes, contents: contents)
+  }
+
+  /// Creates an embedded portable document (PDF).
+  ///
+  /// - Parameters:
+  ///   - url: The URL of the target document.
+  ///   - attributes: Optional. Additional attributes.
+  ///   - contents: Optional. The fallback representation of the document.
+  public static func portableDocument(
+    url: URL,
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    var attributes = attributes
+    attributes["type"] = "application/pdf"
+    attributes["data"] = url.relativeString
+    return object(attributes: attributes, contents: contents)
+  }
 }

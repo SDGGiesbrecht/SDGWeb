@@ -264,6 +264,8 @@ class APITests: TestCase {
       to: "Link"
     )
     compare(.navigation(), to: "Navigation")
+    compare(.paragraph(), to: "Paragraph")
+    compare(.portableDocument(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf")), to: "Portable Document")
   }
 
   func testExampleURL() throws {
