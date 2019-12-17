@@ -313,4 +313,28 @@ extension ElementSyntax {
     attributes["data"] = url.relativeString
     return object(attributes: attributes, contents: contents)
   }
+
+  /// Creates a section.
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - contents: Optional. The contents of the section.
+  public static func section(
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(name: "section", attributes: attributes, contents: contents)
+  }
+
+  /// Creates a title element (`<h1>`).
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - contents: Optional. The text of the title.
+  public static func title(
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(name: "h1", attributes: attributes, contents: contents)
+  }
 }
