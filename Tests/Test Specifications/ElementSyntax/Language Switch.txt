@@ -1,0 +1,6 @@
+<nav>
+ <a dir="ltr" href="https://somewhere.uk" hreflang="en-GB" lang="en-GB">🇬🇧EN</a>
+ <a dir="ltr" href="https://somewhere.us" hreflang="en-US" lang="en-US">🇺🇸EN</a>
+ <a dir="ltr" href="https://somewhere.ca" hreflang="en-CA" lang="en-CA">🇨🇦EN</a>
+ <a dir="ltr" href="https://irgendwo.de" hreflang="de-DE" lang="de-DE">🇩🇪DE</a>
+</nav>

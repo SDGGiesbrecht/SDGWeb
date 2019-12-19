@@ -271,6 +271,23 @@ class APITests: TestCase {
     )
     compare(.section(), to: "Section")
     compare(.title(), to: "Title")
+    compare(
+      .languageSwitch(
+        targetURL: UserFacing<URL, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom:
+            return URL(string: "https://somewhere.uk")!
+          case .englishUnitedStates:
+            return URL(string: "https://somewhere.us")!
+          case .englishCanada:
+            return URL(string: "https://somewhere.ca")!
+          case .deutschDeutschland:
+            return URL(string: "https://irgendwo.de")!
+          }
+        })
+      ),
+      to: "Language Switch"
+    )
   }
 
   func testExampleURL() throws {
