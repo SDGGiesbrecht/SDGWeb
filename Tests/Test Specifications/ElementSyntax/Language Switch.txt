@@ -3,4 +3,5 @@
  <a dir="ltr" href="https://somewhere.us" hreflang="en-US" lang="en-US">🇺🇸EN</a>
  <a dir="ltr" href="https://somewhere.ca" hreflang="en-CA" lang="en-CA">🇨🇦EN</a>
  <a dir="ltr" href="https://irgendwo.de" hreflang="de-DE" lang="de-DE">🇩🇪DE</a>
+ <a dir="auto" href="https://somewhere.un" hreflang="zxx" lang="zxx">zxx</a>
 </nav>

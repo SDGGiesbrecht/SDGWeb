@@ -220,6 +220,7 @@ class APITests: TestCase {
     func compare(
       _ element: ElementSyntax,
       to specification: String,
+      overwriteSpecificationInsteadOfFailing: Bool,
       file: StaticString = #file,
       line: UInt = #line
     ) {
@@ -229,20 +230,32 @@ class APITests: TestCase {
         source,
         against: testSpecificationDirectory()
           .appendingPathComponent("ElementSyntax").appendingPathComponent(specification + ".txt"),
-        overwriteSpecificationInsteadOfFailing: false,
+        overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
         file: file,
         line: line
       )
     }
-    compare(.article(), to: "Article")
-    compare(.author("John Doe"), to: "Author")
-    compare(.body(), to: "Body")
-    compare(.css(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès/CSS.css")), to: "CSS")
-    compare(.description("A document."), to: "Description")
-    compare(.division(), to: "Division")
-    compare(.encoding(), to: "Encoding")
-    compare(.header(), to: "Header")
-    compare(.metadataTitle("Title < Symbols"), to: "Metadata Title")
+    compare(.article(), to: "Article", overwriteSpecificationInsteadOfFailing: false)
+    compare(.author("John Doe"), to: "Author", overwriteSpecificationInsteadOfFailing: false)
+    compare(.body(), to: "Body", overwriteSpecificationInsteadOfFailing: false)
+    compare(
+      .css(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès/CSS.css")),
+      to: "CSS",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    compare(
+      .description("A document."),
+      to: "Description",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    compare(.division(), to: "Division", overwriteSpecificationInsteadOfFailing: false)
+    compare(.encoding(), to: "Encoding", overwriteSpecificationInsteadOfFailing: false)
+    compare(.header(), to: "Header", overwriteSpecificationInsteadOfFailing: false)
+    compare(
+      .metadataTitle("Title < Symbols"),
+      to: "Metadata Title",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     compare(
       .document(
         header: .metadataHeader(
@@ -253,28 +266,31 @@ class APITests: TestCase {
         ),
         body: .body()
       ),
-      to: "Document"
+      to: "Document",
+      overwriteSpecificationInsteadOfFailing: false
     )
-    compare(.lineBreak(), to: "Line Break")
+    compare(.lineBreak(), to: "Line Break", overwriteSpecificationInsteadOfFailing: false)
     compare(
       .link(
         target: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.html"),
         language: InterfaceLocalization.englishUnitedKingdom
       ),
-      to: "Link"
+      to: "Link",
+      overwriteSpecificationInsteadOfFailing: false
     )
-    compare(.navigation(), to: "Navigation")
-    compare(.paragraph(), to: "Paragraph")
+    compare(.navigation(), to: "Navigation", overwriteSpecificationInsteadOfFailing: false)
+    compare(.paragraph(), to: "Paragraph", overwriteSpecificationInsteadOfFailing: false)
     compare(
       .portableDocument(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf")),
-      to: "Portable Document"
+      to: "Portable Document",
+      overwriteSpecificationInsteadOfFailing: false
     )
-    compare(.section(), to: "Section")
-    compare(.title(), to: "Title")
+    compare(.section(), to: "Section", overwriteSpecificationInsteadOfFailing: false)
+    compare(.title(), to: "Title", overwriteSpecificationInsteadOfFailing: false)
     compare(
       .languageSwitch(
-        targetURL: UserFacing<URL, InterfaceLocalization>({ localization in
-          switch localization {
+        targetURL: UserFacing<URL, TestLocalization>({ localization in
+          switch localization.interfaceLocalization {
           case .englishUnitedKingdom:
             return URL(string: "https://somewhere.uk")!
           case .englishUnitedStates:
@@ -283,10 +299,13 @@ class APITests: TestCase {
             return URL(string: "https://somewhere.ca")!
           case .deutschDeutschland:
             return URL(string: "https://irgendwo.de")!
+          case .none:
+            return URL(string: "https://somewhere.un")!
           }
         })
       ),
-      to: "Language Switch"
+      to: "Language Switch",
+      overwriteSpecificationInsteadOfFailing: false
     )
   }
 
