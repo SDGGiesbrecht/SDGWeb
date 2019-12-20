@@ -152,6 +152,34 @@ extension ElementSyntax {
     )
   }
 
+  /// Creates a language switch element.
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - targetURL: The localized target URL.
+  public static func languageSwitch<L>(
+    attributes: [String: String] = [:],
+    targetURL: UserFacing<URL, L>
+  ) -> ElementSyntax where L: InputLocalization {
+    var entries: ListSyntax<ContentSyntax> = []
+    for localization in L.allCases {
+      entries.append(
+        .element(
+          .link(
+            target: targetURL.resolved(for: localization),
+            language: localization,
+            attributes: [
+              "lang": localization.code,
+              "dir": localization.textDirection.htmlAttribute
+            ],
+            contents: [.text(localization.icon.map({ String($0) }) ?? localization.code)]
+          )
+        )
+      )
+    }
+    return navigation(attributes: attributes, contents: entries)
+  }
+
   /// Creates a line break element.
   ///
   /// - Parameters:
