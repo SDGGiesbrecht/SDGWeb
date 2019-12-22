@@ -25,7 +25,7 @@ public enum HTML {
     text.scalars.replaceMatches(for: "&".scalars, with: "&#x0026;".scalars)
   }
   @inlinable internal static func sharedUnescape<S>(_ text: inout S) where S: StringFamily {
-    text.scalars.mutateMatches(for: "&".scalars + ¬";".scalars + ";".scalars, mutation: { (match: PatternMatch<S.ScalarView>) -> S.ScalarView.SubSequence in
+    text.scalars.mutateMatches(for: "&".scalars + RepetitionPattern(¬";".scalars) + ";".scalars, mutation: { (match: PatternMatch<S.ScalarView>) -> S.ScalarView.SubSequence in
       var entity = match.contents
       entity.removeFirst()
       entity.removeLast()
