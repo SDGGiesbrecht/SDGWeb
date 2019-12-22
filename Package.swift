@@ -127,6 +127,19 @@ let package = Package(
       ]
     ),
 
+    // Resource Generation
+
+    .target(
+      name: "generate‐entity‐list",
+      dependencies: [
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGPersistence", package: "SDGCornerstone")
+      ]
+    ),
+
+    // Tests
+
     .testTarget(
       name: "SDGWebTests",
       dependencies: [

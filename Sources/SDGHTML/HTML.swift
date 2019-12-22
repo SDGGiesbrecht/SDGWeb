@@ -26,7 +26,6 @@ public enum HTML {
   }
   /// This method only undoes the work of `sharedEscape`; it does not resolve all entities.
   @inlinable internal static func sharedUnescape<S>(_ text: inout S) where S: StringFamily {
-    text.scalars.mutateMatches(for: "&", mutation: <#T##(PatternMatch<UnicodeScalarView>) -> SearchableCollection#>)
     text.scalars.replaceMatches(for: "&#x0026;".scalars, with: "&".scalars)
   }
 
