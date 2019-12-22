@@ -26,6 +26,7 @@ public enum HTML {
   }
   /// This method only undoes the work of `sharedEscape`; it does not resolve all entities.
   @inlinable internal static func sharedUnescape<S>(_ text: inout S) where S: StringFamily {
+    text.scalars.mutateMatches(for: "&", mutation: <#T##(PatternMatch<UnicodeScalarView>) -> SearchableCollection#>)
     text.scalars.replaceMatches(for: "&#x0026;".scalars, with: "&".scalars)
   }
 
@@ -58,7 +59,7 @@ public enum HTML {
   }
   /// Unescapes text from an attribute value, resolving entities.
   ///
-  /// This method only undoes the work of `unescapeTextForAttribute`; it does not resolve all entities.
+  /// This method only undoes the work of `escapeTextForAttribute`; it does not resolve all entities.
   ///
   /// - Parameters:
   ///     - text: The text to escape.
