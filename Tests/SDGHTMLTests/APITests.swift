@@ -112,7 +112,9 @@ class APITests: TestCase {
     value.valueText = "text"
     XCTAssertEqual(value.valueText, "text")
 
-    let withEntities = AttributeValueSyntax(value: TokenSyntax(kind: .attributeText("&#2010;&8208;&hyphen;&not‐an‐entity;")))
+    let withEntities = AttributeValueSyntax(
+      value: TokenSyntax(kind: .attributeText("&#2010;&8208;&hyphen;&not‐an‐entity;"))
+    )
     XCTAssertEqual(withEntities.valueText, "‐‐‐&not‐an‐entity;")
   }
 

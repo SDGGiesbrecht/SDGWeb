@@ -25,24 +25,29 @@ public enum HTML {
     text.scalars.replaceMatches(for: "&".scalars, with: "&#x0026;".scalars)
   }
   @inlinable internal static func sharedUnescape<S>(_ text: inout S) where S: StringFamily {
-    text.scalars.mutateMatches(for: "&".scalars + RepetitionPattern(¬";".scalars) + ";".scalars, mutation: { (match: PatternMatch<S.ScalarView>) -> S.ScalarView.SubSequence in
-      var entity = match.contents
-      entity.removeFirst()
-      entity.removeLast()
-      if let text = entities[String(String.ScalarView(entity))] {
-        return S.ScalarView(text.scalars)[...]
-      } else if entity.first == "#",
-        entity.dropFirst().allSatisfy({ $0.properties.isHexDigit }),
-        let hexadecimal = UInt32(String(String.ScalarView(entity)).dropFirst(), radix: 16),
-        let scalar = Unicode.Scalar.init(hexadecimal) {
-        return S.ScalarView(String(scalar).scalars)[...]
-      } else if entity.allSatisfy({ $0.properties.isASCIIHexDigit }),
-        let decimal = UInt32(String(String.ScalarView(entity)), radix: 10),
-        let scalar = Unicode.Scalar.init(decimal) {
-        return S.ScalarView(String(scalar).scalars)[...]
+    text.scalars.mutateMatches(
+      for: "&".scalars + RepetitionPattern(¬";".scalars) + ";".scalars,
+      mutation: { (match: PatternMatch<S.ScalarView>) -> S.ScalarView.SubSequence in
+        var entity = match.contents
+        entity.removeFirst()
+        entity.removeLast()
+        if let text = entities[String(String.ScalarView(entity))] {
+          return S.ScalarView(text.scalars)[...]
+        } else if entity.first == "#",
+          entity.dropFirst().allSatisfy({ $0.properties.isHexDigit }),
+          let hexadecimal = UInt32(String(String.ScalarView(entity)).dropFirst(), radix: 16),
+          let scalar = Unicode.Scalar.init(hexadecimal)
+        {
+          return S.ScalarView(String(scalar).scalars)[...]
+        } else if entity.allSatisfy({ $0.properties.isASCIIHexDigit }),
+          let decimal = UInt32(String(String.ScalarView(entity)), radix: 10),
+          let scalar = Unicode.Scalar.init(decimal)
+        {
+          return S.ScalarView(String(scalar).scalars)[...]
+        }
+        return match.contents
       }
-      return match.contents
-    })
+    )
   }
 
   /// Escapes text intended to for HTML character data, referencing characters like “&” by their entities, and converting bidirectional controls to HTML elements.
