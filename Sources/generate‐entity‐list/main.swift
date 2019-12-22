@@ -36,7 +36,7 @@ for (entity, text) in database {
 
 var file: [StrictString] = [
   "// This is generated automatically using the generate‐entity‐list target.",
-  "internal let entities: [String: String] = ["
+  "@usableFromInline internal let entities: [String: String] = ["
 ]
 let sorted = transformed.sorted(by: { $0 < $1 })
 for (entity, text) in sorted {

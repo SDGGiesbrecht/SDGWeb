@@ -13,7 +13,7 @@
  */
 
 // This is generated automatically using the generate‐entity‐list target.
-internal let entities: [String: String] = [
+@usableFromInline internal let entities: [String: String] = [
   "AElig": "\u{00C6}",
   "AMP": "\u{0026}",
   "Aacute": "\u{00C1}",
