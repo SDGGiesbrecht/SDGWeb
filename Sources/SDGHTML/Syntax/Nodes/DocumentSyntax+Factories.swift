@@ -37,30 +37,40 @@ extension DocumentSyntax {
   ///
   /// - Parameters:
   ///     - target: The URL to redirect to.
-  public static func redirect(
-    textDirection: TextDirection,
+  public static func redirect<L>(
+    language: L,
     target: URL
-  ) -> DocumentSyntax {
-    enum NoLinguisticContent: String, Localization {
-      case noLinguisticContent = "zxx"
-      static var fallbackLocalization: NoLinguisticContent = .noLinguisticContent
-    }
+  ) -> DocumentSyntax where L: Localization {
     let targetString = target.relativeString
-    let arrow = textDirection.htmlAttribute == "ltr" ? "↳" : "↲"
+    let arrow = language.textDirection.htmlAttribute == "ltr" ? "↳" : "↲"
     let targetWithArrow = "\(arrow) \(targetString)"
     return document(
       documentElement: .document(
-        language: NoLinguisticContent.noLinguisticContent,
-        attributes: ["dir": textDirection.htmlAttribute],
+        language: language,
         header: .metadataHeader(
           title: .metadataTitle(targetWithArrow),
           canonicalURL: .canonical(url: target),
           redirectDestination: .redirect(target: target),
+          author: nil,
           description: .description(targetWithArrow),
-          keywords: nil,
-          author: nil
+          keywords: nil
         ),
-        body: .body()
+        body: .body(contents: [
+          .element(
+            .division(contents: [
+              .text("\(arrow) "),
+              .element(
+                .link(
+                  target: target,
+                  language: language,
+                  contents: [
+                    .text(targetString)
+                  ]
+                )
+              )
+            ])
+          )
+        ])
       )
     )
   }

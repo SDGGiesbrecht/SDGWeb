@@ -267,9 +267,9 @@ class APITests: TestCase {
         header: .metadataHeader(
           title: .metadataTitle("Title"),
           canonicalURL: .canonical(url: URL(string: "http://example.com/Canonical.html")!),
+          author: .author("John Doe"),
           description: .description("A description."),
-          keywords: .keywords(["keyword", "Schlüsselwort"]),
-          author: .author("John Doe")
+          keywords: .keywords(["keyword", "Schlüsselwort"])
         ),
         body: .body()
       ),
@@ -548,7 +548,7 @@ class APITests: TestCase {
     compare(
       String(
         DocumentSyntax.redirect(
-          textDirection: .leftToRightTopToBottom,
+          language: InterfaceLocalization.englishCanada,
           target: URL(fileURLWithPath: "../")
         ).source()
       ),

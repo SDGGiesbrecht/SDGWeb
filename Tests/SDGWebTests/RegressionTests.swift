@@ -30,7 +30,7 @@ class RegressionTests: TestCase {
 
     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
       let redirectFile = DocumentSyntax.redirect(
-        textDirection: .rightToLeftTopToBottom,
+        language: InterfaceLocalization.deutschDeutschland,
         target: URL(fileURLWithPath: "../")
       ).source()
       try redirectFile.save(to: url.appendingPathComponent("Redirect.html"))
