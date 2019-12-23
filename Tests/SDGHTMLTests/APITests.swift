@@ -555,6 +555,20 @@ class APITests: TestCase {
       against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"),
       overwriteSpecificationInsteadOfFailing: false
     )
+    enum RightToLeftLocalization: String, Localization {
+      case עברית = "he"
+      static let fallbackLocalization: RightToLeftLocalization = .עברית
+    }
+    compare(
+      String(
+        DocumentSyntax.redirect(
+          language: RightToLeftLocalization.עברית,
+          target: URL(fileURLWithPath: "../")
+        ).source()
+      ),
+      against: testSpecificationDirectory().appendingPathComponent("Redirect (Right‐to‐Left).txt"),
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testSyntaxError() {

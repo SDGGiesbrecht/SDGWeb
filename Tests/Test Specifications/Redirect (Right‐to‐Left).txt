@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+ <head>
+  <meta charset="UTF-8">
+  <title>↲ ../</title>
+  <link href="../" rel="canonical">
+  <meta content="0; url=../" http-equiv="refresh">
+  <meta content="↲ ../" name="description">
+ </head>
+ <body>
+  <div>
+   ↲
+   <a href="../" hreflang="he">../</a>
+  </div>
+ </body>
+</html>
