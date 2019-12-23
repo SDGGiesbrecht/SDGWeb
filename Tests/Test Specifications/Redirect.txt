@@ -2,7 +2,7 @@
 <html dir="auto" lang="zxx">
  <head>
   <meta charset="UTF-8">
-  <title>↳ ../</title>
+  <title>../</title>
   <link rel="canonical" href="../">
   <meta http-equiv="refresh" content="0; url=../">
  </head>

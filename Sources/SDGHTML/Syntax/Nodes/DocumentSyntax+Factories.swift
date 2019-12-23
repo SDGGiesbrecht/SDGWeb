@@ -44,12 +44,13 @@ extension DocumentSyntax {
       case noLinguisticContent = "zxx"
       static var fallbackLocalization: NoLinguisticContent = .noLinguisticContent
     }
+    let targetString = target.relativeString
     return document(
       documentElement: .document(
         language: NoLinguisticContent.noLinguisticContent,
         header: .metadataHeader(
-          title: .metadataTitle("Title?"),
-          description: .description("Description?"),
+          title: .metadataTitle(targetString),
+          description: .description(targetString),
           keywords: .keywords([]),
           author: .author("Author?")
         ),
