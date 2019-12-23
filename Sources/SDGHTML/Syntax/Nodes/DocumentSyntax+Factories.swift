@@ -38,6 +38,7 @@ extension DocumentSyntax {
   /// - Parameters:
   ///     - target: The URL to redirect to.
   public static func redirect(
+    textDirection: TextDirection,
     target: URL
   ) -> DocumentSyntax {
     enum NoLinguisticContent: String, Localization {
@@ -48,6 +49,7 @@ extension DocumentSyntax {
     return document(
       documentElement: .document(
         language: NoLinguisticContent.noLinguisticContent,
+        attributes: ["dir": textDirection.htmlAttribute],
         header: .metadataHeader(
           title: .metadataTitle(targetString),
           description: .description(targetString),
