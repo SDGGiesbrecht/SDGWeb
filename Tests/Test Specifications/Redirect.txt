@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html dir="auto" lang="zxx">
  <head>
-  <meta charset="utf&#x002D;8">
+  <meta charset="UTF-8">
   <title>↳ ../</title>
   <link rel="canonical" href="../">
   <meta http-equiv="refresh" content="0; url=../">
