@@ -276,9 +276,9 @@ extension ElementSyntax {
     encoding: ElementSyntax = .encoding(),
     title: ElementSyntax,
     canonicalURL: ElementSyntax,
+    author documentAuthor: ElementSyntax,
     description: ElementSyntax,
     keywords: ElementSyntax,
-    author documentAuthor: ElementSyntax,
     css: [ElementSyntax] = [],
     additionalChildren: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
@@ -288,9 +288,9 @@ extension ElementSyntax {
       title: title,
       canonicalURL: canonicalURL,
       redirectDestination: nil,
+      author: documentAuthor,
       description: description,
       keywords: keywords,
-      author: documentAuthor,
       css: css,
       additionalChildren: additionalChildren
     )
@@ -301,9 +301,9 @@ extension ElementSyntax {
     title: ElementSyntax,
     canonicalURL: ElementSyntax,
     redirectDestination: ElementSyntax?,
+    author documentAuthor: ElementSyntax?,
     description: ElementSyntax,
     keywords: ElementSyntax?,
-    author documentAuthor: ElementSyntax?,
     css: [ElementSyntax] = [],
     additionalChildren: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
@@ -315,12 +315,12 @@ extension ElementSyntax {
     if let redirect = redirectDestination {
       contents.append(.element(redirect))
     }
+    if let author = documentAuthor {
+      contents.append(.element(author))
+    }
     contents.append(.element(description))
     if let keywords = keywords {
       contents.append(.element(keywords))
-    }
-    if let author = documentAuthor {
-      contents.append(.element(author))
     }
     return ElementSyntax(
       name: "head",
