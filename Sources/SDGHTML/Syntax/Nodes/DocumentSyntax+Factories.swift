@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGLocalization
+
 extension DocumentSyntax {
 
   /// Creates a document.
@@ -38,8 +40,13 @@ extension DocumentSyntax {
   public static func redirect(
     target: URL
   ) -> DocumentSyntax {
+    enum NoLinguisticContent: String, Localization {
+      case noLinguisticContent = "zxx"
+      static var fallbackLocalization: NoLinguisticContent = .noLinguisticContent
+    }
     return document(
       documentElement: .document(
+        language: NoLinguisticContent.noLinguisticContent,
         header: .metadataHeader(
           title: .metadataTitle("Title?"),
           description: .description("Description?"),

@@ -263,6 +263,7 @@ class APITests: TestCase {
     )
     compare(
       .document(
+        language: InterfaceLocalization.englishCanada,
         header: .metadataHeader(
           title: .metadataTitle("Title"),
           description: .description("A description."),

@@ -92,17 +92,22 @@ extension ElementSyntax {
   /// Creates a document element (`<html>`).
   ///
   /// - Parameters:
-  ///   - attributes: Optional. The attributes.
+  ///   - language: The language of the document.
+  ///   - attributes: Optional. Additional attributes.
   ///   - header: The header.
   ///   - body: The body.
-  public static func document(
+  public static func document<L>(
+    language: L,
     attributes: [String: String] = [:],
     header: ElementSyntax,
     body: ElementSyntax
-  ) -> ElementSyntax {
+  ) -> ElementSyntax where L: Localization {
     return ElementSyntax(
       name: "html",
-      attributes: attributes,
+      attributes: [
+        "lang": language.code,
+        "dir": language.textDirection.htmlAttribute
+      ].mergedByOverwriting(from: attributes),
       contents: [
         .element(header),
         .element(body),
