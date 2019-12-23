@@ -55,9 +55,10 @@ extension DocumentSyntax {
         header: .metadataHeader(
           title: .metadataTitle(targetWithArrow),
           canonicalURL: .canonical(url: target),
+          redirectDestination: .redirect(target: target),
           description: .description(targetWithArrow),
-          keywords: .keywords([]),
-          author: .author("Author?")
+          keywords: nil,
+          author: nil
         ),
         body: .body()
       )

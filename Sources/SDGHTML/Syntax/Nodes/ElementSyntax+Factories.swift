@@ -124,7 +124,7 @@ extension ElementSyntax {
         .element(header),
         .element(body),
       ]
-    ).formatted()
+    )
   }
 
   /// Creates a document type declaration.
@@ -282,18 +282,51 @@ extension ElementSyntax {
     css: [ElementSyntax] = [],
     additionalChildren: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
+    return metadataHeader(
+      attributes: attributes,
+      encoding: encoding,
+      title: title,
+      canonicalURL: canonicalURL,
+      redirectDestination: nil,
+      description: description,
+      keywords: keywords,
+      author: documentAuthor,
+      css: css,
+      additionalChildren: additionalChildren
+    )
+  }
+  internal static func metadataHeader(
+    attributes: [String: String] = [:],
+    encoding: ElementSyntax = .encoding(),
+    title: ElementSyntax,
+    canonicalURL: ElementSyntax,
+    redirectDestination: ElementSyntax?,
+    description: ElementSyntax,
+    keywords: ElementSyntax?,
+    author documentAuthor: ElementSyntax?,
+    css: [ElementSyntax] = [],
+    additionalChildren: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    var contents: ListSyntax<ContentSyntax> = [
+      .element(encoding),
+      .element(title),
+      .element(canonicalURL),
+    ]
+    if let redirect = redirectDestination {
+      contents.append(.element(redirect))
+    }
+    contents.append(.element(description))
+    if let keywords = keywords {
+      contents.append(.element(keywords))
+    }
+    if let author = documentAuthor {
+      contents.append(.element(author))
+    }
     return ElementSyntax(
       name: "head",
       attributes: attributes,
-      contents: [
-        .element(encoding),
-        .element(title),
-        .element(canonicalURL),
-        .element(description),
-        .element(keywords),
-        .element(documentAuthor),
-      ] + additionalChildren
-    ).formatted()
+      contents: contents + additionalChildren
+    )
   }
 
   /// Creates a metadata title element (`<title>`).
@@ -365,6 +398,20 @@ extension ElementSyntax {
     attributes["type"] = "application/pdf"
     attributes["data"] = url.relativeString
     return object(attributes: attributes, contents: contents)
+  }
+
+  /// Creates an immediate redirect.
+  ///
+  /// - Parameters:
+  ///   - target: The target of the redirect.
+  ///   - attributes: Optional. Additional attributes.
+  public static func redirect(target: URL, attributes: [String: String] = [:]) -> ElementSyntax {
+    return metadata(
+      attributes: [
+        "http\u{2D}equiv": "refresh",
+        "content": "0; url=\(target.relativeString)"
+      ].mergedByOverwriting(from: attributes)
+    )
   }
 
   /// Creates a section.
