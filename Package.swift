@@ -127,6 +127,19 @@ let package = Package(
       ]
     ),
 
+    // Resource Generation
+
+    .target(
+      name: "generate‐entity‐list",
+      dependencies: [
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGPersistence", package: "SDGCornerstone")
+      ]
+    ),
+
+    // Tests
+
     .testTarget(
       name: "SDGWebTests",
       dependencies: [
@@ -156,3 +169,8 @@ let package = Package(
     )
   ]
 )
+
+// #workaround(workspace 0.27.1, Causes Xcode executable/scheme issues for iOS.)
+#if os(macOS)
+package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
+#endif

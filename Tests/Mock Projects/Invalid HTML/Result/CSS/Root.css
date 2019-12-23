@@ -14,7 +14,7 @@ span[lang] { /* Foreign language. */
 /* Remove links from print */
 @media print {
   a {
-    font-weight: inherit
+    font-weight: inherit;
     text-decoration: inherit;
   }
 }
