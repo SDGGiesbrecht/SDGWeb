@@ -46,13 +46,15 @@ extension DocumentSyntax {
       static var fallbackLocalization: NoLinguisticContent = .noLinguisticContent
     }
     let targetString = target.relativeString
+    let arrow = textDirection.htmlAttribute == "ltr" ? "↳" : "↲"
+    let targetWithArrow = "\(arrow) \(targetString)"
     return document(
       documentElement: .document(
         language: NoLinguisticContent.noLinguisticContent,
         attributes: ["dir": textDirection.htmlAttribute],
         header: .metadataHeader(
-          title: .metadataTitle(targetString),
-          description: .description(targetString),
+          title: .metadataTitle(targetWithArrow),
+          description: .description(targetWithArrow),
           keywords: .keywords([]),
           author: .author("Author?")
         ),

@@ -2,8 +2,9 @@
 <html dir="ltr" lang="zxx">
  <head>
   <meta charset="UTF-8">
-  <title>../</title>
+  <title>↳ ../</title>
   <link rel="canonical" href="../">
+  <meta content="↳ ../" name="description">
   <meta http-equiv="refresh" content="0; url=../">
  </head>
  <body>
