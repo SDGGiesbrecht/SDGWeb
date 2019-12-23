@@ -53,6 +53,18 @@ extension ElementSyntax {
     return ElementSyntax(name: "body", attributes: attributes, contents: contents)
   }
 
+  /// Creates a canonical URL declaration.
+  ///
+  /// - Parameters:
+  ///   - url: The canonical URL.
+  ///   - attributes: Optional. Additional attributes.
+  public static func canonical(url: URL, attributes: [String: String] = [:]) -> ElementSyntax {
+    var attributes = attributes
+    attributes["href"] = url.relativeString
+    attributes["rel"] = "canonical"
+    return ElementSyntax(name: "link", attributes: attributes, empty: true)
+  }
+
   /// Creates a link to external CSS.
   ///
   /// - Parameters:
@@ -253,6 +265,7 @@ extension ElementSyntax {
   ///   - attributes: Optional. The attributes.
   ///   - encoding: Optional. The encoding.
   ///   - title: The metadata title.
+  ///   - canonicalURL: The canonical URL declaration.
   ///   - description: The description.
   ///   - keywords: The keywords.
   ///   - documentAuthor: The author.
@@ -262,6 +275,7 @@ extension ElementSyntax {
     attributes: [String: String] = [:],
     encoding: ElementSyntax = .encoding(),
     title: ElementSyntax,
+    canonicalURL: ElementSyntax,
     description: ElementSyntax,
     keywords: ElementSyntax,
     author documentAuthor: ElementSyntax,
@@ -274,6 +288,7 @@ extension ElementSyntax {
       contents: [
         .element(encoding),
         .element(title),
+        .element(canonicalURL),
         .element(description),
         .element(keywords),
         .element(documentAuthor),

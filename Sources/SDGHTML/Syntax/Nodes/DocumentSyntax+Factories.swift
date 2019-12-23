@@ -54,6 +54,7 @@ extension DocumentSyntax {
         attributes: ["dir": textDirection.htmlAttribute],
         header: .metadataHeader(
           title: .metadataTitle(targetWithArrow),
+          canonicalURL: .canonical(url: target),
           description: .description(targetWithArrow),
           keywords: .keywords([]),
           author: .author("Author?")

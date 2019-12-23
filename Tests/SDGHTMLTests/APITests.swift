@@ -266,6 +266,7 @@ class APITests: TestCase {
         language: InterfaceLocalization.englishCanada,
         header: .metadataHeader(
           title: .metadataTitle("Title"),
+          canonicalURL: .canonical(url: URL(string: "http://example.com/Canonical.html")!),
           description: .description("A description."),
           keywords: .keywords(["keyword", "Schlüsselwort"]),
           author: .author("John Doe")

@@ -3,9 +3,9 @@
  <head>
   <meta charset="UTF-8">
   <title>↳ ../</title>
-  <link rel="canonical" href="../">
-  <meta content="↳ ../" name="description">
+  <link href="../" rel="canonical">
   <meta http-equiv="refresh" content="0; url=../">
+  <meta content="↳ ../" name="description">
  </head>
  <body>
   <p>↳ <a href="../">../</a>
