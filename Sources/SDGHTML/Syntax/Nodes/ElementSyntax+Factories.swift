@@ -110,6 +110,11 @@ extension ElementSyntax {
     ).formatted()
   }
 
+  /// Creates a document type declaration.
+  public static func documentTypeDeclaration() -> ElementSyntax {
+    return ElementSyntax(name: "!DOCTYPE", attributes: ["html": ""], empty: true)
+  }
+
   /// Creates an encoding metadata entry.
   ///
   /// - Parameters:

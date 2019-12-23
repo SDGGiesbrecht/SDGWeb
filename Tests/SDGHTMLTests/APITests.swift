@@ -544,7 +544,7 @@ class APITests: TestCase {
 
   func testRedirect() {
     compare(
-      String(Redirect(target: "../").contents),
+      String(DocumentSyntax.redirect(target: URL(fileURLWithPath: "../")).source()),
       against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"),
       overwriteSpecificationInsteadOfFailing: false
     )
