@@ -260,6 +260,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   private func url(domain: StrictString, path: StrictString) throws -> URL {
     guard var components = URLComponents(string: String(domain)) else {
+      // @exempt(from: tests) Not sure how to trigger.
       throw SiteGenerationError.invalidDomain(domain)
     }
     components.path = "/" + String(path)

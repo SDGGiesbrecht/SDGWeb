@@ -97,9 +97,12 @@ class APITests: TestCase {
   func testSiteError() {
     let errors: [SiteGenerationError] = [
       .foundationError(StandInError()),
+      .invalidDomain("[...]"),
       .noMetadata(page: "[...]"),
       .metadataMissingColon(line: "[...]"),
-      .missingTitle(page: "[...]")
+      .missingTitle(page: "[...]"),
+      .missingDescription(page: "[...]"),
+      .missingKeywords(page: "[...]")
     ]
     for index in errors.indices {
       let error = errors[index]

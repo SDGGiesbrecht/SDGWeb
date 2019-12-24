@@ -1,12 +1,16 @@
 🇬🇧EN
-‘[...]’ has no title.
+Metadata entry has no colon:
+[...]
 
 🇺🇸EN
-“[...]” has no title.
+Metadata entry has no colon:
+[...]
 
 🇨🇦EN
-“[...]” has no title.
+Metadata entry has no colon:
+[...]
 
 🇩🇪DE
-„[...]“ hat keinen Titel.
+Bei einem Eintrag der Metadaten fehlt ein Doppelpunkt:
+[...]
 
