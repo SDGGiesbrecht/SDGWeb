@@ -15,6 +15,8 @@
 import SDGCollections
 import SDGText
 
+import SDGHTML
+
 internal enum Frame {
 
   internal static let frame: StrictString = {

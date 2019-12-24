@@ -266,7 +266,7 @@ extension ElementSyntax {
   ///   - encoding: Optional. The encoding.
   ///   - title: The metadata title.
   ///   - canonicalURL: The canonical URL declaration.
-  ///   - documentAuthor: The author.   
+  ///   - documentAuthor: The author.
   ///   - description: The description.
   ///   - keywords: The keywords.
   ///   - css: Optional. CSS links.
