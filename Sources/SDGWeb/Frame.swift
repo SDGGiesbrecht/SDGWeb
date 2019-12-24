@@ -27,18 +27,29 @@ internal enum Frame {
   #warning("Move to SDGHTML.")
   #warning("Switch to DocumentSyntax.")
   internal static func frame<L>(localization: L) -> StrictString where L : Localization {
+    #warning("Make dynamic.")
+    let author = "Author"
+    let description = "Description."
+    let keywords = ["keyword"]
+
     return StrictString(
       DocumentSyntax.document(
         documentElement: .document(
           language: localization,
           header: .metadataHeader(
-            title: .metadataTitle("Title"),
-            canonicalURL: .canonical(url: URL(string: "http://some.url")!),
-            author: .author("Author"),
-            description: .description("Description."),
-            keywords: .keywords(["keyword"])
+            title: .metadataTitle("[*title*]"),
+            canonicalURL: .canonical(url: URL(fileURLWithPath: "[*domain*]/[*relative path*]")),
+            author: .author(author),
+            description: .description(description),
+            keywords: .keywords(keywords),
+            css: [
+              .css(url: URL(fileURLWithPath: "[*site root*]CSS/Root.css")),
+              .css(url: URL(fileURLWithPath: "[*site root*]CSS/Site.css"))
+            ]
           ),
-          body: .body()
+          body: .body(contents: [
+            .text("[*body*]")
+          ])
         )
       ).source()
     )

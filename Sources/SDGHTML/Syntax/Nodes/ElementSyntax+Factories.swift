@@ -322,6 +322,7 @@ extension ElementSyntax {
     if let keywords = keywords {
       contents.append(.element(keywords))
     }
+    contents.append(contentsOf: css.lazy.map({ .element($0) }))
     return ElementSyntax(
       name: "head",
       attributes: attributes,
