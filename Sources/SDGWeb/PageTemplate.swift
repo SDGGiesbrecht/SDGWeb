@@ -185,13 +185,32 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       fatalError("Not a valid URL.")
     }
 
-    var result = Frame.frame(
-      localization: localization,
-      canonicalURL: .canonical(url: canonicalURL),
-      css: [
-        .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
-        .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
-      ]
+    #warning("Make dynamic.")
+    let author = "Author"
+    let description = "Description."
+    let keywords = ["keyword"]
+
+    #warning("Switch to DocumentSyntax.")
+    var result = StrictString(
+      DocumentSyntax.document(
+        documentElement: .document(
+          language: localization,
+          header: .metadataHeader(
+            title: .metadataTitle("[*title*]"),
+            canonicalURL: .canonical(url: canonicalURL),
+            author: .author(author),
+            description: .description(description),
+            keywords: .keywords(keywords),
+            css: [
+              .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
+              .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
+            ]
+          ),
+          body: .body(contents: [
+            .text("[*body*]")
+          ])
+        )
+      ).source()
     )
 
     result.replaceMatches(for: "[*localization code*]", with: StrictString(localization.code))
