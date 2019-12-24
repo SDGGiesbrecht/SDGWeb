@@ -1,10 +1,11 @@
-<html>
+<html dir="ltr" lang="en-CA">
  <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <link href="http://example.com/Canonical.html" rel="canonical">
+  <meta content="John Doe" name="author">
   <meta content="A description." name="description">
   <meta content="keyword, Schlüsselwort" name="keywords">
-  <meta content="John Doe" name="author">
  </head>
  <body></body>
 </html>

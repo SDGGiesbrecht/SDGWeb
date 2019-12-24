@@ -29,7 +29,10 @@ class RegressionTests: TestCase {
     // Untracked.
 
     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
-      let redirectFile = Redirect(target: "../").contents
+      let redirectFile = DocumentSyntax.redirect(
+        language: InterfaceLocalization.deutschDeutschland,
+        target: URL(fileURLWithPath: "../")
+      ).source()
       try redirectFile.save(to: url.appendingPathComponent("Redirect.html"))
       let warnings = Site<InterfaceLocalization>.validate(site: url)
       XCTAssert(warnings.isEmpty, "\(warnings)")

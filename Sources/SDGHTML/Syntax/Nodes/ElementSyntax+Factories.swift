@@ -53,6 +53,18 @@ extension ElementSyntax {
     return ElementSyntax(name: "body", attributes: attributes, contents: contents)
   }
 
+  /// Creates a canonical URL declaration.
+  ///
+  /// - Parameters:
+  ///   - url: The canonical URL.
+  ///   - attributes: Optional. Additional attributes.
+  public static func canonical(url: URL, attributes: [String: String] = [:]) -> ElementSyntax {
+    var attributes = attributes
+    attributes["href"] = url.relativeString
+    attributes["rel"] = "canonical"
+    return ElementSyntax(name: "link", attributes: attributes, empty: true)
+  }
+
   /// Creates a link to external CSS.
   ///
   /// - Parameters:
@@ -92,22 +104,32 @@ extension ElementSyntax {
   /// Creates a document element (`<html>`).
   ///
   /// - Parameters:
-  ///   - attributes: Optional. The attributes.
+  ///   - language: The language of the document.
+  ///   - attributes: Optional. Additional attributes.
   ///   - header: The header.
   ///   - body: The body.
-  public static func document(
+  public static func document<L>(
+    language: L,
     attributes: [String: String] = [:],
     header: ElementSyntax,
     body: ElementSyntax
-  ) -> ElementSyntax {
+  ) -> ElementSyntax where L: Localization {
     return ElementSyntax(
       name: "html",
-      attributes: attributes,
+      attributes: [
+        "lang": language.code,
+        "dir": language.textDirection.htmlAttribute
+      ].mergedByOverwriting(from: attributes),
       contents: [
         .element(header),
         .element(body),
       ]
-    ).formatted()
+    )
+  }
+
+  /// Creates a document type declaration.
+  public static func documentTypeDeclaration() -> ElementSyntax {
+    return ElementSyntax(name: "!DOCTYPE", attributes: ["html": ""], empty: true)
   }
 
   /// Creates an encoding metadata entry.
@@ -243,32 +265,68 @@ extension ElementSyntax {
   ///   - attributes: Optional. The attributes.
   ///   - encoding: Optional. The encoding.
   ///   - title: The metadata title.
+  ///   - canonicalURL: The canonical URL declaration.
+  ///   - documentAuthor: The author.   
   ///   - description: The description.
   ///   - keywords: The keywords.
-  ///   - documentAuthor: The author.
   ///   - css: Optional. CSS links.
   ///   - additionalChildren: Optional. Additional children.
   public static func metadataHeader(
     attributes: [String: String] = [:],
     encoding: ElementSyntax = .encoding(),
     title: ElementSyntax,
+    canonicalURL: ElementSyntax,
+    author documentAuthor: ElementSyntax,
     description: ElementSyntax,
     keywords: ElementSyntax,
-    author documentAuthor: ElementSyntax,
     css: [ElementSyntax] = [],
     additionalChildren: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
+    return metadataHeader(
+      attributes: attributes,
+      encoding: encoding,
+      title: title,
+      canonicalURL: canonicalURL,
+      redirectDestination: nil,
+      author: documentAuthor,
+      description: description,
+      keywords: keywords,
+      css: css,
+      additionalChildren: additionalChildren
+    )
+  }
+  internal static func metadataHeader(
+    attributes: [String: String] = [:],
+    encoding: ElementSyntax = .encoding(),
+    title: ElementSyntax,
+    canonicalURL: ElementSyntax,
+    redirectDestination: ElementSyntax?,
+    author documentAuthor: ElementSyntax?,
+    description: ElementSyntax,
+    keywords: ElementSyntax?,
+    css: [ElementSyntax] = [],
+    additionalChildren: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    var contents: ListSyntax<ContentSyntax> = [
+      .element(encoding),
+      .element(title),
+      .element(canonicalURL),
+    ]
+    if let redirect = redirectDestination {
+      contents.append(.element(redirect))
+    }
+    if let author = documentAuthor {
+      contents.append(.element(author))
+    }
+    contents.append(.element(description))
+    if let keywords = keywords {
+      contents.append(.element(keywords))
+    }
     return ElementSyntax(
       name: "head",
       attributes: attributes,
-      contents: [
-        .element(encoding),
-        .element(title),
-        .element(description),
-        .element(keywords),
-        .element(documentAuthor),
-      ] + additionalChildren
-    ).formatted()
+      contents: contents + additionalChildren
+    )
   }
 
   /// Creates a metadata title element (`<title>`).
@@ -340,6 +398,20 @@ extension ElementSyntax {
     attributes["type"] = "application/pdf"
     attributes["data"] = url.relativeString
     return object(attributes: attributes, contents: contents)
+  }
+
+  /// Creates an immediate redirect.
+  ///
+  /// - Parameters:
+  ///   - target: The target of the redirect.
+  ///   - attributes: Optional. Additional attributes.
+  public static func redirect(target: URL, attributes: [String: String] = [:]) -> ElementSyntax {
+    return metadata(
+      attributes: [
+        "http\u{2D}equiv": "refresh",
+        "content": "0; url=\(target.relativeString)"
+      ].mergedByOverwriting(from: attributes)
+    )
   }
 
   /// Creates a section.

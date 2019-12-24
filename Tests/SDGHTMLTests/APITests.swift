@@ -263,11 +263,13 @@ class APITests: TestCase {
     )
     compare(
       .document(
+        language: InterfaceLocalization.englishCanada,
         header: .metadataHeader(
           title: .metadataTitle("Title"),
+          canonicalURL: .canonical(url: URL(string: "http://example.com/Canonical.html")!),
+          author: .author("John Doe"),
           description: .description("A description."),
-          keywords: .keywords(["keyword", "Schlüsselwort"]),
-          author: .author("John Doe")
+          keywords: .keywords(["keyword", "Schlüsselwort"])
         ),
         body: .body()
       ),
@@ -544,8 +546,27 @@ class APITests: TestCase {
 
   func testRedirect() {
     compare(
-      String(Redirect(target: "../").contents),
+      String(
+        DocumentSyntax.redirect(
+          language: InterfaceLocalization.englishCanada,
+          target: URL(fileURLWithPath: "../")
+        ).source()
+      ),
       against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"),
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    enum RightToLeftLocalization: String, Localization {
+      case עברית = "he"
+      static let fallbackLocalization: RightToLeftLocalization = .עברית
+    }
+    compare(
+      String(
+        DocumentSyntax.redirect(
+          language: RightToLeftLocalization.עברית,
+          target: URL(fileURLWithPath: "../")
+        ).source()
+      ),
+      against: testSpecificationDirectory().appendingPathComponent("Redirect (Right‐to‐Left).txt"),
       overwriteSpecificationInsteadOfFailing: false
     )
   }

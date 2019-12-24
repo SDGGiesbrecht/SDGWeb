@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-CA">
+<html dir="rtl" lang="he">
  <head>
   <meta charset="UTF-8">
-  <title>↳ ../</title>
+  <title>↲ ../</title>
   <link href="../" rel="canonical">
   <meta content="0; url=../" http-equiv="refresh">
-  <meta content="↳ ../" name="description">
+  <meta content="↲ ../" name="description">
  </head>
  <body>
   <div>
-   ↳
-   <a href="../" hreflang="en-CA">../</a>
+   ↲
+   <a href="../" hreflang="he">../</a>
   </div>
  </body>
 </html>

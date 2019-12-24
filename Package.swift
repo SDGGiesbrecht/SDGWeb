@@ -172,5 +172,5 @@ let package = Package(
 
 // #workaround(workspace 0.27.1, Causes Xcode executable/scheme issues for iOS.)
 #if os(macOS)
-package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
+  package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
 #endif
