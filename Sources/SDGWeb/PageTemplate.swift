@@ -174,7 +174,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     localization: Localization,
     site: Site<Localization>
   ) throws -> StrictString {
-    #warning("Refactor.")
 
     let domain = site.domain.resolved(for: localization)
     var relativePath = StrictString(relativePath)
@@ -194,14 +193,13 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     var keywords = self.keywords
     localize(&keywords, for: localization)
 
-    #warning("Switch to DocumentSyntax.")
     var result = StrictString(
       DocumentSyntax.document(
         documentElement: .document(
           language: localization,
           header: .metadataHeader(
             title: .metadataTitle("[*title*]"),
-            canonicalURL: .canonical(url: url(domain: domain, path: relativePath)),
+            canonicalURL: .canonical(url: try url(domain: domain, path: relativePath)),
             author: site.author.resolved(for: localization),
             description: .description(String(description)),
             keywords: .keywords(String(keywords).components(separatedBy: ", ")),
@@ -260,15 +258,14 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     return result
   }
 
-  private func url(domain: StrictString, path: StrictString) -> URL {
+  private func url(domain: StrictString, path: StrictString) throws -> URL {
     guard var components = URLComponents(string: String(domain)) else {
-      #warning("Handle as actual error.")
-      fatalError("Not a valid URL.")
+      throw SiteGenerationError.invalidDomain(domain)
     }
     components.path = "/" + String(path)
     guard let result = components.url else {
-      #warning("Handle as actual error.")
-      fatalError("Not a valid URL.")
+      // @exempt(from: tests) Not sure how to trigger.
+      throw SiteGenerationError.invalidDomain(domain)
     }
     return result
   }

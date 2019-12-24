@@ -1,5 +1,5 @@
 /*
- SiteError.swift
+ SiteGenerationError.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -25,6 +25,9 @@ public enum SiteGenerationError: PresentableError {
   /// Foundation encountered an error.
   case foundationError(Swift.Error)
 
+  /// The domain is invalid.
+  case invalidDomain(StrictString)
+
   /// A page has no metadata.
   case noMetadata(page: StrictString)
 
@@ -34,6 +37,12 @@ public enum SiteGenerationError: PresentableError {
   /// A page has no title.
   case missingTitle(page: StrictString)
 
+  /// A page has no description.
+  case missingDescription(page: StrictString)
+
+  /// A page has no keywords.
+  case missingKeywords(page: StrictString)
+
   // MARK: - PresentableError
 
   public func presentableDescription() -> StrictString {
@@ -41,6 +50,15 @@ public enum SiteGenerationError: PresentableError {
       switch self {
       case .foundationError(let error):
         return StrictString(error.localizedDescription)
+      case .invalidDomain(let domain):
+        switch localization {
+        case .englishUnitedKingdom:
+          return "‘\(domain)’ is not a valid domain."
+        case .englishUnitedStates, .englishCanada:
+          return "“\(domain)” is not a valid domain."
+        case .deutschDeutschland:
+          return "„\(domain)“ ist kein gültiges Bereich."
+        }
       case .noMetadata(let page):
         switch localization {
         case .englishUnitedKingdom:
@@ -65,6 +83,24 @@ public enum SiteGenerationError: PresentableError {
           return "“\(page)” has no title."
         case .deutschDeutschland:
           return "„\(page)“ hat keinen Titel."
+        }
+      case .missingDescription(let page):
+        switch localization {
+        case .englishUnitedKingdom:
+          return "‘\(page)’ has no description."
+        case .englishUnitedStates, .englishCanada:
+          return "“\(page)” has no description."
+        case .deutschDeutschland:
+          return "„\(page)“ hat keine Beschreibung."
+        }
+      case .missingKeywords(let page):
+        switch localization {
+        case .englishUnitedKingdom:
+          return "‘\(page)’ has no keywords."
+        case .englishUnitedStates, .englishCanada:
+          return "“\(page)” has no keywords."
+        case .deutschDeutschland:
+          return "„\(page)“ hat keine Schlüsselwörter."
         }
       }
     }).resolved()
