@@ -26,7 +26,8 @@ internal enum Frame {
 
   #warning("Move to SDGHTML.")
   #warning("Switch to DocumentSyntax.")
-  internal static func frame<L>(localization: L, css: [ElementSyntax]) -> StrictString
+  internal static func frame<L>(localization: L, canonicalURL: ElementSyntax, css: [ElementSyntax])
+    -> StrictString
   where L: Localization {
     #warning("Make dynamic.")
     let author = "Author"
@@ -39,7 +40,7 @@ internal enum Frame {
           language: localization,
           header: .metadataHeader(
             title: .metadataTitle("[*title*]"),
-            canonicalURL: .canonical(url: URL(fileURLWithPath: "[*domain*]/[*relative path*]")),
+            canonicalURL: canonicalURL,
             author: .author(author),
             description: .description(description),
             keywords: .keywords(keywords),

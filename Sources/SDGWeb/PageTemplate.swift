@@ -161,10 +161,29 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     site: Site<Localization>
   ) throws -> StrictString {
     #warning("Refactor.")
-    var result = Frame.frame(localization: localization, css: [
-      .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
-      .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
-    ])
+
+    let domain = site.domain.resolved(for: localization)
+    var localizedRelativePath = StrictString(relativePath)
+    if Localization.allCases.count > 1 {
+      localizedRelativePath.prepend(
+        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
+      )
+    }
+    #warning("Aren’t these being double encoded now?")
+    let relativePath = StrictString(
+      String(localizedRelativePath).addingPercentEncoding(
+        withAllowedCharacters: CharacterSet.urlPathAllowed
+      )!.scalars
+    )
+
+    var result = Frame.frame(
+      localization: localization,
+      canonicalURL: .canonical(url: URL(fileURLWithPath: "\(domain)/\(relativePath)")),
+      css: [
+        .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
+        .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
+      ]
+    )
 
     result.replaceMatches(for: "[*localization code*]", with: StrictString(localization.code))
     result.replaceMatches(
@@ -173,19 +192,9 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     )
 
     result.replaceMatches(for: "[*domain*]", with: site.domain.resolved(for: localization))
-    var localizedRelativePath = StrictString(relativePath)
-    if Localization.allCases.count > 1 {
-      localizedRelativePath.prepend(
-        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
-      )
-    }
     result.replaceMatches(
       for: "[*relative path*]",
-      with: StrictString(
-        String(localizedRelativePath).addingPercentEncoding(
-          withAllowedCharacters: CharacterSet.urlPathAllowed
-        )!.scalars
-      )
+      with: relativePath
     )
 
     result.replaceMatches(for: "[*site root*]".scalars, with: siteRoot)
