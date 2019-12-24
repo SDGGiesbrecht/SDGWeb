@@ -68,6 +68,12 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     guard let title = metaData["Title"] else {
       return .failure(.missingTitle(page: relativePath))
     }
+    guard let description = metaData["Description"] else {
+      return .failure(.missingDescription(page: relativePath))
+    }
+    guard let keywords = metaData["Keywords"] else {
+      return .failure(.missingKeywords(page: relativePath))
+    }
 
     let fileNameWithoutExtension: StrictString
     if let fileName = metaData["File Name"] {
@@ -83,6 +89,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         fileName: fileName,
         siteRoot: siteRoot,
         title: title,
+        description: description,
+        keywords: keywords,
         content: content
       )
     )
@@ -135,6 +143,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     fileName: StrictString,
     siteRoot: StrictString,
     title: StrictString,
+    description: StrictString,
+    keywords: StrictString,
     content: StrictString
   ) {
 
@@ -142,6 +152,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     self.fileName = fileName
     self.siteRoot = siteRoot
     self.title = title
+    self.description = description
+    self.keywords = keywords
     self.content = content
   }
 
@@ -151,6 +163,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   private let fileName: StrictString
   private let siteRoot: StrictString
   private let title: StrictString
+  private let description: StrictString
+  private let keywords: StrictString
   private let content: StrictString
 
   // MARK: - Processing
@@ -175,9 +189,10 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )!.scalars
     )
 
-    #warning("Make dynamic.")
-    let description = "Description."
-    let keywords = ["keyword"]
+    var description = self.description
+    localize(&description, for: localization)
+    var keywords = self.keywords
+    localize(&keywords, for: localization)
 
     #warning("Switch to DocumentSyntax.")
     var result = StrictString(
@@ -188,8 +203,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
             title: .metadataTitle("[*title*]"),
             canonicalURL: .canonical(url: url(domain: domain, path: relativePath)),
             author: site.author.resolved(for: localization),
-            description: .description(description),
-            keywords: .keywords(keywords),
+            description: .description(String(description)),
+            keywords: .keywords(String(keywords).components(separatedBy: ", ")),
             css: [
               .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
               .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))

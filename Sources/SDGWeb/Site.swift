@@ -95,6 +95,10 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
         return .failure(.metadataMissingColon(line: error.line))
       case .missingTitle(let page):
         return .failure(.missingTitle(page: page))
+      case .missingDescription(let page):
+        return .failure(.missingTitle(page: page))
+      case .missingKeywords(let page):
+        return .failure(.missingTitle(page: page))
       }
     case .success:
       break
