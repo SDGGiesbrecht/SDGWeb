@@ -169,21 +169,11 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
       )
     }
-    #warning("Aren’t these being double encoded now?")
     let escapedRelativePath = StrictString(
       String(relativePath).addingPercentEncoding(
         withAllowedCharacters: CharacterSet.urlPathAllowed
       )!.scalars
     )
-    guard var canonicalURLComponents = URLComponents(string: String(domain)) else {
-      #warning("Handle as actual error.")
-      fatalError("Not a valid URL.")
-    }
-    canonicalURLComponents.path = "/" + String(relativePath)
-    guard let canonicalURL = canonicalURLComponents.url else {
-      #warning("Handle as actual error.")
-      fatalError("Not a valid URL.")
-    }
 
     #warning("Make dynamic.")
     let author = "Author"
@@ -197,7 +187,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
           language: localization,
           header: .metadataHeader(
             title: .metadataTitle("[*title*]"),
-            canonicalURL: .canonical(url: canonicalURL),
+            canonicalURL: .canonical(url: url(domain: domain, path: relativePath)),
             author: .author(author),
             description: .description(description),
             keywords: .keywords(keywords),
@@ -253,6 +243,19 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       relativePath: relativePath
     )
 
+    return result
+  }
+
+  private func url(domain: StrictString, path: StrictString) -> URL {
+    guard var components = URLComponents(string: String(domain)) else {
+      #warning("Handle as actual error.")
+      fatalError("Not a valid URL.")
+    }
+    components.path = "/" + String(path)
+    guard let result = components.url else {
+      #warning("Handle as actual error.")
+      fatalError("Not a valid URL.")
+    }
     return result
   }
 
