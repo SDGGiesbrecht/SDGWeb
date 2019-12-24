@@ -12,22 +12,35 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCollections
 import SDGText
+import SDGLocalization
 
 import SDGHTML
 
+import SDGWebLocalizations
+
 internal enum Frame {
 
-  internal static let frame: StrictString = {
-    var result = StrictString(Resources.frame)
-    result.replaceMatches(
-      for: "\n<\u{21}\u{2D}\u{2D}".scalars
-        + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
-        + "\u{2D}\u{2D}>\n\n".scalars,
-      with: "".scalars
+  #warning("Move to SDGHTML.")
+  #warning("Switch to DocumentSyntax.")
+  internal static func frame<L>(localization: L) -> StrictString where L : Localization {
+    return StrictString(
+      DocumentSyntax.document(
+        documentElement: .document(
+          language: localization,
+          header: .metadataHeader(
+            title: .metadataTitle("Title"),
+            canonicalURL: .canonical(url: URL(string: "http://some.url")!),
+            author: .author("Author"),
+            description: .description("Description."),
+            keywords: .keywords(["keyword"])
+          ),
+          body: .body()
+        )
+      ).source()
     )
-    result.replaceMatches(for: "[*UTF‐8*]", with: "utf\u{2D}8")
-    return result
-  }()
+  }
 }

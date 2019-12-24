@@ -160,7 +160,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     localization: Localization,
     site: Site<Localization>
   ) throws -> StrictString {
-    var result = Frame.frame
+    #warning("Refactor.")
+    var result = Frame.frame(localization: localization)
 
     result.replaceMatches(for: "[*localization code*]", with: StrictString(localization.code))
     result.replaceMatches(
