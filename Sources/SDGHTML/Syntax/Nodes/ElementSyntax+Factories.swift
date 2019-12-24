@@ -266,9 +266,9 @@ extension ElementSyntax {
   ///   - encoding: Optional. The encoding.
   ///   - title: The metadata title.
   ///   - canonicalURL: The canonical URL declaration.
+  ///   - documentAuthor: The author.   
   ///   - description: The description.
   ///   - keywords: The keywords.
-  ///   - documentAuthor: The author.
   ///   - css: Optional. CSS links.
   ///   - additionalChildren: Optional. Additional children.
   public static func metadataHeader(

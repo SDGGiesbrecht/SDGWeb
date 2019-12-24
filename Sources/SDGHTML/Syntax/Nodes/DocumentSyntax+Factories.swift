@@ -36,7 +36,8 @@ extension DocumentSyntax {
   /// This kind of redirect should only be used as a fallback when the server configuration is unavailable for modification.
   ///
   /// - Parameters:
-  ///     - target: The URL to redirect to.
+  ///   - language: The language of the redirect. This affects things like the text direction of the link that displays if the browser refuses to follow the redirect.
+  ///   - target: The URL to redirect to.
   public static func redirect<L>(
     language: L,
     target: URL
