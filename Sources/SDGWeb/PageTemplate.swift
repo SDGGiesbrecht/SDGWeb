@@ -163,22 +163,31 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     #warning("Refactor.")
 
     let domain = site.domain.resolved(for: localization)
-    var localizedRelativePath = StrictString(relativePath)
+    var relativePath = StrictString(relativePath)
     if Localization.allCases.count > 1 {
-      localizedRelativePath.prepend(
+      relativePath.prepend(
         contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
       )
     }
     #warning("Aren’t these being double encoded now?")
-    let relativePath = StrictString(
-      String(localizedRelativePath).addingPercentEncoding(
+    let escapedRelativePath = StrictString(
+      String(relativePath).addingPercentEncoding(
         withAllowedCharacters: CharacterSet.urlPathAllowed
       )!.scalars
     )
+    guard var canonicalURLComponents = URLComponents(string: String(domain)) else {
+      #warning("Handle as actual error.")
+      fatalError("Not a valid URL.")
+    }
+    canonicalURLComponents.path = "/" + String(relativePath)
+    guard let canonicalURL = canonicalURLComponents.url else {
+      #warning("Handle as actual error.")
+      fatalError("Not a valid URL.")
+    }
 
     var result = Frame.frame(
       localization: localization,
-      canonicalURL: .canonical(url: URL(fileURLWithPath: "\(domain)/\(relativePath)")),
+      canonicalURL: .canonical(url: canonicalURL),
       css: [
         .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
         .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
