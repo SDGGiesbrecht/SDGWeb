@@ -35,10 +35,19 @@ extension ElementSyntax {
   /// - Parameters:
   ///   - documentAuthor: The author.
   ///   - attributes: Optional. Additional attributes.
-  public static func author(_ documentAuthor: String, attributes: [String: String] = [:])
-    -> ElementSyntax
-  {
-    return metadata(value: documentAuthor, for: "author", attributes: attributes)
+  public static func author<L>(
+    _ documentAuthor: String,
+    language: L,
+    attributes: [String: String] = [:]
+  ) -> ElementSyntax where L: Localization {
+    return metadata(
+      value: documentAuthor,
+      for: "author",
+      attributes: [
+        "lang": language.code,
+        "dir": language.textDirection.htmlAttribute
+      ].mergedByOverwriting(from: attributes)
+    )
   }
 
   /// Creates a body element.

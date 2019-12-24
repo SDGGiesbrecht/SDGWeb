@@ -1,1 +1,1 @@
-<meta content="John Doe" name="author">
+<meta content="John Doe" dir="ltr" lang="en-CA" name="author">

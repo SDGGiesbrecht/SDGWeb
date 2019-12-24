@@ -41,12 +41,14 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
     repositoryStructure: RepositoryStructure,
     domain: UserFacing<StrictString, Localization>,
     localizationDirectories: UserFacing<StrictString, Localization>,
+    author: UserFacing<ElementSyntax, Localization>,
     pageProcessor: PageProcessor,
     reportProgress: @escaping (_ progressReport: StrictString) -> Void
   ) {
     self.repositoryStructure = repositoryStructure
     self.domain = domain
     self.localizationDirectories = localizationDirectories
+    self.author = author
     self.pageProcessor = pageProcessor
     self.reportProgress = reportProgress
   }
@@ -56,6 +58,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   internal let repositoryStructure: RepositoryStructure
   internal let domain: UserFacing<StrictString, Localization>
   internal let localizationDirectories: UserFacing<StrictString, Localization>
+  internal let author: UserFacing<ElementSyntax, Localization>
   internal let pageProcessor: PageProcessor
   internal let reportProgress: (StrictString) -> Void
 

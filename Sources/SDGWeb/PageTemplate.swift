@@ -176,7 +176,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     )
 
     #warning("Make dynamic.")
-    let author = "Author"
     let description = "Description."
     let keywords = ["keyword"]
 
@@ -188,7 +187,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
           header: .metadataHeader(
             title: .metadataTitle("[*title*]"),
             canonicalURL: .canonical(url: url(domain: domain, path: relativePath)),
-            author: .author(author),
+            author: site.author.resolved(for: localization),
             description: .description(description),
             keywords: .keywords(keywords),
             css: [
