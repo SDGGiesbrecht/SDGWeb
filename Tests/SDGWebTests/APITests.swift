@@ -69,6 +69,10 @@ class APITests: TestCase {
     expectErrorGenerating(forMock: "No Metadata", localization: SingleLocalization.self)
   }
 
+  func testNoKeywords() {
+    expectErrorGenerating(forMock: "No Keywords", localization: SingleLocalization.self)
+  }
+
   func testNoTitle() {
     expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
   }
