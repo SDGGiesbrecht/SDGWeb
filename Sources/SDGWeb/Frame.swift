@@ -26,7 +26,8 @@ internal enum Frame {
 
   #warning("Move to SDGHTML.")
   #warning("Switch to DocumentSyntax.")
-  internal static func frame<L>(localization: L) -> StrictString where L : Localization {
+  internal static func frame<L>(localization: L, css: [ElementSyntax]) -> StrictString
+  where L: Localization {
     #warning("Make dynamic.")
     let author = "Author"
     let description = "Description."
@@ -42,10 +43,7 @@ internal enum Frame {
             author: .author(author),
             description: .description(description),
             keywords: .keywords(keywords),
-            css: [
-              .css(url: URL(fileURLWithPath: "[*site root*]CSS/Root.css")),
-              .css(url: URL(fileURLWithPath: "[*site root*]CSS/Site.css"))
-            ]
+            css: css
           ),
           body: .body(contents: [
             .text("[*body*]")
