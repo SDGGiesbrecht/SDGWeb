@@ -48,7 +48,9 @@ let site = Site<L>(
   localizationDirectories: UserFacing<StrictString, L>({ localization in
     return localization.icon ?? StrictString(localization.code)
   }),
-  author: UserFacing<StrictString, L>({ _ in return .author("John Doe", language: InterfaceLocalization.englishCanada) }),
+  author: UserFacing<ElementSyntax, L>({ _ in
+    return .author("John Doe", language: InterfaceLocalization.englishCanada)
+  }),
   pageProcessor: Processor(),
   reportProgress: { _ in }
 )
