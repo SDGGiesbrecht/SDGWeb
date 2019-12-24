@@ -222,7 +222,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     result.replaceMatches(for: "[*domain*]", with: site.domain.resolved(for: localization))
     result.replaceMatches(
       for: "[*relative path*]",
-      with: relativePath
+      with: escapedRelativePath
     )
 
     result.replaceMatches(for: "[*site root*]".scalars, with: siteRoot)
