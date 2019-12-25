@@ -34,6 +34,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   ///     - repositoryStructure: The layout of the repository.
   ///     - domain: The domain of the website.
   ///     - localizationDirectories: The name to use for localization directories.
+  ///     - author: The author of the website.
   ///     - pageProcessor: A page processor for generating each page.
   ///     - reportProgress: A closure to report progress as the site is assembled.
   ///     - progressReport: A string describing progress made.

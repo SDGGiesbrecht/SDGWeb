@@ -34,6 +34,7 @@ extension ElementSyntax {
   ///
   /// - Parameters:
   ///   - documentAuthor: The author.
+  ///   - language: The language of the author’s name.
   ///   - attributes: Optional. Additional attributes.
   public static func author<L>(
     _ documentAuthor: String,
