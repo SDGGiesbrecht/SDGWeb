@@ -74,6 +74,10 @@ extension Syntax {
     unfoldChildren(with: unfolder)
   }
 
+  /// Recursively unfolds any custom pseudo‐elements in the node’s contents toward standard HTML.
+  ///
+  /// - Parameters:
+  ///   - unfolder: A syntax unfolder that defines the individual unfolding operations. 
   public mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder {
     let before = source()
     performSingleUnfoldingPass(with: unfolder)
@@ -82,7 +86,7 @@ extension Syntax {
     }
   }
 
-  /// Unfolds any custom pseudo‐elements in the node’s contents toward standard HTML using the default syntax unfolder.
+  /// Recursively unfolds any custom pseudo‐elements in the node’s contents toward standard HTML using the default syntax unfolder.
   public mutating func unfold() {
     unfold(with: DefaultSyntaxUnfolder.default)
   }
