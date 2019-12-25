@@ -23,6 +23,9 @@ public protocol Syntax: TransparentWrapper, TextOutputStreamable {
   /// - Parameters:
   ///     - indentationLevel: How deep the node is indented.
   mutating func format(indentationLevel: Int)
+
+  /// Unfolds any custom pseudo‐elements in the node’s contents into standard HTML.
+  mutating func unfold()
 }
 
 extension Syntax {
@@ -53,6 +56,13 @@ extension Syntax {
     for index in _storage.children.indices {
       _storage.children[index]?.format(indentationLevel: indentationLevel)
     }
+  }
+
+  public mutating func unfold() {
+    for index in _storage.children.indices {
+      _storage.children[index]?.unfold()
+    }
+    #warning("Needs to allow customization.")
   }
 
   /// Returns the HTML node with systematic formatting applied to its source.
