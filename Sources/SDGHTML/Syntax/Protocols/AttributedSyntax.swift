@@ -74,13 +74,13 @@ extension AttributedSyntax {
   }
 
   private var className: String { return "class" }
-  /// The value of the class attribute.
-  public var `class`: String? {
+  /// The entries of the class attribute.
+  public var classes: [String] {
     get {
-      return valueOfAttribute(named: className)
+      return valueOfAttribute(named: className)?.components(separatedBy: " ") ?? []
     }
     set {
-      set(attribute: className, to: newValue)
+      set(attribute: className, to: newValue.isEmpty ? nil : newValue.joined(separator: " "))
     }
   }
 
