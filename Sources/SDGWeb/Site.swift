@@ -88,7 +88,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
     switch writePages(formatting: formatting) {
     case .failure(let error):
       switch error {
-      case .foundationError(let error): // @exempt(from: tests)
+      case .foundationError(let error):  // @exempt(from: tests)
         return .failure(.foundationError(error))
       case .metaDataExtractionError(let error):
         return .failure(.noMetadata(page: error.page))
