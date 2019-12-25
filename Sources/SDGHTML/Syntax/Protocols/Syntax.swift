@@ -77,7 +77,7 @@ extension Syntax {
   /// Recursively unfolds any custom pseudo‐elements in the node’s contents toward standard HTML.
   ///
   /// - Parameters:
-  ///   - unfolder: A syntax unfolder that defines the individual unfolding operations. 
+  ///   - unfolder: A syntax unfolder that defines the individual unfolding operations.
   public mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder {
     let before = source()
     performSingleUnfoldingPass(with: unfolder)

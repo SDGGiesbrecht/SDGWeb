@@ -683,6 +683,28 @@ class APITests: TestCase {
     )
   }
 
+  func testSyntaxUnfolder() {
+    func testUnfolding(
+      of start: String,
+      to end: String,
+      file: StaticString = #file,
+      line: UInt = #line
+    ) {
+      do {
+        var syntax = try DocumentSyntax.parse(source: start).get()
+        syntax.unfold()
+        let source = syntax.source()
+        XCTAssertEqual(source, end, file: file, line: line)
+      } catch {
+        XCTFail(error.localizedDescription)
+      }
+    }
+    testUnfolding(
+      of: "...<foreign>...</foreign>...",
+      to: "...<span class=\u{22}foreign\u{22}>...</span>..."
+    )
+  }
+
   func testTextDirection() {
     enum TestLocalization: String, Localization {
       case עברית = "he"
