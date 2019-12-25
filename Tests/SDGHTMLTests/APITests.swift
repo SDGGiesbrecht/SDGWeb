@@ -241,7 +241,11 @@ class APITests: TestCase {
       )
     }
     compare(.article(), to: "Article", overwriteSpecificationInsteadOfFailing: false)
-    compare(.author("John Doe"), to: "Author", overwriteSpecificationInsteadOfFailing: false)
+    compare(
+      .author("John Doe", language: InterfaceLocalization.englishCanada),
+      to: "Author",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     compare(.body(), to: "Body", overwriteSpecificationInsteadOfFailing: false)
     compare(
       .css(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès/CSS.css")),
@@ -267,7 +271,7 @@ class APITests: TestCase {
         header: .metadataHeader(
           title: .metadataTitle("Title"),
           canonicalURL: .canonical(url: URL(string: "http://example.com/Canonical.html")!),
-          author: .author("John Doe"),
+          author: .author("John Doe", language: InterfaceLocalization.englishCanada),
           description: .description("A description."),
           keywords: .keywords(["keyword", "Schlüsselwort"])
         ),

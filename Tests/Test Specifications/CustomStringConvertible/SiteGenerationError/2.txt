@@ -1,16 +1,12 @@
 🇬🇧EN
-Metadata entry has no colon:
-[...]
+‘[...]’ has no metadata (‘<!-- ... -->’).
 
 🇺🇸EN
-Metadata entry has no colon:
-[...]
+“[...]” has no metadata (“<!-- ... -->”).
 
 🇨🇦EN
-Metadata entry has no colon:
-[...]
+“[...]” has no metadata (“<!-- ... -->”).
 
 🇩🇪DE
-Bei einem Eintrag der Metadaten fehlt ein Doppelpunkt:
-[...]
+„[...]“ hat keine Metadaten („<!-- ... -->“).
 

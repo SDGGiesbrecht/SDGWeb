@@ -20,4 +20,6 @@ internal enum PageTemplateLoadingError: Error {
   case metaDataExtractionError(PageTemplateMetaDataExtractionError)
   case metaDataParsingError(PageTemplateMetaDataParsingError)
   case missingTitle(page: StrictString)
+  case missingDescription(page: StrictString)
+  case missingKeywords(page: StrictString)
 }

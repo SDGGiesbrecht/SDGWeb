@@ -69,6 +69,10 @@ class APITests: TestCase {
     expectErrorGenerating(forMock: "No Metadata", localization: SingleLocalization.self)
   }
 
+  func testNoKeywords() {
+    expectErrorGenerating(forMock: "No Keywords", localization: SingleLocalization.self)
+  }
+
   func testNoTitle() {
     expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
   }
@@ -97,9 +101,12 @@ class APITests: TestCase {
   func testSiteError() {
     let errors: [SiteGenerationError] = [
       .foundationError(StandInError()),
+      .invalidDomain("[...]"),
       .noMetadata(page: "[...]"),
       .metadataMissingColon(line: "[...]"),
-      .missingTitle(page: "[...]")
+      .missingTitle(page: "[...]"),
+      .missingDescription(page: "[...]"),
+      .missingKeywords(page: "[...]")
     ]
     for index in errors.indices {
       let error = errors[index]

@@ -34,11 +34,21 @@ extension ElementSyntax {
   ///
   /// - Parameters:
   ///   - documentAuthor: The author.
+  ///   - language: The language of the author’s name.
   ///   - attributes: Optional. Additional attributes.
-  public static func author(_ documentAuthor: String, attributes: [String: String] = [:])
-    -> ElementSyntax
-  {
-    return metadata(value: documentAuthor, for: "author", attributes: attributes)
+  public static func author<L>(
+    _ documentAuthor: String,
+    language: L,
+    attributes: [String: String] = [:]
+  ) -> ElementSyntax where L: Localization {
+    return metadata(
+      value: documentAuthor,
+      for: "author",
+      attributes: [
+        "lang": language.code,
+        "dir": language.textDirection.htmlAttribute
+      ].mergedByOverwriting(from: attributes)
+    )
   }
 
   /// Creates a body element.
@@ -266,7 +276,7 @@ extension ElementSyntax {
   ///   - encoding: Optional. The encoding.
   ///   - title: The metadata title.
   ///   - canonicalURL: The canonical URL declaration.
-  ///   - documentAuthor: The author.   
+  ///   - documentAuthor: The author.
   ///   - description: The description.
   ///   - keywords: The keywords.
   ///   - css: Optional. CSS links.
@@ -322,6 +332,7 @@ extension ElementSyntax {
     if let keywords = keywords {
       contents.append(.element(keywords))
     }
+    contents.append(contentsOf: css.lazy.map({ .element($0) }))
     return ElementSyntax(
       name: "head",
       attributes: attributes,

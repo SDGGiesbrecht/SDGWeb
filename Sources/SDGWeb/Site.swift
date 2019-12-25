@@ -34,6 +34,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   ///     - repositoryStructure: The layout of the repository.
   ///     - domain: The domain of the website.
   ///     - localizationDirectories: The name to use for localization directories.
+  ///     - siteAuthor: The author of the website.
   ///     - pageProcessor: A page processor for generating each page.
   ///     - reportProgress: A closure to report progress as the site is assembled.
   ///     - progressReport: A string describing progress made.
@@ -41,12 +42,14 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
     repositoryStructure: RepositoryStructure,
     domain: UserFacing<StrictString, Localization>,
     localizationDirectories: UserFacing<StrictString, Localization>,
+    author siteAuthor: UserFacing<ElementSyntax, Localization>,
     pageProcessor: PageProcessor,
     reportProgress: @escaping (_ progressReport: StrictString) -> Void
   ) {
     self.repositoryStructure = repositoryStructure
     self.domain = domain
     self.localizationDirectories = localizationDirectories
+    self.author = siteAuthor
     self.pageProcessor = pageProcessor
     self.reportProgress = reportProgress
   }
@@ -56,6 +59,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   internal let repositoryStructure: RepositoryStructure
   internal let domain: UserFacing<StrictString, Localization>
   internal let localizationDirectories: UserFacing<StrictString, Localization>
+  internal let author: UserFacing<ElementSyntax, Localization>
   internal let pageProcessor: PageProcessor
   internal let reportProgress: (StrictString) -> Void
 
@@ -84,7 +88,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
     switch writePages(formatting: formatting) {
     case .failure(let error):
       switch error {
-      case .foundationError(let error):
+      case .foundationError(let error):  // @exempt(from: tests)
         return .failure(.foundationError(error))
       case .metaDataExtractionError(let error):
         return .failure(.noMetadata(page: error.page))
@@ -92,6 +96,10 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
         return .failure(.metadataMissingColon(line: error.line))
       case .missingTitle(let page):
         return .failure(.missingTitle(page: page))
+      case .missingDescription(let page):
+        return .failure(.missingDescription(page: page))
+      case .missingKeywords(let page):
+        return .failure(.missingKeywords(page: page))
       }
     case .success:
       break

@@ -68,6 +68,12 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     guard let title = metaData["Title"] else {
       return .failure(.missingTitle(page: relativePath))
     }
+    guard let description = metaData["Description"] else {
+      return .failure(.missingDescription(page: relativePath))
+    }
+    guard let keywords = metaData["Keywords"] else {
+      return .failure(.missingKeywords(page: relativePath))
+    }
 
     let fileNameWithoutExtension: StrictString
     if let fileName = metaData["File Name"] {
@@ -83,6 +89,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         fileName: fileName,
         siteRoot: siteRoot,
         title: title,
+        description: description,
+        keywords: keywords,
         content: content
       )
     )
@@ -135,6 +143,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     fileName: StrictString,
     siteRoot: StrictString,
     title: StrictString,
+    description: StrictString,
+    keywords: StrictString,
     content: StrictString
   ) {
 
@@ -142,6 +152,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     self.fileName = fileName
     self.siteRoot = siteRoot
     self.title = title
+    self.description = description
+    self.keywords = keywords
     self.content = content
   }
 
@@ -151,6 +163,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   private let fileName: StrictString
   private let siteRoot: StrictString
   private let title: StrictString
+  private let description: StrictString
+  private let keywords: StrictString
   private let content: StrictString
 
   // MARK: - Processing
@@ -160,7 +174,46 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     localization: Localization,
     site: Site<Localization>
   ) throws -> StrictString {
-    var result = Frame.frame
+
+    let domain = site.domain.resolved(for: localization)
+    var relativePath = StrictString(relativePath)
+    if Localization.allCases.count > 1 {
+      relativePath.prepend(
+        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
+      )
+    }
+    let escapedRelativePath = StrictString(
+      String(relativePath).addingPercentEncoding(
+        withAllowedCharacters: CharacterSet.urlPathAllowed
+      )!.scalars
+    )
+
+    var description = self.description
+    localize(&description, for: localization)
+    var keywords = self.keywords
+    localize(&keywords, for: localization)
+
+    var result = StrictString(
+      DocumentSyntax.document(
+        documentElement: .document(
+          language: localization,
+          header: .metadataHeader(
+            title: .metadataTitle("[*title*]"),
+            canonicalURL: .canonical(url: try url(domain: domain, path: relativePath)),
+            author: site.author.resolved(for: localization),
+            description: .description(String(description)),
+            keywords: .keywords(String(keywords).components(separatedBy: ", ")),
+            css: [
+              .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
+              .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
+            ]
+          ),
+          body: .body(contents: [
+            .text("[*body*]")
+          ])
+        )
+      ).source()
+    )
 
     result.replaceMatches(for: "[*localization code*]", with: StrictString(localization.code))
     result.replaceMatches(
@@ -169,19 +222,9 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     )
 
     result.replaceMatches(for: "[*domain*]", with: site.domain.resolved(for: localization))
-    var localizedRelativePath = StrictString(relativePath)
-    if Localization.allCases.count > 1 {
-      localizedRelativePath.prepend(
-        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
-      )
-    }
     result.replaceMatches(
       for: "[*relative path*]",
-      with: StrictString(
-        String(localizedRelativePath).addingPercentEncoding(
-          withAllowedCharacters: CharacterSet.urlPathAllowed
-        )!.scalars
-      )
+      with: escapedRelativePath
     )
 
     result.replaceMatches(for: "[*site root*]".scalars, with: siteRoot)
@@ -212,6 +255,19 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       relativePath: relativePath
     )
 
+    return result
+  }
+
+  private func url(domain: StrictString, path: StrictString) throws -> URL {
+    guard var components = URLComponents(string: String(domain)) else {
+      // @exempt(from: tests) Not sure how to trigger.
+      throw SiteGenerationError.invalidDomain(domain)
+    }
+    components.path = "/" + String(path)
+    guard let result = components.url else {
+      // @exempt(from: tests) Not sure how to trigger.
+      throw SiteGenerationError.invalidDomain(domain)
+    }
     return result
   }
 
