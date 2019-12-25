@@ -12,6 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+import SDGLocalization
+
+import SDGWebLocalizations
+
 /// A node which has a single associated name.
 public protocol NamedSyntax: Syntax {
 
@@ -35,5 +40,14 @@ extension NamedSyntax {
     set {
       name.tokenKind = Self.nameTokenKind(newValue)
     }
+  }
+
+  // MARK: - Internal Utilities
+
+  internal func isNamed(_ queriedName: UserFacing<StrictString, InterfaceLocalization>) -> Bool {
+    let actualName = nameText
+    return InterfaceLocalization.allCases.contains(where: { localization in
+      return actualName == String(queriedName.resolved(for: localization))
+    })
   }
 }

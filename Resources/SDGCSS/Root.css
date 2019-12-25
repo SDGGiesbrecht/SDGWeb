@@ -85,7 +85,7 @@ html {
 
 /* ••••••• Semantic Text Formatting ••••••• */
 
-span[lang] { /* Foreign language. */
+span.foreign, span.fremd { /* <foreign>: Foreign language. */
   font-style: italic;
 }
 

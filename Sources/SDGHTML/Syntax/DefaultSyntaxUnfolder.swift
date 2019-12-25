@@ -12,8 +12,31 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+import SDGLocalization
+
+import SDGWebLocalizations
+
 /// The default `SyntaxUnfolder`.
 public struct DefaultSyntaxUnfolder: SyntaxUnfolder {
 
   public static let `default`: DefaultSyntaxUnfolder = DefaultSyntaxUnfolder()
+
+  // MARK: - Individual Unfolding Operations
+
+  /// Unfolds `<foreign>` into `<span class="foreign">`, which has special CSS rules.
+  public static func unfoldForeign(_ element: inout ElementSyntax) {
+    if element.isNamed(
+      UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "foreign"
+        case .deutschDeutschland:
+          return "fremd"
+        }
+      })
+    ) {
+      element.nameText = "span"
+    }
+  }
 }
