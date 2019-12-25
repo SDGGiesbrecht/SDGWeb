@@ -34,7 +34,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   ///     - repositoryStructure: The layout of the repository.
   ///     - domain: The domain of the website.
   ///     - localizationDirectories: The name to use for localization directories.
-  ///     - author: The author of the website.
+  ///     - siteAuthor: The author of the website.
   ///     - pageProcessor: A page processor for generating each page.
   ///     - reportProgress: A closure to report progress as the site is assembled.
   ///     - progressReport: A string describing progress made.
@@ -42,7 +42,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
     repositoryStructure: RepositoryStructure,
     domain: UserFacing<StrictString, Localization>,
     localizationDirectories: UserFacing<StrictString, Localization>,
-    author: UserFacing<ElementSyntax, Localization>,
+    author siteAuthor: UserFacing<ElementSyntax, Localization>,
     pageProcessor: PageProcessor,
     reportProgress: @escaping (_ progressReport: StrictString) -> Void
   ) {
