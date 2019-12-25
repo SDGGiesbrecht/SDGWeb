@@ -15,4 +15,11 @@
 /// A type that defines individual syntax unfolding operations.
 public protocol SyntaxUnfolder {
 
+  /// Unfolds an element node.
+  func unfold(element: inout ElementSyntax)
+}
+
+extension SyntaxUnfolder {
+
+  public func unfold(element: inout ElementSyntax) {}
 }

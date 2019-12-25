@@ -239,4 +239,9 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
   // MARK: - Syntax
 
   public var _storage: _SyntaxStorage
+
+  public mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder {
+    unfoldChildren(with: unfolder)
+    unfolder.unfold(element: &self)
+  }
 }
