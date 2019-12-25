@@ -24,8 +24,11 @@ public protocol Syntax: TransparentWrapper, TextOutputStreamable {
   ///     - indentationLevel: How deep the node is indented.
   mutating func format(indentationLevel: Int)
 
-  /// Unfolds any custom pseudo‐elements in the node’s contents into standard HTML.
-  mutating func unfold()
+  /// Unfolds any custom pseudo‐elements in the node’s contents towards standard HTML.
+  ///
+  /// - Parameters:
+  ///   - unfolder: A syntax unfolder that defines the individual unfolding operations.
+  mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder
 }
 
 extension Syntax {
@@ -58,11 +61,19 @@ extension Syntax {
     }
   }
 
-  public mutating func unfold() {
+  internal mutating func unfoldChildren<Unfolder>(with unfolder: Unfolder)
+  where Unfolder: SyntaxUnfolder {
     for index in _storage.children.indices {
-      _storage.children[index]?.unfold()
+      _storage.children[index]?.unfold(with: unfolder)
     }
-    #warning("Needs to allow customization.")
+  }
+  public mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder {
+    unfoldChildren(with: unfolder)
+  }
+
+  /// Unfolds any custom pseudo‐elements in the node’s contents toward standard HTML using the default syntax unfolder.
+  public mutating func unfold() {
+    unfold(with: DefaultSyntaxUnfolder.default)
   }
 
   /// Returns the HTML node with systematic formatting applied to its source.
