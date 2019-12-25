@@ -27,6 +27,9 @@ public struct DefaultSyntaxUnfolder: SyntaxUnfolder {
   /// Unfolds `<foreign>` into `<span class="foreign">`.
   ///
   /// `foreign` indicates that a span of text is in a foreign language. Such text is often italicized.
+  ///
+  /// - Parameters:
+  ///   - element: The element to unfold.
   public static func unfoldForeign(_ element: inout ElementSyntax) {
     if element.isNamed(
       UserFacing<StrictString, InterfaceLocalization>({ localization in

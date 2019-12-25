@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGLogic
 
 /// A Syntax node.
 public protocol Syntax: TransparentWrapper, TextOutputStreamable {
@@ -28,7 +29,8 @@ public protocol Syntax: TransparentWrapper, TextOutputStreamable {
   ///
   /// - Parameters:
   ///   - unfolder: A syntax unfolder that defines the individual unfolding operations.
-  mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder
+  mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder)
+  where Unfolder: SyntaxUnfolder
 }
 
 extension Syntax {
@@ -64,11 +66,20 @@ extension Syntax {
   internal mutating func unfoldChildren<Unfolder>(with unfolder: Unfolder)
   where Unfolder: SyntaxUnfolder {
     for index in _storage.children.indices {
-      _storage.children[index]?.unfold(with: unfolder)
+      _storage.children[index]?.performSingleUnfoldingPass(with: unfolder)
     }
   }
-  public mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder {
+  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder)
+  where Unfolder: SyntaxUnfolder {
     unfoldChildren(with: unfolder)
+  }
+
+  public mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder {
+    let before = source()
+    performSingleUnfoldingPass(with: unfolder)
+    if source() ≠ before {
+      unfold(with: unfolder)
+    }
   }
 
   /// Unfolds any custom pseudo‐elements in the node’s contents toward standard HTML using the default syntax unfolder.
