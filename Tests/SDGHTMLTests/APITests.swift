@@ -58,6 +58,8 @@ class APITests: TestCase {
     XCTAssertEqual(element.identifier, "identifier")
     element.classes = ["class"]
     XCTAssertEqual(element.classes, ["class"])
+    element.classes = []
+    XCTAssertEqual(element.classes, [])
     element.language = "he"
     XCTAssertEqual(element.language, "he")
     element.textDirection = "rtl"
