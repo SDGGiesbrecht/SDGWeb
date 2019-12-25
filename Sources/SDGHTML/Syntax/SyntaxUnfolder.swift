@@ -21,5 +21,7 @@ public protocol SyntaxUnfolder {
 
 extension SyntaxUnfolder {
 
-  public func unfold(element: inout ElementSyntax) {}
+  public func unfold(element: inout ElementSyntax) {
+    DefaultSyntaxUnfolder.unfoldForeign(&element)
+  }
 }
