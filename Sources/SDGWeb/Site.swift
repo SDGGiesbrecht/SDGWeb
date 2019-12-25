@@ -49,7 +49,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
     self.repositoryStructure = repositoryStructure
     self.domain = domain
     self.localizationDirectories = localizationDirectories
-    self.author = author
+    self.author = siteAuthor
     self.pageProcessor = pageProcessor
     self.reportProgress = reportProgress
   }
