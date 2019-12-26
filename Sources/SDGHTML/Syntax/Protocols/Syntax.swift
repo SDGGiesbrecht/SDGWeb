@@ -13,6 +13,7 @@
  */
 
 import SDGControlFlow
+import SDGLogic
 
 /// A Syntax node.
 public protocol Syntax: TransparentWrapper, TextOutputStreamable {
@@ -23,6 +24,13 @@ public protocol Syntax: TransparentWrapper, TextOutputStreamable {
   /// - Parameters:
   ///     - indentationLevel: How deep the node is indented.
   mutating func format(indentationLevel: Int)
+
+  /// Unfolds any custom pseudo‐elements in the node’s contents towards standard HTML.
+  ///
+  /// - Parameters:
+  ///   - unfolder: A syntax unfolder that defines the individual unfolding operations.
+  mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder)
+  where Unfolder: SyntaxUnfolder
 }
 
 extension Syntax {
@@ -53,6 +61,34 @@ extension Syntax {
     for index in _storage.children.indices {
       _storage.children[index]?.format(indentationLevel: indentationLevel)
     }
+  }
+
+  internal mutating func unfoldChildren<Unfolder>(with unfolder: Unfolder)
+  where Unfolder: SyntaxUnfolder {
+    for index in _storage.children.indices {
+      _storage.children[index]?.performSingleUnfoldingPass(with: unfolder)
+    }
+  }
+  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder)
+  where Unfolder: SyntaxUnfolder {
+    unfoldChildren(with: unfolder)
+  }
+
+  /// Recursively unfolds any custom pseudo‐elements in the node’s contents toward standard HTML.
+  ///
+  /// - Parameters:
+  ///   - unfolder: A syntax unfolder that defines the individual unfolding operations.
+  public mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder {
+    let before = source()
+    performSingleUnfoldingPass(with: unfolder)
+    if source() ≠ before {
+      unfold(with: unfolder)
+    }
+  }
+
+  /// Recursively unfolds any custom pseudo‐elements in the node’s contents toward standard HTML using the default syntax unfolder.
+  public mutating func unfold() {
+    unfold(with: DefaultSyntaxUnfolder.default)
   }
 
   /// Returns the HTML node with systematic formatting applied to its source.

@@ -56,8 +56,10 @@ class APITests: TestCase {
     XCTAssertEqual(element.valueOfAttribute(named: "attribute"), "value")
     element.identifier = "identifier"
     XCTAssertEqual(element.identifier, "identifier")
-    element.class = "class"
-    XCTAssertEqual(element.class, "class")
+    element.classes = ["class"]
+    XCTAssertEqual(element.classes, ["class"])
+    element.classes = []
+    XCTAssertEqual(element.classes, [])
     element.language = "he"
     XCTAssertEqual(element.language, "he")
     element.textDirection = "rtl"
@@ -680,6 +682,28 @@ class APITests: TestCase {
       named: "Skipped Heading",
       in: "<html><h1>...</h1><h3>...</h3></html>",
       overwriteSpecificationInsteadOfFailing: false
+    )
+  }
+
+  func testSyntaxUnfolder() {
+    func testUnfolding(
+      of start: String,
+      to end: String,
+      file: StaticString = #file,
+      line: UInt = #line
+    ) {
+      do {
+        var syntax = try DocumentSyntax.parse(source: start).get()
+        syntax.unfold()
+        let source = syntax.source()
+        XCTAssertEqual(source, end, file: file, line: line)
+      } catch {
+        XCTFail(error.localizedDescription)
+      }
+    }
+    testUnfolding(
+      of: "...<foreign>...</foreign>...",
+      to: "...<span class=\u{22}foreign\u{22}>...</span>..."
     )
   }
 
