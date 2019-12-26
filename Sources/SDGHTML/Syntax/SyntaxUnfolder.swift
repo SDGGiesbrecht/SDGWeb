@@ -16,6 +16,9 @@
 public protocol SyntaxUnfolder {
 
   /// Unfolds an element node.
+  ///
+  /// - Parameters:
+  ///   - element: The element to unfold.
   func unfold(element: inout ElementSyntax)
 }
 

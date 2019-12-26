@@ -20,6 +20,7 @@ import SDGWebLocalizations
 /// The default `SyntaxUnfolder`.
 public struct DefaultSyntaxUnfolder: SyntaxUnfolder {
 
+  /// The default `SyntaxUnfolder`.
   public static let `default`: DefaultSyntaxUnfolder = DefaultSyntaxUnfolder()
 
   // MARK: - Individual Unfolding Operations
