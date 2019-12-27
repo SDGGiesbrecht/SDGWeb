@@ -84,7 +84,8 @@ extension AttributedSyntax {
     }
   }
 
-  private var languageName: String { return "lang" }
+  internal static var languageAttributeName: String { return "lang" }
+  private var languageName: String { return Self.languageAttributeName }
   /// The value of the language attribute.
   public var language: String? {
     get {
@@ -95,7 +96,8 @@ extension AttributedSyntax {
     }
   }
 
-  private var textDirectionName: String { return "dir" }
+  internal static var textDirectionAttributeName: String { return "dir" }
+  private var textDirectionName: String { return Self.textDirectionAttributeName }
   /// The value of the text direction attribute.
   public var textDirection: String? {
     get {
