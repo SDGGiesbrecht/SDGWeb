@@ -320,6 +320,11 @@ class APITests: TestCase {
       to: "Language Switch",
       overwriteSpecificationInsteadOfFailing: false
     )
+    compare(
+      .foreignText(language: InterfaceLocalization.englishCanada),
+      to: "Foreign Text",
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testExampleURL() throws {
