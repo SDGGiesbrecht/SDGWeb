@@ -210,9 +210,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
               .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
             ]
           ),
-          body: .body(contents: [
-            .text("[*body*]")
-          ])
+          body: .body(contents: try DocumentSyntax.parse(source: String(site.frame())).get().content)
         )
       ).source()
     )
@@ -230,8 +228,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     )
 
     result.replaceMatches(for: "[*site root*]".scalars, with: siteRoot)
-
-    result.replaceMatches(for: "[*body*]", with: try site.frame())
 
     localize(&result, for: localization)
 
