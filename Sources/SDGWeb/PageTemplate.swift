@@ -231,8 +231,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
     result.replaceMatches(for: "[*site root*]".scalars, with: siteRoot)
 
-    result.replaceMatches(for: "[*title*]", with: title)
-
     result.replaceMatches(for: "[*body*]", with: try site.frame())
 
     localize(&result, for: localization)
