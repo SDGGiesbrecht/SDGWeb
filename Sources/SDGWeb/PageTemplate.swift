@@ -188,6 +188,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )!.scalars
     )
 
+    var title = self.title
+    localize(&title, for: localization)
     var description = self.description
     localize(&description, for: localization)
     var keywords = self.keywords
@@ -198,7 +200,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         documentElement: .document(
           language: localization,
           header: .metadataHeader(
-            title: .metadataTitle("[*title*]"),
+            title: .metadataTitle(String(title)),
             canonicalURL: .canonical(url: try url(domain: domain, path: relativePath)),
             author: site.author.resolved(for: localization),
             description: .description(String(description)),
@@ -229,8 +231,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
     result.replaceMatches(for: "[*site root*]".scalars, with: siteRoot)
 
-    var title = self.title
-    localize(&title, for: localization)
     result.replaceMatches(for: "[*title*]", with: title)
 
     result.replaceMatches(for: "[*body*]", with: try site.frame())
