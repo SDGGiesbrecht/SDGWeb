@@ -215,20 +215,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       ).source()
     )
 
-    result.replaceMatches(for: "[*localization code*]", with: StrictString(localization.code))
-    result.replaceMatches(
-      for: "[*text direction*]",
-      with: StrictString(localization.textDirection.htmlAttribute)
-    )
-
-    result.replaceMatches(for: "[*domain*]", with: site.domain.resolved(for: localization))
-    result.replaceMatches(
-      for: "[*relative path*]",
-      with: escapedRelativePath
-    )
-
-    result.replaceMatches(for: "[*site root*]".scalars, with: siteRoot)
-
     localize(&result, for: localization)
 
     var localizationRoot = siteRoot
