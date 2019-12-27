@@ -182,11 +182,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
       )
     }
-    let escapedRelativePath = StrictString(
-      String(relativePath).addingPercentEncoding(
-        withAllowedCharacters: CharacterSet.urlPathAllowed
-      )!.scalars
-    )
 
     var title = self.title
     localize(&title, for: localization)
