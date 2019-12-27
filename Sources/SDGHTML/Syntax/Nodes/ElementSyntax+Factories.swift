@@ -253,7 +253,6 @@ extension ElementSyntax {
     contents: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax
   where L: Localization {
-    var attributes = attributes
     return ElementSyntax(
       name: "a",
       attributes: [
@@ -289,7 +288,7 @@ extension ElementSyntax {
   ) -> ElementSyntax {
     return .metadata(
       attributes: [
-        "name": name
+        "name": name,
         "content": value
       ].mergedByOverwriting(from: attributes)
     )
