@@ -325,6 +325,11 @@ class APITests: TestCase {
       to: "Foreign Text",
       overwriteSpecificationInsteadOfFailing: false
     )
+    compare(
+      .span(),
+      to: "Span",
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testExampleURL() throws {
