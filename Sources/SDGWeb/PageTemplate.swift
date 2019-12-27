@@ -210,7 +210,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
               .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
             ]
           ),
-          body: .body(contents: try DocumentSyntax.parse(source: String(site.frame())).get().content)
+          body: .body(contents: try site.frame().content)
         )
       ).source()
     )

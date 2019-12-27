@@ -14,6 +14,8 @@
 
 import SDGText
 
+import SDGHTML
+
 import SDGWebLocalizations
 
 /// A page processor.
@@ -23,7 +25,7 @@ public protocol PageProcessor {
   ///
   /// - Parameters:
   ///     - repositoryStructure: The repository structure to get the frame from.
-  func frame(repositoryStructure: RepositoryStructure) throws -> StrictString
+  func frame(repositoryStructure: RepositoryStructure) throws -> DocumentSyntax
 
   /// Processes the page template, inserting its components into the frame.
   ///
@@ -46,15 +48,8 @@ public protocol PageProcessor {
 
 extension PageProcessor {
 
-  public func frame(repositoryStructure: RepositoryStructure) throws -> StrictString {
-    return try StrictString(from: repositoryStructure.frame)
-  }
-
-  func trimmedFrame(repositoryStructure: RepositoryStructure) throws -> StrictString {
-    var result = try frame(repositoryStructure: repositoryStructure)
-    if result.last == "\n" {
-      result.removeLast()
-    }
-    return result
+  public func frame(repositoryStructure: RepositoryStructure) throws -> DocumentSyntax {
+    let source = try StrictString(from: repositoryStructure.frame)
+    return try DocumentSyntax.parse(source: String(source)).get()
   }
 }
