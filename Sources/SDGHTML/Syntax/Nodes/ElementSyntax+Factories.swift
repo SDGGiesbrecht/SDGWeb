@@ -44,10 +44,7 @@ extension ElementSyntax {
     return metadata(
       value: documentAuthor,
       for: "author",
-      attributes: [
-        "lang": language.code,
-        "dir": language.textDirection.htmlAttribute
-      ].mergedByOverwriting(from: attributes)
+      attributes: language.htmlAttributes.mergedByOverwriting(from: attributes)
     )
   }
 
@@ -69,10 +66,14 @@ extension ElementSyntax {
   ///   - url: The canonical URL.
   ///   - attributes: Optional. Additional attributes.
   public static func canonical(url: URL, attributes: [String: String] = [:]) -> ElementSyntax {
-    var attributes = attributes
-    attributes["href"] = url.relativeString
-    attributes["rel"] = "canonical"
-    return ElementSyntax(name: "link", attributes: attributes, empty: true)
+    return ElementSyntax(
+      name: "link",
+      attributes: [
+        "rel": "canonical",
+        "href": url.relativeString
+      ].mergedByOverwriting(from: attributes),
+      empty: true
+    )
   }
 
   /// Creates a link to external CSS.
@@ -81,10 +82,14 @@ extension ElementSyntax {
   ///   - url: The URL of the CSS file.
   ///   - attributes: Optional. Additional attributes.
   public static func css(url: URL, attributes: [String: String] = [:]) -> ElementSyntax {
-    var attributes = attributes
-    attributes["href"] = url.relativeString
-    attributes["rel"] = "stylesheet"
-    return ElementSyntax(name: "link", attributes: attributes, empty: true)
+    return ElementSyntax(
+      name: "link",
+      attributes: [
+        "rel": "stylesheet",
+        "href": url.relativeString
+      ].mergedByOverwriting(from: attributes),
+      empty: true
+    )
   }
 
   /// Creates a description metadata entry.
@@ -126,10 +131,7 @@ extension ElementSyntax {
   ) -> ElementSyntax where L: Localization {
     return ElementSyntax(
       name: "html",
-      attributes: [
-        "lang": language.code,
-        "dir": language.textDirection.htmlAttribute
-      ].mergedByOverwriting(from: attributes),
+      attributes: language.htmlAttributes.mergedByOverwriting(from: attributes),
       contents: [
         .element(header),
         .element(body),
@@ -167,12 +169,11 @@ extension ElementSyntax {
     attributes: [String: String] = [:],
     contents: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax where L: Localization {
-    var resolvedAttributes = [
-      "lang": language.code,
-      "dir": language.textDirection.htmlAttribute
-    ]
-    resolvedAttributes.mergeByOverwriting(from: attributes)
-    var foreign = ElementSyntax(name: "foreign", attributes: resolvedAttributes, contents: contents)
+    var foreign = ElementSyntax(
+      name: "foreign",
+      attributes: language.htmlAttributes.mergedByOverwriting(from: attributes),
+      contents: contents
+    )
     DefaultSyntaxUnfolder.unfoldForeign(&foreign)
     return foreign
   }
@@ -221,10 +222,7 @@ extension ElementSyntax {
           .link(
             target: targetURL.resolved(for: localization),
             language: localization,
-            attributes: [
-              "lang": localization.code,
-              "dir": localization.textDirection.htmlAttribute
-            ],
+            attributes: localization.htmlAttributes,
             contents: [.text(localization.icon.map({ String($0) }) ?? localization.code)]
           )
         )
@@ -256,9 +254,14 @@ extension ElementSyntax {
   ) -> ElementSyntax
   where L: Localization {
     var attributes = attributes
-    attributes["href"] = target.relativeString
-    attributes["hreflang"] = language.code
-    return ElementSyntax(name: "a", attributes: attributes, contents: contents)
+    return ElementSyntax(
+      name: "a",
+      attributes: [
+        "href": target.relativeString,
+        "hreflang": language.code
+      ].mergedByOverwriting(from: attributes),
+      contents: contents
+    )
   }
 
   /// Creates a metadata entry.
@@ -284,10 +287,12 @@ extension ElementSyntax {
     for name: String,
     attributes: [String: String] = [:]
   ) -> ElementSyntax {
-    var attributes = attributes
-    attributes["name"] = name
-    attributes["content"] = value
-    return .metadata(attributes: attributes)
+    return .metadata(
+      attributes: [
+        "name": name
+        "content": value
+      ].mergedByOverwriting(from: attributes)
+    )
   }
 
   /// Creates a metadata header element (`<head>`).
@@ -426,10 +431,13 @@ extension ElementSyntax {
     attributes: [String: String] = [:],
     contents: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
-    var attributes = attributes
-    attributes["type"] = "application/pdf"
-    attributes["data"] = url.relativeString
-    return object(attributes: attributes, contents: contents)
+    return object(
+      attributes: [
+        "type": "application/pdf",
+        "data": url.relativeString
+      ].mergedByOverwriting(from: attributes),
+      contents: contents
+    )
   }
 
   /// Creates an immediate redirect.
