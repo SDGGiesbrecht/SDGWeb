@@ -156,6 +156,27 @@ extension ElementSyntax {
     return .metadata(attributes: attributes)
   }
 
+  /// Creates foreign text.
+  ///
+  /// - Parameters:
+  ///   - language: The language of the foreign text.
+  ///   - attributes: Optional. Additional attributes.
+  ///   - contents: Optional. The foreign text.
+  public static func foreignText<L>(
+    language: L,
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax where L: Localization {
+    var resolvedAttributes = [
+      "lang": language.code,
+      "dir": language.textDirection.htmlAttribute
+    ]
+    resolvedAttributes.mergeByOverwriting(from: attributes)
+    var foreign = ElementSyntax(name: "foreign", attributes: resolvedAttributes, contents: contents)
+    DefaultSyntaxUnfolder.unfoldForeign(&foreign)
+    return foreign
+  }
+
   /// Creates a header element (`<header>`).
   ///
   /// - Parameters:
@@ -435,6 +456,18 @@ extension ElementSyntax {
     contents: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
     return ElementSyntax(name: "section", attributes: attributes, contents: contents)
+  }
+
+  /// Creates a span of text.
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - contents: Optional. The contents of the span of text.
+  public static func span(
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(name: "span", attributes: attributes, contents: contents)
   }
 
   /// Creates a title element (`<h1>`).
