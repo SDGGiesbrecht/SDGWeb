@@ -46,4 +46,22 @@ public struct DefaultSyntaxUnfolder: SyntaxUnfolder {
       element.nameText = "span"
     }
   }
+
+  public static func unfoldLocalized<L>(_ element: inout ElementSyntax, localization: L)
+  where L: Localization {
+    if element.isNamed(
+      UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom:
+          return "localised"
+        case .englishUnitedStates, .englishCanada:
+          return "localized"
+        case .deutschDeutschland:
+          return "lokalisiert"
+        }
+      })
+    ) {
+      #warning("Not implemented yet.")
+    }
+  }
 }
