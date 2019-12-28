@@ -182,12 +182,9 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
       )
     }
-    let escapedRelativePath = StrictString(
-      String(relativePath).addingPercentEncoding(
-        withAllowedCharacters: CharacterSet.urlPathAllowed
-      )!.scalars
-    )
 
+    var title = self.title
+    localize(&title, for: localization)
     var description = self.description
     localize(&description, for: localization)
     var keywords = self.keywords
@@ -198,7 +195,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         documentElement: .document(
           language: localization,
           header: .metadataHeader(
-            title: .metadataTitle("[*title*]"),
+            title: .metadataTitle(String(title)),
             canonicalURL: .canonical(url: try url(domain: domain, path: relativePath)),
             author: site.author.resolved(for: localization),
             description: .description(String(description)),
@@ -208,32 +205,10 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
               .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
             ]
           ),
-          body: .body(contents: [
-            .text("[*body*]")
-          ])
+          body: .body(contents: try site.frame().content)
         )
       ).source()
     )
-
-    result.replaceMatches(for: "[*localization code*]", with: StrictString(localization.code))
-    result.replaceMatches(
-      for: "[*text direction*]",
-      with: StrictString(localization.textDirection.htmlAttribute)
-    )
-
-    result.replaceMatches(for: "[*domain*]", with: site.domain.resolved(for: localization))
-    result.replaceMatches(
-      for: "[*relative path*]",
-      with: escapedRelativePath
-    )
-
-    result.replaceMatches(for: "[*site root*]".scalars, with: siteRoot)
-
-    var title = self.title
-    localize(&title, for: localization)
-    result.replaceMatches(for: "[*title*]", with: title)
-
-    result.replaceMatches(for: "[*body*]", with: try site.frame())
 
     localize(&result, for: localization)
 
