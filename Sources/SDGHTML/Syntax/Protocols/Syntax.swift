@@ -89,7 +89,7 @@ extension Syntax {
 
   /// Recursively unfolds any custom pseudo‐elements in the node’s contents toward standard HTML using the default syntax unfolder.
   public mutating func unfold() {
-    unfold(with: SyntaxUnfolder.default)
+    unfold(with: SyntaxUnfolder())
   }
 
   /// Returns the HTML node with systematic formatting applied to its source.

@@ -21,10 +21,3 @@ public protocol SyntaxUnfolderProtocol {
   ///   - element: The element to unfold.
   func unfold(element: inout ElementSyntax)
 }
-
-extension SyntaxUnfolderProtocol {
-
-  public func unfold(element: inout ElementSyntax) {
-    SyntaxUnfolder.unfoldForeign(&element)
-  }
-}

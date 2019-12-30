@@ -20,13 +20,6 @@ import SDGWebLocalizations
 /// The default `SyntaxUnfolder`.
 public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
 
-  // MARK: - Static Properties
-
-  /// The default `SyntaxUnfolder`.
-  ///
-  /// This syntax unfolder has no context, and will not unfold elements such as `<localized>` that require external information. To process those elements as well, creat an instance with one of the initializers.
-  public static let `default`: SyntaxUnfolder = SyntaxUnfolder()
-
   // MARK: - Initialization
 
   /// Creates a syntax unfolder.
@@ -34,25 +27,23 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   /// - Parameters:
   ///   - localization: The localization to which to unfold localized elements.
   public init<L>(localization: L) where L: Localization {
-    var localizationIdentifiers = [StrictString(localization.code)]
-    if let icon = localization.icon {
-      localizationIdentifiers.prepend(icon)
-    }
-    self.init(localizationIdentifiers: localizationIdentifiers)
+    self.init(anyLocalization: AnyLocalization(localization))
   }
 
   /// Creates a syntax unfolder with no localization context.
+  ///
+  /// This unfolder will not unfold `<localized>` elements.
   public init() {
-    self.init(localizationIdentifiers: [])
+    self.init(anyLocalization: nil)
   }
 
-  private init(localizationIdentifiers: [StrictString]) {
-    self.localizationIdentifiers = localizationIdentifiers
+  private init(anyLocalization localization: AnyLocalization?) {
+    self.localization = localization
   }
 
   // MARK: - Properties
 
-  private let localizationIdentifiers: [StrictString]
+  private let localization: AnyLocalization?
 
   // MARK: - Individual Unfolding Operations
 
@@ -93,6 +84,15 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
       })
     ) {
       #warning("Not implemented yet.")
+    }
+  }
+
+  // MARK: - SyntaxUnfolderProtocol
+
+  public func unfold(element: inout ElementSyntax) {
+    SyntaxUnfolder.unfoldForeign(&element)
+    if let localization = self.localization {
+      SyntaxUnfolder.unfoldLocalized(&element, localization: localization)
     }
   }
 }
