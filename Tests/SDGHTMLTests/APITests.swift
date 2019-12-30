@@ -704,7 +704,7 @@ class APITests: TestCase {
     ) {
       do {
         var syntax = try DocumentSyntax.parse(source: start).get()
-        syntax.unfold()
+        syntax.unfold(with: SyntaxUnfolder(localization: InterfaceLocalization.englishCanada))
         let source = syntax.source()
         XCTAssertEqual(source, end, file: file, line: line)
       } catch {
