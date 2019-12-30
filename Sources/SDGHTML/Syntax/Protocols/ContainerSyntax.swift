@@ -18,3 +18,11 @@ public protocol ContainerSyntax: Syntax {
   /// The content of the element.
   var content: ListSyntax<ContentSyntax> { get set }
 }
+
+extension ContainerSyntax {
+
+  internal mutating func unfoldContainer<Unfolder>(with unfolder: Unfolder)
+  where Unfolder: SyntaxUnfolderProtocol {
+    unfolder.unfold(contentList: &content)
+  }
+}

@@ -69,9 +69,12 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     }
   }
 
-  public static func unfoldLocalized<L>(_ element: inout ElementSyntax, localization: L)
+  public static func unfoldLocalized<L>(
+    _ contentList: inout ListSyntax<ContentSyntax>,
+    localization: L
+  )
   where L: Localization {
-    if element.isNamed(
+    /*if element.isNamed(
       UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom:
@@ -84,15 +87,18 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
       })
     ) {
       #warning("Not implemented yet.")
-    }
+    }*/
   }
 
   // MARK: - SyntaxUnfolderProtocol
 
   public func unfold(element: inout ElementSyntax) {
     SyntaxUnfolder.unfoldForeign(&element)
+  }
+
+  public func unfold(contentList: inout ListSyntax<ContentSyntax>) {
     if let localization = self.localization {
-      SyntaxUnfolder.unfoldLocalized(&element, localization: localization)
+      SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
     }
   }
 }
