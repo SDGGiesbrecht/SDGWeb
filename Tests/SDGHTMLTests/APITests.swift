@@ -715,6 +715,14 @@ class APITests: TestCase {
       of: "...<foreign>...</foreign>...",
       to: "...<span class=\u{22}foreign\u{22}>...</span>..."
     )
+    testUnfolding(
+      of: "...<localized><🇨🇦EN>English</🇨🇦EN><de>Deutsch</de></localized>...",
+      to: "...English..."
+    )
+    testUnfolding(
+      of: "...<localized><en\u{2D}CA>English</en\u{2D}CA><de>Deutsch</de></localized>...",
+      to: "...English..."
+    )
   }
 
   func testTextDirection() {
