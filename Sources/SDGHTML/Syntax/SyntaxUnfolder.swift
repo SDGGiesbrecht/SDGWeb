@@ -72,7 +72,14 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
 
   /// Unfolds localized elements into the target localization.
   ///
-  /// For example, when targeting Canadian English, `<localized><🇨🇦EN>This phrase is in English.</🇨🇦EN><🇫🇷FR>Cette phrase est en français.</🇫🇷FR></localized>` would be unfolded into `This phrase is in English.`
+  /// For example, when targeting Canadian English, the following would be unfolded into `This phrase is in English.`
+  ///
+  /// ```html
+  /// <localized>
+  ///  <🇨🇦EN>This phrase is in English.</🇨🇦EN>
+  ///  <🇫🇷FR>Cette phrase est en français.</🇫🇷FR>
+  /// </localized>
+  /// ```
   ///
   /// One of the immediate children must match the icon or code of the given localization, otherwise an error will be thrown.
   ///
