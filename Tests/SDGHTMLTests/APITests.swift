@@ -709,7 +709,7 @@ class APITests: TestCase {
         if context {
           try syntax.unfold(with: SyntaxUnfolder(localization: InterfaceLocalization.englishCanada))
         } else {
-          try syntax.unfold(with: SyntaxUnfolder())
+          try syntax.unfold()
         }
         let source = syntax.source()
         if let end = end {
