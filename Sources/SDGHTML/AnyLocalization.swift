@@ -23,13 +23,13 @@ internal struct AnyLocalization: Localization {
     self.code = localization.code
   }
 
-  internal init(code: String) {
+  internal init(code: String) {  // @exempt(from: tests)
     self.code = code
   }
 
   // MARK: - Localization
 
-  internal init?(exactly code: String) {
+  internal init?(exactly code: String) {  // @exempt(from: tests)
     self.code = code
   }
 
