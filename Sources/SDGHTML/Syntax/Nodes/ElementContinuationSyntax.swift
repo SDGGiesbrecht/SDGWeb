@@ -75,9 +75,9 @@ public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
     closingTag.format(indentationLevel: indentationLevel)
   }
 
-  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder)
+  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder) throws
   where Unfolder: SyntaxUnfolderProtocol {
-    unfoldChildren(with: unfolder)
-    unfoldContainer(with: unfolder)
+    try unfoldChildren(with: unfolder)
+    try unfoldContainer(with: unfolder)
   }
 }

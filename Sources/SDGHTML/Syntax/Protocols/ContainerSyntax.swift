@@ -21,8 +21,8 @@ public protocol ContainerSyntax: Syntax {
 
 extension ContainerSyntax {
 
-  internal mutating func unfoldContainer<Unfolder>(with unfolder: Unfolder)
+  internal mutating func unfoldContainer<Unfolder>(with unfolder: Unfolder) throws
   where Unfolder: SyntaxUnfolderProtocol {
-    unfolder.unfold(contentList: &content)
+    try unfolder.unfold(contentList: &content)
   }
 }

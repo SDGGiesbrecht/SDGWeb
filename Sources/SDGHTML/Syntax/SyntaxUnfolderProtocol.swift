@@ -19,11 +19,11 @@ public protocol SyntaxUnfolderProtocol {
   ///
   /// - Parameters:
   ///   - element: The element to unfold.
-  func unfold(element: inout ElementSyntax)
+  func unfold(element: inout ElementSyntax) throws
 
   /// Unfolds a content list.
   ///
   /// - Parameters:
   ///   - content: The content list to unfold.
-  func unfold(contentList: inout ListSyntax<ContentSyntax>)
+  func unfold(contentList: inout ListSyntax<ContentSyntax>) throws
 }

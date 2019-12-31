@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGText
 import SDGLocalization
 
@@ -72,33 +73,75 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   public static func unfoldLocalized<L>(
     _ contentList: inout ListSyntax<ContentSyntax>,
     localization: L
-  )
+  ) throws
   where L: Localization {
-    /*if element.isNamed(
-      UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom:
-          return "localised"
-        case .englishUnitedStates, .englishCanada:
-          return "localized"
-        case .deutschDeutschland:
-          return "lokalisiert"
+    var finished = false
+    passes: while ¬finished {
+      for index in contentList.indices {
+        let entry = contentList[index]
+        if case .element(let element) = entry.kind,
+          element.isNamed(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom:
+                return "localised"
+              case .englishUnitedStates, .englishCanada:
+                return "localized"
+              case .deutschDeutschland:
+                return "lokalisiert"
+              }
+            })
+          )
+        {
+          for child in element.content {
+            if case .element(let childElement) = child.kind,
+              StrictString(childElement.nameText) == localization.icon
+                ∨ childElement.nameText == localization.code
+            {
+              contentList.replaceSubrange(index...index, with: childElement.content)
+              continue passes
+            }
+          }
+          throw UnfoldingError(
+            description: UserFacing<StrictString, InterfaceLocalization>({ errorLocalization in
+              switch errorLocalization {
+              case .englishUnitedKingdom:
+                var names = "‘\(localization.code)’"
+                if let icon = localization.icon {
+                  names = "‘\(icon)’ or \(names)"
+                }
+                return "A localised element has no child element named \(names)."
+              case .englishUnitedStates, .englishCanada:
+                var names = "“\(localization.code)”"
+                if let icon = localization.icon {
+                  names = "“\(icon)” or \(names)"
+                }
+                return "A localized element has no child element named \(names)."
+              case .deutschDeutschland:
+                var namen = "„\(localization.code)“"
+                if let zeichen = localization.icon {
+                  namen = "„\(zeichen)“ oder \(namen)"
+                }
+                return "Ein lokalisiertes Element hat kein untergeordnetes Element Namens \(namen)."
+              }
+            }),
+            node: element
+          )
         }
-      })
-    ) {
-      #warning("Not implemented yet.")
-    }*/
+      }
+      finished = true
+    }
   }
 
   // MARK: - SyntaxUnfolderProtocol
 
-  public func unfold(element: inout ElementSyntax) {
+  public func unfold(element: inout ElementSyntax) throws {
     SyntaxUnfolder.unfoldForeign(&element)
   }
 
-  public func unfold(contentList: inout ListSyntax<ContentSyntax>) {
+  public func unfold(contentList: inout ListSyntax<ContentSyntax>) throws {
     if let localization = self.localization {
-      SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
+      try SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
     }
   }
 }

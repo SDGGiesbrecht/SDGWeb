@@ -132,9 +132,9 @@ public struct DocumentSyntax: ContainerSyntax, Syntax {
     content.formatContentList(indentationLevel: indentationLevel, forDocument: true)
   }
 
-  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder)
+  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder) throws
   where Unfolder: SyntaxUnfolderProtocol {
-    unfoldChildren(with: unfolder)
-    unfoldContainer(with: unfolder)
+    try unfoldChildren(with: unfolder)
+    try unfoldContainer(with: unfolder)
   }
 }
