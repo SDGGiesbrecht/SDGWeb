@@ -86,7 +86,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   /// The `<localized>` element and its untargetted children will be discareded, including any attributes, comments and whitespace. Only the contents of the targeted child will remain.
   ///
   /// - Parameters:
-  ///   - element: The element to unfold.
+  ///   - contentList: The content list to unfold.
   ///   - localization: The target localization.
   public static func unfoldLocalized<L>(
     _ contentList: inout ListSyntax<ContentSyntax>,
