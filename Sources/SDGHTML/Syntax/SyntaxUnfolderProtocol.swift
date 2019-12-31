@@ -24,6 +24,6 @@ public protocol SyntaxUnfolderProtocol {
   /// Unfolds a content list.
   ///
   /// - Parameters:
-  ///   - content: The content list to unfold.
+  ///   - contentList: The content list to unfold.
   func unfold(contentList: inout ListSyntax<ContentSyntax>) throws
 }

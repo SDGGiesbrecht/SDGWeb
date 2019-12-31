@@ -70,6 +70,17 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     }
   }
 
+  /// Unfolds localized elements into the target localization.
+  ///
+  /// For example, when targeting Canadian English, `<localized><🇨🇦EN>This phrase is in English.</🇨🇦EN><🇫🇷FR>Cette phrase est en français.</🇫🇷FR></localized>` would be unfolded into `This phrase is in English.`
+  ///
+  /// One of the immediate children must match the icon or code of the given localization, otherwise an error will be thrown.
+  ///
+  /// The `<localized>` element and its untargetted children will be discareded, including any attributes, comments and whitespace. Only the contents of the targeted child will remain.
+  ///
+  /// - Parameters:
+  ///   - element: The element to unfold.
+  ///   - localization: The target localization.
   public static func unfoldLocalized<L>(
     _ contentList: inout ListSyntax<ContentSyntax>,
     localization: L
