@@ -4,7 +4,7 @@
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
 
- Copyright ©2018–2019 Jeremy David Giesbrecht and the SDGWeb project contributors.
+ Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGWeb project contributors.
 
  Soli Deo gloria.
 
