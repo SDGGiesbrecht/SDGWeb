@@ -698,22 +698,58 @@ class APITests: TestCase {
   func testSyntaxUnfolder() {
     func testUnfolding(
       of start: String,
-      to end: String,
+      to end: String? = nil,
+      context: Bool = true,
+      expectError: Bool = false,
       file: StaticString = #file,
       line: UInt = #line
     ) {
       do {
         var syntax = try DocumentSyntax.parse(source: start).get()
-        syntax.unfold()
+        if context {
+          try syntax.unfold(with: SyntaxUnfolder(localization: InterfaceLocalization.englishCanada))
+        } else {
+          try syntax.unfold()
+        }
         let source = syntax.source()
-        XCTAssertEqual(source, end, file: file, line: line)
+        if let end = end {
+          XCTAssertEqual(source, end, file: file, line: line)
+        }
+        if expectError {
+          XCTFail("Expected error never occurred.", file: file, line: line)
+        }
       } catch {
-        XCTFail(error.localizedDescription)
+        if expectError {
+          for localization in InterfaceLocalization.allCases {
+            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+              _ = error.localizedDescription
+            }
+          }
+        } else {
+          XCTFail(error.localizedDescription, file: file, line: line)
+        }
       }
     }
     testUnfolding(
       of: "...<foreign>...</foreign>...",
       to: "...<span class=\u{22}foreign\u{22}>...</span>..."
+    )
+    testUnfolding(
+      of: "...<localized><🇨🇦EN>English</🇨🇦EN><de>Deutsch</de></localized>...",
+      to: "...English..."
+    )
+    testUnfolding(
+      of: "...<localized><en\u{2D}CA>English</en\u{2D}CA><de>Deutsch</de></localized>...",
+      to: "...English..."
+    )
+    testUnfolding(
+      of: "...<localized><🇨🇦EN>English</🇨🇦EN><de>Deutsch</de></localized>...",
+      to: "...<localized><🇨🇦EN>English</🇨🇦EN><de>Deutsch</de></localized>...",
+      context: false
+    )
+    testUnfolding(
+      of: "...<localized><de>Deutsch</de>...",
+      expectError: true
     )
   }
 
