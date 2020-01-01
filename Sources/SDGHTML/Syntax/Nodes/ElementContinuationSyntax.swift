@@ -74,4 +74,10 @@ public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
     content.formatContentList(indentationLevel: indentationLevel + 1, forDocument: false)
     closingTag.format(indentationLevel: indentationLevel)
   }
+
+  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder) throws
+  where Unfolder: SyntaxUnfolderProtocol {
+    try unfoldChildren(with: unfolder)
+    try unfoldContainer(with: unfolder)
+  }
 }

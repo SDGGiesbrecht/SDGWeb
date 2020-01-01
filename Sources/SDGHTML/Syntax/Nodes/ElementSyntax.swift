@@ -240,9 +240,9 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
 
   public var _storage: _SyntaxStorage
 
-  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder)
-  where Unfolder: SyntaxUnfolder {
-    unfoldChildren(with: unfolder)
-    unfolder.unfold(element: &self)
+  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder) throws
+  where Unfolder: SyntaxUnfolderProtocol {
+    try unfoldChildren(with: unfolder)
+    try unfolder.unfold(element: &self)
   }
 }

@@ -29,8 +29,8 @@ public protocol Syntax: TransparentWrapper, TextOutputStreamable {
   ///
   /// - Parameters:
   ///   - unfolder: A syntax unfolder that defines the individual unfolding operations.
-  mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder)
-  where Unfolder: SyntaxUnfolder
+  mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder) throws
+  where Unfolder: SyntaxUnfolderProtocol
 }
 
 extension Syntax {
@@ -63,32 +63,33 @@ extension Syntax {
     }
   }
 
-  internal mutating func unfoldChildren<Unfolder>(with unfolder: Unfolder)
-  where Unfolder: SyntaxUnfolder {
+  internal mutating func unfoldChildren<Unfolder>(with unfolder: Unfolder) throws
+  where Unfolder: SyntaxUnfolderProtocol {
     for index in _storage.children.indices {
-      _storage.children[index]?.performSingleUnfoldingPass(with: unfolder)
+      try _storage.children[index]?.performSingleUnfoldingPass(with: unfolder)
     }
   }
-  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder)
-  where Unfolder: SyntaxUnfolder {
-    unfoldChildren(with: unfolder)
+  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder) throws
+  where Unfolder: SyntaxUnfolderProtocol {
+    try unfoldChildren(with: unfolder)
   }
 
   /// Recursively unfolds any custom pseudo‐elements in the node’s contents toward standard HTML.
   ///
   /// - Parameters:
   ///   - unfolder: A syntax unfolder that defines the individual unfolding operations.
-  public mutating func unfold<Unfolder>(with unfolder: Unfolder) where Unfolder: SyntaxUnfolder {
+  public mutating func unfold<Unfolder>(with unfolder: Unfolder) throws
+  where Unfolder: SyntaxUnfolderProtocol {
     let before = source()
-    performSingleUnfoldingPass(with: unfolder)
+    try performSingleUnfoldingPass(with: unfolder)
     if source() ≠ before {
-      unfold(with: unfolder)
+      try unfold(with: unfolder)
     }
   }
 
   /// Recursively unfolds any custom pseudo‐elements in the node’s contents toward standard HTML using the default syntax unfolder.
-  public mutating func unfold() {
-    unfold(with: DefaultSyntaxUnfolder.default)
+  public mutating func unfold() throws {
+    try unfold(with: SyntaxUnfolder())
   }
 
   /// Returns the HTML node with systematic formatting applied to its source.

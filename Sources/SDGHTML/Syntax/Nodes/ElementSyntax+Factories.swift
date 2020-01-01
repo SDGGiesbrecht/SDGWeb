@@ -174,7 +174,7 @@ extension ElementSyntax {
       attributes: language.htmlAttributes.mergedByOverwriting(from: attributes),
       contents: contents
     )
-    DefaultSyntaxUnfolder.unfoldForeign(&foreign)
+    SyntaxUnfolder.unfoldForeign(&foreign)
     return foreign
   }
 
