@@ -118,7 +118,7 @@ class APITests: TestCase {
       )
     }
   }
-  func testSiteValidationError() {
+  func testSiteValidationError() throws {
     let parseFailure: SyntaxError
     switch DocumentSyntax.parse(source: "html>") {
     case .failure(let error):
@@ -139,6 +139,13 @@ class APITests: TestCase {
         uniqueTestName: index.inDigits(),
         overwriteSpecificationInsteadOfFailing: false
       )
+    }
+
+    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
+      let invalidHTML = "p>This paragraph is broken.</p>"
+      try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
+      let warnings = Site<InterfaceLocalization>.validate(site: url)
+      XCTAssert(¬warnings.isEmpty)
     }
   }
 
