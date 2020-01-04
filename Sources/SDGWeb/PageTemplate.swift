@@ -183,13 +183,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )
     }
 
-    var title = self.title
-    localize(&title, for: localization)
-    var description = self.description
-    localize(&description, for: localization)
-    var keywords = self.keywords
-    localize(&keywords, for: localization)
-
     var result = StrictString(
       DocumentSyntax.document(
         documentElement: .document(
@@ -210,8 +203,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       ).source()
     )
 
-    localize(&result, for: localization)
-
     var localizationRoot = siteRoot
     if Localization.allCases.count > 1 {
       localizationRoot.append(
@@ -219,8 +210,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )
     }
 
-    var content = self.content
-    localize(&content, for: localization)
     site.pageProcessor.process(
       pageTemplate: &result,
       title: title,
@@ -229,6 +218,10 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       localizationRoot: localizationRoot,
       relativePath: relativePath
     )
+
+    var syntax = try DocumentSyntax.parse(source: String(result)).get()
+    try syntax.unfold(with: SyntaxUnfolder(localization: localization))
+    result = StrictString(syntax.source())
 
     return result
   }
@@ -263,10 +256,10 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
     var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
 
-    var fileName = self.fileName
-    localize(&fileName, for: localization)
+    var fileName = try DocumentSyntax.parse(source: String(self.fileName)).get()
+    try fileName.unfold(with: SyntaxUnfolder(localization: localization))
     url.deleteLastPathComponent()
-    url.appendPathComponent(String(fileName))
+    url.appendPathComponent(String(StrictString(fileName.source())))
 
     let reportedPath = url.path(relativeTo: site.repositoryStructure.result)
     site.reportProgress(
