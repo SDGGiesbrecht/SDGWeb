@@ -182,12 +182,8 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
   internal func requiredAttribute(
     named name: UserFacing<StrictString, InterfaceLocalization>
   ) throws -> String {
-    for name in InterfaceLocalization.allCases.lazy.map({ name.resolved(for: $0) }) {
-      if let found = self.attribute(named: String(name)),
-        let text = found.valueText
-      {
-        return text
-      }
+    if let value = attribute(named: name)?.valueText {
+      return value
     }
     throw SyntaxUnfolder.Error.missingAttribute(element: self, attribute: name)
   }

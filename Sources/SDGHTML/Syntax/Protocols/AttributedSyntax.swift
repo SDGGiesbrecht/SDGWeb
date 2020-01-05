@@ -145,4 +145,19 @@ extension AttributedSyntax {
       translationIntentValue = value
     }
   }
+
+  /// Returns a localized attribute with the specified name.
+  ///
+  /// - Parameters:
+  ///     - name: The name.
+  public func attribute<L>(
+    named name: UserFacing<StrictString, L>
+  ) -> AttributeSyntax? where L: InputLocalization {
+    for name in L.allCases.lazy.map({ name.resolved(for: $0) }) {
+      if let found = self.attribute(named: String(name)) {
+        return found
+      }
+    }
+    return nil
+  }
 }
