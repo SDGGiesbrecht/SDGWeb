@@ -173,7 +173,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     for relativePath: StrictString,
     localization: Localization,
     site: Site<Localization>
-  ) throws -> StrictString {
+  ) throws -> DocumentSyntax {
 
     let domain = site.domain.resolved(for: localization)
     var relativePath = StrictString(relativePath)
@@ -198,7 +198,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
               .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
             ]
           ),
-          body: .body(contents: try site.frame().content)
+          body: .body(contents: [])
         )
       ).source()
     )
@@ -210,11 +210,11 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )
     }
 
-    var syntax = try DocumentSyntax.parse(source: String(result)).get()
-    try syntax.unfold(with: site.pageProcessor.syntaxUnfolder(localization: localization))
-    result = StrictString(syntax.source())
+    let unused = (title, content, siteRoot, localizationRoot, relativePath)
 
-    return result
+    var syntax = try DocumentSyntax.parse(source: String(content)).get()
+    try syntax.unfold(with: site.pageProcessor.syntaxUnfolder(localization: localization))
+    return syntax
   }
 
   private func url(domain: StrictString, path: StrictString) throws -> URL {
@@ -267,12 +267,9 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     )
 
     var result = try processedResult(for: relativePath, localization: localization, site: site)
-    if formatting,
-      var parsed = try? DocumentSyntax.parse(source: String(result)).get()
-    {
-      parsed.format()
-      result = StrictString(parsed.source())
+    if formatting {
+      result.format()
     }
-    try result.save(to: url)
+    try StrictString(result.source()).save(to: url)
   }
 }
