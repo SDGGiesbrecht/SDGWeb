@@ -103,7 +103,7 @@ public enum SiteGenerationError: PresentableError {
             "“\(page)” has no title. Declare it with the “title” attribute on the root element."
         case .deutschDeutschland:
           return
-            "„\(page)“ hat keinen Titel. Titeln werden mit einer „Title“‐Eigenschaft des Wurzelelements angegeben."
+            "„\(page)“ hat keinen Titel. Titeln werden mit einer „Title“‐Eigenschaft am Wurzelelement angegeben."
         }
       case .missingDescription(let page):
         switch localization {
