@@ -209,6 +209,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   public func unfold(contentList: inout ListSyntax<ContentSyntax>) throws {
     if let localization = self.localization {
       try SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
+      try SyntaxUnfolder.unfoldPage(&contentList, localization: localization)
     }
   }
 }
