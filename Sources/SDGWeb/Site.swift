@@ -63,18 +63,6 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   internal let pageProcessor: PageProcessor
   internal let reportProgress: (StrictString) -> Void
 
-  private class Cache {
-    fileprivate init() {}
-    fileprivate var frame: DocumentSyntax?
-  }
-  private let cache = Cache()
-
-  internal func frame() throws -> DocumentSyntax {
-    return try cached(in: &cache.frame) {
-      try pageProcessor.frame(repositoryStructure: repositoryStructure)
-    }
-  }
-
   // MARK: - Processing
 
   /// Generates the website in its result directory.

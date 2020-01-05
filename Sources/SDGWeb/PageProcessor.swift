@@ -24,22 +24,11 @@ public protocol PageProcessor {
 
   /// Returns an syntax unfolder configured for the specified localization.
   func syntaxUnfolder<L>(localization: L) -> AnySyntaxUnfolder where L: Localization
-
-  /// Returns the frame to use for each page of the site.
-  ///
-  /// - Parameters:
-  ///     - repositoryStructure: The repository structure to get the frame from.
-  func frame(repositoryStructure: RepositoryStructure) throws -> DocumentSyntax
 }
 
 extension PageProcessor {
 
   public func syntaxUnfolder<L>(localization: L) -> AnySyntaxUnfolder where L: Localization {
     return AnySyntaxUnfolder(SyntaxUnfolder(localization: localization))
-  }
-
-  public func frame(repositoryStructure: RepositoryStructure) throws -> DocumentSyntax {
-    let source = try StrictString(from: repositoryStructure.frame)
-    return try DocumentSyntax.parse(source: String(source)).get()
   }
 }

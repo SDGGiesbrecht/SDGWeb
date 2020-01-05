@@ -61,10 +61,6 @@ class APITests: TestCase {
     #endif
   }
 
-  func testNoFrame() {
-    expectErrorGenerating(forMock: "No Frame", localization: SingleLocalization.self)
-  }
-
   func testNoMetadata() {
     expectErrorGenerating(forMock: "No Metadata", localization: SingleLocalization.self)
   }
