@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGLogic
 import SDGText
 import SDGLocalization
@@ -148,6 +150,52 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
         }
       }
       finished = true
+    }
+  }
+
+  /// Unfolds the `<page>` element.
+  ///
+  /// `<page>` serves as the root element of an HTML document.
+  ///
+  /// - Parameters:
+  ///   - contentList: The content list to unfold.
+  public static func unfoldPage<L>(
+    _ contentList: inout ListSyntax<ContentSyntax>,
+    localization: L
+  ) throws
+  where L: Localization {
+    for index in contentList.indices {
+      let entry = contentList[index]
+      if case .element(let element) = entry.kind,
+        element.isNamed(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "page"
+            case .deutschDeutschland:
+              return "seite"
+            }
+          })
+        )
+      {
+        contentList.replaceSubrange(
+          (index...index).relative(to: contentList),
+          with: DocumentSyntax.document(
+            documentElement: .document(
+              language: localization,
+              header: .metadataHeader(
+                title: .metadataTitle("#warning(Title)"),
+                canonicalURL: .canonical(url: URL(fileURLWithPath: "#warning(canonicalURL)")),
+                author: .author("#warning(Author)", language: localization),  // #warning(Language)
+                description: .description("#warning(Description)"),
+                keywords: .keywords(["#warning(Title)"])
+              ),
+              body: ElementSyntax.body(contents: element.content)
+            )
+          ).content
+        )
+        return
+      }
     }
   }
 
