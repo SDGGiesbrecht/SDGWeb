@@ -166,31 +166,41 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   where L: Localization {
     for index in contentList.indices {
       let entry = contentList[index]
-      if case .element(let element) = entry.kind,
-        element.isNamed(
+      if case .element(let page) = entry.kind,
+        page.isNamed(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
               return "page"
             case .deutschDeutschland:
-              return "seite"
+              return "Seite"
             }
           })
         )
       {
+        let title = try page.requiredAttribute(
+          named: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "title"
+            case .deutschDeutschland:
+              return "Titel"
+            }
+          })
+        )
         contentList.replaceSubrange(
           (index...index).relative(to: contentList),
           with: DocumentSyntax.document(
             documentElement: .document(
               language: localization,
               header: .metadataHeader(
-                title: .metadataTitle("#warning(Title)"),
+                title: .metadataTitle(title),
                 canonicalURL: .canonical(url: URL(fileURLWithPath: "#warning(canonicalURL)")),
                 author: .author("#warning(Author)", language: localization),  // #warning(Language)
                 description: .description("#warning(Description)"),
                 keywords: .keywords(["#warning(Title)"])
               ),
-              body: ElementSyntax.body(contents: element.content)
+              body: ElementSyntax.body(contents: page.content)
             ),
             formatted: false
           ).content

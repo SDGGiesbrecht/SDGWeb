@@ -177,6 +177,21 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
     }
   }
 
+  // MARK: - Internal Utilities
+
+  internal func requiredAttribute(
+    named name: UserFacing<StrictString, InterfaceLocalization>
+  ) throws -> String {
+    for name in InterfaceLocalization.allCases.lazy.map({ name.resolved(for: $0) }) {
+      if let found = self.attribute(named: String(name)),
+        let text = found.valueText
+      {
+        return text
+      }
+    }
+    throw SyntaxUnfolder.Error.missingAttribute(element: self, attribute: name)
+  }
+
   // MARK: - AttributedSyntax
 
   public var attributeDictionary: [String: String] {

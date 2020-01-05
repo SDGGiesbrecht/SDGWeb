@@ -12,6 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+import SDGLocalization
+
+import SDGWebLocalizations
+
 /// A node which has an associated set of attributes, either directly or through one of its children.
 public protocol AttributedSyntax: Syntax {
 
