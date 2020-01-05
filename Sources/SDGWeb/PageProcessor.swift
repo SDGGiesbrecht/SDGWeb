@@ -13,6 +13,7 @@
  */
 
 import SDGText
+import SDGLocalization
 
 import SDGHTML
 
@@ -20,6 +21,9 @@ import SDGWebLocalizations
 
 /// A page processor.
 public protocol PageProcessor {
+
+  /// Returns an syntax unfolder configured for the specified localization.
+  func syntaxUnfolder<L>(localization: L) -> AnySyntaxUnfolder where L: Localization
 
   /// Returns the frame to use for each page of the site.
   ///
@@ -47,6 +51,10 @@ public protocol PageProcessor {
 }
 
 extension PageProcessor {
+
+  public func syntaxUnfolder<L>(localization: L) -> AnySyntaxUnfolder where L: Localization {
+    return AnySyntaxUnfolder(SyntaxUnfolder(localization: localization))
+  }
 
   public func frame(repositoryStructure: RepositoryStructure) throws -> DocumentSyntax {
     let source = try StrictString(from: repositoryStructure.frame)
