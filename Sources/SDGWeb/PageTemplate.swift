@@ -263,6 +263,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
     url.deleteLastPathComponent()
     url.appendPathComponent(String(try resolvedFileName()))
+    url.appendPathExtension("html")
 
     let reportedPath = url.path(relativeTo: site.repositoryStructure.result)
     site.reportProgress(
