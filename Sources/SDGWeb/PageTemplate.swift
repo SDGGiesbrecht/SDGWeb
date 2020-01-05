@@ -210,15 +210,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )
     }
 
-    site.pageProcessor.process(
-      pageTemplate: &result,
-      title: title,
-      content: content,
-      siteRoot: siteRoot,
-      localizationRoot: localizationRoot,
-      relativePath: relativePath
-    )
-
     var syntax = try DocumentSyntax.parse(source: String(result)).get()
     try syntax.unfold(with: site.pageProcessor.syntaxUnfolder(localization: localization))
     result = StrictString(syntax.source())
