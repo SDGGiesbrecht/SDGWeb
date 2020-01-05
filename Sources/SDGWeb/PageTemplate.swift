@@ -71,7 +71,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     guard let keywords = metaData["Keywords"] else {
       return .failure(.missingKeywords(page: relativePath))
     }
-    let fileName = metaData["File Name"].map { $0 + ".html" }
+    let fileName = metaData["File Name"]
 
     let templateSyntax: DocumentSyntax
     switch DocumentSyntax.parse(source: String(content)) {
