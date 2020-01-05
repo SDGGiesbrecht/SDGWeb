@@ -17,6 +17,8 @@ import Foundation
 import SDGText
 import SDGLocalization
 
+import SDGHTML
+
 import SDGWebLocalizations
 
 /// An error encountered during site generation.
@@ -27,6 +29,9 @@ public enum SiteGenerationError: PresentableError {
 
   /// The domain is invalid.
   case invalidDomain(StrictString)
+
+  /// A page has invalid syntax.
+  case syntaxError(page: StrictString, error: SyntaxError)
 
   /// A page has no metadata.
   case noMetadata(page: StrictString)
@@ -59,6 +64,19 @@ public enum SiteGenerationError: PresentableError {
         case .deutschDeutschland:
           return "„\(domain)“ ist kein gültiges Bereich."
         }
+      case .syntaxError(let page, let error):
+        var result: StrictString
+        switch localization {
+        case .englishUnitedKingdom:
+          result = "‘\(page)’ could not be parsed:"
+        case .englishUnitedStates, .englishCanada:
+          result = "“\(page)” could not be parsed:"
+        case .deutschDeutschland:
+          result = "„\(page)“ konnte nicht zerteilt werden:"
+        }
+        result.append("\n")
+        result.append(contentsOf: error.presentableDescription())
+        return result
       case .noMetadata(let page):
         switch localization {
         case .englishUnitedKingdom:
@@ -78,11 +96,14 @@ public enum SiteGenerationError: PresentableError {
       case .missingTitle(let page):
         switch localization {
         case .englishUnitedKingdom:
-          return "‘\(page)’ has no title."
+          return
+            "‘\(page)’ has no title. Declare it with the ‘title’ attribute on the root element."
         case .englishUnitedStates, .englishCanada:
-          return "“\(page)” has no title."
+          return
+            "“\(page)” has no title. Declare it with the “title” attribute on the root element."
         case .deutschDeutschland:
-          return "„\(page)“ hat keinen Titel."
+          return
+            "„\(page)“ hat keinen Titel. Titeln werden mit einer „Title“‐Eigenschaft des Wurzelelements angegeben."
         }
       case .missingDescription(let page):
         switch localization {

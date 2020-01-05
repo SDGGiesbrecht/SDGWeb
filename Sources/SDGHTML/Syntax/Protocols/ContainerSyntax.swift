@@ -25,4 +25,16 @@ extension ContainerSyntax {
   where Unfolder: SyntaxUnfolderProtocol {
     try unfolder.unfold(contentList: &content)
   }
+
+  /// Returns the list of all immediate child elements.
+  public func childElements() -> AnyCollection<ElementSyntax> {
+    return AnyCollection(
+      content.lazy.compactMap { entry in
+        if case .element(let element) = entry.kind {
+          return element
+        }
+        return nil
+      }
+    )
+  }
 }

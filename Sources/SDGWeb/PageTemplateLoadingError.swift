@@ -15,11 +15,13 @@
 import SDGText
 import SDGLocalization
 
+import SDGHTML
+
 internal enum PageTemplateLoadingError: Error {
   case foundationError(Swift.Error)
   case metaDataExtractionError(PageTemplateMetaDataExtractionError)
   case metaDataParsingError(PageTemplateMetaDataParsingError)
-  case missingTitle(page: StrictString)
   case missingDescription(page: StrictString)
   case missingKeywords(page: StrictString)
+  case syntaxError(page: StrictString, error: SyntaxError)
 }
