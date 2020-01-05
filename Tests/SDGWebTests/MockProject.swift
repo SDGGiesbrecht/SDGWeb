@@ -79,7 +79,7 @@ func generate<L>(
     }).joined(separator: "\n\n")
   }
   if expectValidationFailure {
-    XCTAssert(¬warnings.isEmpty)
+    XCTAssert(¬warnings.isEmpty, "Expected warnings never triggered.")
   } else {
     XCTAssert(warnings.isEmpty, describe(warnings), file: file, line: line)
   }
