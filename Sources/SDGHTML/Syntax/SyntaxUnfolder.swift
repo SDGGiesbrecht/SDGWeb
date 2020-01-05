@@ -191,7 +191,8 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
                 keywords: .keywords(["#warning(Title)"])
               ),
               body: ElementSyntax.body(contents: element.content)
-            )
+            ),
+            formatted: false
           ).content
         )
         return
