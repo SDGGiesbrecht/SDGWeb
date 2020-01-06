@@ -158,6 +158,18 @@ extension ElementSyntax {
     return .metadata(attributes: attributes)
   }
 
+  /// Creates a footer element (`<footer>`).
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - contents: The contents of the footer.
+  public static func footer(
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(name: "footer", attributes: attributes, contents: contents)
+  }
+
   /// Creates foreign text.
   ///
   /// - Parameters:
