@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGLogic
+import SDGMathematics
 import SDGText
 import SDGLocalization
 
@@ -142,6 +143,11 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     }
   }
 
+  private static func baseURL(fromRelativePath relativePath: String) -> URL {
+    let nestedLevel = relativePath.components(separatedBy: "/").count − 1
+    return URL(fileURLWithPath: String(repeating: "../", count: nestedLevel))
+  }
+
   /// Unfolds the `<page>` element.
   ///
   /// `<page>` serves as the root element of an HTML document. It requires the following attributes:
@@ -157,12 +163,14 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   ///   - localization: The localization of the page.
   ///   - siteRoot: The URL of the site root.
   ///   - relativePath: The location of the page relative to the site root.
+  ///   - css: The paths of the CSS files, each relative to the site root.
   public static func unfoldPage<L>(
     _ contentList: inout ListSyntax<ContentSyntax>,
     localization: L,
     siteRoot: URL,
     relativePath: String,
-    author: ElementSyntax
+    author: ElementSyntax,
+    css: [String]
   ) throws
   where L: Localization {
     for index in contentList.indices {
@@ -211,6 +219,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
         )
 
         let pageURL = siteRoot.appendingPathComponent(relativePath)
+        let baseURL = self.baseURL(fromRelativePath: relativePath)
 
         contentList.replaceSubrange(
           (index...index).relative(to: contentList),
@@ -222,7 +231,8 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
                 canonicalURL: .canonical(url: pageURL),
                 author: author,
                 description: .description(description),
-                keywords: .keywords(keywords.components(separatedBy: ", "))
+                keywords: .keywords(keywords.components(separatedBy: ", ")),
+                css: css.map({ .css(url: baseURL.appendingPathComponent($0)) })
               ),
               body: ElementSyntax.body(contents: page.content)
             ),
@@ -241,18 +251,19 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   }
 
   public func unfold(contentList: inout ListSyntax<ContentSyntax>) throws {
-    if let localization = self.context?.localization {
+    if let localization = context?.localization {
       try SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
-      if let siteRoot = self.context?.siteRoot,
-        let relativePath = self.context?.relativePath,
-        let author = self.context?.author
+      if let siteRoot = context?.siteRoot,
+        let relativePath = context?.relativePath,
+        let author = context?.author
       {
         try SyntaxUnfolder.unfoldPage(
           &contentList,
           localization: localization,
           siteRoot: siteRoot,
           relativePath: relativePath,
-          author: author
+          author: author,
+          css: context?.css ?? []
         )
       }
     }

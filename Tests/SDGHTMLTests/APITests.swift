@@ -713,7 +713,8 @@ class APITests: TestCase {
                 localization: InterfaceLocalization.englishCanada,
                 siteRoot: URL(string: "http://example.com"),
                 relativePath: "relative/path",
-                author: .author("John Doe", language: InterfaceLocalization.englishUnitedKingdom)
+                author: .author("John Doe", language: InterfaceLocalization.englishUnitedKingdom),
+                css: ["CSS/CSS.css"]
               )
             )
           )

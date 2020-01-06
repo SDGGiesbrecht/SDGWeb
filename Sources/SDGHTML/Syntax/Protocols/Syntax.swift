@@ -97,7 +97,8 @@ extension Syntax {
           localization: Optional<AnyLocalization>.none,
           siteRoot: nil,
           relativePath: nil,
-          author: nil
+          author: nil,
+          css: []
         )
       )
     )
