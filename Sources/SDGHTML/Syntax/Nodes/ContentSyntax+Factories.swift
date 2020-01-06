@@ -27,6 +27,6 @@ extension ContentSyntax {
   /// - Parameters:
   ///   - element: The element.
   public static func element(_ element: ElementSyntax) -> ContentSyntax {
-    return ContentSyntax(kind: .element(element)).formatted()
+    return ContentSyntax(kind: .element(element))
   }
 }
