@@ -1,0 +1,12 @@
+🇬🇧EN
+A required attribute is missing. The ‘element’ element requires the ‘attribute’ attribute.
+
+🇺🇸EN
+A required attribute is missing. The “element” element requires the “attribute” attribute.
+
+🇨🇦EN
+A required attribute is missing. The “element” element requires the “attribute” attribute.
+
+🇩🇪DE
+Eine nötige Eigenschaft fehlt. Das „element“‐Element benötigt die „attribute“ Eigenschaft.
+
