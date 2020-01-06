@@ -38,6 +38,13 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
 
   private let context: Context?
 
+  // MARK: - Utilities
+
+  private static func baseURL(fromRelativePath relativePath: String) -> String {
+    let nestedLevel = relativePath.components(separatedBy: "/").count − 1
+    return String(repeating: "../", count: nestedLevel)
+  }
+
   // MARK: - Individual Unfolding Operations
 
   /// Unfolds `<foreign>` into `<span class="foreign">`.
@@ -143,11 +150,6 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     }
   }
 
-  private static func baseURL(fromRelativePath relativePath: String) -> URL {
-    let nestedLevel = relativePath.components(separatedBy: "/").count − 1
-    return URL(fileURLWithPath: String(repeating: "../", count: nestedLevel))
-  }
-
   /// Unfolds the `<page>` element.
   ///
   /// `<page>` serves as the root element of an HTML document. It requires the following attributes:
@@ -232,7 +234,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
                 author: author,
                 description: .description(description),
                 keywords: .keywords(keywords.components(separatedBy: ", ")),
-                css: css.map({ .css(url: baseURL.appendingPathComponent($0)) })
+                css: css.map({ .css(url: URL(fileURLWithPath: baseURL + $0)) })
               ),
               body: ElementSyntax.body(contents: page.content)
             ),
