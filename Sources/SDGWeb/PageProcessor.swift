@@ -36,7 +36,11 @@ public protocol PageProcessor {
 
 extension PageProcessor {
 
-  func syntaxUnfolder<L>(localization: L, siteRoot: URL, relativePath: String) -> AnySyntaxUnfolder
+  public func syntaxUnfolder<L>(
+    localization: L,
+    siteRoot: URL,
+    relativePath: String
+  ) -> AnySyntaxUnfolder
   where L: Localization {
     return AnySyntaxUnfolder(
       SyntaxUnfolder(
