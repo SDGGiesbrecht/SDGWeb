@@ -154,43 +154,11 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     localization: Localization,
     site: Site<Localization>
   ) throws -> DocumentSyntax {
-
-    let siteRoot = site.siteRoot.resolved(for: localization)
-
-    var result = StrictString(
-      DocumentSyntax.document(
-        documentElement: .document(
-          language: localization,
-          header: .metadataHeader(
-            title: .span(),
-            canonicalURL: .span(),
-            author: .span(),
-            description: .span(),
-            keywords: .span(),
-            css: [
-              .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
-              .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
-            ]
-          ),
-          body: .body(contents: [])
-        )
-      ).source()
-    )
-
-    var localizationRoot = self.siteRoot
-    if Localization.allCases.count > 1 {
-      localizationRoot.append(
-        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
-      )
-    }
-
-    let unused = (siteRoot, localizationRoot, relativePath)
-
     var syntax = templateSyntax
     try syntax.unfold(
       with: site.pageProcessor.syntaxUnfolder(
         localization: localization,
-        siteRoot: siteRoot,
+        siteRoot: site.siteRoot.resolved(for: localization),
         relativePath: String(relativePath),
         author: site.author.resolved(for: localization),
         css: [
