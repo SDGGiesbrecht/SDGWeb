@@ -101,8 +101,6 @@ class APITests: TestCase {
       .noMetadata(page: "[...]"),
       .metadataMissingColon(line: "[...]"),
       .missingTitle(page: "[...]"),
-      .missingDescription(page: "[...]"),
-      .missingKeywords(page: "[...]")
     ]
     for index in errors.indices {
       let error = errors[index]

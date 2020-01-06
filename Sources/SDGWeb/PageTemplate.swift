@@ -65,12 +65,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       metaData = parsed
     }
 
-    guard let description = metaData["Description"] else {
-      return .failure(.missingDescription(page: relativePath))
-    }
-    guard let keywords = metaData["Keywords"] else {
-      return .failure(.missingKeywords(page: relativePath))
-    }
     let fileName = metaData["File Name"]
 
     let templateSyntax: DocumentSyntax
@@ -86,8 +80,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         relativePath: relativePath,
         fileName: fileName,
         siteRoot: siteRoot,
-        description: description,
-        keywords: keywords,
         templateSyntax: templateSyntax
       )
     )
@@ -139,16 +131,12 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     relativePath: StrictString,
     fileName: StrictString?,
     siteRoot: StrictString,
-    description: StrictString,
-    keywords: StrictString,
     templateSyntax: DocumentSyntax
   ) {
 
     self.relativePath = relativePath
     self.fileName = fileName
     self.siteRoot = siteRoot
-    self.description = description
-    self.keywords = keywords
     self.templateSyntax = templateSyntax
   }
 
@@ -157,8 +145,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   private let relativePath: StrictString
   private let fileName: StrictString?
   private let siteRoot: StrictString
-  private let description: StrictString
-  private let keywords: StrictString
   private let templateSyntax: DocumentSyntax
 
   // MARK: - Processing
@@ -185,8 +171,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
             title: .span(),
             canonicalURL: .span(),
             author: .span(),
-            description: .description(String(description)),
-            keywords: .keywords(String(keywords).components(separatedBy: ", ")),
+            description: .span(),
+            keywords: .span(),
             css: [
               .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
               .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))

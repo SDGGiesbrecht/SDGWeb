@@ -82,10 +82,6 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
         return .failure(.noMetadata(page: error.page))
       case .metaDataParsingError(let error):
         return .failure(.metadataMissingColon(line: error.line))
-      case .missingDescription(let page):
-        return .failure(.missingDescription(page: page))
-      case .missingKeywords(let page):
-        return .failure(.missingKeywords(page: page))
       case .syntaxError(let page, let error):
         return .failure(.syntaxError(page: page, error: error))
       }

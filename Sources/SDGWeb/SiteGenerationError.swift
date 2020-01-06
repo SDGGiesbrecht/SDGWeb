@@ -42,12 +42,6 @@ public enum SiteGenerationError: PresentableError {
   /// A page has no title.
   case missingTitle(page: StrictString)
 
-  /// A page has no description.
-  case missingDescription(page: StrictString)
-
-  /// A page has no keywords.
-  case missingKeywords(page: StrictString)
-
   // MARK: - PresentableError
 
   public func presentableDescription() -> StrictString {
@@ -104,24 +98,6 @@ public enum SiteGenerationError: PresentableError {
         case .deutschDeutschland:
           return
             "„\(page)“ hat keinen Titel. Titeln werden mit einer „Title“‐Eigenschaft am Wurzelelement angegeben."
-        }
-      case .missingDescription(let page):
-        switch localization {
-        case .englishUnitedKingdom:
-          return "‘\(page)’ has no description."
-        case .englishUnitedStates, .englishCanada:
-          return "“\(page)” has no description."
-        case .deutschDeutschland:
-          return "„\(page)“ hat keine Beschreibung."
-        }
-      case .missingKeywords(let page):
-        switch localization {
-        case .englishUnitedKingdom:
-          return "‘\(page)’ has no keywords."
-        case .englishUnitedStates, .englishCanada:
-          return "“\(page)” has no keywords."
-        case .deutschDeutschland:
-          return "„\(page)“ hat keine Schlüsselwörter."
         }
       }
     }).resolved()
