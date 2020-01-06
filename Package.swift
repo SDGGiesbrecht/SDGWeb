@@ -144,6 +144,19 @@ let package = Package(
     // Tests
 
     .testTarget(
+      name: "SDGHTMLTests",
+      dependencies: [
+        "SDGWebLocalizations",
+        "SDGHTML",
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
+      ]
+    ),
+
+    .testTarget(
       name: "SDGWebTests",
       dependencies: [
         "SDGHTML",
@@ -154,19 +167,6 @@ let package = Package(
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
-      ]
-    ),
-
-    .testTarget(
-      name: "SDGHTMLTests",
-      dependencies: [
-        "SDGWebLocalizations",
-        "SDGHTML",
-        .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGText", package: "SDGCornerstone"),
-        .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
       ]
     )
