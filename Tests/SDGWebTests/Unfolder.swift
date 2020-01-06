@@ -50,7 +50,8 @@ struct Unfolder: SyntaxUnfolderProtocol {
                       .element(
                         .localized([
                           .element(.english([.text("Header")])),
-                          .element(.deutsch([.text("Kopfzeilen")]))
+                          .element(.deutsch([.text("Kopfzeilen")])),
+                          .element(.עברית([.text("כותרת עליונה")]))
                         ])
                       )
                     ]
@@ -66,7 +67,8 @@ struct Unfolder: SyntaxUnfolderProtocol {
                       .element(
                         .localized([
                           .element(.english([.text("Footer")])),
-                          .element(.deutsch([.text("Fußzeilen")]))
+                          .element(.deutsch([.text("Fußzeilen")])),
+                          .element(.עברית([.text("כותרת תחתונה")]))
                         ])
                       )
                     ]
