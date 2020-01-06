@@ -57,6 +57,22 @@ struct Unfolder: SyntaxUnfolderProtocol {
                     )
                   )
                 ])
+              ),
+              .element(.division(attributes: ["id": "content"], contents: frame.content)),
+              .element(
+                .footer(contents: [
+                  .element(
+                    .paragraph(contents: [
+                      .element(
+                        .localized([
+                          .element(.english([.text("Footer")])),
+                          .element(.deutsch([.text("Fußzeilen")]))
+                        ])
+                      )
+                    ]
+                    )
+                  )
+                ])
               )
             ]
           )
