@@ -29,60 +29,54 @@ struct Unfolder: SyntaxUnfolderProtocol {
   // MARK: - SyntaxUnfolderProtocol
 
   func unfold(element: inout ElementSyntax) throws {
+    if element.nameText == "frame" {
+      let frame = element
+
+      element = .page(
+        attributes: frame.attributeDictionary,
+        contents: [
+          .element(
+            .header(contents: [
+              .element(
+                .paragraph(contents: [
+                  .element(
+                    .localized([
+                      .element(.english([.text("Header")])),
+                      .element(.deutsch([.text("Kopfzeilen")])),
+                      .element(.עברית([.text("כותרת עליונה")])),
+                      .element(.unknownLanguage([.text("?")]))
+                    ])
+                  )
+                ]
+                )
+              )
+            ])
+          ),
+          .element(.division(attributes: ["id": "content"], contents: frame.content)),
+          .element(
+            .footer(contents: [
+              .element(
+                .paragraph(contents: [
+                  .element(
+                    .localized([
+                      .element(.english([.text("Footer")])),
+                      .element(.deutsch([.text("Fußzeilen")])),
+                      .element(.עברית([.text("כותרת תחתונה")])),
+                      .element(.unknownLanguage([.text("?")]))
+                    ])
+                  )
+                ]
+                )
+              )
+            ])
+          )
+        ]
+      )
+    }
     try standardUnfolder.unfold(element: &element)
   }
 
   func unfold(contentList: inout ListSyntax<ContentSyntax>) throws {
-    #warning("Simplify this kind of thing.")
-    for index in contentList.indices {
-      let entry = contentList[index]
-      if case .element(let frame) = entry.kind,
-        frame.nameText == "frame"
-      {
-        contentList[index] = .element(
-          .page(
-            attributes: frame.attributeDictionary,
-            contents: [
-              .element(
-                .header(contents: [
-                  .element(
-                    .paragraph(contents: [
-                      .element(
-                        .localized([
-                          .element(.english([.text("Header")])),
-                          .element(.deutsch([.text("Kopfzeilen")])),
-                          .element(.עברית([.text("כותרת עליונה")])),
-                          .element(.unknownLanguage([.text("?")]))
-                        ])
-                      )
-                    ]
-                    )
-                  )
-                ])
-              ),
-              .element(.division(attributes: ["id": "content"], contents: frame.content)),
-              .element(
-                .footer(contents: [
-                  .element(
-                    .paragraph(contents: [
-                      .element(
-                        .localized([
-                          .element(.english([.text("Footer")])),
-                          .element(.deutsch([.text("Fußzeilen")])),
-                          .element(.עברית([.text("כותרת תחתונה")])),
-                          .element(.unknownLanguage([.text("?")]))
-                        ])
-                      )
-                    ]
-                    )
-                  )
-                ])
-              )
-            ]
-          )
-        )
-      }
-    }
     try standardUnfolder.unfold(contentList: &contentList)
   }
 }
