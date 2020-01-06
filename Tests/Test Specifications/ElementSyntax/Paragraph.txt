@@ -1,1 +1,1 @@
-<paragraph></paragraph>
+<p></p>
