@@ -159,7 +159,8 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     _ contentList: inout ListSyntax<ContentSyntax>,
     localization: L,
     siteRoot: URL,
-    relativePath: String
+    relativePath: String,
+    author: ElementSyntax
   ) throws
   where L: Localization {
     for index in contentList.indices {
@@ -197,7 +198,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
               header: .metadataHeader(
                 title: .metadataTitle(title),
                 canonicalURL: .canonical(url: pageURL),
-                author: .author("#warning(Author)", language: localization),  // #warning(Language)
+                author: author,
                 description: .description("#warning(Description)"),
                 keywords: .keywords(["#warning(Title)"])
               ),
@@ -221,13 +222,15 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     if let localization = self.context?.localization {
       try SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
       if let siteRoot = self.context?.siteRoot,
-        let relativePath = self.context?.relativePath
+        let relativePath = self.context?.relativePath,
+        let author = self.context?.author
       {
         try SyntaxUnfolder.unfoldPage(
           &contentList,
           localization: localization,
           siteRoot: siteRoot,
-          relativePath: relativePath
+          relativePath: relativePath,
+          author: author
         )
       }
     }
