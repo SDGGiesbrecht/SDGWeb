@@ -147,6 +147,8 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   /// `<page>` serves as the root element of an HTML document. It requires the following attributes:
   ///
   /// - `title` will become the metadata title of the page.
+  /// - `description` will become the description of the page.
+  /// - `keywords` will become the suggested search keywords for the page.
   ///
   /// The content of the `<page>` element will become the content of the `<body>` element.
   ///
@@ -187,6 +189,26 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
             }
           })
         )
+        let description = try page.requiredAttribute(
+          named: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "description"
+            case .deutschDeutschland:
+              return "Beschreibung"
+            }
+          })
+        )
+        let keywords = try page.requiredAttribute(
+          named: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "keywords"
+            case .deutschDeutschland:
+              return "Schlüsselwörter"
+            }
+          })
+        )
 
         let pageURL = siteRoot.appendingPathComponent(relativePath)
 
@@ -199,8 +221,8 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
                 title: .metadataTitle(title),
                 canonicalURL: .canonical(url: pageURL),
                 author: author,
-                description: .description("#warning(Description)"),
-                keywords: .keywords(["#warning(Title)"])
+                description: .description(description),
+                keywords: .keywords(keywords.components(separatedBy: ", "))
               ),
               body: ElementSyntax.body(contents: page.content)
             ),
