@@ -69,6 +69,7 @@ func generate<L>(
     let files = warnings.keys.sorted()
     return files.map({ url in
       var fileMessage = url.path(relativeTo: mock.result)
+      fileMessage.append("\n")
       let errors = warnings[url]!
       fileMessage.append(
         contentsOf: errors.map({ error in
