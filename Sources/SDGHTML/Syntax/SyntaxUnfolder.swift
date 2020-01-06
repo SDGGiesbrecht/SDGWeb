@@ -182,7 +182,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
               return "page"
             case .deutschDeutschland:
-              return "Seite"
+              return "seite"
             }
           })
         )
@@ -193,7 +193,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
               return "title"
             case .deutschDeutschland:
-              return "Titel"
+              return "titel"
             }
           })
         )
@@ -203,7 +203,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
               return "description"
             case .deutschDeutschland:
-              return "Beschreibung"
+              return "beschreibung"
             }
           })
         )
@@ -213,7 +213,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
               return "keywords"
             case .deutschDeutschland:
-              return "Schlüsselwörter"
+              return "schlüsselwörter"
             }
           })
         )

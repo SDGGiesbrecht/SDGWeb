@@ -399,12 +399,12 @@ extension ElementSyntax {
   ///
   /// - Parameters:
   ///   - attributes: Optional. The attributes.
-  ///   - contents: Optional. The fallback representation of the object.
+  ///   - fallbackRepresentation: The fallback representation of the object.
   public static func object(
     attributes: [String: String] = [:],
-    contents: ListSyntax<ContentSyntax> = []
+    fallbackRepresentation: ListSyntax<ContentSyntax>
   ) -> ElementSyntax {
-    return ElementSyntax(name: "object", attributes: attributes, contents: contents)
+    return ElementSyntax(name: "object", attributes: attributes, contents: fallbackRepresentation)
   }
 
   /// Creates a paragraph.
@@ -428,14 +428,14 @@ extension ElementSyntax {
   public static func portableDocument(
     url: URL,
     attributes: [String: String] = [:],
-    contents: ListSyntax<ContentSyntax> = []
+    fallbackRepresentation: ListSyntax<ContentSyntax>
   ) -> ElementSyntax {
     return object(
       attributes: [
         "type": "application/pdf",
         "data": url.relativeString
       ].mergedByOverwriting(from: attributes),
-      contents: contents
+      fallbackRepresentation: fallbackRepresentation
     )
   }
 

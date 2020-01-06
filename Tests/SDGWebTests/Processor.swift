@@ -31,7 +31,7 @@ struct Processor: PageProcessor {
   ) -> AnySyntaxUnfolder
   where L: Localization {
     return AnySyntaxUnfolder(
-      SyntaxUnfolder(
+      Unfolder(
         context: SyntaxUnfolder.Context(
           localization: localization,
           siteRoot: siteRoot,

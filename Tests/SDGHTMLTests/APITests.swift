@@ -294,7 +294,10 @@ class APITests: TestCase {
     compare(.navigation(), to: "Navigation", overwriteSpecificationInsteadOfFailing: false)
     compare(.paragraph(), to: "Paragraph", overwriteSpecificationInsteadOfFailing: false)
     compare(
-      .portableDocument(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf")),
+      .portableDocument(
+        url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf"),
+        fallbackRepresentation: []
+      ),
       to: "Portable Document",
       overwriteSpecificationInsteadOfFailing: false
     )
