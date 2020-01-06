@@ -148,6 +148,13 @@ class APITests: TestCase {
     XCTAssertEqual(tag.nameText, "changed")
   }
 
+  func testContainerSyntax() {
+    let element = ElementSyntax.division(contents: [
+      .text("...")
+    ])
+    XCTAssertEqual(Array(element.childElements().map({ $0.source() })), [])
+  }
+
   func testDocument() {
     var document = DocumentSyntax(content: ListSyntax<ContentSyntax>(entries: []))
     XCTAssertEqual(document.source(), "")
@@ -763,6 +770,16 @@ class APITests: TestCase {
     testUnfolding(
       of: "...<localized><de>Deutsch</de>...",
       expectError: true
+    )
+    testUnfolding(
+      of: [
+        "<page",
+        " titel=\u{22}Titel\u{22}",
+        " beschreibung=\u{22}Eine Beschreibung.\u{22}",
+        " schlüsselwörter=\u{22}Schlüsselwort\u{22}",
+        ">",
+        "</page>"
+      ].joined(separator: "\n")
     )
   }
 
