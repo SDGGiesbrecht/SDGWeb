@@ -34,4 +34,7 @@ extension ElementSyntax {
   static func עברית(_ תוכן: ListSyntax<ContentSyntax>) -> ElementSyntax {
     return ElementSyntax(name: "he", attributes: [:], contents: תוכן)
   }
+  static func unknownLanguage(_ contents: ListSyntax<ContentSyntax>) -> ElementSyntax {
+    return ElementSyntax(name: "zxx", attributes: [:], contents: contents)
+  }
 }
