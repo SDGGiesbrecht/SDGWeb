@@ -211,7 +211,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       with: site.pageProcessor.syntaxUnfolder(
         localization: localization,
         siteRoot: URL(string: "#warning()")!,
-        relativePath: relativePath
+        relativePath: String(relativePath)
       )
     )
     return syntax
