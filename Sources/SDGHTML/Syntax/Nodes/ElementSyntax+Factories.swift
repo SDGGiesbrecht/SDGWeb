@@ -416,7 +416,7 @@ extension ElementSyntax {
     attributes: [String: String] = [:],
     contents: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
-    return ElementSyntax(name: "paragraph", attributes: attributes, contents: contents)
+    return ElementSyntax(name: "p", attributes: attributes, contents: contents)
   }
 
   /// Creates an embedded portable document (PDF).
