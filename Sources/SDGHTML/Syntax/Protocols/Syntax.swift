@@ -88,8 +88,18 @@ extension Syntax {
   }
 
   /// Recursively unfolds any custom pseudo‐elements in the node’s contents toward standard HTML using the default syntax unfolder.
+  ///
+  /// The default syntax unfolder lacks any context information and thus will not unfold elements like `<page>` or `<localized>`. See `SyntaxUnfolder.init(context:)` for more information.
   public mutating func unfold() throws {
-    try unfold(with: SyntaxUnfolder())
+    try unfold(
+      with: SyntaxUnfolder(
+        context: SyntaxUnfolder.Context(
+          localization: Optional<AnyLocalization>.none,
+          siteRoot: nil,
+          relativePath: nil
+        )
+      )
+    )
   }
 
   /// Returns the HTML node with systematic formatting applied to its source.

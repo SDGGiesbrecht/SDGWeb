@@ -707,7 +707,15 @@ class APITests: TestCase {
       do {
         var syntax = try DocumentSyntax.parse(source: start).get()
         if context {
-          try syntax.unfold(with: SyntaxUnfolder(localization: InterfaceLocalization.englishCanada))
+          try syntax.unfold(
+            with: SyntaxUnfolder(
+              context: SyntaxUnfolder.Context(
+                localization: InterfaceLocalization.englishCanada,
+                siteRoot: URL(string: "http://example.com"),
+                relativePath: "relative/path"
+              )
+            )
+          )
         } else {
           try syntax.unfold()
         }

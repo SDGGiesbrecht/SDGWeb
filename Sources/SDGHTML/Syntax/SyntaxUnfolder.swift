@@ -28,25 +28,14 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   /// Creates a syntax unfolder.
   ///
   /// - Parameters:
-  ///   - localization: The localization to which to unfold localized elements.
-  public init<L>(localization: L) where L: Localization {
-    self.init(anyLocalization: AnyLocalization(localization))
-  }
-
-  /// Creates a syntax unfolder with no localization context.
-  ///
-  /// This unfolder will not unfold `<localized>` elements.
-  public init() {
-    self.init(anyLocalization: nil)
-  }
-
-  private init(anyLocalization localization: AnyLocalization?) {
-    self.localization = localization
+  ///   - context: Context information for the syntax unfolder. If the context is `nil` or incomplete, the unfolder will ignore the any elements for which it lacks the necessary information to unfold. Examples include `<localized>`, which requires a specified localization, and `<page>` which requires a specified location. The required context information for a particular element can be deduced from the corresponding static `unfold...` method.
+  public init(context: Context?) {
+    self.context = context
   }
 
   // MARK: - Properties
 
-  private let localization: AnyLocalization?
+  private let context: Context?
 
   // MARK: - Individual Unfolding Operations
 
@@ -155,13 +144,22 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
 
   /// Unfolds the `<page>` element.
   ///
-  /// `<page>` serves as the root element of an HTML document.
+  /// `<page>` serves as the root element of an HTML document. It requires the following attributes:
+  ///
+  /// - `title` will become the metadata title of the page.
+  ///
+  /// The content of the `<page>` element will become the content of the `<body>` element.
   ///
   /// - Parameters:
   ///   - contentList: The content list to unfold.
+  ///   - localization: The localization of the page.
+  ///   - siteRoot: The URL of the site root.
+  ///   - relativePath: The location of the page relative to the site root.
   public static func unfoldPage<L>(
     _ contentList: inout ListSyntax<ContentSyntax>,
-    localization: L
+    localization: L,
+    siteRoot: URL,
+    relativePath: String
   ) throws
   where L: Localization {
     for index in contentList.indices {
@@ -188,6 +186,9 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
             }
           })
         )
+
+        let pageURL = siteRoot.appendingPathComponent(relativePath)
+
         contentList.replaceSubrange(
           (index...index).relative(to: contentList),
           with: DocumentSyntax.document(
@@ -195,7 +196,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
               language: localization,
               header: .metadataHeader(
                 title: .metadataTitle(title),
-                canonicalURL: .canonical(url: URL(fileURLWithPath: "#warning(canonicalURL)")),
+                canonicalURL: .canonical(url: pageURL),
                 author: .author("#warning(Author)", language: localization),  // #warning(Language)
                 description: .description("#warning(Description)"),
                 keywords: .keywords(["#warning(Title)"])
@@ -217,9 +218,18 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   }
 
   public func unfold(contentList: inout ListSyntax<ContentSyntax>) throws {
-    if let localization = self.localization {
+    if let localization = self.context?.localization {
       try SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
-      try SyntaxUnfolder.unfoldPage(&contentList, localization: localization)
+      if let siteRoot = self.context?.siteRoot,
+        let relativePath = self.context?.relativePath
+      {
+        try SyntaxUnfolder.unfoldPage(
+          &contentList,
+          localization: localization,
+          siteRoot: siteRoot,
+          relativePath: relativePath
+        )
+      }
     }
   }
 }

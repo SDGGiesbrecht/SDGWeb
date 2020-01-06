@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGText
 import SDGLocalization
 
@@ -22,13 +24,28 @@ import SDGWebLocalizations
 /// A page processor.
 public protocol PageProcessor {
 
-  /// Returns an syntax unfolder configured for the specified localization.
-  func syntaxUnfolder<L>(localization: L) -> AnySyntaxUnfolder where L: Localization
+  /// Returns a syntax unfolder configured with the specified context information.
+  ///
+  /// - Parameters:
+  ///   - localization: The target localization.
+  ///   - siteRoot: The URL of the site root.
+  ///   - relativePath: The location of the page relative to the site root.
+  func syntaxUnfolder<L>(localization: L, siteRoot: URL, relativePath: String) -> AnySyntaxUnfolder
+  where L: Localization
 }
 
 extension PageProcessor {
 
-  public func syntaxUnfolder<L>(localization: L) -> AnySyntaxUnfolder where L: Localization {
-    return AnySyntaxUnfolder(SyntaxUnfolder(localization: localization))
+  func syntaxUnfolder<L>(localization: L, siteRoot: URL, relativePath: String) -> AnySyntaxUnfolder
+  where L: Localization {
+    return AnySyntaxUnfolder(
+      SyntaxUnfolder(
+        context: SyntaxUnfolder.Context(
+          localization: localization,
+          siteRoot: siteRoot,
+          relativePath: relativePath
+        )
+      )
+    )
   }
 }

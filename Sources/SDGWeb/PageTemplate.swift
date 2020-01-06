@@ -207,7 +207,13 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     let unused = (siteRoot, localizationRoot, relativePath)
 
     var syntax = templateSyntax
-    try syntax.unfold(with: site.pageProcessor.syntaxUnfolder(localization: localization))
+    try syntax.unfold(
+      with: site.pageProcessor.syntaxUnfolder(
+        localization: localization,
+        siteRoot: URL(string: "#warning()")!,
+        relativePath: relativePath
+      )
+    )
     return syntax
   }
 
