@@ -156,12 +156,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   ) throws -> DocumentSyntax {
 
     let siteRoot = site.siteRoot.resolved(for: localization)
-    var relativePath = StrictString(relativePath)
-    if Localization.allCases.count > 1 {
-      relativePath.prepend(
-        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
-      )
-    }
 
     var result = StrictString(
       DocumentSyntax.document(
