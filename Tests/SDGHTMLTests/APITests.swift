@@ -712,7 +712,8 @@ class APITests: TestCase {
               context: SyntaxUnfolder.Context(
                 localization: InterfaceLocalization.englishCanada,
                 siteRoot: URL(string: "http://example.com"),
-                relativePath: "relative/path"
+                relativePath: "relative/path",
+                author: .author("John Doe", language: InterfaceLocalization.englishUnitedKingdom)
               )
             )
           )

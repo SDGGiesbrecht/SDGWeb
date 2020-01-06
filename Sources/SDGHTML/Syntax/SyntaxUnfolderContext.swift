@@ -27,10 +27,13 @@ extension SyntaxUnfolder {
     ///   - localization: The target localization.
     ///   - siteRoot: The URL of the site root.
     ///   - relativePath: The location of the page relative to the site root.
-    public init<L>(localization: L?, siteRoot: URL?, relativePath: String?) where L: Localization {
+    ///   - author: The author declaration.
+    public init<L>(localization: L?, siteRoot: URL?, relativePath: String?, author: ElementSyntax?)
+    where L: Localization {
       self.localization = localization.map { AnyLocalization($0) }
       self.siteRoot = siteRoot
       self.relativePath = relativePath
+      self.author = author
     }
 
     // MARK: - Properties
@@ -38,5 +41,6 @@ extension SyntaxUnfolder {
     internal let localization: AnyLocalization?
     internal let siteRoot: URL?
     internal let relativePath: String?
+    internal let author: ElementSyntax?
   }
 }

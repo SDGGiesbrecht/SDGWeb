@@ -96,7 +96,8 @@ extension Syntax {
         context: SyntaxUnfolder.Context(
           localization: Optional<AnyLocalization>.none,
           siteRoot: nil,
-          relativePath: nil
+          relativePath: nil,
+          author: nil
         )
       )
     )

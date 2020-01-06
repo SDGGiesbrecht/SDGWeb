@@ -184,7 +184,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
           header: .metadataHeader(
             title: .span(),
             canonicalURL: .span(),
-            author: site.author.resolved(for: localization),
+            author: .span(),
             description: .description(String(description)),
             keywords: .keywords(String(keywords).components(separatedBy: ", ")),
             css: [
@@ -211,7 +211,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       with: site.pageProcessor.syntaxUnfolder(
         localization: localization,
         siteRoot: siteRoot,
-        relativePath: String(relativePath)
+        relativePath: String(relativePath),
+        author: site.author.resolved(for: localization)
       )
     )
     return syntax

@@ -30,7 +30,13 @@ public protocol PageProcessor {
   ///   - localization: The target localization.
   ///   - siteRoot: The URL of the site root.
   ///   - relativePath: The location of the page relative to the site root.
-  func syntaxUnfolder<L>(localization: L, siteRoot: URL, relativePath: String) -> AnySyntaxUnfolder
+  ///   - author: The author declaration.
+  func syntaxUnfolder<L>(
+    localization: L,
+    siteRoot: URL,
+    relativePath: String,
+    author: ElementSyntax
+  ) -> AnySyntaxUnfolder
   where L: Localization
 }
 
@@ -39,7 +45,8 @@ extension PageProcessor {
   public func syntaxUnfolder<L>(
     localization: L,
     siteRoot: URL,
-    relativePath: String
+    relativePath: String,
+    author: ElementSyntax
   ) -> AnySyntaxUnfolder
   where L: Localization {
     return AnySyntaxUnfolder(
@@ -47,7 +54,8 @@ extension PageProcessor {
         context: SyntaxUnfolder.Context(
           localization: localization,
           siteRoot: siteRoot,
-          relativePath: relativePath
+          relativePath: relativePath,
+          author: author
         )
       )
     )
