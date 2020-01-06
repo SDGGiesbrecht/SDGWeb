@@ -33,15 +33,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   ) -> Result<PageTemplate, PageTemplateLoadingError> {
     let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
 
-    let nestedLevel = relativePath.components(separatedBy: "/").count − 1
-    var siteRoot: StrictString = ""
-    for _ in 0..<nestedLevel {
-      siteRoot.append(contentsOf: "../".scalars)
-    }
-    if Localization.allCases.count > 1 {
-      siteRoot.append(contentsOf: "../".scalars)
-    }
-
     let source: StrictString
     do {
       source = try PageTemplate.loadSource(from: file, for: relativePath)
@@ -80,7 +71,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       PageTemplate(
         relativePath: relativePath,
         fileName: fileName,
-        siteRoot: siteRoot,
         templateSyntax: templateSyntax
       )
     )
@@ -135,13 +125,11 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   private init(
     relativePath: StrictString,
     fileName: StrictString?,
-    siteRoot: StrictString,
     templateSyntax: DocumentSyntax
   ) {
 
     self.relativePath = relativePath
     self.fileName = fileName
-    self.siteRoot = siteRoot
     self.templateSyntax = templateSyntax
   }
 
@@ -149,7 +137,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   private let relativePath: StrictString
   private let fileName: StrictString?
-  private let siteRoot: StrictString
   private let templateSyntax: DocumentSyntax
 
   // MARK: - Processing
