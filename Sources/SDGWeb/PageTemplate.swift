@@ -27,9 +27,10 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
-  internal static func load(from file: URL, in site: Site<Localization>) -> Result<
-    PageTemplate, PageTemplateLoadingError
-  > {
+  internal static func load(
+    from file: URL,
+    in site: Site<Localization>
+  ) -> Result<PageTemplate, PageTemplateLoadingError> {
     let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
 
     let nestedLevel = relativePath.components(separatedBy: "/").count − 1
@@ -89,8 +90,12 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     return try StrictString(from: file)
   }
 
-  private static func extractMetaData(from source: StrictString, for page: StrictString) -> Result<
-    (metaDataSource: StrictString, content: StrictString), PageTemplateMetaDataExtractionError
+  private static func extractMetaData(
+    from source: StrictString,
+    for page: StrictString
+  ) -> Result<
+    (metaDataSource: StrictString, content: StrictString),
+    PageTemplateMetaDataExtractionError
   > {
 
     guard
