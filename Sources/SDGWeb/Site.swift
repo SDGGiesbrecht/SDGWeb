@@ -32,7 +32,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   ///
   /// - Parameters:
   ///     - repositoryStructure: The layout of the repository.
-  ///     - domain: The domain of the website.
+  ///     - siteRoot: The base URL where the site will be hosted.
   ///     - localizationDirectories: The name to use for localization directories.
   ///     - siteAuthor: The author of the website.
   ///     - pageProcessor: A page processor for generating each page.
@@ -40,14 +40,14 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   ///     - progressReport: A string describing progress made.
   public init(
     repositoryStructure: RepositoryStructure,
-    domain: UserFacing<StrictString, Localization>,
+    siteRoot: UserFacing<URL, Localization>,
     localizationDirectories: UserFacing<StrictString, Localization>,
     author siteAuthor: UserFacing<ElementSyntax, Localization>,
     pageProcessor: PageProcessor,
     reportProgress: @escaping (_ progressReport: StrictString) -> Void
   ) {
     self.repositoryStructure = repositoryStructure
-    self.domain = domain
+    self.siteRoot = siteRoot
     self.localizationDirectories = localizationDirectories
     self.author = siteAuthor
     self.pageProcessor = pageProcessor
@@ -57,7 +57,7 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   // MARK: - Properties
 
   internal let repositoryStructure: RepositoryStructure
-  internal let domain: UserFacing<StrictString, Localization>
+  internal let siteRoot: UserFacing<URL, Localization>
   internal let localizationDirectories: UserFacing<StrictString, Localization>
   internal let author: UserFacing<ElementSyntax, Localization>
   internal let pageProcessor: PageProcessor

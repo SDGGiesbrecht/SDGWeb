@@ -169,7 +169,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     site: Site<Localization>
   ) throws -> DocumentSyntax {
 
-    let domain = site.domain.resolved(for: localization)
+    let siteRoot = site.siteRoot.resolved(for: localization)
     var relativePath = StrictString(relativePath)
     if Localization.allCases.count > 1 {
       relativePath.prepend(
@@ -182,8 +182,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         documentElement: .document(
           language: localization,
           header: .metadataHeader(
-            title: .metadataTitle("..."),
-            canonicalURL: .canonical(url: try url(domain: domain, path: relativePath)),
+            title: .span(),
+            canonicalURL: .span(),
             author: site.author.resolved(for: localization),
             description: .description(String(description)),
             keywords: .keywords(String(keywords).components(separatedBy: ", ")),
@@ -197,7 +197,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       ).source()
     )
 
-    var localizationRoot = siteRoot
+    var localizationRoot = self.siteRoot
     if Localization.allCases.count > 1 {
       localizationRoot.append(
         contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
@@ -210,7 +210,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     try syntax.unfold(
       with: site.pageProcessor.syntaxUnfolder(
         localization: localization,
-        siteRoot: URL(string: "#warning()")!,
+        siteRoot: siteRoot,
         relativePath: String(relativePath)
       )
     )

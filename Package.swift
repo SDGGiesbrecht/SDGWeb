@@ -43,7 +43,7 @@ import PackageDescription
 ///
 /// let site = Site<L>(
 ///   repositoryStructure: mock,
-///   domain: UserFacing<StrictString, L>({ _ in return "http://example.com" }),
+///   siteRoot: UserFacing<URL, L>({ _ in return URL(string: "http://example.com")! }),
 ///   localizationDirectories: UserFacing<StrictString, L>({ localization in
 ///     return localization.icon ?? StrictString(localization.code)
 ///   }),
