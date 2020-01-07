@@ -30,13 +30,13 @@ public protocol PageProcessor {
   ///   - localization: The target localization.
   ///   - siteRoot: The URL of the site root.
   ///   - relativePath: The location of the page relative to the site root.
-  ///   - author: The author declaration.
+  ///   - authorDeclaration: The author declaration.
   ///   - css: The paths of the CSS files relative to the site root.
   func syntaxUnfolder<L>(
     localization: L,
     siteRoot: URL,
     relativePath: String,
-    author: ElementSyntax,
+    author authorDeclaration: ElementSyntax,
     css: [String]
   ) -> AnySyntaxUnfolder
   where L: Localization

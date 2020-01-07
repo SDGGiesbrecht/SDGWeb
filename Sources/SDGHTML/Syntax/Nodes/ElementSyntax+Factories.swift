@@ -436,7 +436,7 @@ extension ElementSyntax {
   /// - Parameters:
   ///   - url: The URL of the target document.
   ///   - attributes: Optional. Additional attributes.
-  ///   - contents: Optional. The fallback representation of the document.
+  ///   - fallbackRepresentation: Optional. The fallback representation of the document.
   public static func portableDocument(
     url: URL,
     attributes: [String: String] = [:],

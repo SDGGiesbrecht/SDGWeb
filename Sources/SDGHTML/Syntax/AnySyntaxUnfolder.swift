@@ -18,6 +18,9 @@ public struct AnySyntaxUnfolder: SyntaxUnfolderProtocol {
   // MARK: - Initialization
 
   /// Wraps a syntax unfolder.
+  ///
+  /// - Parameters:
+  ///   - unfolder: The unfolder to wrap.
   public init<Unfolder>(_ unfolder: Unfolder) where Unfolder: SyntaxUnfolderProtocol {
     unfoldElement = { try unfolder.unfold(element: &$0) }
     unfoldContentList = { try unfolder.unfold(contentList: &$0) }
