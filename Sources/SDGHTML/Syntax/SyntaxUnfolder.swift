@@ -233,7 +233,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
               header: .metadataHeader(
                 title: .metadataTitle(title),
                 canonicalURL: .canonical(url: pageURL),
-                author: author,
+                author: authorDeclaration,
                 description: .description(description),
                 keywords: .keywords(keywords.components(separatedBy: ", ")),
                 css: css.map({ .css(url: URL(fileURLWithPath: baseURL + $0)) })
