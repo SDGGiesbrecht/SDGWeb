@@ -105,13 +105,22 @@ class APITests: TestCase {
       return "[...]"
     }
   }
-  func testSiteError() {
+  func testSiteGenerationError() {
     let errors: [SiteGenerationError] = [
       .foundationError(StandInError()),
       .invalidDomain("[...]"),
       .noMetadata(page: "[...]"),
       .metadataMissingColon(line: "[...]"),
       .missingTitle(page: "[...]"),
+      .syntaxError(
+        page: "[...]",
+        error: SyntaxError(
+          file: "[...]",
+          index: "".scalars.startIndex,
+          description: UserFacing<StrictString, InterfaceLocalization>({ _ in "[...]" }),
+          context: "[...]"
+        )
+      )
     ]
     for index in errors.indices {
       let error = errors[index]
