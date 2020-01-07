@@ -73,6 +73,17 @@ class APITests: TestCase {
     expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
   }
 
+  func testPageProcessor() {
+    struct Processor: PageProcessor {}
+    _ = Processor().syntaxUnfolder(
+      localization: InterfaceLocalization.englishCanada,
+      siteRoot: URL(string: "http://example.com")!,
+      relativePath: "relative/path",
+      author: .span(),
+      css: []
+    )
+  }
+
   func testPoorHTML() throws {
     try generate(
       forMock: "Poor HTML",
