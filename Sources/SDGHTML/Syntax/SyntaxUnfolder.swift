@@ -150,6 +150,16 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     }
   }
 
+  public static var _titleAttributeName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "title"
+      case .deutschDeutschland:
+        return "titel"
+      }
+    })
+  }
   /// Unfolds the `<page>` element.
   ///
   /// `<page>` serves as the root element of an HTML document. It requires the following attributes:
@@ -189,16 +199,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
           })
         )
       {
-        let title = try page.requiredAttribute(
-          named: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "title"
-            case .deutschDeutschland:
-              return "titel"
-            }
-          })
-        )
+        let title = try page.requiredAttribute(named: _titleAttributeName)
         let description = try page.requiredAttribute(
           named: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {

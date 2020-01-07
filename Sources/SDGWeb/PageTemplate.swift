@@ -162,35 +162,14 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     return syntax
   }
 
-  private func url(domain: StrictString, path: StrictString) throws -> URL {
-    guard var components = URLComponents(string: String(domain)) else {
-      // @exempt(from: tests) Not sure how to trigger.
-      throw SiteGenerationError.invalidDomain(domain)
-    }
-    components.path = "/" + String(path)
-    guard let result = components.url else {
-      // @exempt(from: tests) Not sure how to trigger.
-      throw SiteGenerationError.invalidDomain(domain)
-    }
-    return result
-  }
-
   // MARK: - Saving
 
   private func resolvedFileName() throws -> StrictString {
     if let overridden = fileName {
       return overridden
     } else if let declared = templateSyntax.childElements()
-      .first(where: { $0.nameText ≠ "!DOCTYPE" })?.attribute(
-        named: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "title"
-          case .deutschDeutschland:
-            return "Titel"
-          }
-        })
-      )?.valueText
+      .first(where: { $0.nameText ≠ "!DOCTYPE" })?
+      .attribute(named: SyntaxUnfolder._titleAttributeName)?.valueText
     {
       return StrictString(declared)
     } else {
