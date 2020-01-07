@@ -175,13 +175,14 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   ///   - localization: The localization of the page.
   ///   - siteRoot: The URL of the site root.
   ///   - relativePath: The location of the page relative to the site root.
+  ///   - authorDeclaration: The author declaration.
   ///   - css: The paths of the CSS files, each relative to the site root.
   public static func unfoldPage<L>(
     _ contentList: inout ListSyntax<ContentSyntax>,
     localization: L,
     siteRoot: URL,
     relativePath: String,
-    author: ElementSyntax,
+    author authorDeclaration: ElementSyntax,
     css: [String]
   ) throws
   where L: Localization {
