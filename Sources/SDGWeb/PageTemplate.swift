@@ -27,19 +27,11 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
-  internal static func load(from file: URL, in site: Site<Localization>) -> Result<
-    PageTemplate, PageTemplateLoadingError
-  > {
+  internal static func load(
+    from file: URL,
+    in site: Site<Localization>
+  ) -> Result<PageTemplate, PageTemplateLoadingError> {
     let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
-
-    let nestedLevel = relativePath.components(separatedBy: "/").count − 1
-    var siteRoot: StrictString = ""
-    for _ in 0..<nestedLevel {
-      siteRoot.append(contentsOf: "../".scalars)
-    }
-    if Localization.allCases.count > 1 {
-      siteRoot.append(contentsOf: "../".scalars)
-    }
 
     let source: StrictString
     do {
@@ -65,33 +57,21 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       metaData = parsed
     }
 
-    guard let title = metaData["Title"] else {
-      return .failure(.missingTitle(page: relativePath))
-    }
-    guard let description = metaData["Description"] else {
-      return .failure(.missingDescription(page: relativePath))
-    }
-    guard let keywords = metaData["Keywords"] else {
-      return .failure(.missingKeywords(page: relativePath))
-    }
+    let fileName = metaData["File Name"]
 
-    let fileNameWithoutExtension: StrictString
-    if let fileName = metaData["File Name"] {
-      fileNameWithoutExtension = fileName
-    } else {
-      fileNameWithoutExtension = title
+    let templateSyntax: DocumentSyntax
+    switch DocumentSyntax.parse(source: String(content)) {
+    case .success(let document):
+      templateSyntax = document
+    case .failure(let error):
+      return .failure(.syntaxError(page: relativePath, error: error))
     }
-    let fileName = fileNameWithoutExtension + ".html"
 
     return .success(
       PageTemplate(
         relativePath: relativePath,
         fileName: fileName,
-        siteRoot: siteRoot,
-        title: title,
-        description: description,
-        keywords: keywords,
-        content: content
+        templateSyntax: templateSyntax
       )
     )
   }
@@ -100,8 +80,12 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     return try StrictString(from: file)
   }
 
-  private static func extractMetaData(from source: StrictString, for page: StrictString) -> Result<
-    (metaDataSource: StrictString, content: StrictString), PageTemplateMetaDataExtractionError
+  private static func extractMetaData(
+    from source: StrictString,
+    for page: StrictString
+  ) -> Result<
+    (metaDataSource: StrictString, content: StrictString),
+    PageTemplateMetaDataExtractionError
   > {
 
     guard
@@ -140,32 +124,20 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   private init(
     relativePath: StrictString,
-    fileName: StrictString,
-    siteRoot: StrictString,
-    title: StrictString,
-    description: StrictString,
-    keywords: StrictString,
-    content: StrictString
+    fileName: StrictString?,
+    templateSyntax: DocumentSyntax
   ) {
 
     self.relativePath = relativePath
     self.fileName = fileName
-    self.siteRoot = siteRoot
-    self.title = title
-    self.description = description
-    self.keywords = keywords
-    self.content = content
+    self.templateSyntax = templateSyntax
   }
 
   // MARK: - Properties
 
   private let relativePath: StrictString
-  private let fileName: StrictString
-  private let siteRoot: StrictString
-  private let title: StrictString
-  private let description: StrictString
-  private let keywords: StrictString
-  private let content: StrictString
+  private let fileName: StrictString?
+  private let templateSyntax: DocumentSyntax
 
   // MARK: - Processing
 
@@ -173,73 +145,37 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     for relativePath: StrictString,
     localization: Localization,
     site: Site<Localization>
-  ) throws -> StrictString {
-
-    let domain = site.domain.resolved(for: localization)
-    var relativePath = StrictString(relativePath)
-    if Localization.allCases.count > 1 {
-      relativePath.prepend(
-        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
+  ) throws -> DocumentSyntax {
+    var syntax = templateSyntax
+    try syntax.unfold(
+      with: site.pageProcessor.syntaxUnfolder(
+        localization: localization,
+        siteRoot: site.siteRoot.resolved(for: localization),
+        relativePath: String(relativePath),
+        author: site.author.resolved(for: localization),
+        css: [
+          "CSS/Root.css",
+          "CSS/Site.css"
+        ]
       )
-    }
-
-    var result = StrictString(
-      DocumentSyntax.document(
-        documentElement: .document(
-          language: localization,
-          header: .metadataHeader(
-            title: .metadataTitle(String(title)),
-            canonicalURL: .canonical(url: try url(domain: domain, path: relativePath)),
-            author: site.author.resolved(for: localization),
-            description: .description(String(description)),
-            keywords: .keywords(String(keywords).components(separatedBy: ", ")),
-            css: [
-              .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Root.css")),
-              .css(url: URL(fileURLWithPath: "\(siteRoot)CSS/Site.css"))
-            ]
-          ),
-          body: .body(contents: try site.frame().content)
-        )
-      ).source()
     )
-
-    var localizationRoot = siteRoot
-    if Localization.allCases.count > 1 {
-      localizationRoot.append(
-        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
-      )
-    }
-
-    site.pageProcessor.process(
-      pageTemplate: &result,
-      title: title,
-      content: content,
-      siteRoot: siteRoot,
-      localizationRoot: localizationRoot,
-      relativePath: relativePath
-    )
-
-    var syntax = try DocumentSyntax.parse(source: String(result)).get()
-    try syntax.unfold(with: SyntaxUnfolder(localization: localization))
-    result = StrictString(syntax.source())
-
-    return result
-  }
-
-  private func url(domain: StrictString, path: StrictString) throws -> URL {
-    guard var components = URLComponents(string: String(domain)) else {
-      // @exempt(from: tests) Not sure how to trigger.
-      throw SiteGenerationError.invalidDomain(domain)
-    }
-    components.path = "/" + String(path)
-    guard let result = components.url else {
-      // @exempt(from: tests) Not sure how to trigger.
-      throw SiteGenerationError.invalidDomain(domain)
-    }
-    return result
+    return syntax
   }
 
   // MARK: - Saving
+
+  private func resolvedFileName() throws -> StrictString {
+    if let overridden = fileName {
+      return overridden
+    } else if let declared = templateSyntax.childElements()
+      .first(where: { $0.nameText ≠ "!DOCTYPE" })?
+      .attribute(named: SyntaxUnfolder._titleAttributeName)?.valueText
+    {
+      return StrictString(declared)
+    } else {
+      throw SiteGenerationError.missingTitle(page: relativePath)
+    }
+  }
 
   internal func writeResult(
     for localization: Localization,
@@ -255,11 +191,9 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     }
 
     var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
-
-    var fileName = try DocumentSyntax.parse(source: String(self.fileName)).get()
-    try fileName.unfold(with: SyntaxUnfolder(localization: localization))
     url.deleteLastPathComponent()
-    url.appendPathComponent(String(StrictString(fileName.source())))
+    url.appendPathComponent(String(try resolvedFileName()))
+    url.appendPathExtension("html")
 
     let reportedPath = url.path(relativeTo: site.repositoryStructure.result)
     site.reportProgress(
@@ -276,12 +210,9 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     )
 
     var result = try processedResult(for: relativePath, localization: localization, site: site)
-    if formatting,
-      var parsed = try? DocumentSyntax.parse(source: String(result)).get()
-    {
-      parsed.format()
-      result = StrictString(parsed.source())
+    if formatting {
+      result.format()
     }
-    try result.save(to: url)
+    try StrictString(result.source()).save(to: url)
   }
 }

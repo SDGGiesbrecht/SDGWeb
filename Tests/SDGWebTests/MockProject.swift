@@ -42,7 +42,7 @@ func generate<L>(
 
   let site = Site<L>(
     repositoryStructure: mock,
-    domain: UserFacing<StrictString, L>({ _ in return "http://example.com" }),
+    siteRoot: UserFacing<URL, L>({ _ in return URL(string: "http://example.com")! }),
     localizationDirectories: UserFacing<StrictString, L>({ localization in
       return localization.icon ?? StrictString(localization.code)
     }),
@@ -69,6 +69,7 @@ func generate<L>(
     let files = warnings.keys.sorted()
     return files.map({ url in
       var fileMessage = url.path(relativeTo: mock.result)
+      fileMessage.append("\n")
       let errors = warnings[url]!
       fileMessage.append(
         contentsOf: errors.map({ error in
@@ -79,7 +80,7 @@ func generate<L>(
     }).joined(separator: "\n\n")
   }
   if expectValidationFailure {
-    XCTAssert(¬warnings.isEmpty)
+    XCTAssert(¬warnings.isEmpty, "Expected warnings never triggered.")
   } else {
     XCTAssert(warnings.isEmpty, describe(warnings), file: file, line: line)
   }

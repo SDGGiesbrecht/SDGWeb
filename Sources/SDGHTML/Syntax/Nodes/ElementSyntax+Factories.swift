@@ -158,6 +158,18 @@ extension ElementSyntax {
     return .metadata(attributes: attributes)
   }
 
+  /// Creates a footer element (`<footer>`).
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - contents: The contents of the footer.
+  public static func footer(
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(name: "footer", attributes: attributes, contents: contents)
+  }
+
   /// Creates foreign text.
   ///
   /// - Parameters:
@@ -399,12 +411,12 @@ extension ElementSyntax {
   ///
   /// - Parameters:
   ///   - attributes: Optional. The attributes.
-  ///   - contents: Optional. The fallback representation of the object.
+  ///   - fallbackRepresentation: The fallback representation of the object.
   public static func object(
     attributes: [String: String] = [:],
-    contents: ListSyntax<ContentSyntax> = []
+    fallbackRepresentation: ListSyntax<ContentSyntax>
   ) -> ElementSyntax {
-    return ElementSyntax(name: "object", attributes: attributes, contents: contents)
+    return ElementSyntax(name: "object", attributes: attributes, contents: fallbackRepresentation)
   }
 
   /// Creates a paragraph.
@@ -416,7 +428,7 @@ extension ElementSyntax {
     attributes: [String: String] = [:],
     contents: ListSyntax<ContentSyntax> = []
   ) -> ElementSyntax {
-    return ElementSyntax(name: "paragraph", attributes: attributes, contents: contents)
+    return ElementSyntax(name: "p", attributes: attributes, contents: contents)
   }
 
   /// Creates an embedded portable document (PDF).
@@ -424,18 +436,18 @@ extension ElementSyntax {
   /// - Parameters:
   ///   - url: The URL of the target document.
   ///   - attributes: Optional. Additional attributes.
-  ///   - contents: Optional. The fallback representation of the document.
+  ///   - fallbackRepresentation: Optional. The fallback representation of the document.
   public static func portableDocument(
     url: URL,
     attributes: [String: String] = [:],
-    contents: ListSyntax<ContentSyntax> = []
+    fallbackRepresentation: ListSyntax<ContentSyntax>
   ) -> ElementSyntax {
     return object(
       attributes: [
         "type": "application/pdf",
         "data": url.relativeString
       ].mergedByOverwriting(from: attributes),
-      contents: contents
+      fallbackRepresentation: fallbackRepresentation
     )
   }
 

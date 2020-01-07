@@ -1,5 +1,5 @@
 /*
- PageProcessor.swift
+ Processor.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -18,31 +18,9 @@ import SDGText
 import SDGLocalization
 
 import SDGHTML
+import SDGWeb
 
-import SDGWebLocalizations
-
-/// A page processor.
-public protocol PageProcessor {
-
-  /// Returns a syntax unfolder configured with the specified context information.
-  ///
-  /// - Parameters:
-  ///   - localization: The target localization.
-  ///   - siteRoot: The URL of the site root.
-  ///   - relativePath: The location of the page relative to the site root.
-  ///   - authorDeclaration: The author declaration.
-  ///   - css: The paths of the CSS files relative to the site root.
-  func syntaxUnfolder<L>(
-    localization: L,
-    siteRoot: URL,
-    relativePath: String,
-    author authorDeclaration: ElementSyntax,
-    css: [String]
-  ) -> AnySyntaxUnfolder
-  where L: Localization
-}
-
-extension PageProcessor {
+struct Processor: PageProcessor {
 
   public func syntaxUnfolder<L>(
     localization: L,
@@ -53,7 +31,7 @@ extension PageProcessor {
   ) -> AnySyntaxUnfolder
   where L: Localization {
     return AnySyntaxUnfolder(
-      SyntaxUnfolder(
+      Unfolder(
         context: SyntaxUnfolder.Context(
           localization: localization,
           siteRoot: siteRoot,

@@ -41,7 +41,6 @@ public struct RepositoryStructure {
   ///     - components: Optional. The URL of the components directory, if it is not in the default location.
   ///     - css: Optional. The URL of the CSS directory, if it is not in the default location.
   ///     - resources: Optional. The URL of the site resources directory (for resources such as images), if the directory is not in the default location.
-  ///     - frame: Optional. The URL of the frame file, if it is not in the default location.
   ///     - siteCSS: Optional. The URL of the site‐specific CSS file, if it is not in the default location.
   public init(
     root: URL,
@@ -51,7 +50,6 @@ public struct RepositoryStructure {
     components: URL? = nil,
     css: URL? = nil,
     resources: URL? = nil,
-    frame: URL? = nil,
     siteCSS: URL? = nil
   ) {
 
@@ -70,7 +68,6 @@ public struct RepositoryStructure {
     let resolvedResources = resources ?? resolvedTemplate.appendingPathComponent("Resources")
     self.resources = resolvedResources
 
-    self.frame = frame ?? resolvedComponents.appendingPathComponent("Frame.html")
     self.siteCSS = siteCSS ?? resolvedCSS.appendingPathComponent("Site.css")
   }
 
@@ -93,8 +90,6 @@ public struct RepositoryStructure {
   /// The directory containing reusable template components.
   public let components: URL
 
-  /// The file representing the website frame.
-  public let frame: URL
   /// The file containing the site’s global CSS.
   public let siteCSS: URL
 }

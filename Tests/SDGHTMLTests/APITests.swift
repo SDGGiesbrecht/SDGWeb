@@ -148,6 +148,13 @@ class APITests: TestCase {
     XCTAssertEqual(tag.nameText, "changed")
   }
 
+  func testContainerSyntax() {
+    let element = ElementSyntax.division(contents: [
+      .text("...")
+    ])
+    XCTAssertEqual(Array(element.childElements().map({ $0.source() })), [])
+  }
+
   func testDocument() {
     var document = DocumentSyntax(content: ListSyntax<ContentSyntax>(entries: []))
     XCTAssertEqual(document.source(), "")
@@ -294,7 +301,10 @@ class APITests: TestCase {
     compare(.navigation(), to: "Navigation", overwriteSpecificationInsteadOfFailing: false)
     compare(.paragraph(), to: "Paragraph", overwriteSpecificationInsteadOfFailing: false)
     compare(
-      .portableDocument(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf")),
+      .portableDocument(
+        url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf"),
+        fallbackRepresentation: []
+      ),
       to: "Portable Document",
       overwriteSpecificationInsteadOfFailing: false
     )
@@ -707,7 +717,17 @@ class APITests: TestCase {
       do {
         var syntax = try DocumentSyntax.parse(source: start).get()
         if context {
-          try syntax.unfold(with: SyntaxUnfolder(localization: InterfaceLocalization.englishCanada))
+          try syntax.unfold(
+            with: SyntaxUnfolder(
+              context: SyntaxUnfolder.Context(
+                localization: InterfaceLocalization.englishCanada,
+                siteRoot: URL(string: "http://example.com"),
+                relativePath: "relative/path",
+                author: .author("John Doe", language: InterfaceLocalization.englishUnitedKingdom),
+                css: ["CSS/CSS.css"]
+              )
+            )
+          )
         } else {
           try syntax.unfold()
         }
@@ -750,6 +770,16 @@ class APITests: TestCase {
     testUnfolding(
       of: "...<localized><de>Deutsch</de>...",
       expectError: true
+    )
+    testUnfolding(
+      of: [
+        "<page",
+        " titel=\u{22}Titel\u{22}",
+        " beschreibung=\u{22}Eine Beschreibung.\u{22}",
+        " schlüsselwörter=\u{22}Schlüsselwort\u{22}",
+        ">",
+        "</page>"
+      ].joined(separator: "\n")
     )
   }
 

@@ -61,10 +61,6 @@ class APITests: TestCase {
     #endif
   }
 
-  func testNoFrame() {
-    expectErrorGenerating(forMock: "No Frame", localization: SingleLocalization.self)
-  }
-
   func testNoMetadata() {
     expectErrorGenerating(forMock: "No Metadata", localization: SingleLocalization.self)
   }
@@ -75,6 +71,17 @@ class APITests: TestCase {
 
   func testNoTitle() {
     expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
+  }
+
+  func testPageProcessor() {
+    struct Processor: PageProcessor {}
+    _ = Processor().syntaxUnfolder(
+      localization: InterfaceLocalization.englishCanada,
+      siteRoot: URL(string: "http://example.com")!,
+      relativePath: "relative/path",
+      author: .span(),
+      css: []
+    )
   }
 
   func testPoorHTML() throws {
@@ -98,15 +105,22 @@ class APITests: TestCase {
       return "[...]"
     }
   }
-  func testSiteError() {
+  func testSiteGenerationError() {
     let errors: [SiteGenerationError] = [
       .foundationError(StandInError()),
       .invalidDomain("[...]"),
       .noMetadata(page: "[...]"),
       .metadataMissingColon(line: "[...]"),
       .missingTitle(page: "[...]"),
-      .missingDescription(page: "[...]"),
-      .missingKeywords(page: "[...]")
+      .syntaxError(
+        page: "[...]",
+        error: SyntaxError(
+          file: "[...]",
+          index: "".scalars.startIndex,
+          description: UserFacing<StrictString, InterfaceLocalization>({ _ in "[...]" }),
+          context: "[...]"
+        )
+      )
     ]
     for index in errors.indices {
       let error = errors[index]

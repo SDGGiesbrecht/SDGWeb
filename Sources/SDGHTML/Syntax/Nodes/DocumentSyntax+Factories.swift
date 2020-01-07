@@ -22,13 +22,19 @@ extension DocumentSyntax {
   ///
   /// - Parameters:
   ///   - documentElement: The document element (`<html>`).
+  ///   - formatted: Optional. Set to `false` to prevent the document from being automatically formatted.
   public static func document(
-    documentElement: ElementSyntax
+    documentElement: ElementSyntax,
+    formatted: Bool = true
   ) -> DocumentSyntax {
-    return DocumentSyntax(content: [
+    var document = DocumentSyntax(content: [
       .element(.documentTypeDeclaration()),
       .element(documentElement)
-    ]).formatted()
+    ])
+    if formatted {
+      document.format()
+    }
+    return document
   }
 
   /// Creates an HTML document functioning as a redirect.
