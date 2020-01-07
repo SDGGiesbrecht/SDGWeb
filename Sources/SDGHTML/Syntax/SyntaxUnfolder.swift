@@ -257,7 +257,8 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
       try SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
       if let siteRoot = context?.siteRoot,
         let relativePath = context?.relativePath,
-        let author = context?.author
+        let author = context?.author,
+        let css = context?.css
       {
         try SyntaxUnfolder.unfoldPage(
           &contentList,
@@ -265,7 +266,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
           siteRoot: siteRoot,
           relativePath: relativePath,
           author: author,
-          css: context?.css ?? []
+          css: css
         )
       }
     }
