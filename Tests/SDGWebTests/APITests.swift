@@ -73,17 +73,6 @@ class APITests: TestCase {
     expectErrorGenerating(forMock: "No Title", localization: SingleLocalization.self)
   }
 
-  func testPageProcessor() {
-    struct Processor: PageProcessor {}
-    _ = Processor().syntaxUnfolder(
-      localization: InterfaceLocalization.englishCanada,
-      siteRoot: URL(string: "http://example.com")!,
-      relativePath: "relative/path",
-      author: .span(),
-      css: []
-    )
-  }
-
   func testPoorHTML() throws {
     try generate(
       forMock: "Poor HTML",
@@ -158,7 +147,7 @@ class APITests: TestCase {
     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
       let invalidHTML = "p>This paragraph is broken.</p>"
       try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
-      let warnings = Site<InterfaceLocalization>.validate(site: url)
+      let warnings = Site<InterfaceLocalization, Unfolder>.validate(site: url)
       XCTAssert(¬warnings.isEmpty)
     }
   }

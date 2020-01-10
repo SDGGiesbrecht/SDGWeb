@@ -13,8 +13,9 @@
  */
 
 import SDGHTML
+import SDGWeb
 
-struct Unfolder: SyntaxUnfolderProtocol {
+struct Unfolder: SiteSyntaxUnfolder {
 
   // MARK: - Initializer
 
