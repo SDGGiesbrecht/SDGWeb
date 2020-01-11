@@ -18,5 +18,8 @@ import SDGHTML
 public protocol SiteSyntaxUnfolder: SyntaxUnfolderProtocol {
 
   /// Creates a syntax unfolder with the provided context.
+  ///
+  /// - Parameters:
+  ///   - context: Context information.
   init(context: SyntaxUnfolder.Context)
 }
