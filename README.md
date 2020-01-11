@@ -42,7 +42,7 @@ let mock = RepositoryStructure(
     .appendingPathComponent("Mock Projects/\(mockName)")
 )
 
-let site = Site<L>(
+let site = Site<L, Unfolder>(
   repositoryStructure: mock,
   siteRoot: UserFacing<URL, L>({ _ in return URL(string: "http://example.com")! }),
   localizationDirectories: UserFacing<StrictString, L>({ localization in
@@ -51,7 +51,6 @@ let site = Site<L>(
   author: UserFacing<ElementSyntax, L>({ _ in
     return .author("John Doe", language: InterfaceLocalization.englishCanada)
   }),
-  pageProcessor: Processor(),
   reportProgress: { _ in }
 )
 

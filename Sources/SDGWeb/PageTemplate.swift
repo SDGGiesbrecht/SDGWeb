@@ -27,9 +27,9 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
-  internal static func load(
+  internal static func load<Unfolder>(
     from file: URL,
-    in site: Site<Localization>
+    in site: Site<Localization, Unfolder>
   ) -> Result<PageTemplate, PageTemplateLoadingError> {
     let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
 
@@ -141,22 +141,24 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Processing
 
-  private func processedResult(
+  private func processedResult<Unfolder>(
     for relativePath: StrictString,
     localization: Localization,
-    site: Site<Localization>
+    site: Site<Localization, Unfolder>
   ) throws -> DocumentSyntax {
     var syntax = templateSyntax
     try syntax.unfold(
-      with: site.pageProcessor.syntaxUnfolder(
-        localization: localization,
-        siteRoot: site.siteRoot.resolved(for: localization),
-        relativePath: String(relativePath),
-        author: site.author.resolved(for: localization),
-        css: [
-          "CSS/Root.css",
-          "CSS/Site.css"
-        ]
+      with: Unfolder(
+        context: SyntaxUnfolder.Context(
+          localization: localization,
+          siteRoot: site.siteRoot.resolved(for: localization),
+          relativePath: String(relativePath),
+          author: site.author.resolved(for: localization),
+          css: [
+            "CSS/Root.css",
+            "CSS/Site.css"
+          ]
+        )
       )
     )
     return syntax
@@ -177,9 +179,9 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     }
   }
 
-  internal func writeResult(
+  internal func writeResult<Unfolder>(
     for localization: Localization,
-    of site: Site<Localization>,
+    of site: Site<Localization, Unfolder>,
     formatting: Bool
   ) throws {
 

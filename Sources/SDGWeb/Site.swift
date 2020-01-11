@@ -24,7 +24,8 @@ import SDGHTML
 import SDGCSS
 
 /// A website.
-public struct Site<Localization> where Localization: SDGLocalization.InputLocalization {
+public struct Site<Localization, Unfolder>
+where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfolder {
 
   // MARK: - Initialization
 
@@ -35,7 +36,6 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   ///     - siteRoot: The base URL where the site will be hosted.
   ///     - localizationDirectories: The name to use for localization directories.
   ///     - siteAuthor: The author of the website.
-  ///     - pageProcessor: A page processor for generating each page.
   ///     - reportProgress: A closure to report progress as the site is assembled.
   ///     - progressReport: A string describing progress made.
   public init(
@@ -43,14 +43,12 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
     siteRoot: UserFacing<URL, Localization>,
     localizationDirectories: UserFacing<StrictString, Localization>,
     author siteAuthor: UserFacing<ElementSyntax, Localization>,
-    pageProcessor: PageProcessor,
     reportProgress: @escaping (_ progressReport: StrictString) -> Void
   ) {
     self.repositoryStructure = repositoryStructure
     self.siteRoot = siteRoot
     self.localizationDirectories = localizationDirectories
     self.author = siteAuthor
-    self.pageProcessor = pageProcessor
     self.reportProgress = reportProgress
   }
 
@@ -60,7 +58,6 @@ public struct Site<Localization> where Localization: SDGLocalization.InputLocali
   internal let siteRoot: UserFacing<URL, Localization>
   internal let localizationDirectories: UserFacing<StrictString, Localization>
   internal let author: UserFacing<ElementSyntax, Localization>
-  internal let pageProcessor: PageProcessor
   internal let reportProgress: (StrictString) -> Void
 
   // MARK: - Processing
