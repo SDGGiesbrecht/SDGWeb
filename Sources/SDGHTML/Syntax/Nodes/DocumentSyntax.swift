@@ -136,5 +136,6 @@ public struct DocumentSyntax: ContainerSyntax, Syntax {
   where Unfolder: SyntaxUnfolderProtocol {
     try unfoldChildren(with: unfolder)
     try unfoldContainer(with: unfolder)
+    try unfolder.unfold(document: &self)
   }
 }
