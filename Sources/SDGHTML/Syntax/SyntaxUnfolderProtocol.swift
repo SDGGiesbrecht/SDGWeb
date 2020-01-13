@@ -21,6 +21,12 @@ public protocol SyntaxUnfolderProtocol {
   ///   - element: The element to unfold.
   func unfold(element: inout ElementSyntax) throws
 
+  /// Unfolds an attribute node.
+  ///
+  /// - Parameters:
+  ///   - attribute: The attribute to unfold.
+  func unfold(attribute: inout AttributeSyntax) throws
+
   /// Unfolds a document node.
   ///
   /// - Parameters:

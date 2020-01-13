@@ -292,10 +292,32 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     }
   }
 
+  /// Unfolds `siteHRef` and `siteSrc` attributes.
+  ///
+  /// These attributes correspond to the `href` and `src` attributes, but contain a path relative to the site root, instead of the current file. Unfolding will replace them with their corresponding canonical attributes by adjusting the relative path according to the location of the file where the attribute occurs.
+  ///
+  /// The content of the `<page>` element will become the content of the `<body>` element.
+  ///
+  /// - Parameters:
+  ///   - attribute: The attribute to unfold.
+  ///   - relativePath: The location of the page relative to the site root.
+  public static func unfoldSiteURLAttribute(
+    _ attribute: inout AttributeSyntax,
+    relativePath: String
+  ) {
+    #warning("Not implemented yet.")
+  }
+
   // MARK: - SyntaxUnfolderProtocol
 
   public func unfold(element: inout ElementSyntax) throws {
     SyntaxUnfolder.unfoldForeign(&element)
+  }
+
+  public func unfold(attribute: inout AttributeSyntax) throws {
+    if let relativePath = context?.relativePath {
+      SyntaxUnfolder.unfoldSiteURLAttribute(&attribute, relativePath: relativePath)
+    }
   }
 
   public func unfold(document: inout DocumentSyntax) throws {
