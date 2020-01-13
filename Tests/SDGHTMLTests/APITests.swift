@@ -781,6 +781,22 @@ class APITests: TestCase {
         "</page>"
       ].joined(separator: "\n")
     )
+    testUnfolding(
+      of: [
+        "<span lang=\u{22}en\u{22} dir=\u{22}ltr\u{22}>",
+        " <span lang=\u{22}en\u{22} dir=\u{22}ltr\u{22}></span>",
+        " <span lang=\u{22}de\u{22} dir=\u{22}ltr\u{22}></span>",
+        " <span lang=\u{22}he\u{22} dir=\u{22}rtl\u{22}></span>",
+        "</span>"
+      ].joined(separator: "\n"),
+      to: [
+        "<span lang=\u{22}en\u{22} dir=\u{22}ltr\u{22}>",
+        " <span></span>",
+        " <span lang=\u{22}de\u{22}></span>",
+        " <span lang=\u{22}he\u{22} dir=\u{22}rtl\u{22}></span>",
+        "</span>"
+      ].joined(separator: "\n")
+    )
   }
 
   func testTextDirection() {
