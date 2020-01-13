@@ -292,11 +292,9 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     }
   }
 
-  /// Unfolds `siteHRef` and `siteSrc` attributes.
+  /// Unfolds `siteReference` and `siteSource` attributes.
   ///
-  /// These attributes correspond to the `href` and `src` attributes, but contain a path relative to the site root, instead of the current file. Unfolding will replace them with their corresponding canonical attributes by adjusting the relative path according to the location of the file where the attribute occurs.
-  ///
-  /// The content of the `<page>` element will become the content of the `<body>` element.
+  /// These attributes correspond to the `href` and `src` attributes respectively, but contain a path relative to the site root, instead of the current file. Unfolding will replace them with their corresponding canonical attributes by adjusting the relative path according to the location of the file where the attribute occurs.
   ///
   /// - Parameters:
   ///   - attribute: The attribute to unfold.
@@ -305,7 +303,36 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     _ attribute: inout AttributeSyntax,
     relativePath: String
   ) {
-    #warning("Not implemented yet.")
+    let list: [(String, UserFacing<StrictString, InterfaceLocalization>)] = [
+      (
+        "href",
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "siteReference"
+          case .deutschDeutschland:
+            return "seitenverweis"
+          }
+        })
+      ),
+      (
+        "src",
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "siteSource"
+          case .deutschDeutschland:
+            return "seitenquelle"
+          }
+        })
+      )
+    ]
+    for (result, names) in list {
+      if attribute.is(named: names) {
+        attribute.nameText = result
+        attribute.valueText = baseURL(fromRelativePath: relativePath)
+      }
+    }
   }
 
   // MARK: - SyntaxUnfolderProtocol

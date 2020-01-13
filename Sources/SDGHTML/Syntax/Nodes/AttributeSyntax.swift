@@ -147,6 +147,22 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
     }
   }
 
+  // MARK: - Convenience
+
+  /// Returns true if the attribute’s name matches the localized name.
+  ///
+  /// - Parameters:
+  ///     - name: The name.
+  public func `is`<L>(
+    named name: UserFacing<StrictString, L>
+  ) -> Bool where L: InputLocalization {
+    for name in L.allCases.lazy.map({ name.resolved(for: $0) })
+    where nameText == String(name) {
+      return true
+    }
+    return false
+  }
+
   // MARK: - Validation
 
   internal func validate(
