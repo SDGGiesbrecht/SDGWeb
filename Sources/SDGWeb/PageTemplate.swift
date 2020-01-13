@@ -40,27 +40,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       return .failure(.foundationError(error))
     }
 
-    let metaDataSource: StrictString
-    let content: StrictString
-    switch PageTemplate.extractMetaData(from: source, for: relativePath) {
-    case .failure(let error):
-      return .failure(.metaDataExtractionError(error))
-    case .success(let extracted):
-      (metaDataSource, content) = extracted
-    }
-
-    let metaData: [StrictString: StrictString]
-    switch PageTemplate.parseMetaData(from: metaDataSource) {
-    case .failure(let error):
-      return .failure(.metaDataParsingError(error))
-    case .success(let parsed):
-      metaData = parsed
-    }
-
-    let fileName = metaData["File Name"]
-
     let templateSyntax: DocumentSyntax
-    switch DocumentSyntax.parse(source: String(content)) {
+    switch DocumentSyntax.parse(source: String(source)) {
     case .success(let document):
       templateSyntax = document
     case .failure(let error):
@@ -70,7 +51,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     return .success(
       PageTemplate(
         relativePath: relativePath,
-        fileName: fileName,
         templateSyntax: templateSyntax
       )
     )
@@ -124,19 +104,16 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   private init(
     relativePath: StrictString,
-    fileName: StrictString?,
     templateSyntax: DocumentSyntax
   ) {
 
     self.relativePath = relativePath
-    self.fileName = fileName
     self.templateSyntax = templateSyntax
   }
 
   // MARK: - Properties
 
   private let relativePath: StrictString
-  private let fileName: StrictString?
   private let templateSyntax: DocumentSyntax
 
   private func templateAttribute(named name: UserFacing<StrictString, InterfaceLocalization>)
