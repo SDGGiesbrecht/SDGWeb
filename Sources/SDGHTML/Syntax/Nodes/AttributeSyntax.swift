@@ -473,6 +473,12 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
 
   public var _storage: _SyntaxStorage
 
+  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder) throws
+  where Unfolder: SyntaxUnfolderProtocol {
+    try unfoldChildren(with: unfolder)
+    try unfolder.unfold(attribute: &self)
+  }
+
   public mutating func format(indentationLevel: Int) {
     whitespace = TokenSyntax(kind: .whitespace(" "))
     name.format(indentationLevel: indentationLevel)
