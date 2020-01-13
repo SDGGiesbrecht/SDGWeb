@@ -24,7 +24,7 @@ public protocol SyntaxUnfolderProtocol {
   /// Unfolds a document node.
   ///
   /// - Parameters:
-  ///   - element: The document to unfold.
+  ///   - document: The document to unfold.
   func unfold(document: inout DocumentSyntax) throws
 
   /// Unfolds a content list.
