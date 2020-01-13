@@ -139,6 +139,15 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   private let fileName: StrictString?
   private let templateSyntax: DocumentSyntax
 
+  private func templateAttribute(named name: UserFacing<StrictString, InterfaceLocalization>)
+    -> StrictString?
+  {
+    return templateSyntax.childElements()
+      .first(where: { $0.nameText ≠ "!DOCTYPE" })?
+      .attribute(named: name)?.valueText
+      .map { StrictString($0) }
+  }
+
   // MARK: - Processing
 
   private func processedResult<Unfolder>(
@@ -167,13 +176,17 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   // MARK: - Saving
 
   private func resolvedFileName() throws -> StrictString {
-    if let overridden = fileName {
-      return overridden
-    } else if let declared = templateSyntax.childElements()
-      .first(where: { $0.nameText ≠ "!DOCTYPE" })?
-      .attribute(named: SyntaxUnfolder._titleAttributeName)?.valueText
-    {
-      return StrictString(declared)
+    if let result = templateAttribute(
+      named: UserFacing({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "fileName"
+        case .deutschDeutschland:
+          return "dateiname"
+        }
+      })
+    ) ?? templateAttribute(named: SyntaxUnfolder._titleAttributeName) {
+      return result
     } else {
       throw SiteGenerationError.missingTitle(page: relativePath)
     }
