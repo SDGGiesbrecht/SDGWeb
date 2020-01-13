@@ -98,8 +98,6 @@ class APITests: TestCase {
     let errors: [SiteGenerationError] = [
       .foundationError(StandInError()),
       .invalidDomain("[...]"),
-      .noMetadata(page: "[...]"),
-      .metadataMissingColon(line: "[...]"),
       .missingTitle(page: "[...]"),
       .syntaxError(
         page: "[...]",

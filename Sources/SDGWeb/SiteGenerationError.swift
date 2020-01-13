@@ -33,12 +33,6 @@ public enum SiteGenerationError: PresentableError {
   /// A page has invalid syntax.
   case syntaxError(page: StrictString, error: SyntaxError)
 
-  /// A page has no metadata.
-  case noMetadata(page: StrictString)
-
-  /// A metadata entry has no colon separating its key from its value.
-  case metadataMissingColon(line: StrictString)
-
   /// A page has no title.
   case missingTitle(page: StrictString)
 
@@ -71,22 +65,6 @@ public enum SiteGenerationError: PresentableError {
         result.append("\n")
         result.append(contentsOf: error.presentableDescription())
         return result
-      case .noMetadata(let page):
-        switch localization {
-        case .englishUnitedKingdom:
-          return "‘\(page)’ has no metadata (‘<!\u{2D}\u{2D} ... \u{2D}\u{2D}>’)."
-        case .englishUnitedStates, .englishCanada:
-          return "“\(page)” has no metadata (“<!\u{2D}\u{2D} ... \u{2D}\u{2D}>”)."
-        case .deutschDeutschland:
-          return "„\(page)“ hat keine Metadaten („<!\u{2D}\u{2D} ... \u{2D}\u{2D}>“)."
-        }
-      case .metadataMissingColon(let line):
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Metadata entry has no colon:\n\(line)"
-        case .deutschDeutschland:
-          return "Bei einem Eintrag der Metadaten fehlt ein Doppelpunkt:\n\(line)"
-        }
       case .missingTitle(let page):
         switch localization {
         case .englishUnitedKingdom:

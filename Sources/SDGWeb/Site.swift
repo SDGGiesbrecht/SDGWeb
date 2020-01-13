@@ -75,10 +75,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       switch error {
       case .foundationError(let error):  // @exempt(from: tests)
         return .failure(.foundationError(error))
-      case .metaDataExtractionError(let error):
-        return .failure(.noMetadata(page: error.page))
-      case .metaDataParsingError(let error):
-        return .failure(.metadataMissingColon(line: error.line))
       case .syntaxError(let page, let error):
         return .failure(.syntaxError(page: page, error: error))
       }

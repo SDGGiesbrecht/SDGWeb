@@ -1,16 +1,24 @@
 🇬🇧EN
-Metadata entry has no colon:
+‘[...]’ could not be parsed:
+Line 1
+[...]
 [...]
 
 🇺🇸EN
-Metadata entry has no colon:
+“[...]” could not be parsed:
+Line 1
+[...]
 [...]
 
 🇨🇦EN
-Metadata entry has no colon:
+“[...]” could not be parsed:
+Line 1
+[...]
 [...]
 
 🇩🇪DE
-Bei einem Eintrag der Metadaten fehlt ein Doppelpunkt:
+„[...]“ konnte nicht zerteilt werden:
+Zeile 1
+[...]
 [...]
 

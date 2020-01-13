@@ -35,32 +35,13 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
     let source: StrictString
     do {
-      source = try PageTemplate.loadSource(from: file, for: relativePath)
+      source = try StrictString(from: file)
     } catch {
       return .failure(.foundationError(error))
     }
 
-    let metaDataSource: StrictString
-    let content: StrictString
-    switch PageTemplate.extractMetaData(from: source, for: relativePath) {
-    case .failure(let error):
-      return .failure(.metaDataExtractionError(error))
-    case .success(let extracted):
-      (metaDataSource, content) = extracted
-    }
-
-    let metaData: [StrictString: StrictString]
-    switch PageTemplate.parseMetaData(from: metaDataSource) {
-    case .failure(let error):
-      return .failure(.metaDataParsingError(error))
-    case .success(let parsed):
-      metaData = parsed
-    }
-
-    let fileName = metaData["File Name"]
-
     let templateSyntax: DocumentSyntax
-    switch DocumentSyntax.parse(source: String(content)) {
+    switch DocumentSyntax.parse(source: String(source)) {
     case .success(let document):
       templateSyntax = document
     case .failure(let error):
@@ -70,74 +51,33 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     return .success(
       PageTemplate(
         relativePath: relativePath,
-        fileName: fileName,
         templateSyntax: templateSyntax
       )
     )
   }
 
-  private static func loadSource(from file: URL, for page: StrictString) throws -> StrictString {
-    return try StrictString(from: file)
-  }
-
-  private static func extractMetaData(
-    from source: StrictString,
-    for page: StrictString
-  ) -> Result<
-    (metaDataSource: StrictString, content: StrictString),
-    PageTemplateMetaDataExtractionError
-  > {
-
-    guard
-      let metaDataSegment = source.firstNestingLevel(
-        startingWith: "<!\u{2D}\u{2D}".scalars,
-        endingWith: "\u{2D}\u{2D}>\n".scalars
-      )
-    else {
-      return .failure(PageTemplateMetaDataExtractionError(page: page))
-    }
-    let metaData = StrictString(metaDataSegment.contents.contents)
-
-    var content = source
-    content.removeSubrange(metaDataSegment.container.range)
-    return .success((metaData, content))
-  }
-
-  private static func parseMetaData(from source: StrictString) -> Result<
-    [StrictString: StrictString], PageTemplateMetaDataParsingError
-  > {
-    var dictionary: [StrictString: StrictString] = [:]
-    for line in source.lines.map({ $0.line }) {
-      let withoutIndent = StrictString(line.drop(while: { $0 ∈ CharacterSet.whitespaces }))
-      if ¬withoutIndent.isEmpty {
-        guard let colon = withoutIndent.firstMatch(for: ": ".scalars) else {
-          return .failure(PageTemplateMetaDataParsingError(line: withoutIndent))
-        }
-        let key = StrictString(withoutIndent[..<colon.range.lowerBound])
-        let value = StrictString(withoutIndent[colon.range.upperBound...])
-
-        dictionary[key] = value
-      }
-    }
-    return .success(dictionary)
-  }
-
   private init(
     relativePath: StrictString,
-    fileName: StrictString?,
     templateSyntax: DocumentSyntax
   ) {
 
     self.relativePath = relativePath
-    self.fileName = fileName
     self.templateSyntax = templateSyntax
   }
 
   // MARK: - Properties
 
   private let relativePath: StrictString
-  private let fileName: StrictString?
   private let templateSyntax: DocumentSyntax
+
+  private func templateAttribute(named name: UserFacing<StrictString, InterfaceLocalization>)
+    -> StrictString?
+  {
+    return templateSyntax.childElements()
+      .first(where: { $0.nameText ≠ "!DOCTYPE" })?
+      .attribute(named: name)?.valueText
+      .map { StrictString($0) }
+  }
 
   // MARK: - Processing
 
@@ -167,13 +107,17 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   // MARK: - Saving
 
   private func resolvedFileName() throws -> StrictString {
-    if let overridden = fileName {
-      return overridden
-    } else if let declared = templateSyntax.childElements()
-      .first(where: { $0.nameText ≠ "!DOCTYPE" })?
-      .attribute(named: SyntaxUnfolder._titleAttributeName)?.valueText
-    {
-      return StrictString(declared)
+    if let result = templateAttribute(
+      named: UserFacing({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "fileName"
+        case .deutschDeutschland:
+          return "dateiname"
+        }
+      })
+    ) ?? templateAttribute(named: SyntaxUnfolder._titleAttributeName) {
+      return result
     } else {
       throw SiteGenerationError.missingTitle(page: relativePath)
     }
