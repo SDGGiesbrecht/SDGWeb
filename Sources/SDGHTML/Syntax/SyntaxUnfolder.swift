@@ -47,6 +47,49 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
 
   // MARK: - Individual Unfolding Operations
 
+  /// Removes any redundant language or direction tags that would be inherited anyway.
+  ///
+  /// - document: The document to clean up.
+  public static func cleanUpLanguages(_ document: inout DocumentSyntax) {
+    for index in document.content.indices {
+      let child = document.content[index]
+      if case .element(var element) = child.kind {
+        var language: String?
+        var direction: String?
+        cleanUpLanguages(&element, activeLanguage: &language, activeDirection: &direction)
+        document.content[index] = .element(element)
+      }
+    }
+  }
+  private static func cleanUpLanguages(
+    _ element: inout ElementSyntax,
+    activeLanguage: inout String?,
+    activeDirection: inout String?
+  ) {
+    func handle(attribute: String, active: inout String?) {
+      if let new = element.attribute(named: attribute)?.valueText {
+        if new == active {
+          element.removeAttribute(named: attribute)
+        } else {
+          active = new
+        }
+      }
+    }
+    handle(attribute: "lang", active: &activeLanguage)
+    handle(attribute: "dir", active: &activeDirection)
+    for index in element.content.indices {
+      let child = element.content[index]
+      if case .element(var childElement) = child.kind {
+        cleanUpLanguages(
+          &childElement,
+          activeLanguage: &activeLanguage,
+          activeDirection: &activeDirection
+        )
+        element.content[index] = .element(childElement)
+      }
+    }
+  }
+
   /// Unfolds `<foreign>` into `<span class="foreign">`.
   ///
   /// `foreign` indicates that a span of text is in a foreign language. Such text is often italicized.
@@ -255,7 +298,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   }
 
   public func unfold(document: inout DocumentSyntax) throws {
-
+    SyntaxUnfolder.cleanUpLanguages(&document)
   }
 
   public func unfold(contentList: inout ListSyntax<ContentSyntax>) throws {
