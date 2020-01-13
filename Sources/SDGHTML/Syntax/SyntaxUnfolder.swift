@@ -49,7 +49,8 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
 
   /// Removes any redundant language or direction tags that would be inherited anyway.
   ///
-  /// - document: The document to clean up.
+  /// - Parameters:
+  ///   - document: The document to clean up.
   public static func cleanUpLanguages(_ document: inout DocumentSyntax) {
     for index in document.content.indices {
       let child = document.content[index]
