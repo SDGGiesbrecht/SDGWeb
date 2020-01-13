@@ -35,7 +35,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
     let source: StrictString
     do {
-      source = try PageTemplate.loadSource(from: file, for: relativePath)
+      source = try StrictString(from: file)
     } catch {
       return .failure(.foundationError(error))
     }
@@ -54,52 +54,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         templateSyntax: templateSyntax
       )
     )
-  }
-
-  private static func loadSource(from file: URL, for page: StrictString) throws -> StrictString {
-    return try StrictString(from: file)
-  }
-
-  private static func extractMetaData(
-    from source: StrictString,
-    for page: StrictString
-  ) -> Result<
-    (metaDataSource: StrictString, content: StrictString),
-    PageTemplateMetaDataExtractionError
-  > {
-
-    guard
-      let metaDataSegment = source.firstNestingLevel(
-        startingWith: "<!\u{2D}\u{2D}".scalars,
-        endingWith: "\u{2D}\u{2D}>\n".scalars
-      )
-    else {
-      return .failure(PageTemplateMetaDataExtractionError(page: page))
-    }
-    let metaData = StrictString(metaDataSegment.contents.contents)
-
-    var content = source
-    content.removeSubrange(metaDataSegment.container.range)
-    return .success((metaData, content))
-  }
-
-  private static func parseMetaData(from source: StrictString) -> Result<
-    [StrictString: StrictString], PageTemplateMetaDataParsingError
-  > {
-    var dictionary: [StrictString: StrictString] = [:]
-    for line in source.lines.map({ $0.line }) {
-      let withoutIndent = StrictString(line.drop(while: { $0 ∈ CharacterSet.whitespaces }))
-      if ¬withoutIndent.isEmpty {
-        guard let colon = withoutIndent.firstMatch(for: ": ".scalars) else {
-          return .failure(PageTemplateMetaDataParsingError(line: withoutIndent))
-        }
-        let key = StrictString(withoutIndent[..<colon.range.lowerBound])
-        let value = StrictString(withoutIndent[colon.range.upperBound...])
-
-        dictionary[key] = value
-      }
-    }
-    return .success(dictionary)
   }
 
   private init(
