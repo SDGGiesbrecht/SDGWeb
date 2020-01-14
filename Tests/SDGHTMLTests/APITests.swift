@@ -802,6 +802,10 @@ class APITests: TestCase {
       of: "<a siteReference=\u{22}Other/Page.html\u{22}>",
       to: "<a href=\u{22}../Other/Page.html\u{22}>"
     )
+    testUnfolding(
+      of: "<pageTitle>",
+      to: "Title"
+    )
   }
 
   func testTextDirection() {
