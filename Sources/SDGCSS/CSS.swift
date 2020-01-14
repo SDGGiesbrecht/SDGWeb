@@ -21,12 +21,12 @@ public enum CSS {
   /// A recommended root CSS file.
   public static let root: StrictString = {
     var result = StrictString(Resources.root)
-    result.replaceMatches(
+    let match = result.firstMatch(
       for: "/*".scalars
         + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
-        + "*/\n\n".scalars,
-      with: "".scalars
-    )
+        + "*/\n\n".scalars
+    )!
+    result.replaceSubrange(match.range, with: "".scalars)
     return result
   }()
 }
