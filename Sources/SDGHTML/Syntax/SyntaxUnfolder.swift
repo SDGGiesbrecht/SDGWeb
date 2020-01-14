@@ -395,5 +395,8 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
         )
       }
     }
+    if let title = context?.title {
+      SyntaxUnfolder.unfoldPageTitle(&contentList, title: title)
+    }
   }
 }
