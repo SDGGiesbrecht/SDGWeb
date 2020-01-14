@@ -136,61 +136,56 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     localization: L
   ) throws
   where L: Localization {
-    var finished = false
-    passes: while ¬finished {
-      for index in contentList.indices {
-        let entry = contentList[index]
-        if case .element(let element) = entry.kind,
-          element.isNamed(
-            UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom:
-                return "localised"
-              case .englishUnitedStates, .englishCanada:
-                return "localized"
-              case .deutschDeutschland:
-                return "lokalisiert"
-              }
-            })
-          )
-        {
-          for child in element.content {
-            if case .element(let childElement) = child.kind,
-              StrictString(childElement.nameText) == localization.icon
-                ∨ childElement.nameText == localization.code
-            {
-              contentList.replaceSubrange(index...index, with: childElement.content)
-              continue passes
+    try contentList.mutateEntries { entry in
+      guard case .element(let element) = entry.kind,
+        element.isNamed(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+              return "localised"
+            case .englishUnitedStates, .englishCanada:
+              return "localized"
+            case .deutschDeutschland:
+              return "lokalisiert"
             }
-          }
-          throw UnfoldingError(
-            description: UserFacing<StrictString, InterfaceLocalization>({ errorLocalization in
-              switch errorLocalization {
-              case .englishUnitedKingdom:
-                var names = "‘\(localization.code)’"
-                if let icon = localization.icon {
-                  names = "‘\(icon)’ or \(names)"
-                }
-                return "A localised element has no child element named \(names)."
-              case .englishUnitedStates, .englishCanada:
-                var names = "“\(localization.code)”"
-                if let icon = localization.icon {
-                  names = "“\(icon)” or \(names)"
-                }
-                return "A localized element has no child element named \(names)."
-              case .deutschDeutschland:
-                var namen = "„\(localization.code)“"
-                if let zeichen = localization.icon {
-                  namen = "„\(zeichen)“ oder \(namen)"
-                }
-                return "Ein lokalisiertes Element hat kein untergeordnetes Element Namens \(namen)."
-              }
-            }),
-            node: element
-          )
+          })
+        )
+      else {
+        return nil
+      }
+      for child in element.content {
+        if case .element(let childElement) = child.kind,
+          StrictString(childElement.nameText) == localization.icon
+            ∨ childElement.nameText == localization.code
+        {
+          return childElement.content
         }
       }
-      finished = true
+      throw UnfoldingError(
+        description: UserFacing<StrictString, InterfaceLocalization>({ errorLocalization in
+          switch errorLocalization {
+          case .englishUnitedKingdom:
+            var names = "‘\(localization.code)’"
+            if let icon = localization.icon {
+              names = "‘\(icon)’ or \(names)"
+            }
+            return "A localised element has no child element named \(names)."
+          case .englishUnitedStates, .englishCanada:
+            var names = "“\(localization.code)”"
+            if let icon = localization.icon {
+              names = "“\(icon)” or \(names)"
+            }
+            return "A localized element has no child element named \(names)."
+          case .deutschDeutschland:
+            var namen = "„\(localization.code)“"
+            if let zeichen = localization.icon {
+              namen = "„\(zeichen)“ oder \(namen)"
+            }
+            return "Ein lokalisiertes Element hat kein untergeordnetes Element Namens \(namen)."
+          }
+        }),
+        node: element
+      )
     }
   }
 
@@ -292,6 +287,35 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     }
   }
 
+  /// Unfolds `<pageTitle>` into the text of the page’s title.
+  ///
+  /// - Parameters:
+  ///   - contentList: The contentList to unfold.
+  ///   - title: The page title.
+  public static func unfoldPageTitle(
+    _ contentList: inout ListSyntax<ContentSyntax>,
+    title: StrictString
+  ) {
+    contentList.mutateEntries { entry in
+      guard case .element(let element) = entry.kind,
+        element.isNamed(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "pageTitle"
+            case .deutschDeutschland:
+              return "titel"
+            }
+          })
+        )
+      else {
+        return nil
+
+      }
+      return [ContentSyntax.text(String(title))]
+    }
+  }
+
   /// Unfolds `siteReference` and `siteSource` attributes.
   ///
   /// These attributes correspond to the `href` and `src` attributes respectively, but contain a path relative to the site root, instead of the current file. Unfolding will replace them with their corresponding canonical attributes by adjusting the relative path according to the location of the file where the attribute occurs.
@@ -371,6 +395,9 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
           css: css
         )
       }
+    }
+    if let title = context?.title {
+      SyntaxUnfolder.unfoldPageTitle(&contentList, title: title)
     }
   }
 }

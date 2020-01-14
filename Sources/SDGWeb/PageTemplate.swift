@@ -78,6 +78,13 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       .attribute(named: name)?.valueText
       .map { StrictString($0) }
   }
+  private func resolvedTitle() throws -> StrictString {
+    if let result = templateAttribute(named: SyntaxUnfolder._titleAttributeName) {
+      return result
+    } else {
+      throw SiteGenerationError.missingTitle(page: relativePath)
+    }
+  }
 
   // MARK: - Processing
 
@@ -93,6 +100,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
           localization: localization,
           siteRoot: site.siteRoot.resolved(for: localization),
           relativePath: String(relativePath),
+          title: resolvedTitle(),
           author: site.author.resolved(for: localization),
           css: [
             "CSS/Root.css",
@@ -107,7 +115,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   // MARK: - Saving
 
   private func resolvedFileName() throws -> StrictString {
-    if let result = templateAttribute(
+    return try templateAttribute(
       named: UserFacing({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -116,11 +124,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
           return "dateiname"
         }
       })
-    ) ?? templateAttribute(named: SyntaxUnfolder._titleAttributeName) {
-      return result
-    } else {
-      throw SiteGenerationError.missingTitle(page: relativePath)
-    }
+    ) ?? resolvedTitle()
   }
 
   internal func writeResult<Unfolder>(
