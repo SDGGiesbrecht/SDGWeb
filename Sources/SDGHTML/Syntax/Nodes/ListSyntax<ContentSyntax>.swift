@@ -123,4 +123,22 @@ extension ListSyntax where Entry == ContentSyntax {
       }
     }
   }
+
+  // MARK: - Internal Utilities
+
+  internal mutating func mutateEntries(
+    _ mutate: (ContentSyntax) throws -> ListSyntax<ContentSyntax>?
+  ) rethrows {
+    var finished = false
+    passes: while ¬finished {
+      for index in indices {
+        let entry = self[index]
+        if let replacement = try mutate(entry) {
+          self.replaceSubrange(index...index, with: replacement)
+          continue passes
+        }
+      }
+      finished = true
+    }
+  }
 }
