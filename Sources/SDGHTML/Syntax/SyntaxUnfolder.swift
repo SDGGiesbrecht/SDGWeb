@@ -328,9 +328,10 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
       )
     ]
     for (result, names) in list {
-      if attribute.is(named: names) {
+      if attribute.is(named: names),
+        var url = attribute.valueText
+      {
         attribute.nameText = result
-        var url = attribute.valueText ?? ""
         url.prepend(contentsOf: baseURL(fromRelativePath: relativePath))
         attribute.valueText = url
       }
