@@ -722,7 +722,7 @@ class APITests: TestCase {
               context: SyntaxUnfolder.Context(
                 localization: InterfaceLocalization.englishCanada,
                 siteRoot: URL(string: "http://example.com"),
-                relativePath: "relative/path",
+                relativePath: "relative/path.html",
                 author: .author("John Doe", language: InterfaceLocalization.englishUnitedKingdom),
                 css: ["CSS/CSS.css"]
               )
@@ -796,6 +796,10 @@ class APITests: TestCase {
         " <span lang=\u{22}he\u{22} dir=\u{22}rtl\u{22}></span>",
         "</span>"
       ].joined(separator: "\n")
+    )
+    testUnfolding(
+      of: "<a siteReference=\u{22}Other/Page.html\u{22}>",
+      to: "<a href=\u{22}../Other/Page.html\u{22}>"
     )
   }
 

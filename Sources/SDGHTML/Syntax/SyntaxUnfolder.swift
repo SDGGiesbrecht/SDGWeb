@@ -292,10 +292,62 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
     }
   }
 
+  /// Unfolds `siteReference` and `siteSource` attributes.
+  ///
+  /// These attributes correspond to the `href` and `src` attributes respectively, but contain a path relative to the site root, instead of the current file. Unfolding will replace them with their corresponding canonical attributes by adjusting the relative path according to the location of the file where the attribute occurs.
+  ///
+  /// - Parameters:
+  ///   - attribute: The attribute to unfold.
+  ///   - relativePath: The location of the page relative to the site root.
+  public static func unfoldSiteURLAttribute(
+    _ attribute: inout AttributeSyntax,
+    relativePath: String
+  ) {
+    let list: [(String, UserFacing<StrictString, InterfaceLocalization>)] = [
+      (
+        "href",
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "siteReference"
+          case .deutschDeutschland:
+            return "seitenverweis"
+          }
+        })
+      ),
+      (
+        "src",
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "siteSource"
+          case .deutschDeutschland:
+            return "seitenquelle"
+          }
+        })
+      )
+    ]
+    for (result, names) in list {
+      if attribute.is(named: names),
+        var url = attribute.valueText
+      {
+        attribute.nameText = result
+        url.prepend(contentsOf: baseURL(fromRelativePath: relativePath))
+        attribute.valueText = url
+      }
+    }
+  }
+
   // MARK: - SyntaxUnfolderProtocol
 
   public func unfold(element: inout ElementSyntax) throws {
     SyntaxUnfolder.unfoldForeign(&element)
+  }
+
+  public func unfold(attribute: inout AttributeSyntax) throws {
+    if let relativePath = context?.relativePath {
+      SyntaxUnfolder.unfoldSiteURLAttribute(&attribute, relativePath: relativePath)
+    }
   }
 
   public func unfold(document: inout DocumentSyntax) throws {

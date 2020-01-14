@@ -81,6 +81,10 @@ struct Unfolder: SiteSyntaxUnfolder {
     try standardUnfolder.unfold(element: &element)
   }
 
+  func unfold(attribute: inout AttributeSyntax) throws {
+    try standardUnfolder.unfold(attribute: &attribute)
+  }
+
   func unfold(document: inout DocumentSyntax) throws {
     try standardUnfolder.unfold(document: &document)
   }

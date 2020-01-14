@@ -147,6 +147,22 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
     }
   }
 
+  // MARK: - Convenience
+
+  /// Returns true if the attribute’s name matches the localized name.
+  ///
+  /// - Parameters:
+  ///     - name: The name.
+  public func `is`<L>(
+    named name: UserFacing<StrictString, L>
+  ) -> Bool where L: InputLocalization {
+    for name in L.allCases.lazy.map({ name.resolved(for: $0) })
+    where nameText == String(name) {
+      return true
+    }
+    return false
+  }
+
   // MARK: - Validation
 
   internal func validate(
@@ -472,6 +488,12 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   // MARK: - Syntax
 
   public var _storage: _SyntaxStorage
+
+  public mutating func performSingleUnfoldingPass<Unfolder>(with unfolder: Unfolder) throws
+  where Unfolder: SyntaxUnfolderProtocol {
+    try unfoldChildren(with: unfolder)
+    try unfolder.unfold(attribute: &self)
+  }
 
   public mutating func format(indentationLevel: Int) {
     whitespace = TokenSyntax(kind: .whitespace(" "))
