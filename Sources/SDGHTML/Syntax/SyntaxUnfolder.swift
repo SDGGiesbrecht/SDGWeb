@@ -291,6 +291,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   ///
   /// - Parameters:
   ///   - contentList: The contentList to unfold.
+  ///   - title: The page title.
   public static func unfoldPageTitle(
     _ contentList: inout ListSyntax<ContentSyntax>,
     title: StrictString
