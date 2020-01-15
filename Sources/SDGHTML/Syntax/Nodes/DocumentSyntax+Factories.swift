@@ -50,7 +50,7 @@ extension DocumentSyntax {
   ) -> DocumentSyntax where L: Localization {
     let encodedTargetString = target.relativeString
     let readableTargetString = encodedTargetString.removingPercentEncoding
-      ?? encodedTargetString // @exempt(from: tests)
+      ?? encodedTargetString  // @exempt(from: tests)
     let arrow = language.textDirection.htmlAttribute == "ltr" ? "↳" : "↲"
     let targetWithArrow = "\(arrow) \(readableTargetString)"
     return document(
