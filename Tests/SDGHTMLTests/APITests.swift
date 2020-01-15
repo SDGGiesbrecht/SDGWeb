@@ -595,6 +595,16 @@ class APITests: TestCase {
       against: testSpecificationDirectory().appendingPathComponent("Redirect (Right‐to‐Left).txt"),
       overwriteSpecificationInsteadOfFailing: false
     )
+    compare(
+      String(
+        DocumentSyntax.redirect(
+          language: InterfaceLocalization.englishCanada,
+          target: URL(fileURLWithPath: "🇮🇱.html")
+        ).source()
+      ),
+      against: testSpecificationDirectory().appendingPathComponent("Unicode Redirect.txt"),
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testSyntaxError() {

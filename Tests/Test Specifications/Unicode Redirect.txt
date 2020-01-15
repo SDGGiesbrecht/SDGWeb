@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-CA">
+ <head>
+  <meta charset="UTF-8">
+  <title>↳ 🇮🇱.html</title>
+  <link href="%F0%9F%87%AE%F0%9F%87%B1.html" rel="canonical">
+  <!-- <meta content="0; url=%F0%9F%87%AE%F0%9F%87%B1.html" http-equiv="refresh"> -->
+  <meta content="↳ 🇮🇱.html" name="description">
+ </head>
+ <body>
+  <div>
+   ↳
+   <a href="%F0%9F%87%AE%F0%9F%87%B1.html" hreflang="en-CA">🇮🇱.html</a>
+  </div>
+ </body>
+</html>
