@@ -173,7 +173,10 @@ let package = Package(
   ]
 )
 
-// #workaround(workspace 0.28.0, Causes Xcode executable/scheme issues for iOS.)
+// #workaround(workspace 0.30.1, Causes Xcode executable/scheme issues for iOS.)
 #if os(macOS)
-  package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
+  import Foundation
+  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil {
+    package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
+  }
 #endif

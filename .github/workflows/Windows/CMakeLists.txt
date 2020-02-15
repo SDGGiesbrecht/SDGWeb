@@ -529,6 +529,16 @@ target_link_libraries("SDGWebTests" PRIVATE
   "SDGXCTestUtilities"
 )
 
+add_executable("generate_entity_list"
+  "../../../Sources/generate‐entity‐list/Entity.swift"
+  "../../../Sources/generate‐entity‐list/main.swift"
+)
+target_link_libraries("generate_entity_list" PRIVATE
+  "SDGLogic"
+  "SDGText"
+  "SDGPersistence"
+)
+
 add_executable(WindowsMain
   WindowsMain.swift
 )
