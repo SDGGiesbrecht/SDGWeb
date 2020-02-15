@@ -46,6 +46,6 @@ public struct UnfoldingError: PresentableError {
     return [
       self.description(),
       StrictString(self.syntaxNode.source())
-    ].joined(separator: "\n")
+    ].joined(separator: "\n" as StrictString)
   }
 }
