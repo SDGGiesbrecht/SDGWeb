@@ -55,7 +55,3 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGText",
   "SDGXCTestUtilities"
 ]
-
-// #workaround(SDGCornerstone 4.0.0, Does not support Windows yet.)
-configuration.supportedPlatforms.remove(.windows)
-configuration.supportedPlatforms.remove(.android)
