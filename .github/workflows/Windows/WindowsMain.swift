@@ -56,7 +56,7 @@ extension InternalTests {
   ]
 }
 
-extension RegressionTests {
+extension SDGHTMLRegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testDataAttributesAllowed", testDataAttributesAllowed),
@@ -87,7 +87,7 @@ extension SDGWebAPITests {
   ]
 }
 
-extension RegressionTests {
+extension SDGWebRegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testRedirect", testRedirect),
@@ -98,8 +98,8 @@ extension RegressionTests {
 var tests = [XCTestCaseEntry]()
 tests += SDGHTMLAPITests.windowsTests
 tests += InternalTests.windowsTests
-tests += RegressionTests.windowsTests
+tests += SDGHTMLRegressionTests.windowsTests
 tests += SDGWebAPITests.windowsTests
-tests += RegressionTests.windowsTests
+tests += SDGWebRegressionTests.windowsTests
 
 XCTMain(tests)
