@@ -26,7 +26,7 @@ import XCTest
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
-class APITests: TestCase {
+class SDGWebAPITests: TestCase {
 
   func testCopyright() {
     XCTAssert(

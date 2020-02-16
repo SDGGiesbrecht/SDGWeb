@@ -60,10 +60,12 @@ public struct SyntaxError: PresentableError {
   }
 
   public func presentableDescription() -> StrictString {
-    return [
-      self.lineDescription().resolved(),
-      self.description(),
-      StrictString(self.context)
-    ].joined(separator: "\n" as StrictString)
+    return StrictString(
+      [
+        self.lineDescription().resolved(),
+        self.description(),
+        StrictString(self.context)
+      ].joined(separator: "\n" as StrictString)
+    )
   }
 }

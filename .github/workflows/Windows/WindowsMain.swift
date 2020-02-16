@@ -17,7 +17,7 @@ import XCTest
 @testable import SDGHTMLTests
 @testable import SDGWebTests
 
-extension APITests {
+extension SDGHTMLAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testAttribute", testAttribute),
@@ -65,7 +65,7 @@ extension RegressionTests {
   ]
 }
 
-extension APITests {
+extension SDGWebAPITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testCopyright", testCopyright),
@@ -96,10 +96,10 @@ extension RegressionTests {
 }
 
 var tests = [XCTestCaseEntry]()
-tests += APITests.windowsTests
+tests += SDGHTMLAPITests.windowsTests
 tests += InternalTests.windowsTests
 tests += RegressionTests.windowsTests
-tests += APITests.windowsTests
+tests += SDGWebAPITests.windowsTests
 tests += RegressionTests.windowsTests
 
 XCTMain(tests)
