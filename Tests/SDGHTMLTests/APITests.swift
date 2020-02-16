@@ -636,7 +636,7 @@ class SDGHTMLAPITests: TestCase {
         }
       }
       compare(
-        String(report.joined(separator: "\n")),
+        String(StrictString(report.joined(separator: "\n" as StrictString))),
         against: testSpecificationDirectory().appendingPathComponent("SyntaxError/\(name).txt"),
         overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
         file: file,
