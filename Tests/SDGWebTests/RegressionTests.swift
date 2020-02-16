@@ -23,7 +23,7 @@ import XCTest
 
 import SDGXCTestUtilities
 
-class RegressionTests: TestCase {
+class SDGWebRegressionTests: TestCase {
 
   func testRedirect() throws {
     // Untracked.

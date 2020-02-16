@@ -20,7 +20,7 @@ import XCTest
 
 import SDGXCTestUtilities
 
-class RegressionTests: TestCase {
+class SDGHTMLRegressionTests: TestCase {
 
   func testDataAttributesAllowed() throws {
     let thisFile = URL(fileURLWithPath: #file)
