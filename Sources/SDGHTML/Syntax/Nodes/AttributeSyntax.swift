@@ -426,23 +426,27 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
         } else if url.host == "example.com" {
           dead = false
         } else {
-          let request = URLRequest(
-            url: url,
-            cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-            timeoutInterval: 10
-          )
-          let semaphore = DispatchSemaphore(value: 0)
-          let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if error == nil,
-              let status = (response as? HTTPURLResponse)?.statusCode,
-              status.dividedAccordingToEuclid(by: 100) == 2
-            {
-              dead = false
+          #if os(Android)  // #workaround(Swift 5.1.3, FoundationNetworking cannot be linked.)
+            dead = false
+          #else
+            let request = URLRequest(
+              url: url,
+              cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+              timeoutInterval: 10
+            )
+            let semaphore = DispatchSemaphore(value: 0)
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+              if error == nil,
+                let status = (response as? HTTPURLResponse)?.statusCode,
+                status.dividedAccordingToEuclid(by: 100) == 2
+              {
+                dead = false
+              }
+              semaphore.signal()
             }
-            semaphore.signal()
-          }
-          task.resume()
-          semaphore.wait()
+            task.resume()
+            semaphore.wait()
+          #endif
         }
         if dead {
           results.append(

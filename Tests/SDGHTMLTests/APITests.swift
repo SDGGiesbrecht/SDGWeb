@@ -611,111 +611,113 @@ class SDGHTMLAPITests: TestCase {
   }
 
   func testSyntaxError() {
-    func expectViolation(
-      named name: String,
-      in string: String,
-      overwriteSpecificationInsteadOfFailing: Bool,
-      file: StaticString = #file,
-      line: UInt = #line
-    ) {
-      var errors: [SyntaxError] = []
-      switch DocumentSyntax.parse(source: string) {
-      case .failure(let error):
-        errors.append(error)
-      case .success(let document):
-        let validated = document.validate(baseURL: URL(fileURLWithPath: "/"))
-        XCTAssert(¬validated.isEmpty, "No error detected.", file: file, line: line)
-        errors.append(contentsOf: validated)
-      }
-      var report: [StrictString] = []
-      for localization in InterfaceLocalization.allCases {
-        report.append(localization.icon ?? StrictString(localization.code))
-        LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          for error in errors {
-            report.append("")
-            report.append(error.presentableDescription())
+    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+      func expectViolation(
+        named name: String,
+        in string: String,
+        overwriteSpecificationInsteadOfFailing: Bool,
+        file: StaticString = #file,
+        line: UInt = #line
+      ) {
+        var errors: [SyntaxError] = []
+        switch DocumentSyntax.parse(source: string) {
+        case .failure(let error):
+          errors.append(error)
+        case .success(let document):
+          let validated = document.validate(baseURL: URL(fileURLWithPath: "/"))
+          XCTAssert(¬validated.isEmpty, "No error detected.", file: file, line: line)
+          errors.append(contentsOf: validated)
+        }
+        var report: [StrictString] = []
+        for localization in InterfaceLocalization.allCases {
+          report.append(localization.icon ?? StrictString(localization.code))
+          LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+            for error in errors {
+              report.append("")
+              report.append(error.presentableDescription())
+            }
           }
         }
+        compare(
+          String(StrictString(report.joined(separator: "\n" as StrictString))),
+          against: testSpecificationDirectory().appendingPathComponent("SyntaxError/\(name).txt"),
+          overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
+          file: file,
+          line: line
+        )
       }
-      compare(
-        String(StrictString(report.joined(separator: "\n" as StrictString))),
-        against: testSpecificationDirectory().appendingPathComponent("SyntaxError/\(name).txt"),
-        overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
-        file: file,
-        line: line
-      )
-    }
 
-    expectViolation(
-      named: "Dead Remote Link",
-      in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Missing Attribute Value",
-      in: "<a href></a>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Invalid Attribute Value",
-      in: "<a hidden=\u{22}value\u{22}></a>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Dead Relative Link",
-      in: "<a href=\u{22}does/not/exist\u{22}></a>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Invalid URL",
-      in: "<a href=\u{22}\u{22}></a>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Unpaired Quotation Mark",
-      in: "<tag attribute=\u{22}>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Nameless Tag",
-      in: "<>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Unpaired Tag Delimiters",
-      in: "tag attribute=\u{22}value\u{22}>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Unknown Attribute",
-      in: "<tag doesnotexist>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Nameless Tag with Attributes",
-      in: "<attribute=\u{22}value\u{22}>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Extraneous Closing Tag",
-      in: "Content</tag>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Nameless Tag with Multiple Attributes",
-      in: "<attribute=\u{22}value\u{22} attribute=\u{22}value\u{22}>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Unpaired Comment Markers",
-      in: "Comment \u{2D}\u{2D}>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    expectViolation(
-      named: "Skipped Heading",
-      in: "<html><h1>...</h1><h3>...</h3></html>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+      expectViolation(
+        named: "Dead Remote Link",
+        in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Missing Attribute Value",
+        in: "<a href></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Invalid Attribute Value",
+        in: "<a hidden=\u{22}value\u{22}></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Dead Relative Link",
+        in: "<a href=\u{22}does/not/exist\u{22}></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Invalid URL",
+        in: "<a href=\u{22}\u{22}></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Unpaired Quotation Mark",
+        in: "<tag attribute=\u{22}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Nameless Tag",
+        in: "<>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Unpaired Tag Delimiters",
+        in: "tag attribute=\u{22}value\u{22}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Unknown Attribute",
+        in: "<tag doesnotexist>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Nameless Tag with Attributes",
+        in: "<attribute=\u{22}value\u{22}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Extraneous Closing Tag",
+        in: "Content</tag>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Nameless Tag with Multiple Attributes",
+        in: "<attribute=\u{22}value\u{22} attribute=\u{22}value\u{22}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Unpaired Comment Markers",
+        in: "Comment \u{2D}\u{2D}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Skipped Heading",
+        in: "<html><h1>...</h1><h3>...</h3></html>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testSyntaxUnfolder() {
