@@ -46,10 +46,15 @@ class SDGWebAPITests: TestCase {
   }
 
   func testLocalized() throws {
+    #warning("Debugging.")
+    do {
     for localization in InterfaceLocalization.allCases {
       try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
         try generate(forMock: "Localized", localization: DoubleLocalization.self)
       }
+    }
+    } catch {
+      print("\(error.localizedDescription)\n\(error)")
     }
   }
 
