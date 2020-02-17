@@ -571,10 +571,12 @@ class SDGHTMLAPITests: TestCase {
     XCTAssert(try ¬validate(url: url).isEmpty, "Failed to warn about unencoded space.")
 
     let otherErrors = try validate(url: HTML.percentEncodeURLPath(url))
-    XCTAssert(
-      otherErrors.isEmpty,
-      "Unrelated warning occurred:\n\(otherErrors)"
-    )
+    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+      XCTAssert(
+        otherErrors.isEmpty,
+        "Unrelated warning occurred:\n\(otherErrors)"
+      )
+    #endif
   }
 
   func testRedirect() {

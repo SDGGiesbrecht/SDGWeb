@@ -76,11 +76,13 @@ class SDGWebAPITests: TestCase {
   }
 
   func testPoorHTML() throws {
-    try generate(
-      forMock: "Poor HTML",
-      localization: SingleLocalization.self,
-      expectValidationFailure: true
-    )
+    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+      try generate(
+        forMock: "Poor HTML",
+        localization: SingleLocalization.self,
+        expectValidationFailure: true
+      )
+    #endif
   }
 
   func testRepositoryStructure() {
@@ -88,7 +90,9 @@ class SDGWebAPITests: TestCase {
   }
 
   func testRightToLeft() throws {
-    try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
+    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+      try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
+    #endif
   }
 
   struct StandInError: PresentableError {
@@ -97,20 +101,48 @@ class SDGWebAPITests: TestCase {
     }
   }
   func testSiteGenerationError() {
-    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
-      let errors: [SiteGenerationError] = [
-        .foundationError(StandInError()),
-        .invalidDomain("[...]"),
-        .missingTitle(page: "[...]"),
-        .syntaxError(
-          page: "[...]",
-          error: SyntaxError(
-            file: "[...]",
-            index: "".scalars.startIndex,
-            description: UserFacing<StrictString, InterfaceLocalization>({ _ in "[...]" }),
-            context: "[...]"
+    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+      #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+        let errors: [SiteGenerationError] = [
+          .foundationError(StandInError()),
+          .invalidDomain("[...]"),
+          .missingTitle(page: "[...]"),
+          .syntaxError(
+            page: "[...]",
+            error: SyntaxError(
+              file: "[...]",
+              index: "".scalars.startIndex,
+              description: UserFacing<StrictString, InterfaceLocalization>({ _ in "[...]" }),
+              context: "[...]"
+            )
           )
-        )
+        ]
+        for index in errors.indices {
+          let error = errors[index]
+          testCustomStringConvertibleConformance(
+            of: error,
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: index.inDigits(),
+            overwriteSpecificationInsteadOfFailing: false
+          )
+        }
+      #endif
+    #endif
+  }
+
+  func testSiteValidationError() throws {
+    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+      let parseFailure: SyntaxError
+      switch DocumentSyntax.parse(source: "html>") {
+      case .failure(let error):
+        parseFailure = error
+      case .success:
+        XCTFail("Should not have parsed successfully.")
+        return
+      }
+      let errors: [SiteValidationError] = [
+        .foundationError(StandInError()),
+        .syntaxError(parseFailure)
       ]
       for index in errors.indices {
         let error = errors[index]
@@ -121,49 +153,29 @@ class SDGWebAPITests: TestCase {
           overwriteSpecificationInsteadOfFailing: false
         )
       }
+
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
+        let invalidHTML = "p>This paragraph is broken.</p>"
+        try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
+        let warnings = Site<InterfaceLocalization, Unfolder>.validate(site: url)
+        XCTAssert(¬warnings.isEmpty)
+      }
     #endif
   }
 
-  func testSiteValidationError() throws {
-    let parseFailure: SyntaxError
-    switch DocumentSyntax.parse(source: "html>") {
-    case .failure(let error):
-      parseFailure = error
-    case .success:
-      XCTFail("Should not have parsed successfully.")
-      return
-    }
-    let errors: [SiteValidationError] = [
-      .foundationError(StandInError()),
-      .syntaxError(parseFailure)
-    ]
-    for index in errors.indices {
-      let error = errors[index]
-      testCustomStringConvertibleConformance(
-        of: error,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: index.inDigits(),
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    }
-
-    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
-      let invalidHTML = "p>This paragraph is broken.</p>"
-      try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
-      let warnings = Site<InterfaceLocalization, Unfolder>.validate(site: url)
-      XCTAssert(¬warnings.isEmpty)
-    }
-  }
-
   func testUnknownLocalization() throws {
-    try generate(forMock: "Unknown Localization", localization: UnknownLocalization.self)
+    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+      try generate(forMock: "Unknown Localization", localization: UnknownLocalization.self)
+    #endif
   }
 
   func testUnlocalized() throws {
-    for localization in InterfaceLocalization.allCases {
-      try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        try generate(forMock: "Unlocalized", localization: SingleLocalization.self)
+    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+      for localization in InterfaceLocalization.allCases {
+        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+          try generate(forMock: "Unlocalized", localization: SingleLocalization.self)
+        }
       }
-    }
+    #endif
   }
 }
