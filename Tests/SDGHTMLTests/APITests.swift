@@ -569,47 +569,53 @@ class SDGHTMLAPITests: TestCase {
       return document.validate(baseURL: thisFile)
     }
     XCTAssert(try ¬validate(url: url).isEmpty, "Failed to warn about unencoded space.")
+
+    let otherErrors = try validate(url: HTML.percentEncodeURLPath(url))
     XCTAssert(
-      try validate(url: HTML.percentEncodeURLPath(url)).isEmpty,
-      "Unrelated warning occurred."
+      otherErrors.isEmpty,
+      "Unrelated warning occurred:\n\(otherErrors)"
     )
   }
 
   func testRedirect() {
-    compare(
-      String(
-        DocumentSyntax.redirect(
-          language: InterfaceLocalization.englishCanada,
-          target: URL(fileURLWithPath: "../")
-        ).source()
-      ),
-      against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"),
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    enum RightToLeftLocalization: String, Localization {
-      case עברית = "he"
-      static let fallbackLocalization: RightToLeftLocalization = .עברית
-    }
-    compare(
-      String(
-        DocumentSyntax.redirect(
-          language: RightToLeftLocalization.עברית,
-          target: URL(fileURLWithPath: "../")
-        ).source()
-      ),
-      against: testSpecificationDirectory().appendingPathComponent("Redirect (Right‐to‐Left).txt"),
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    compare(
-      String(
-        DocumentSyntax.redirect(
-          language: InterfaceLocalization.englishCanada,
-          target: URL(fileURLWithPath: "🇮🇱.html")
-        ).source()
-      ),
-      against: testSpecificationDirectory().appendingPathComponent("Unicode Redirect.txt"),
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+      compare(
+        String(
+          DocumentSyntax.redirect(
+            language: InterfaceLocalization.englishCanada,
+            target: URL(fileURLWithPath: "../")
+          ).source()
+        ),
+        against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      enum RightToLeftLocalization: String, Localization {
+        case עברית = "he"
+        static let fallbackLocalization: RightToLeftLocalization = .עברית
+      }
+      compare(
+        String(
+          DocumentSyntax.redirect(
+            language: RightToLeftLocalization.עברית,
+            target: URL(fileURLWithPath: "../")
+          ).source()
+        ),
+        against: testSpecificationDirectory().appendingPathComponent(
+          "Redirect (Right‐to‐Left).txt"
+        ),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(
+        String(
+          DocumentSyntax.redirect(
+            language: InterfaceLocalization.englishCanada,
+            target: URL(fileURLWithPath: "🇮🇱.html")
+          ).source()
+        ),
+        against: testSpecificationDirectory().appendingPathComponent("Unicode Redirect.txt"),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testSyntaxError() {
@@ -649,76 +655,78 @@ class SDGHTMLAPITests: TestCase {
         )
       }
 
-      expectViolation(
-        named: "Dead Remote Link",
-        in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Missing Attribute Value",
-        in: "<a href></a>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Invalid Attribute Value",
-        in: "<a hidden=\u{22}value\u{22}></a>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Dead Relative Link",
-        in: "<a href=\u{22}does/not/exist\u{22}></a>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Invalid URL",
-        in: "<a href=\u{22}\u{22}></a>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Unpaired Quotation Mark",
-        in: "<tag attribute=\u{22}>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Nameless Tag",
-        in: "<>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Unpaired Tag Delimiters",
-        in: "tag attribute=\u{22}value\u{22}>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Unknown Attribute",
-        in: "<tag doesnotexist>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Nameless Tag with Attributes",
-        in: "<attribute=\u{22}value\u{22}>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Extraneous Closing Tag",
-        in: "Content</tag>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Nameless Tag with Multiple Attributes",
-        in: "<attribute=\u{22}value\u{22} attribute=\u{22}value\u{22}>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Unpaired Comment Markers",
-        in: "Comment \u{2D}\u{2D}>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      expectViolation(
-        named: "Skipped Heading",
-        in: "<html><h1>...</h1><h3>...</h3></html>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
+      #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+        expectViolation(
+          named: "Dead Remote Link",
+          in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Missing Attribute Value",
+          in: "<a href></a>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Invalid Attribute Value",
+          in: "<a hidden=\u{22}value\u{22}></a>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Dead Relative Link",
+          in: "<a href=\u{22}does/not/exist\u{22}></a>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Invalid URL",
+          in: "<a href=\u{22}\u{22}></a>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Unpaired Quotation Mark",
+          in: "<tag attribute=\u{22}>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Nameless Tag",
+          in: "<>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Unpaired Tag Delimiters",
+          in: "tag attribute=\u{22}value\u{22}>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Unknown Attribute",
+          in: "<tag doesnotexist>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Nameless Tag with Attributes",
+          in: "<attribute=\u{22}value\u{22}>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Extraneous Closing Tag",
+          in: "Content</tag>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Nameless Tag with Multiple Attributes",
+          in: "<attribute=\u{22}value\u{22} attribute=\u{22}value\u{22}>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Unpaired Comment Markers",
+          in: "Comment \u{2D}\u{2D}>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        expectViolation(
+          named: "Skipped Heading",
+          in: "<html><h1>...</h1><h3>...</h3></html>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
     #endif
   }
 

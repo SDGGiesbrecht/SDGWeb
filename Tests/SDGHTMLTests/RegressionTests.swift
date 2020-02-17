@@ -23,15 +23,19 @@ import SDGXCTestUtilities
 class SDGHTMLRegressionTests: TestCase {
 
   func testDataAttributesAllowed() throws {
-    let thisFile = URL(fileURLWithPath: #file)
-    let document = try DocumentSyntax.parse(source: "<div data\u{2D}custom></div>").get()
-    let report = document.validate(baseURL: thisFile)
-    XCTAssert(report.isEmpty, "\(report)")
+    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction, entire module.)
+      let thisFile = URL(fileURLWithPath: #file)
+      let document = try DocumentSyntax.parse(source: "<div data\u{2D}custom></div>").get()
+      let report = document.validate(baseURL: thisFile)
+      XCTAssert(report.isEmpty, "\(report)")
+    #endif
   }
 
   func testValidationOfMultiScalarClusters() throws {
     // Untracked
 
-    _ = try DocumentSyntax.parse(source: "🇮🇱").get().validate(baseURL: URL(fileURLWithPath: "/"))
+    #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction, entire module.)
+      _ = try DocumentSyntax.parse(source: "🇮🇱").get().validate(baseURL: URL(fileURLWithPath: "/"))
+    #endif
   }
 }
