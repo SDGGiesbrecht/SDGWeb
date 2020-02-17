@@ -13,8 +13,10 @@
  */
 
 import Foundation
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
+#if !os(Android)  // #workaround(Swift 5.1.3, FoundationNetworking cannot be linked.)
+  #if canImport(FoundationNetworking)
+    import FoundationNetworking
+  #endif
 #endif
 
 import SDGLogic
