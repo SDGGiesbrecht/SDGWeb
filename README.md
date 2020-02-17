@@ -39,7 +39,8 @@ let mock = RepositoryStructure(
   root: URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .deletingLastPathComponent()
-    .appendingPathComponent("Mock Projects/\(mockName)")
+    .appendingPathComponent("Mock Projects")
+    .appendingPathComponent(mockName)
 )
 
 let site = Site<L, Unfolder>(

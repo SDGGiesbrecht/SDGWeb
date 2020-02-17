@@ -46,11 +46,13 @@ class SDGWebAPITests: TestCase {
   }
 
   func testLocalized() throws {
-    for localization in InterfaceLocalization.allCases {
-      try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        try generate(forMock: "Localized", localization: DoubleLocalization.self)
+    #if !os(Windows)  // #workaround(Insuffient information to debug.)
+      for localization in InterfaceLocalization.allCases {
+        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+          try generate(forMock: "Localized", localization: DoubleLocalization.self)
+        }
       }
-    }
+    #endif
   }
 
   func testNoColon() {
@@ -90,8 +92,10 @@ class SDGWebAPITests: TestCase {
   }
 
   func testRightToLeft() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
-      try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
+    #if !os(Windows)  // #workaround(Insuffient information to debug.)
+      #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+        try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
+      #endif
     #endif
   }
 
