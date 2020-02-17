@@ -251,97 +251,99 @@ class SDGHTMLAPITests: TestCase {
           line: line
         )
       }
-      compare(.article(), to: "Article", overwriteSpecificationInsteadOfFailing: false)
-      compare(
-        .author("John Doe", language: InterfaceLocalization.englishCanada),
-        to: "Author",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(.body(), to: "Body", overwriteSpecificationInsteadOfFailing: false)
-      compare(
-        .css(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès/CSS.css")),
-        to: "CSS",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(
-        .description("A document."),
-        to: "Description",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(.division(), to: "Division", overwriteSpecificationInsteadOfFailing: false)
-      compare(.encoding(), to: "Encoding", overwriteSpecificationInsteadOfFailing: false)
-      compare(.header(), to: "Header", overwriteSpecificationInsteadOfFailing: false)
-      compare(
-        .metadataTitle("Title < Symbols"),
-        to: "Metadata Title",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(
-        .document(
-          language: InterfaceLocalization.englishCanada,
-          header: .metadataHeader(
-            title: .metadataTitle("Title"),
-            canonicalURL: .canonical(url: URL(string: "http://example.com/Canonical.html")!),
-            author: .author("John Doe", language: InterfaceLocalization.englishCanada),
-            description: .description("A description."),
-            keywords: .keywords(["keyword", "Schlüsselwort"])
+      #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+        compare(.article(), to: "Article", overwriteSpecificationInsteadOfFailing: false)
+        compare(
+          .author("John Doe", language: InterfaceLocalization.englishCanada),
+          to: "Author",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        compare(.body(), to: "Body", overwriteSpecificationInsteadOfFailing: false)
+        compare(
+          .css(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès/CSS.css")),
+          to: "CSS",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        compare(
+          .description("A document."),
+          to: "Description",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        compare(.division(), to: "Division", overwriteSpecificationInsteadOfFailing: false)
+        compare(.encoding(), to: "Encoding", overwriteSpecificationInsteadOfFailing: false)
+        compare(.header(), to: "Header", overwriteSpecificationInsteadOfFailing: false)
+        compare(
+          .metadataTitle("Title < Symbols"),
+          to: "Metadata Title",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        compare(
+          .document(
+            language: InterfaceLocalization.englishCanada,
+            header: .metadataHeader(
+              title: .metadataTitle("Title"),
+              canonicalURL: .canonical(url: URL(string: "http://example.com/Canonical.html")!),
+              author: .author("John Doe", language: InterfaceLocalization.englishCanada),
+              description: .description("A description."),
+              keywords: .keywords(["keyword", "Schlüsselwort"])
+            ),
+            body: .body()
           ),
-          body: .body()
-        ),
-        to: "Document",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(.lineBreak(), to: "Line Break", overwriteSpecificationInsteadOfFailing: false)
-      compare(
-        .link(
-          target: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.html"),
-          language: InterfaceLocalization.englishUnitedKingdom
-        ),
-        to: "Link",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(.navigation(), to: "Navigation", overwriteSpecificationInsteadOfFailing: false)
-      compare(.paragraph(), to: "Paragraph", overwriteSpecificationInsteadOfFailing: false)
-      compare(
-        .portableDocument(
-          url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf"),
-          fallbackRepresentation: []
-        ),
-        to: "Portable Document",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(.section(), to: "Section", overwriteSpecificationInsteadOfFailing: false)
-      compare(.title(), to: "Title", overwriteSpecificationInsteadOfFailing: false)
-      compare(
-        .languageSwitch(
-          targetURL: UserFacing<URL, TestLocalization>({ localization in
-            switch localization.interfaceLocalization {
-            case .englishUnitedKingdom:
-              return URL(string: "https://somewhere.uk")!
-            case .englishUnitedStates:
-              return URL(string: "https://somewhere.us")!
-            case .englishCanada:
-              return URL(string: "https://somewhere.ca")!
-            case .deutschDeutschland:
-              return URL(string: "https://irgendwo.de")!
-            case .none:
-              return URL(string: "https://somewhere.un")!
-            }
-          })
-        ),
-        to: "Language Switch",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(
-        .foreignText(language: InterfaceLocalization.englishCanada),
-        to: "Foreign Text",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(
-        .span(),
-        to: "Span",
-        overwriteSpecificationInsteadOfFailing: false
-      )
+          to: "Document",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        compare(.lineBreak(), to: "Line Break", overwriteSpecificationInsteadOfFailing: false)
+        compare(
+          .link(
+            target: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.html"),
+            language: InterfaceLocalization.englishUnitedKingdom
+          ),
+          to: "Link",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        compare(.navigation(), to: "Navigation", overwriteSpecificationInsteadOfFailing: false)
+        compare(.paragraph(), to: "Paragraph", overwriteSpecificationInsteadOfFailing: false)
+        compare(
+          .portableDocument(
+            url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf"),
+            fallbackRepresentation: []
+          ),
+          to: "Portable Document",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        compare(.section(), to: "Section", overwriteSpecificationInsteadOfFailing: false)
+        compare(.title(), to: "Title", overwriteSpecificationInsteadOfFailing: false)
+        compare(
+          .languageSwitch(
+            targetURL: UserFacing<URL, TestLocalization>({ localization in
+              switch localization.interfaceLocalization {
+              case .englishUnitedKingdom:
+                return URL(string: "https://somewhere.uk")!
+              case .englishUnitedStates:
+                return URL(string: "https://somewhere.us")!
+              case .englishCanada:
+                return URL(string: "https://somewhere.ca")!
+              case .deutschDeutschland:
+                return URL(string: "https://irgendwo.de")!
+              case .none:
+                return URL(string: "https://somewhere.un")!
+              }
+            })
+          ),
+          to: "Language Switch",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        compare(
+          .foreignText(language: InterfaceLocalization.englishCanada),
+          to: "Foreign Text",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        compare(
+          .span(),
+          to: "Span",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
     #endif
   }
 
