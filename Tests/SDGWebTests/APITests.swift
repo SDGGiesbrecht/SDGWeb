@@ -29,14 +29,16 @@ import SDGXCTestUtilities
 class SDGWebAPITests: TestCase {
 
   func testCopyright() {
-    XCTAssert(
-      ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
-    )
-    XCTAssert(
-      copyrightDates(yearFirstPublished: 2000).contains(
-        CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
+    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+      XCTAssert(
+        ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
       )
-    )
+      XCTAssert(
+        copyrightDates(yearFirstPublished: 2000).contains(
+          CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
+        )
+      )
+    #endif
   }
 
   func testInvalidHTML() {
