@@ -97,30 +97,33 @@ class SDGWebAPITests: TestCase {
     }
   }
   func testSiteGenerationError() {
-    let errors: [SiteGenerationError] = [
-      .foundationError(StandInError()),
-      .invalidDomain("[...]"),
-      .missingTitle(page: "[...]"),
-      .syntaxError(
-        page: "[...]",
-        error: SyntaxError(
-          file: "[...]",
-          index: "".scalars.startIndex,
-          description: UserFacing<StrictString, InterfaceLocalization>({ _ in "[...]" }),
-          context: "[...]"
+    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+      let errors: [SiteGenerationError] = [
+        .foundationError(StandInError()),
+        .invalidDomain("[...]"),
+        .missingTitle(page: "[...]"),
+        .syntaxError(
+          page: "[...]",
+          error: SyntaxError(
+            file: "[...]",
+            index: "".scalars.startIndex,
+            description: UserFacing<StrictString, InterfaceLocalization>({ _ in "[...]" }),
+            context: "[...]"
+          )
         )
-      )
-    ]
-    for index in errors.indices {
-      let error = errors[index]
-      testCustomStringConvertibleConformance(
-        of: error,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: index.inDigits(),
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    }
+      ]
+      for index in errors.indices {
+        let error = errors[index]
+        testCustomStringConvertibleConformance(
+          of: error,
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: index.inDigits(),
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      }
+    #endif
   }
+
   func testSiteValidationError() throws {
     let parseFailure: SyntaxError
     switch DocumentSyntax.parse(source: "html>") {
