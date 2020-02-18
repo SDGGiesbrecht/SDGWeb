@@ -27,7 +27,7 @@ class SDGWebRegressionTests: TestCase {
 
   func testRedirect() throws {
     // Untracked.
-    #if !os(Windows)  // #workaround(Insuffient information to debug.)
+    #if !os(Windows)  // #workaround(Insufficient information to debug.)
       #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction, entire module.)
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
           let redirectFile = DocumentSyntax.redirect(
