@@ -40,6 +40,8 @@ func generate<L>(
       .appendingPathComponent("Mock Projects")
       .appendingPathComponent(mockName)
   )
+  #warning("Debugging...")
+  print(mock.root.path)
 
   let site = Site<L, Unfolder>(
     repositoryStructure: mock,
@@ -54,14 +56,22 @@ func generate<L>(
   )
 
   try site.generate().get()
+  #warning("Debugging...")
+  print("Generated.")
   let warnings = site.validate()
   // @endExample
 
   // Test HTML parsing.
   for htmlFile in try FileManager.default.deepFileEnumeration(in: mock.result)
   where htmlFile.pathExtension == "html" {
+    #warning("Debugging...")
+    print("Iterating...")
     let source = try String(from: htmlFile)
+    #warning("Debugging...")
+    print("Loaded file.")
     let document = try DocumentSyntax.parse(source: source).get()
+    #warning("Debugging...")
+    print("Parsed file.")
     XCTAssertEqual(document.source(), source, file: file, line: line)
   }
 
