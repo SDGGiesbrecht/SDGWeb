@@ -407,7 +407,6 @@ target_link_libraries("SDGWebLocalizations" PRIVATE
 )
 
 add_library("SDGHTML"
-  "../../../Sources/SDGHTML/AnyLocalization.swift"
   "../../../Sources/SDGHTML/Entities.swift"
   "../../../Sources/SDGHTML/HTML.swift"
   "../../../Sources/SDGHTML/Localization.swift"

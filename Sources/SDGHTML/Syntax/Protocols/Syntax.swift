@@ -14,6 +14,7 @@
 
 import SDGControlFlow
 import SDGLogic
+import SDGLocalization
 
 /// A Syntax node.
 public protocol Syntax: TransparentWrapper, TextOutputStreamable {
