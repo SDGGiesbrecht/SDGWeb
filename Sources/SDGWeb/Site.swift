@@ -140,7 +140,11 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       repositoryStructure.css,
       to: repositoryStructure.result.appendingPathComponent("CSS")
     )
-    try CSS.root.save(to: repositoryStructure.result.appendingPathComponent("CSS/Root.css"))
+    try CSS.root.save(
+      to: repositoryStructure.result
+        .appendingPathComponent("CSS")
+        .appendingPathComponent("Root.css")
+    )
   }
 
   private func copyResources() throws {

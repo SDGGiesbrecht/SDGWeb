@@ -49,10 +49,13 @@ for (entity, text) in sorted {
 }
 file.append("]\n")
 
-let sourceFile = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent()
-  .appendingPathComponent("SDGHTML").appendingPathComponent("Entities.swift")
+let sourceFile = URL(fileURLWithPath: #file)
+  .deletingLastPathComponent()
+  .deletingLastPathComponent()
+  .appendingPathComponent("SDGHTML")
+  .appendingPathComponent("Entities.swift")
 
 var existing = try StrictString(from: sourceFile)
 existing.truncate(after: "*/\n\n")
-existing.append(contentsOf: file.joined(separator: "\n"))
+existing.append(contentsOf: file.joined(separator: "\n".scalars))
 try existing.save(to: sourceFile)
