@@ -46,12 +46,14 @@ class SDGWebAPITests: TestCase {
   }
 
   func testLocalized() throws {
-    #if !os(Windows)  // #workaround(Insuffient information to debug.)
-      for localization in InterfaceLocalization.allCases {
-        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          try generate(forMock: "Localized", localization: DoubleLocalization.self)
+    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
+      #if !os(Windows)  // #workaround(Insuffient information to debug.)
+        for localization in InterfaceLocalization.allCases {
+          try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+            try generate(forMock: "Localized", localization: DoubleLocalization.self)
+          }
         }
-      }
+      #endif
     #endif
   }
 
