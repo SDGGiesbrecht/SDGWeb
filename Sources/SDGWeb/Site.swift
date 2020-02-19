@@ -81,21 +81,11 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     case .success:
       break
     }
-    #warning("Debugging...")
-    print("Wrote pages.")
 
     do {
-      #warning("Debugging...")
-      print("Copying CSS...")
       try copyCSS()
-      #warning("Debugging...")
-      print("Copied CSS.")
       if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
-        #warning("Debugging...")
-        print("Copying resources...")
         try copyResources()
-        #warning("Debugging...")
-        print("Copyied resources.")
       }
     } catch {
       return .failure(.foundationError(error))
@@ -119,21 +109,13 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     for templateLocation in fileEnumeration
     where templateLocation.lastPathComponent ≠ ".DS_Store" {
 
-      #warning("Debugging...")
-      print("Loading \(templateLocation.path).")
       switch PageTemplate.load(from: templateLocation, in: self) {
       case .failure(let error):
         return .failure(error)
       case .success(let template):
-      #warning("Debugging...")
-      print("Loaded \(templateLocation.path).")
         for localization in Localization.allCases {
           do {
-            #warning("Debugging...")
-            print("Writing...")
             try template.writeResult(for: localization, of: self, formatting: formatting)
-            #warning("Debugging...")
-            print("Wrote.")
           } catch {
             return .failure(.foundationError(error))
           }

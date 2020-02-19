@@ -142,11 +142,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
     var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
     url.deleteLastPathComponent()
-    #warning("Debugging...")
-    print("Resolving file name...")
     url.appendPathComponent(String(try resolvedFileName()))
-    #warning("Debugging...")
-    print("Resolved file name.")
     url.appendPathExtension("html")
 
     let reportedPath = url.path(relativeTo: site.repositoryStructure.result)
@@ -163,18 +159,10 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       }).resolved()
     )
 
-    #warning("Debugging...")
-    print("Processing result...")
     var result = try processedResult(for: relativePath, localization: localization, site: site)
-    #warning("Debugging...")
-    print("Processed result.")
     if formatting {
       result.format()
     }
-    #warning("Debugging...")
-    print("Saving to \(url.path)...")
     try StrictString(result.source()).save(to: url)
-    #warning("Debugging...")
-    print("Saved.")
   }
 }

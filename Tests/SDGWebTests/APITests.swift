@@ -47,11 +47,13 @@ class SDGWebAPITests: TestCase {
 
   func testLocalized() throws {
     #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
-      for localization in InterfaceLocalization.allCases {
-        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          try generate(forMock: "Localized", localization: DoubleLocalization.self)
+      #if !os(Windows)  // #workaround(Swift 5.1.3, Foundation has issues with the file system)
+        for localization in InterfaceLocalization.allCases {
+          try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+            try generate(forMock: "Localized", localization: DoubleLocalization.self)
+          }
         }
-      }
+      #endif
     #endif
   }
 
@@ -92,7 +94,7 @@ class SDGWebAPITests: TestCase {
   }
 
   func testRightToLeft() throws {
-    #if !os(Windows)  // #workaround(Insufficient information to debug.)
+    #if !os(Windows)  // #workaround(Swift 5.1.3, Foundation has issues with the file system)
       #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
         try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
       #endif
