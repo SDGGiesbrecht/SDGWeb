@@ -40,8 +40,6 @@ func generate<L>(
       .appendingPathComponent("Mock Projects")
       .appendingPathComponent(mockName)
   )
-  #warning("Debugging...")
-  print(mock.root.path)
 
   let site = Site<L, Unfolder>(
     repositoryStructure: mock,
