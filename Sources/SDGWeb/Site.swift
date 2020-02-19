@@ -70,6 +70,8 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
     clean()
 
+    #warning("Debugging...")
+    print("Writing pages...")
     switch writePages(formatting: formatting) {
     case .failure(let error):
       switch error {
@@ -81,11 +83,21 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     case .success:
       break
     }
+    #warning("Debugging...")
+    print("Wrote pages.")
 
     do {
+      #warning("Debugging...")
+      print("Copying CSS...")
       try copyCSS()
+      #warning("Debugging...")
+      print("Copied CSS.")
       if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
+        #warning("Debugging...")
+        print("Copying resources...")
         try copyResources()
+        #warning("Debugging...")
+        print("Copyied resources.")
       }
     } catch {
       return .failure(.foundationError(error))

@@ -48,8 +48,6 @@ class SDGWebAPITests: TestCase {
   func testLocalized() throws {
     #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
       for localization in InterfaceLocalization.allCases {
-        #warning("Debugging...")
-        print(localization)
         try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
           try generate(forMock: "Localized", localization: DoubleLocalization.self)
         }
