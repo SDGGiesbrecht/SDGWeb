@@ -172,7 +172,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       result.format()
     }
     #warning("Debugging...")
-    print("Saving...")
+    print("Saving to \(url.path)...")
     try StrictString(result.source()).save(to: url)
     #warning("Debugging...")
     print("Saved.")
