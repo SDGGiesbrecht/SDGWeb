@@ -111,11 +111,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   private func writePages(formatting: Bool) -> Result<Void, PageTemplateLoadingError> {
     let fileEnumeration: [URL]
     do {
-      #warning("Debugging...")
-      print("Enumerating pages...")
       fileEnumeration = try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
-      #warning("Debugging...")
-      print("Enumgerated pages.")
     } catch {
       return .failure(.foundationError(error))
     }
