@@ -26,7 +26,7 @@ import XCTest
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
-class SDGWebAPITests: TestCase {
+class APITests: TestCase {
 
   func testCopyright() {
     #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)

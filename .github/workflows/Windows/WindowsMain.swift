@@ -17,7 +17,7 @@ import XCTest
 @testable import SDGHTMLTests
 @testable import SDGWebTests
 
-extension SDGHTMLTests.SDGHTMLAPITests {
+extension SDGHTMLTests.APITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testAttribute", testAttribute),
@@ -56,7 +56,7 @@ extension SDGHTMLTests.InternalTests {
   ]
 }
 
-extension SDGHTMLTests.SDGHTMLRegressionTests {
+extension SDGHTMLTests.RegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testDataAttributesAllowed", testDataAttributesAllowed),
@@ -65,7 +65,7 @@ extension SDGHTMLTests.SDGHTMLRegressionTests {
   ]
 }
 
-extension SDGWebTests.SDGWebAPITests {
+extension SDGWebTests.APITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testCopyright", testCopyright),
@@ -87,7 +87,7 @@ extension SDGWebTests.SDGWebAPITests {
   ]
 }
 
-extension SDGWebTests.SDGWebRegressionTests {
+extension SDGWebTests.RegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testRedirect", testRedirect),
@@ -96,10 +96,10 @@ extension SDGWebTests.SDGWebRegressionTests {
 }
 
 var tests = [XCTestCaseEntry]()
-tests += SDGHTMLTests.SDGHTMLAPITests.windowsTests
+tests += SDGHTMLTests.APITests.windowsTests
 tests += SDGHTMLTests.InternalTests.windowsTests
-tests += SDGHTMLTests.SDGHTMLRegressionTests.windowsTests
-tests += SDGWebTests.SDGWebAPITests.windowsTests
-tests += SDGWebTests.SDGWebRegressionTests.windowsTests
+tests += SDGHTMLTests.RegressionTests.windowsTests
+tests += SDGWebTests.APITests.windowsTests
+tests += SDGWebTests.RegressionTests.windowsTests
 
 XCTMain(tests)

@@ -24,8 +24,7 @@ import XCTest
 import SDGPersistenceTestUtilities
 import SDGXCTestUtilities
 
-// #workaround(workspace version 0.30.1, Test case names only need to disambiguate for WindowsMain.swift.)
-class SDGHTMLAPITests: TestCase {
+class APITests: TestCase {
 
   func testAttribute() {
     var attribute = AttributeSyntax(name: TokenSyntax(kind: .attributeName("attribute")))

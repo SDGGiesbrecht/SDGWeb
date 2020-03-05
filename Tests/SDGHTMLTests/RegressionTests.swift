@@ -20,7 +20,7 @@ import XCTest
 
 import SDGXCTestUtilities
 
-class SDGHTMLRegressionTests: TestCase {
+class RegressionTests: TestCase {
 
   func testDataAttributesAllowed() throws {
     #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction, entire module.)
