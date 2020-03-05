@@ -28,17 +28,15 @@ class RegressionTests: TestCase {
   func testRedirect() throws {
     // Untracked.
     #if !os(Windows)  // #workaround(Swift 5.1.3, Foundation has issues with the file system)
-      #if !os(Android)  // #workaround(Swift 5.1.3, Illegal instruction, entire module.)
-        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
-          let redirectFile = DocumentSyntax.redirect(
-            language: InterfaceLocalization.deutschDeutschland,
-            target: URL(fileURLWithPath: "../")
-          ).source()
-          try redirectFile.save(to: url.appendingPathComponent("Redirect.html"))
-          let warnings = Site<InterfaceLocalization, SyntaxUnfolder>.validate(site: url)
-          XCTAssert(warnings.isEmpty, "\(warnings)")
-        }
-      #endif
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
+        let redirectFile = DocumentSyntax.redirect(
+          language: InterfaceLocalization.deutschDeutschland,
+          target: URL(fileURLWithPath: "../")
+        ).source()
+        try redirectFile.save(to: url.appendingPathComponent("Redirect.html"))
+        let warnings = Site<InterfaceLocalization, SyntaxUnfolder>.validate(site: url)
+        XCTAssert(warnings.isEmpty, "\(warnings)")
+      }
     #endif
   }
 }
