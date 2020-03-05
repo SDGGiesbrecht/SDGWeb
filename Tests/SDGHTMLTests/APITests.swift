@@ -250,99 +250,97 @@ class APITests: TestCase {
           line: line
         )
       }
-      #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
-        compare(.article(), to: "Article", overwriteSpecificationInsteadOfFailing: false)
-        compare(
-          .author("John Doe", language: InterfaceLocalization.englishCanada),
-          to: "Author",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        compare(.body(), to: "Body", overwriteSpecificationInsteadOfFailing: false)
-        compare(
-          .css(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès/CSS.css")),
-          to: "CSS",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        compare(
-          .description("A document."),
-          to: "Description",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        compare(.division(), to: "Division", overwriteSpecificationInsteadOfFailing: false)
-        compare(.encoding(), to: "Encoding", overwriteSpecificationInsteadOfFailing: false)
-        compare(.header(), to: "Header", overwriteSpecificationInsteadOfFailing: false)
-        compare(
-          .metadataTitle("Title < Symbols"),
-          to: "Metadata Title",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        compare(
-          .document(
-            language: InterfaceLocalization.englishCanada,
-            header: .metadataHeader(
-              title: .metadataTitle("Title"),
-              canonicalURL: .canonical(url: URL(string: "http://example.com/Canonical.html")!),
-              author: .author("John Doe", language: InterfaceLocalization.englishCanada),
-              description: .description("A description."),
-              keywords: .keywords(["keyword", "Schlüsselwort"])
-            ),
-            body: .body()
+      compare(.article(), to: "Article", overwriteSpecificationInsteadOfFailing: false)
+      compare(
+        .author("John Doe", language: InterfaceLocalization.englishCanada),
+        to: "Author",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(.body(), to: "Body", overwriteSpecificationInsteadOfFailing: false)
+      compare(
+        .css(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès/CSS.css")),
+        to: "CSS",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(
+        .description("A document."),
+        to: "Description",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(.division(), to: "Division", overwriteSpecificationInsteadOfFailing: false)
+      compare(.encoding(), to: "Encoding", overwriteSpecificationInsteadOfFailing: false)
+      compare(.header(), to: "Header", overwriteSpecificationInsteadOfFailing: false)
+      compare(
+        .metadataTitle("Title < Symbols"),
+        to: "Metadata Title",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(
+        .document(
+          language: InterfaceLocalization.englishCanada,
+          header: .metadataHeader(
+            title: .metadataTitle("Title"),
+            canonicalURL: .canonical(url: URL(string: "http://example.com/Canonical.html")!),
+            author: .author("John Doe", language: InterfaceLocalization.englishCanada),
+            description: .description("A description."),
+            keywords: .keywords(["keyword", "Schlüsselwort"])
           ),
-          to: "Document",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        compare(.lineBreak(), to: "Line Break", overwriteSpecificationInsteadOfFailing: false)
-        compare(
-          .link(
-            target: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.html"),
-            language: InterfaceLocalization.englishUnitedKingdom
-          ),
-          to: "Link",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        compare(.navigation(), to: "Navigation", overwriteSpecificationInsteadOfFailing: false)
-        compare(.paragraph(), to: "Paragraph", overwriteSpecificationInsteadOfFailing: false)
-        compare(
-          .portableDocument(
-            url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf"),
-            fallbackRepresentation: []
-          ),
-          to: "Portable Document",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        compare(.section(), to: "Section", overwriteSpecificationInsteadOfFailing: false)
-        compare(.title(), to: "Title", overwriteSpecificationInsteadOfFailing: false)
-        compare(
-          .languageSwitch(
-            targetURL: UserFacing<URL, TestLocalization>({ localization in
-              switch localization.interfaceLocalization {
-              case .englishUnitedKingdom:
-                return URL(string: "https://somewhere.uk")!
-              case .englishUnitedStates:
-                return URL(string: "https://somewhere.us")!
-              case .englishCanada:
-                return URL(string: "https://somewhere.ca")!
-              case .deutschDeutschland:
-                return URL(string: "https://irgendwo.de")!
-              case .none:
-                return URL(string: "https://somewhere.un")!
-              }
-            })
-          ),
-          to: "Language Switch",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        compare(
-          .foreignText(language: InterfaceLocalization.englishCanada),
-          to: "Foreign Text",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        compare(
-          .span(),
-          to: "Span",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+          body: .body()
+        ),
+        to: "Document",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(.lineBreak(), to: "Line Break", overwriteSpecificationInsteadOfFailing: false)
+      compare(
+        .link(
+          target: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.html"),
+          language: InterfaceLocalization.englishUnitedKingdom
+        ),
+        to: "Link",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(.navigation(), to: "Navigation", overwriteSpecificationInsteadOfFailing: false)
+      compare(.paragraph(), to: "Paragraph", overwriteSpecificationInsteadOfFailing: false)
+      compare(
+        .portableDocument(
+          url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf"),
+          fallbackRepresentation: []
+        ),
+        to: "Portable Document",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(.section(), to: "Section", overwriteSpecificationInsteadOfFailing: false)
+      compare(.title(), to: "Title", overwriteSpecificationInsteadOfFailing: false)
+      compare(
+        .languageSwitch(
+          targetURL: UserFacing<URL, TestLocalization>({ localization in
+            switch localization.interfaceLocalization {
+            case .englishUnitedKingdom:
+              return URL(string: "https://somewhere.uk")!
+            case .englishUnitedStates:
+              return URL(string: "https://somewhere.us")!
+            case .englishCanada:
+              return URL(string: "https://somewhere.ca")!
+            case .deutschDeutschland:
+              return URL(string: "https://irgendwo.de")!
+            case .none:
+              return URL(string: "https://somewhere.un")!
+            }
+          })
+        ),
+        to: "Language Switch",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(
+        .foreignText(language: InterfaceLocalization.englishCanada),
+        to: "Foreign Text",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      compare(
+        .span(),
+        to: "Span",
+        overwriteSpecificationInsteadOfFailing: false
+      )
     #endif
   }
 
@@ -570,53 +568,49 @@ class APITests: TestCase {
     XCTAssert(try ¬validate(url: url).isEmpty, "Failed to warn about unencoded space.")
 
     let otherErrors = try validate(url: HTML.percentEncodeURLPath(url))
-    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
-      XCTAssert(
-        otherErrors.isEmpty,
-        "Unrelated warning occurred:\n\(otherErrors)"
-      )
-    #endif
+    XCTAssert(
+      otherErrors.isEmpty,
+      "Unrelated warning occurred:\n\(otherErrors)"
+    )
   }
 
   func testRedirect() {
-    #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
-      compare(
-        String(
-          DocumentSyntax.redirect(
-            language: InterfaceLocalization.englishCanada,
-            target: URL(fileURLWithPath: "../")
-          ).source()
-        ),
-        against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"),
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      enum RightToLeftLocalization: String, Localization {
-        case עברית = "he"
-        static let fallbackLocalization: RightToLeftLocalization = .עברית
-      }
-      compare(
-        String(
-          DocumentSyntax.redirect(
-            language: RightToLeftLocalization.עברית,
-            target: URL(fileURLWithPath: "../")
-          ).source()
-        ),
-        against: testSpecificationDirectory().appendingPathComponent(
-          "Redirect (Right‐to‐Left).txt"
-        ),
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      compare(
-        String(
-          DocumentSyntax.redirect(
-            language: InterfaceLocalization.englishCanada,
-            target: URL(fileURLWithPath: "🇮🇱.html")
-          ).source()
-        ),
-        against: testSpecificationDirectory().appendingPathComponent("Unicode Redirect.txt"),
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    compare(
+      String(
+        DocumentSyntax.redirect(
+          language: InterfaceLocalization.englishCanada,
+          target: URL(fileURLWithPath: "../")
+        ).source()
+      ),
+      against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"),
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    enum RightToLeftLocalization: String, Localization {
+      case עברית = "he"
+      static let fallbackLocalization: RightToLeftLocalization = .עברית
+    }
+    compare(
+      String(
+        DocumentSyntax.redirect(
+          language: RightToLeftLocalization.עברית,
+          target: URL(fileURLWithPath: "../")
+        ).source()
+      ),
+      against: testSpecificationDirectory().appendingPathComponent(
+        "Redirect (Right‐to‐Left).txt"
+      ),
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    compare(
+      String(
+        DocumentSyntax.redirect(
+          language: InterfaceLocalization.englishCanada,
+          target: URL(fileURLWithPath: "🇮🇱.html")
+        ).source()
+      ),
+      against: testSpecificationDirectory().appendingPathComponent("Unicode Redirect.txt"),
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testSyntaxError() {
@@ -658,78 +652,76 @@ class APITests: TestCase {
         )
       }
 
-      #if !os(Android)  // #workaround(Swift 5.1.3, Emulator lacks permissions.)
-        expectViolation(
-          named: "Dead Remote Link",
-          in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Missing Attribute Value",
-          in: "<a href></a>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Invalid Attribute Value",
-          in: "<a hidden=\u{22}value\u{22}></a>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Dead Relative Link",
-          in: "<a href=\u{22}does/not/exist\u{22}></a>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Invalid URL",
-          in: "<a href=\u{22}\u{22}></a>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Unpaired Quotation Mark",
-          in: "<tag attribute=\u{22}>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Nameless Tag",
-          in: "<>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Unpaired Tag Delimiters",
-          in: "tag attribute=\u{22}value\u{22}>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Unknown Attribute",
-          in: "<tag doesnotexist>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Nameless Tag with Attributes",
-          in: "<attribute=\u{22}value\u{22}>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Extraneous Closing Tag",
-          in: "Content</tag>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Nameless Tag with Multiple Attributes",
-          in: "<attribute=\u{22}value\u{22} attribute=\u{22}value\u{22}>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Unpaired Comment Markers",
-          in: "Comment \u{2D}\u{2D}>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        expectViolation(
-          named: "Skipped Heading",
-          in: "<html><h1>...</h1><h3>...</h3></html>",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      expectViolation(
+        named: "Dead Remote Link",
+        in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Missing Attribute Value",
+        in: "<a href></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Invalid Attribute Value",
+        in: "<a hidden=\u{22}value\u{22}></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Dead Relative Link",
+        in: "<a href=\u{22}does/not/exist\u{22}></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Invalid URL",
+        in: "<a href=\u{22}\u{22}></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Unpaired Quotation Mark",
+        in: "<tag attribute=\u{22}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Nameless Tag",
+        in: "<>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Unpaired Tag Delimiters",
+        in: "tag attribute=\u{22}value\u{22}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Unknown Attribute",
+        in: "<tag doesnotexist>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Nameless Tag with Attributes",
+        in: "<attribute=\u{22}value\u{22}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Extraneous Closing Tag",
+        in: "Content</tag>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Nameless Tag with Multiple Attributes",
+        in: "<attribute=\u{22}value\u{22} attribute=\u{22}value\u{22}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Unpaired Comment Markers",
+        in: "Comment \u{2D}\u{2D}>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      expectViolation(
+        named: "Skipped Heading",
+        in: "<html><h1>...</h1><h3>...</h3></html>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
     #endif
   }
 
