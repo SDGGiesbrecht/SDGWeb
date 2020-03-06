@@ -32,11 +32,20 @@ func generate<L>(
   file: StaticString = #file,
   line: UInt = #line
 ) throws where L: InputLocalization {
+
+  var sdgWebRepositoryRoot = URL(fileURLWithPath: #file)
+    .deletingLastPathComponent()
+    .deletingLastPathComponent()
+    .deletingLastPathComponent()
+  if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
+    sdgWebRepositoryRoot = URL(fileURLWithPath: overridden)
+  }
+
   // @example(readMe🇨🇦EN)
   let mock = RepositoryStructure(
-    root: URL(fileURLWithPath: #file)
-      .deletingLastPathComponent()
-      .deletingLastPathComponent()
+    root:
+      sdgWebRepositoryRoot
+      .appendingPathComponent("Tests")
       .appendingPathComponent("Mock Projects")
       .appendingPathComponent(mockName)
   )

@@ -35,9 +35,8 @@ import PackageDescription
 ///
 /// ```swift
 /// let mock = RepositoryStructure(
-///   root: URL(fileURLWithPath: #file)
-///     .deletingLastPathComponent()
-///     .deletingLastPathComponent()
+///   root: repositoryRoot
+///     .appendingPathComponent("Tests")
 ///     .appendingPathComponent("Mock Projects")
 ///     .appendingPathComponent(mockName)
 /// )
