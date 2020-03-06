@@ -558,7 +558,13 @@ class APITests: TestCase {
     XCTAssertEqual(HTML.percentEncodeURLPath("Ελληνικό κείμενο"), "Ελληνικό%20κείμενο")
 
     let url = "../Mock Projects"
-    let thisFile = URL(fileURLWithPath: #file)
+    var thisFile = URL(fileURLWithPath: #file)
+    if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
+      thisFile = URL(fileURLWithPath: overridden)
+        .appendingPathComponent("Tests")
+        .appendingPathComponent("SDGHTMLTests")
+        .appendingPathComponent("APITests.swift")
+    }
     func validate(url: String) throws -> [SyntaxError] {
       let document = try DocumentSyntax.parse(
         source: "<a href=\u{22}\(url)\u{22}>Space is not encoded.</a>"
