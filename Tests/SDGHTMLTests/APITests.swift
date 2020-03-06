@@ -648,7 +648,7 @@ class APITests: TestCase {
           }
         }
         compare(
-          String(StrictString(report.joined(separator: "\n" as StrictString))),
+          String(report.joined(separator: "\n")),
           against: testSpecificationDirectory()
             .appendingPathComponent("SyntaxError")
             .appendingPathComponent("\(name).txt"),
