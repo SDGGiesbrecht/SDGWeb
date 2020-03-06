@@ -35,9 +35,9 @@ import PackageDescription
 ///
 /// ```swift
 /// let mock = RepositoryStructure(
-///   root: URL(fileURLWithPath: #file)
-///     .deletingLastPathComponent()
-///     .deletingLastPathComponent()
+///   root:
+///     sdgWebRepositoryRoot
+///     .appendingPathComponent("Tests")
 ///     .appendingPathComponent("Mock Projects")
 ///     .appendingPathComponent(mockName)
 /// )
@@ -73,7 +73,7 @@ let package = Package(
     .library(name: "SDGCSS", targets: ["SDGCSS"])
   ],
   dependencies: [
-    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(4, 3, 0))
+    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(4, 4, 0))
   ],
   targets: [
     // Products
@@ -174,7 +174,7 @@ let package = Package(
   ]
 )
 
-// #workaround(workspace version 0.30.1, Causes Xcode executable/scheme issues for iOS.)
+// #workaround(workspace version 0.30.2, Causes Xcode executable/scheme issues for iOS.)
 func removeEntityListGenerator() {
   package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
 }
@@ -182,7 +182,7 @@ func removeEntityListGenerator() {
   removeEntityListGenerator()
 #endif
 
-// #workaround(workspace version 0.30.1, CMake cannot handle Unicode.)
+// #workaround(workspace version 0.30.2, CMake cannot handle Unicode.)
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   removeEntityListGenerator()

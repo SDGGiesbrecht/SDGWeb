@@ -36,9 +36,9 @@ SDGWeb provides tools for generating websites.
 
 ```swift
 let mock = RepositoryStructure(
-  root: URL(fileURLWithPath: #file)
-    .deletingLastPathComponent()
-    .deletingLastPathComponent()
+  root:
+    sdgWebRepositoryRoot
+    .appendingPathComponent("Tests")
     .appendingPathComponent("Mock Projects")
     .appendingPathComponent(mockName)
 )
