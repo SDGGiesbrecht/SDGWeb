@@ -35,7 +35,8 @@ import PackageDescription
 ///
 /// ```swift
 /// let mock = RepositoryStructure(
-///   root: repositoryRoot
+///   root:
+///     sdgWebRepositoryRoot
 ///     .appendingPathComponent("Tests")
 ///     .appendingPathComponent("Mock Projects")
 ///     .appendingPathComponent(mockName)
