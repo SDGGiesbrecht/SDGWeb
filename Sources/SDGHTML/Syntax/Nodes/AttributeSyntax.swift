@@ -170,15 +170,18 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
 
   // MARK: - Validation
 
-  internal func validate(
-    location: String.ScalarView.Index,
-    file: String,
-    baseURL: URL
-  ) -> [SyntaxError] {
-    var results: [SyntaxError] = []
-    validateValuePresence(location: location, file: file, results: &results)
-    return results
-  }
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    internal func validate(
+      location: String.ScalarView.Index,
+      file: String,
+      baseURL: URL
+    ) -> [SyntaxError] {
+      var results: [SyntaxError] = []
+      validateValuePresence(location: location, file: file, results: &results)
+      return results
+    }
+  #endif
 
   private static let nonEmptyAttributes: Set<String> = [
     "accept",
@@ -407,51 +410,72 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   }
 
   private static let urlAttributes: Set<String> = ["data", "href", "poster", "src", "srcset"]
-  internal func validateURLValue(
-    location: String.ScalarView.Index,
-    file: String,
-    baseURL: URL,
-    results: inout [SyntaxError]
-  ) {
-    if name.source() ∈ AttributeSyntax.urlAttributes,
-      let value = self.value
-    {
-      let urlString = value.value.source()
-      let legacySpecification = urlString.addingPercentEncoding(
-        withAllowedCharacters: CharacterSet(charactersIn: Unicode.Scalar(0)..<Unicode.Scalar(0x80))
-      )!
-      if let url = URL(string: legacySpecification, relativeTo: baseURL) {
-        var dead = true
-        if url.isFileURL {
-          if (try? url.checkResourceIsReachable()) == true {
-            dead = false
-          }
-        } else if url.host == "example.com" {
-          dead = false
-        } else {
-          #if os(Android)  // #workaround(Swift 5.1.3, FoundationNetworking cannot be linked.)
-            dead = false
-          #else
-            let request = URLRequest(
-              url: url,
-              cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-              timeoutInterval: 10
-            )
-            let semaphore = DispatchSemaphore(value: 0)
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-              if error == nil,
-                let status = (response as? HTTPURLResponse)?.statusCode,
-                status.dividedAccordingToEuclid(by: 100) == 2
-              {
-                dead = false
-              }
-              semaphore.signal()
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    internal func validateURLValue(
+      location: String.ScalarView.Index,
+      file: String,
+      baseURL: URL,
+      results: inout [SyntaxError]
+    ) {
+      if name.source() ∈ AttributeSyntax.urlAttributes,
+        let value = self.value
+      {
+        let urlString = value.value.source()
+        let legacySpecification = urlString.addingPercentEncoding(
+          withAllowedCharacters: CharacterSet(
+            charactersIn: Unicode.Scalar(0)..<Unicode.Scalar(0x80)
+          )
+        )!
+        if let url = URL(string: legacySpecification, relativeTo: baseURL) {
+          var dead = true
+          if url.isFileURL {
+            if (try? url.checkResourceIsReachable()) == true {
+              dead = false
             }
-            task.resume()
-            semaphore.wait()
-          #endif
-        }
-        if dead {
+          } else if url.host == "example.com" {
+            dead = false
+          } else {
+            #if os(Android)  // #workaround(Swift 5.1.3, FoundationNetworking cannot be linked.)
+              dead = false
+            #else
+              let request = URLRequest(
+                url: url,
+                cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+                timeoutInterval: 10
+              )
+              let semaphore = DispatchSemaphore(value: 0)
+              let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if error == nil,
+                  let status = (response as? HTTPURLResponse)?.statusCode,
+                  status.dividedAccordingToEuclid(by: 100) == 2
+                {
+                  dead = false
+                }
+                semaphore.signal()
+              }
+              task.resume()
+              semaphore.wait()
+            #endif
+          }
+          if dead {
+            results.append(
+              SyntaxError(
+                file: file,
+                index: location,
+                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                  switch localization {
+                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "A link is dead: \(url.absoluteString)"
+                  case .deutschDeutschland:
+                    return "Ein Verweis ist tot: \(url.absoluteString)"
+                  }
+                }),
+                context: name.source() + value.source()
+              )
+            )
+          }
+        } else {
           results.append(
             SyntaxError(
               file: file,
@@ -459,34 +483,18 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
               description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return "A link is dead: \(url.absoluteString)"
+                  return "A URL is invalid: \(urlString)"
                 case .deutschDeutschland:
-                  return "Ein Verweis ist tot: \(url.absoluteString)"
+                  return "Ein Ressourcenzeiger ist ungültig: \(urlString)"
                 }
               }),
               context: name.source() + value.source()
             )
           )
         }
-      } else {
-        results.append(
-          SyntaxError(
-            file: file,
-            index: location,
-            description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "A URL is invalid: \(urlString)"
-              case .deutschDeutschland:
-                return "Ein Ressourcenzeiger ist ungültig: \(urlString)"
-              }
-            }),
-            context: name.source() + value.source()
-          )
-        )
       }
     }
-  }
+  #endif
 
   // MARK: - NamedSyntax
 

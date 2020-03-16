@@ -32,28 +32,31 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
   // MARK: - Initialization
 
-  /// Creates a website instance.
-  ///
-  /// - Parameters:
-  ///     - repositoryStructure: The layout of the repository.
-  ///     - siteRoot: The base URL where the site will be hosted.
-  ///     - localizationDirectories: The name to use for localization directories.
-  ///     - siteAuthor: The author of the website.
-  ///     - reportProgress: A closure to report progress as the site is assembled.
-  ///     - progressReport: A string describing progress made.
-  public init(
-    repositoryStructure: RepositoryStructure,
-    siteRoot: UserFacing<URL, Localization>,
-    localizationDirectories: UserFacing<StrictString, Localization>,
-    author siteAuthor: UserFacing<ElementSyntax, Localization>,
-    reportProgress: @escaping (_ progressReport: StrictString) -> Void
-  ) {
-    self.repositoryStructure = repositoryStructure
-    self.siteRoot = siteRoot
-    self.localizationDirectories = localizationDirectories
-    self.author = siteAuthor
-    self.reportProgress = reportProgress
-  }
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    /// Creates a website instance.
+    ///
+    /// - Parameters:
+    ///     - repositoryStructure: The layout of the repository.
+    ///     - siteRoot: The base URL where the site will be hosted.
+    ///     - localizationDirectories: The name to use for localization directories.
+    ///     - siteAuthor: The author of the website.
+    ///     - reportProgress: A closure to report progress as the site is assembled.
+    ///     - progressReport: A string describing progress made.
+    public init(
+      repositoryStructure: RepositoryStructure,
+      siteRoot: UserFacing<URL, Localization>,
+      localizationDirectories: UserFacing<StrictString, Localization>,
+      author siteAuthor: UserFacing<ElementSyntax, Localization>,
+      reportProgress: @escaping (_ progressReport: StrictString) -> Void
+    ) {
+      self.repositoryStructure = repositoryStructure
+      self.siteRoot = siteRoot
+      self.localizationDirectories = localizationDirectories
+      self.author = siteAuthor
+      self.reportProgress = reportProgress
+    }
+  #endif
 
   // MARK: - Properties
 
@@ -101,32 +104,35 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     try? FileManager.default.removeItem(at: repositoryStructure.result)
   }
 
-  private func writePages(formatting: Bool) -> Result<Void, PageTemplateLoadingError> {
-    let fileEnumeration: [URL]
-    do {
-      fileEnumeration = try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
-    } catch {
-      return .failure(.foundationError(error))
-    }
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    private func writePages(formatting: Bool) -> Result<Void, PageTemplateLoadingError> {
+      let fileEnumeration: [URL]
+      do {
+        fileEnumeration = try FileManager.default.deepFileEnumeration(in: repositoryStructure.pages)
+      } catch {
+        return .failure(.foundationError(error))
+      }
 
-    for templateLocation in fileEnumeration
-    where templateLocation.lastPathComponent ≠ ".DS_Store" {
+      for templateLocation in fileEnumeration
+      where templateLocation.lastPathComponent ≠ ".DS_Store" {
 
-      switch PageTemplate.load(from: templateLocation, in: self) {
-      case .failure(let error):
-        return .failure(error)
-      case .success(let template):
-        for localization in Localization.allCases {
-          do {
-            try template.writeResult(for: localization, of: self, formatting: formatting)
-          } catch {
-            return .failure(.foundationError(error))
+        switch PageTemplate.load(from: templateLocation, in: self) {
+        case .failure(let error):
+          return .failure(error)
+        case .success(let template):
+          for localization in Localization.allCases {
+            do {
+              try template.writeResult(for: localization, of: self, formatting: formatting)
+            } catch {
+              return .failure(.foundationError(error))
+            }
           }
         }
       }
+      return .success(())
     }
-    return .success(())
-  }
+  #endif
 
   private func copyCSS() throws {
     reportProgress(
@@ -169,44 +175,47 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
   // MARK: - Validation
 
-  /// Validates any website.
-  ///
-  /// - Parameters:
-  ///     - site: The URL of a site in the local file system.
-  public static func validate(site: URL) -> [URL: [SiteValidationError]] {
-    var files: [URL]
-    do {
-      files = try FileManager.default.deepFileEnumeration(in: site)
-    } catch {
-      // @exempt(from: tests)
-      return [site: [.foundationError(error)]]
-    }
-
-    var results: [URL: [SiteValidationError]] = [:]
-    for file in files where file.pathExtension == "html" {
-      let source: String
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    /// Validates any website.
+    ///
+    /// - Parameters:
+    ///     - site: The URL of a site in the local file system.
+    public static func validate(site: URL) -> [URL: [SiteValidationError]] {
+      var files: [URL]
       do {
-        source = try String(from: file)
+        files = try FileManager.default.deepFileEnumeration(in: site)
       } catch {
         // @exempt(from: tests)
-        results[file] = [.foundationError(error)]
-        break
+        return [site: [.foundationError(error)]]
       }
 
-      let document = DocumentSyntax.parse(source: source)
-      switch document {
-      case .failure(let error):
-        results[file] = [.syntaxError(error)]
-      case .success(let parsed):
-        results[file] = parsed.validate(baseURL: file).map { .syntaxError($0) }
+      var results: [URL: [SiteValidationError]] = [:]
+      for file in files where file.pathExtension == "html" {
+        let source: String
+        do {
+          source = try String(from: file)
+        } catch {
+          // @exempt(from: tests)
+          results[file] = [.foundationError(error)]
+          break
+        }
+
+        let document = DocumentSyntax.parse(source: source)
+        switch document {
+        case .failure(let error):
+          results[file] = [.syntaxError(error)]
+        case .success(let parsed):
+          results[file] = parsed.validate(baseURL: file).map { .syntaxError($0) }
+        }
       }
+
+      return results.filter { _, value in ¬value.isEmpty }
     }
 
-    return results.filter { _, value in ¬value.isEmpty }
-  }
-
-  /// Validates the generated website.
-  public func validate() -> [URL: [SiteValidationError]] {
-    return Site.validate(site: repositoryStructure.result)
-  }
+    /// Validates the generated website.
+    public func validate() -> [URL: [SiteValidationError]] {
+      return Site.validate(site: repositoryStructure.result)
+    }
+  #endif
 }

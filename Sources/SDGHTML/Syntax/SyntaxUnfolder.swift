@@ -202,93 +202,96 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
       }
     })
   }
-  /// Unfolds the `<page>` element.
-  ///
-  /// `<page>` serves as the root element of an HTML document. It requires the following attributes:
-  ///
-  /// - `title` will become the metadata title of the page.
-  /// - `description` will become the description of the page.
-  /// - `keywords` will become the suggested search keywords for the page.
-  ///
-  /// The content of the `<page>` element will become the content of the `<body>` element.
-  ///
-  /// - Parameters:
-  ///   - contentList: The content list to unfold.
-  ///   - localization: The localization of the page.
-  ///   - siteRoot: The URL of the site root.
-  ///   - relativePath: The location of the page relative to the site root.
-  ///   - authorDeclaration: The author declaration.
-  ///   - css: The paths of the CSS files, each relative to the site root.
-  public static func unfoldPage<L>(
-    _ contentList: inout ListSyntax<ContentSyntax>,
-    localization: L,
-    siteRoot: URL,
-    relativePath: String,
-    author authorDeclaration: ElementSyntax,
-    css: [String]
-  ) throws
-  where L: Localization {
-    for index in contentList.indices {
-      let entry = contentList[index]
-      if case .element(let page) = entry.kind,
-        page.isNamed(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "page"
-            case .deutschDeutschland:
-              return "seite"
-            }
-          })
-        )
-      {
-        let title = try page.requiredAttribute(named: _titleAttributeName)
-        let description = try page.requiredAttribute(
-          named: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "description"
-            case .deutschDeutschland:
-              return "beschreibung"
-            }
-          })
-        )
-        let keywords = try page.requiredAttribute(
-          named: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "keywords"
-            case .deutschDeutschland:
-              return "schlüsselwörter"
-            }
-          })
-        )
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    /// Unfolds the `<page>` element.
+    ///
+    /// `<page>` serves as the root element of an HTML document. It requires the following attributes:
+    ///
+    /// - `title` will become the metadata title of the page.
+    /// - `description` will become the description of the page.
+    /// - `keywords` will become the suggested search keywords for the page.
+    ///
+    /// The content of the `<page>` element will become the content of the `<body>` element.
+    ///
+    /// - Parameters:
+    ///   - contentList: The content list to unfold.
+    ///   - localization: The localization of the page.
+    ///   - siteRoot: The URL of the site root.
+    ///   - relativePath: The location of the page relative to the site root.
+    ///   - authorDeclaration: The author declaration.
+    ///   - css: The paths of the CSS files, each relative to the site root.
+    public static func unfoldPage<L>(
+      _ contentList: inout ListSyntax<ContentSyntax>,
+      localization: L,
+      siteRoot: URL,
+      relativePath: String,
+      author authorDeclaration: ElementSyntax,
+      css: [String]
+    ) throws
+    where L: Localization {
+      for index in contentList.indices {
+        let entry = contentList[index]
+        if case .element(let page) = entry.kind,
+          page.isNamed(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "page"
+              case .deutschDeutschland:
+                return "seite"
+              }
+            })
+          )
+        {
+          let title = try page.requiredAttribute(named: _titleAttributeName)
+          let description = try page.requiredAttribute(
+            named: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "description"
+              case .deutschDeutschland:
+                return "beschreibung"
+              }
+            })
+          )
+          let keywords = try page.requiredAttribute(
+            named: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "keywords"
+              case .deutschDeutschland:
+                return "schlüsselwörter"
+              }
+            })
+          )
 
-        let pageURL = siteRoot.appendingPathComponent(relativePath)
-        let baseURL = self.baseURL(fromRelativePath: relativePath)
+          let pageURL = siteRoot.appendingPathComponent(relativePath)
+          let baseURL = self.baseURL(fromRelativePath: relativePath)
 
-        contentList.replaceSubrange(
-          (index...index).relative(to: contentList),
-          with: DocumentSyntax.document(
-            documentElement: .document(
-              language: localization,
-              header: .metadataHeader(
-                title: .metadataTitle(title),
-                canonicalURL: .canonical(url: pageURL),
-                author: authorDeclaration,
-                description: .description(description),
-                keywords: .keywords(keywords.components(separatedBy: ", ")),
-                css: css.map({ .css(url: URL(fileURLWithPath: baseURL + $0)) })
+          contentList.replaceSubrange(
+            (index...index).relative(to: contentList),
+            with: DocumentSyntax.document(
+              documentElement: .document(
+                language: localization,
+                header: .metadataHeader(
+                  title: .metadataTitle(title),
+                  canonicalURL: .canonical(url: pageURL),
+                  author: authorDeclaration,
+                  description: .description(description),
+                  keywords: .keywords(keywords.components(separatedBy: ", ")),
+                  css: css.map({ .css(url: URL(fileURLWithPath: baseURL + $0)) })
+                ),
+                body: ElementSyntax.body(contents: page.content)
               ),
-              body: ElementSyntax.body(contents: page.content)
-            ),
-            formatted: false
-          ).content
-        )
-        return
+              formatted: false
+            ).content
+          )
+          return
+        }
       }
     }
-  }
+  #endif
 
   /// Unfolds `<pageTitle>` into the text of the page’s title.
   ///

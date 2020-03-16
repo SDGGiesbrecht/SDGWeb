@@ -30,34 +30,37 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
-  internal static func load<Unfolder>(
-    from file: URL,
-    in site: Site<Localization, Unfolder>
-  ) -> Result<PageTemplate, PageTemplateLoadingError> {
-    let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    internal static func load<Unfolder>(
+      from file: URL,
+      in site: Site<Localization, Unfolder>
+    ) -> Result<PageTemplate, PageTemplateLoadingError> {
+      let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
 
-    let source: StrictString
-    do {
-      source = try StrictString(from: file)
-    } catch {
-      return .failure(.foundationError(error))
-    }
+      let source: StrictString
+      do {
+        source = try StrictString(from: file)
+      } catch {
+        return .failure(.foundationError(error))
+      }
 
-    let templateSyntax: DocumentSyntax
-    switch DocumentSyntax.parse(source: String(source)) {
-    case .success(let document):
-      templateSyntax = document
-    case .failure(let error):
-      return .failure(.syntaxError(page: relativePath, error: error))
-    }
+      let templateSyntax: DocumentSyntax
+      switch DocumentSyntax.parse(source: String(source)) {
+      case .success(let document):
+        templateSyntax = document
+      case .failure(let error):
+        return .failure(.syntaxError(page: relativePath, error: error))
+      }
 
-    return .success(
-      PageTemplate(
-        relativePath: relativePath,
-        templateSyntax: templateSyntax
+      return .success(
+        PageTemplate(
+          relativePath: relativePath,
+          templateSyntax: templateSyntax
+        )
       )
-    )
-  }
+    }
+  #endif
 
   private init(
     relativePath: StrictString,
