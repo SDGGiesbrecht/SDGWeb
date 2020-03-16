@@ -97,7 +97,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     do {
       try copyCSS()
       // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-      #if !canImport(Foundation)
+      #if canImport(Foundation)
         if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
           try copyResources()
         }
@@ -111,7 +111,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
   private func clean() {
     // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-    #if !canImport(Foundation)
+    #if canImport(Foundation)
       try? FileManager.default.removeItem(at: repositoryStructure.result)
     #endif
   }
@@ -158,7 +158,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       }).resolved()
     )
     // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-    #if !canImport(Foundation)
+    #if canImport(Foundation)
       try FileManager.default.copy(
         repositoryStructure.css,
         to: repositoryStructure.result.appendingPathComponent("CSS")
@@ -183,7 +183,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       }).resolved()
     )
     // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-    #if !canImport(Foundation)
+    #if canImport(Foundation)
       try FileManager.default.copy(
         repositoryStructure.resources,
         to: repositoryStructure.result.appendingPathComponent("Resources")
@@ -201,7 +201,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     ///     - site: The URL of a site in the local file system.
     public static func validate(site: URL) -> [URL: [SiteValidationError]] {
       // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-      #if !canImport(Foundation)
+      #if canImport(Foundation)
         var files: [URL]
         do {
           files = try FileManager.default.deepFileEnumeration(in: site)
@@ -213,7 +213,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
       var results: [URL: [SiteValidationError]] = [:]
       // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-      #if !canImport(Foundation)
+      #if canImport(Foundation)
         for file in files where file.pathExtension == "html" {
           let source: String
           do {

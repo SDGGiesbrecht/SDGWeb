@@ -36,7 +36,7 @@ public enum SiteValidationError: PresentableError {
     case .foundationError(let error):
       // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
       #if !canImport(Foundation)
-        return "\(error)"
+        return StrictString(String(describing: error))
       #else
         return StrictString(error.localizedDescription)
       #endif
