@@ -73,7 +73,7 @@ let package = Package(
     .library(name: "SDGCSS", targets: ["SDGCSS"])
   ],
   dependencies: [
-    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(4, 4, 1))
+    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(4, 6, 0))
   ],
   targets: [
     // Products
