@@ -61,7 +61,10 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   // MARK: - Properties
 
   internal let repositoryStructure: RepositoryStructure
-  internal let siteRoot: UserFacing<URL, Localization>
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    internal let siteRoot: UserFacing<URL, Localization>
+  #endif
   internal let localizationDirectories: UserFacing<StrictString, Localization>
   internal let author: UserFacing<ElementSyntax, Localization>
   internal let reportProgress: (StrictString) -> Void

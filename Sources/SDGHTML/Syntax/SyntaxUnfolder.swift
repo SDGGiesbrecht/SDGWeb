@@ -387,20 +387,23 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   public func unfold(contentList: inout ListSyntax<ContentSyntax>) throws {
     if let localization = context?.localization {
       try SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
-      if let siteRoot = context?.siteRoot,
-        let relativePath = context?.relativePath,
-        let author = context?.author,
-        let css = context?.css
-      {
-        try SyntaxUnfolder.unfoldPage(
-          &contentList,
-          localization: localization,
-          siteRoot: siteRoot,
-          relativePath: relativePath,
-          author: author,
-          css: css
-        )
-      }
+      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+      #if canImport(Foundation)
+        if let siteRoot = context?.siteRoot,
+          let relativePath = context?.relativePath,
+          let author = context?.author,
+          let css = context?.css
+        {
+          try SyntaxUnfolder.unfoldPage(
+            &contentList,
+            localization: localization,
+            siteRoot: siteRoot,
+            relativePath: relativePath,
+            author: author,
+            css: css
+          )
+        }
+      #endif
     }
     if let title = context?.title {
       SyntaxUnfolder.unfoldPageTitle(&contentList, title: title)

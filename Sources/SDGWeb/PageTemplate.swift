@@ -100,21 +100,24 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     site: Site<Localization, Unfolder>
   ) throws -> DocumentSyntax {
     var syntax = templateSyntax
-    try syntax.unfold(
-      with: Unfolder(
-        context: SyntaxUnfolder.Context(
-          localization: localization,
-          siteRoot: site.siteRoot.resolved(for: localization),
-          relativePath: String(relativePath),
-          title: resolvedTitle(),
-          author: site.author.resolved(for: localization),
-          css: [
-            "CSS/Root.css",
-            "CSS/Site.css"
-          ]
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if canImport(Foundation)
+      try syntax.unfold(
+        with: Unfolder(
+          context: SyntaxUnfolder.Context(
+            localization: localization,
+            siteRoot: site.siteRoot.resolved(for: localization),
+            relativePath: String(relativePath),
+            title: resolvedTitle(),
+            author: site.author.resolved(for: localization),
+            css: [
+              "CSS/Root.css",
+              "CSS/Site.css"
+            ]
+          )
         )
       )
-    )
+    #endif
     return syntax
   }
 
