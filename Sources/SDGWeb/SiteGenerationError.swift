@@ -45,7 +45,12 @@ public enum SiteGenerationError: PresentableError {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch self {
       case .foundationError(let error):
-        return StrictString(error.localizedDescription)
+        // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+        #if !canImport(Foundation)
+          return "\(error)"
+        #else
+          return StrictString(error.localizedDescription)
+        #endif
       case .invalidDomain(let domain):
         switch localization {
         case .englishUnitedKingdom:

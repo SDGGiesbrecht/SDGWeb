@@ -79,23 +79,29 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
     clean()
 
-    switch writePages(formatting: formatting) {
-    case .failure(let error):
-      switch error {
-      case .foundationError(let error):  // @exempt(from: tests)
-        return .failure(.foundationError(error))
-      case .syntaxError(let page, let error):
-        return .failure(.syntaxError(page: page, error: error))
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if canImport(Foundation)
+      switch writePages(formatting: formatting) {
+      case .failure(let error):
+        switch error {
+        case .foundationError(let error):  // @exempt(from: tests)
+          return .failure(.foundationError(error))
+        case .syntaxError(let page, let error):
+          return .failure(.syntaxError(page: page, error: error))
+        }
+      case .success:
+        break
       }
-    case .success:
-      break
-    }
+    #endif
 
     do {
       try copyCSS()
-      if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
-        try copyResources()
-      }
+      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+      #if !canImport(Foundation)
+        if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
+          try copyResources()
+        }
+      #endif
     } catch {
       return .failure(.foundationError(error))
     }
@@ -104,7 +110,10 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   }
 
   private func clean() {
-    try? FileManager.default.removeItem(at: repositoryStructure.result)
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if !canImport(Foundation)
+      try? FileManager.default.removeItem(at: repositoryStructure.result)
+    #endif
   }
 
   // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
@@ -148,15 +157,18 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         }
       }).resolved()
     )
-    try FileManager.default.copy(
-      repositoryStructure.css,
-      to: repositoryStructure.result.appendingPathComponent("CSS")
-    )
-    try CSS.root.save(
-      to: repositoryStructure.result
-        .appendingPathComponent("CSS")
-        .appendingPathComponent("Root.css")
-    )
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if !canImport(Foundation)
+      try FileManager.default.copy(
+        repositoryStructure.css,
+        to: repositoryStructure.result.appendingPathComponent("CSS")
+      )
+      try CSS.root.save(
+        to: repositoryStructure.result
+          .appendingPathComponent("CSS")
+          .appendingPathComponent("Root.css")
+      )
+    #endif
   }
 
   private func copyResources() throws {
@@ -170,10 +182,13 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         }
       }).resolved()
     )
-    try FileManager.default.copy(
-      repositoryStructure.resources,
-      to: repositoryStructure.result.appendingPathComponent("Resources")
-    )
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if !canImport(Foundation)
+      try FileManager.default.copy(
+        repositoryStructure.resources,
+        to: repositoryStructure.result.appendingPathComponent("Resources")
+      )
+    #endif
   }
 
   // MARK: - Validation
@@ -185,33 +200,39 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     /// - Parameters:
     ///     - site: The URL of a site in the local file system.
     public static func validate(site: URL) -> [URL: [SiteValidationError]] {
-      var files: [URL]
-      do {
-        files = try FileManager.default.deepFileEnumeration(in: site)
-      } catch {
-        // @exempt(from: tests)
-        return [site: [.foundationError(error)]]
-      }
-
-      var results: [URL: [SiteValidationError]] = [:]
-      for file in files where file.pathExtension == "html" {
-        let source: String
+      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+      #if !canImport(Foundation)
+        var files: [URL]
         do {
-          source = try String(from: file)
+          files = try FileManager.default.deepFileEnumeration(in: site)
         } catch {
           // @exempt(from: tests)
-          results[file] = [.foundationError(error)]
-          break
+          return [site: [.foundationError(error)]]
         }
+      #endif
 
-        let document = DocumentSyntax.parse(source: source)
-        switch document {
-        case .failure(let error):
-          results[file] = [.syntaxError(error)]
-        case .success(let parsed):
-          results[file] = parsed.validate(baseURL: file).map { .syntaxError($0) }
+      var results: [URL: [SiteValidationError]] = [:]
+      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+      #if !canImport(Foundation)
+        for file in files where file.pathExtension == "html" {
+          let source: String
+          do {
+            source = try String(from: file)
+          } catch {
+            // @exempt(from: tests)
+            results[file] = [.foundationError(error)]
+            break
+          }
+
+          let document = DocumentSyntax.parse(source: source)
+          switch document {
+          case .failure(let error):
+            results[file] = [.syntaxError(error)]
+          case .success(let parsed):
+            results[file] = parsed.validate(baseURL: file).map { .syntaxError($0) }
+          }
         }
-      }
+      #endif
 
       return results.filter { _, value in ¬value.isEmpty }
     }
