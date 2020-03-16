@@ -12,7 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+#if canImport(Foundation)
+  import Foundation
+#endif
 #if !os(Android)  // #workaround(Swift 5.1.3, FoundationNetworking cannot be linked.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
@@ -38,9 +41,9 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   }
   private static let indices = Child.allCases.bijectiveIndexMapping
 
-  internal static func parse(fromEndOf source: inout String) -> Result<
-    AttributeSyntax?, SyntaxError
-  > {
+  internal static func parse(
+    fromEndOf source: inout String
+  ) -> Result<AttributeSyntax?, SyntaxError> {
     return AttributeValueSyntax.parse(fromEndOf: &source).map { value in
       guard
         let name = TokenSyntax.parseIdentifer(

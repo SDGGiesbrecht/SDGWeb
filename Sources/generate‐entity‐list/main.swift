@@ -12,27 +12,36 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+#if canImport(Foundation)
+  import Foundation
+#endif
 
 import SDGLogic
 import SDGText
 import SDGPersistence
 
-let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
-let json = try Data(from: specificationURL)
-let database = try JSONDecoder().decode([String: Entity].self, from: json)
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+#if canImport(Foundation)
+  let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
+  let json = try Data(from: specificationURL)
+  let database = try JSONDecoder().decode([String: Entity].self, from: json)
+#endif
 
 var transformed: [String: String] = [:]
-for (entity, text) in database {
-  var name = entity
-  if entity.hasPrefix("&"),
-    entity.hasSuffix(";")
-  {
-    name.removeFirst()
-    name.removeLast()
-    transformed[name] = text.characters
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+#if canImport(Foundation)
+  for (entity, text) in database {
+    var name = entity
+    if entity.hasPrefix("&"),
+      entity.hasSuffix(";")
+    {
+      name.removeFirst()
+      name.removeLast()
+      transformed[name] = text.characters
+    }
   }
-}
+#endif
 
 var file: [StrictString] = [
   "// This is generated automatically using the generate‐entity‐list target.",
@@ -49,13 +58,16 @@ for (entity, text) in sorted {
 }
 file.append("]\n")
 
-let sourceFile = URL(fileURLWithPath: #file)
-  .deletingLastPathComponent()
-  .deletingLastPathComponent()
-  .appendingPathComponent("SDGHTML")
-  .appendingPathComponent("Entities.swift")
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+#if canImport(Foundation)
+  let sourceFile = URL(fileURLWithPath: #file)
+    .deletingLastPathComponent()
+    .deletingLastPathComponent()
+    .appendingPathComponent("SDGHTML")
+    .appendingPathComponent("Entities.swift")
 
-var existing = try StrictString(from: sourceFile)
-existing.truncate(after: "*/\n\n")
-existing.append(contentsOf: file.joined(separator: "\n".scalars))
-try existing.save(to: sourceFile)
+  var existing = try StrictString(from: sourceFile)
+  existing.truncate(after: "*/\n\n")
+  existing.append(contentsOf: file.joined(separator: "\n".scalars))
+  try existing.save(to: sourceFile)
+#endif
