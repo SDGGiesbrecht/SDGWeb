@@ -149,29 +149,35 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )
     }
 
-    var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
-    url.deleteLastPathComponent()
-    url.appendPathComponent(String(try resolvedFileName()))
-    url.appendPathExtension("html")
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if canImport(Foundation)
+      var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
+      url.deleteLastPathComponent()
+      url.appendPathComponent(String(try resolvedFileName()))
+      url.appendPathExtension("html")
 
-    let reportedPath = url.path(relativeTo: site.repositoryStructure.result)
-    site.reportProgress(
-      UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom:
-          return "Writing to ‘\(reportedPath)’..."
-        case .englishUnitedStates, .englishCanada:
-          return "Writing to “\(reportedPath)”..."
-        case .deutschDeutschland:
-          return "„\(reportedPath)“ wird hergestellt ..."
-        }
-      }).resolved()
-    )
+      let reportedPath = url.path(relativeTo: site.repositoryStructure.result)
+      site.reportProgress(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom:
+            return "Writing to ‘\(reportedPath)’..."
+          case .englishUnitedStates, .englishCanada:
+            return "Writing to “\(reportedPath)”..."
+          case .deutschDeutschland:
+            return "„\(reportedPath)“ wird hergestellt ..."
+          }
+        }).resolved()
+      )
+    #endif
 
     var result = try processedResult(for: relativePath, localization: localization, site: site)
     if formatting {
       result.format()
     }
-    try StrictString(result.source()).save(to: url)
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if canImport(Foundation)
+      try StrictString(result.source()).save(to: url)
+    #endif
   }
 }
