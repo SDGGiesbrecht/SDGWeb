@@ -82,7 +82,8 @@ extension AttributedSyntax {
   /// The entries of the class attribute.
   public var classes: [String] {
     get {
-      return valueOfAttribute(named: className)?.components(separatedBy: " ") ?? []
+      return valueOfAttribute(named: className)?
+        .components(separatedBy: " ").map({ String($0.contents) }) ?? []
     }
     set {
       set(attribute: className, to: newValue.isEmpty ? nil : newValue.joined(separator: " "))
