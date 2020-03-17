@@ -18,7 +18,7 @@
 #endif
 
 /// The structure of a website repository.
-public struct RepositoryStructure {
+public struct RepositoryStructure {  // @exempt(from: swiftFormat[UseEnumForNamespacing])
 
   // MARK: - Initialization
 
