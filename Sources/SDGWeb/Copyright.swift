@@ -33,5 +33,5 @@ public func copyrightDates(yearFirstPublished: GregorianYear) -> StrictString {
     } else {
       return yearFirstPublished.inEnglishDigits() + "–" + now.inEnglishDigits()
     }
-  #endif
+  #endif  // @exempt(from: tests)
 }
