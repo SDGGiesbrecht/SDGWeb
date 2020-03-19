@@ -12,15 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+#if canImport(Foundation)
+  import Foundation
+#endif
 
 import SDGLogic
 import SDGCollections
 
 extension Unicode.Scalar {
 
-  /// Whether or not the scalar represents whitespace or a newline in HTML.
-  public var isHTMLWhitespaceOrNewline: Bool {
-    return value < 0x80 ∧ self ∈ CharacterSet.whitespacesAndNewlines
-  }
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    /// Whether or not the scalar represents whitespace or a newline in HTML.
+    public var isHTMLWhitespaceOrNewline: Bool {
+      return value < 0x80 ∧ self ∈ CharacterSet.whitespacesAndNewlines
+    }
+  #endif
 }

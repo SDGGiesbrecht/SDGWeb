@@ -12,7 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+#if canImport(Foundation)
+  import Foundation
+#endif
 
 import SDGLogic
 import SDGMathematics
@@ -27,34 +30,37 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
-  internal static func load<Unfolder>(
-    from file: URL,
-    in site: Site<Localization, Unfolder>
-  ) -> Result<PageTemplate, PageTemplateLoadingError> {
-    let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    internal static func load<Unfolder>(
+      from file: URL,
+      in site: Site<Localization, Unfolder>
+    ) -> Result<PageTemplate, PageTemplateLoadingError> {
+      let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
 
-    let source: StrictString
-    do {
-      source = try StrictString(from: file)
-    } catch {
-      return .failure(.foundationError(error))
-    }
+      let source: StrictString
+      do {
+        source = try StrictString(from: file)
+      } catch {
+        return .failure(.foundationError(error))
+      }
 
-    let templateSyntax: DocumentSyntax
-    switch DocumentSyntax.parse(source: String(source)) {
-    case .success(let document):
-      templateSyntax = document
-    case .failure(let error):
-      return .failure(.syntaxError(page: relativePath, error: error))
-    }
+      let templateSyntax: DocumentSyntax
+      switch DocumentSyntax.parse(source: String(source)) {
+      case .success(let document):
+        templateSyntax = document
+      case .failure(let error):
+        return .failure(.syntaxError(page: relativePath, error: error))
+      }
 
-    return .success(
-      PageTemplate(
-        relativePath: relativePath,
-        templateSyntax: templateSyntax
+      return .success(
+        PageTemplate(
+          relativePath: relativePath,
+          templateSyntax: templateSyntax
+        )
       )
-    )
-  }
+    }
+  #endif
 
   private init(
     relativePath: StrictString,
@@ -94,21 +100,24 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     site: Site<Localization, Unfolder>
   ) throws -> DocumentSyntax {
     var syntax = templateSyntax
-    try syntax.unfold(
-      with: Unfolder(
-        context: SyntaxUnfolder.Context(
-          localization: localization,
-          siteRoot: site.siteRoot.resolved(for: localization),
-          relativePath: String(relativePath),
-          title: resolvedTitle(),
-          author: site.author.resolved(for: localization),
-          css: [
-            "CSS/Root.css",
-            "CSS/Site.css"
-          ]
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if canImport(Foundation)
+      try syntax.unfold(
+        with: Unfolder(
+          context: SyntaxUnfolder.Context(
+            localization: localization,
+            siteRoot: site.siteRoot.resolved(for: localization),
+            relativePath: String(relativePath),
+            title: resolvedTitle(),
+            author: site.author.resolved(for: localization),
+            css: [
+              "CSS/Root.css",
+              "CSS/Site.css"
+            ]
+          )
         )
       )
-    )
+    #endif
     return syntax
   }
 
@@ -140,29 +149,35 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )
     }
 
-    var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
-    url.deleteLastPathComponent()
-    url.appendPathComponent(String(try resolvedFileName()))
-    url.appendPathExtension("html")
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if canImport(Foundation)
+      var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
+      url.deleteLastPathComponent()
+      url.appendPathComponent(String(try resolvedFileName()))
+      url.appendPathExtension("html")
 
-    let reportedPath = url.path(relativeTo: site.repositoryStructure.result)
-    site.reportProgress(
-      UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom:
-          return "Writing to ‘\(reportedPath)’..."
-        case .englishUnitedStates, .englishCanada:
-          return "Writing to “\(reportedPath)”..."
-        case .deutschDeutschland:
-          return "„\(reportedPath)“ wird hergestellt ..."
-        }
-      }).resolved()
-    )
+      let reportedPath = url.path(relativeTo: site.repositoryStructure.result)
+      site.reportProgress(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom:
+            return "Writing to ‘\(reportedPath)’..."
+          case .englishUnitedStates, .englishCanada:
+            return "Writing to “\(reportedPath)”..."
+          case .deutschDeutschland:
+            return "„\(reportedPath)“ wird hergestellt ..."
+          }
+        }).resolved()
+      )
+    #endif
 
     var result = try processedResult(for: relativePath, localization: localization, site: site)
     if formatting {
       result.format()
     }
-    try StrictString(result.source()).save(to: url)
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+    #if canImport(Foundation)
+      try StrictString(result.source()).save(to: url)
+    #endif
   }
 }

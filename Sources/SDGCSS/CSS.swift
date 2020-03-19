@@ -18,15 +18,18 @@ import SDGText
 /// A namespace for functions related to CSS.
 public enum CSS {
 
-  /// A recommended root CSS file.
-  public static let root: StrictString = {
-    var result = StrictString(Resources.root)
-    let match = result.firstMatch(
-      for: "/*".scalars
-        + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
-        + "*/\n\n".scalars
-    )!
-    result.replaceSubrange(match.range, with: "".scalars)
-    return result
-  }()
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    /// A recommended root CSS file.
+    public static let root: StrictString = {
+      var result = StrictString(Resources.root)
+      let match = result.firstMatch(
+        for: "/*".scalars
+          + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
+          + "*/\n\n".scalars
+      )!
+      result.replaceSubrange(match.range, with: "".scalars)
+      return result
+    }()
+  #endif
 }

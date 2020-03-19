@@ -55,6 +55,3 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGText",
   "SDGXCTestUtilities"
 ]
-
-// #workaround(For now.)
-configuration.supportedPlatforms.remove(.web)

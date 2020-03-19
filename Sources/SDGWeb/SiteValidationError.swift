@@ -34,7 +34,12 @@ public enum SiteValidationError: PresentableError {
   public func presentableDescription() -> StrictString {
     switch self {
     case .foundationError(let error):
-      return StrictString(error.localizedDescription)
+      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+      #if !canImport(Foundation)
+        return StrictString(String(describing: error))
+      #else
+        return StrictString(error.localizedDescription)
+      #endif
     case .syntaxError(let error):
       return error.presentableDescription()
     }

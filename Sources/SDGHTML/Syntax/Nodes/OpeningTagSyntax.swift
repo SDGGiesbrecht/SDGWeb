@@ -12,7 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+#if canImport(Foundation)
+  import Foundation
+#endif
 
 import SDGLogic
 
@@ -109,46 +112,49 @@ public struct OpeningTagSyntax: AttributedSyntax, NamedSyntax, Syntax {
 
   // MARK: - Validation
 
-  internal func validate(
-    location: String.ScalarView.Index,
-    file: String,
-    baseURL: URL
-  ) -> [SyntaxError] {
-    var results: [SyntaxError] = []
-    validateURLValues(
-      location: location,
-      file: file,
-      baseURL: baseURL,
-      results: &results
-    )
-    return results
-  }
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
+  #if canImport(Foundation)
+    internal func validate(
+      location: String.ScalarView.Index,
+      file: String,
+      baseURL: URL
+    ) -> [SyntaxError] {
+      var results: [SyntaxError] = []
+      validateURLValues(
+        location: location,
+        file: file,
+        baseURL: baseURL,
+        results: &results
+      )
+      return results
+    }
 
-  private func validateURLValues(
-    location: String.ScalarView.Index,
-    file: String,
-    baseURL: URL,
-    results: inout [SyntaxError]
-  ) {
-    if let attributes = self.attributes?.attributes {
-      if name.source() == "link",
-        attributes.contains(where: { attribute in
-          attribute.name.source() == "rel" ∧ attribute.value?.value.source() == "canonical"
-        })
-      {
-        // Skip
-      } else {
-        for attribute in attributes {
-          attribute.validateURLValue(
-            location: location,
-            file: file,
-            baseURL: baseURL,
-            results: &results
-          )
+    private func validateURLValues(
+      location: String.ScalarView.Index,
+      file: String,
+      baseURL: URL,
+      results: inout [SyntaxError]
+    ) {
+      if let attributes = self.attributes?.attributes {
+        if name.source() == "link",
+          attributes.contains(where: { attribute in
+            attribute.name.source() == "rel" ∧ attribute.value?.value.source() == "canonical"
+          })
+        {
+          // Skip
+        } else {
+          for attribute in attributes {
+            attribute.validateURLValue(
+              location: location,
+              file: file,
+              baseURL: baseURL,
+              results: &results
+            )
+          }
         }
       }
     }
-  }
+  #endif
 
   // MARK: - AttributedSyntax
 

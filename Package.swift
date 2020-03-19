@@ -73,7 +73,7 @@ let package = Package(
     .library(name: "SDGCSS", targets: ["SDGCSS"])
   ],
   dependencies: [
-    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(4, 4, 1))
+    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(4, 6, 0))
   ],
   targets: [
     // Products
@@ -186,4 +186,11 @@ func removeEntityListGenerator() {
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   removeEntityListGenerator()
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+  for target in package.targets {
+    // #workaround(Swift 5.1.5, Web lacks foundation.)
+    target.exclude.append("Resources.swift")
+  }
 }
