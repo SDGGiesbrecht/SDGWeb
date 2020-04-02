@@ -45,7 +45,7 @@ var transformed: [String: String] = [:]
 
 var file: [StrictString] = [
   "// This is generated automatically using the generate‐entity‐list target.",
-  "@usableFromInline internal let entities: [String: String] = ["
+  "@usableFromInline internal let entities: [String: String] = [",
 ]
 let sorted = transformed.sorted(by: { $0 < $1 })
 for (entity, text) in sorted {

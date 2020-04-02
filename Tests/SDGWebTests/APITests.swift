@@ -114,7 +114,7 @@ class APITests: TestCase {
             description: UserFacing<StrictString, InterfaceLocalization>({ _ in "[...]" }),
             context: "[...]"
           )
-        )
+        ),
       ]
       for index in errors.indices {
         let error = errors[index]
@@ -140,7 +140,7 @@ class APITests: TestCase {
       }
       let errors: [SiteValidationError] = [
         .foundationError(StandInError()),
-        .syntaxError(parseFailure)
+        .syntaxError(parseFailure),
       ]
       for index in errors.indices {
         let error = errors[index]

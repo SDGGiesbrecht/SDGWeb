@@ -113,7 +113,7 @@ public enum TokenKind: Equatable, Hashable {
         let words = text.scalars.components(
           separatedBy: ConditionalPattern({ $0.isHTMLWhitespaceOrNewline })
         )
-          .lazy.map { $0.contents }
+        .lazy.map { $0.contents }
         let scalars = words.lazy.filter({ ¬$0.isEmpty }).joined(separator: " ".scalars)
         text = String(String.UnicodeScalarView(scalars))
       #endif

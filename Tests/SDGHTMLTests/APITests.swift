@@ -371,7 +371,7 @@ class APITests: TestCase {
         "  <title>...</title>",
         " </head>",
         " <body></body>",
-        "</html>"
+        "</html>",
       ].joined(separator: "\n")
     )
     document.format()
@@ -384,7 +384,7 @@ class APITests: TestCase {
       [
         "<!DOCTYPE html>",
         "<!\u{2D}\u{2D} Comment \u{2D}\u{2D}>",
-        "<html></html>"
+        "<html></html>",
       ].joined(separator: "\n")
     )
 
@@ -419,7 +419,7 @@ class APITests: TestCase {
         " alt=\u{22}... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ...\u{22}",
         " id=\u{22}... ... ...\u{22}",
         " src=\u{22}... ... ... ... ... ... ... ... ... ...\u{22}",
-        ">"
+        ">",
       ].joined(separator: "\n")
     )
 
@@ -432,7 +432,7 @@ class APITests: TestCase {
         "<div>",
         " Label:",
         " <a>Field</a>",
-        "</div>"
+        "</div>",
       ].joined(separator: "\n")
     )
 
@@ -807,7 +807,7 @@ class APITests: TestCase {
         " beschreibung=\u{22}Eine Beschreibung.\u{22}",
         " schlüsselwörter=\u{22}Schlüsselwort\u{22}",
         ">",
-        "</page>"
+        "</page>",
       ].joined(separator: "\n")
     )
     testUnfolding(
@@ -816,14 +816,14 @@ class APITests: TestCase {
         " <span lang=\u{22}en\u{22} dir=\u{22}ltr\u{22}></span>",
         " <span lang=\u{22}de\u{22} dir=\u{22}ltr\u{22}></span>",
         " <span lang=\u{22}he\u{22} dir=\u{22}rtl\u{22}></span>",
-        "</span>"
+        "</span>",
       ].joined(separator: "\n"),
       to: [
         "<span lang=\u{22}en\u{22} dir=\u{22}ltr\u{22}>",
         " <span></span>",
         " <span lang=\u{22}de\u{22}></span>",
         " <span lang=\u{22}he\u{22} dir=\u{22}rtl\u{22}></span>",
-        "</span>"
+        "</span>",
       ].joined(separator: "\n")
     )
     testUnfolding(

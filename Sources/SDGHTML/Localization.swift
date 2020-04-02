@@ -19,7 +19,7 @@ extension Localization {
   internal var htmlAttributes: [String: String] {
     return [
       AttributesSyntax.languageAttributeName: code,
-      AttributesSyntax.textDirectionAttributeName: textDirection.htmlAttribute
+      AttributesSyntax.textDirectionAttributeName: textDirection.htmlAttribute,
     ]
   }
 }

@@ -42,7 +42,7 @@ struct Unfolder: SiteSyntaxUnfolder {
                     .element(.english([.text("Header")])),
                     .element(.deutsch([.text("Kopfzeilen")])),
                     .element(.עברית([.text("כותרת עליונה")])),
-                    .element(.unknownLanguage([.text("?")]))
+                    .element(.unknownLanguage([.text("?")])),
                   ])
                 )
               ]
@@ -60,14 +60,14 @@ struct Unfolder: SiteSyntaxUnfolder {
                     .element(.english([.text("Footer")])),
                     .element(.deutsch([.text("Fußzeilen")])),
                     .element(.עברית([.text("כותרת תחתונה")])),
-                    .element(.unknownLanguage([.text("?")]))
+                    .element(.unknownLanguage([.text("?")])),
                   ])
                 )
               ]
               )
             )
           ])
-        )
+        ),
       ]
     )
   }
