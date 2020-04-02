@@ -112,7 +112,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
             author: site.author.resolved(for: localization),
             css: [
               "CSS/Root.css",
-              "CSS/Site.css"
+              "CSS/Site.css",
             ]
           )
         )

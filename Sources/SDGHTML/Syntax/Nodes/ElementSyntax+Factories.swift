@@ -75,7 +75,7 @@ extension ElementSyntax {
         name: "link",
         attributes: [
           "rel": "canonical",
-          "href": url.relativeString
+          "href": url.relativeString,
         ].mergedByOverwriting(from: attributes),
         empty: true
       )
@@ -91,7 +91,7 @@ extension ElementSyntax {
         name: "link",
         attributes: [
           "rel": "stylesheet",
-          "href": url.relativeString
+          "href": url.relativeString,
         ].mergedByOverwriting(from: attributes),
         empty: true
       )
@@ -280,7 +280,7 @@ extension ElementSyntax {
         name: "a",
         attributes: [
           "href": target.relativeString,
-          "hreflang": language.code
+          "hreflang": language.code,
         ].mergedByOverwriting(from: attributes),
         contents: contents
       )
@@ -313,7 +313,7 @@ extension ElementSyntax {
     return .metadata(
       attributes: [
         "name": name,
-        "content": value
+        "content": value,
       ].mergedByOverwriting(from: attributes)
     )
   }
@@ -459,7 +459,7 @@ extension ElementSyntax {
       return object(
         attributes: [
           "type": "application/pdf",
-          "data": url.relativeString
+          "data": url.relativeString,
         ].mergedByOverwriting(from: attributes),
         fallbackRepresentation: fallbackRepresentation
       )
@@ -474,7 +474,7 @@ extension ElementSyntax {
       return metadata(
         attributes: [
           "http\u{2D}equiv": "refresh",
-          "content": "0; url=\(target.relativeString)"
+          "content": "0; url=\(target.relativeString)",
         ].mergedByOverwriting(from: attributes)
       )
     }

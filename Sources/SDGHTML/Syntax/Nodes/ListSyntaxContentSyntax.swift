@@ -83,7 +83,8 @@ extension ListSyntax where Entry == ContentSyntax {
     } else {
       // Block style.
       let leadingWhitespace = "\n" + String(repeating: " ", count: indentationLevel)
-      let trailingWhitespace = "\n"
+      let trailingWhitespace =
+        "\n"
         + String(repeating: " ", count: Swift.max(0, indentationLevel − 1))
 
       // Add medial whitespace if missing.

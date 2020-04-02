@@ -63,7 +63,7 @@ public struct SyntaxError: PresentableError {
     return [
       self.lineDescription().resolved(),
       self.description(),
-      StrictString(self.context)
+      StrictString(self.context),
     ].joined(separator: "\n")
   }
 }

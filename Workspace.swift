@@ -53,5 +53,5 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGPersistenceTestUtilities",
   "SDGTesting",
   "SDGText",
-  "SDGXCTestUtilities"
+  "SDGXCTestUtilities",
 ]

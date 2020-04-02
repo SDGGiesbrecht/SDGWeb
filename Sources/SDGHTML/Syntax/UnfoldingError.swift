@@ -45,7 +45,7 @@ public struct UnfoldingError: PresentableError {
   public func presentableDescription() -> StrictString {
     return [
       self.description(),
-      StrictString(self.syntaxNode.source())
+      StrictString(self.syntaxNode.source()),
     ].joined(separator: "\n")
   }
 }

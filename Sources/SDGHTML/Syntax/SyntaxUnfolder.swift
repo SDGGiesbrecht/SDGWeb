@@ -355,7 +355,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
             return "seitenquelle"
           }
         })
-      )
+      ),
     ]
     for (result, names) in list {
       if attribute.is(named: names),

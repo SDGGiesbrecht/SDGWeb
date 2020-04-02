@@ -32,7 +32,7 @@ extension DocumentSyntax {
   ) -> DocumentSyntax {
     var document = DocumentSyntax(content: [
       .element(.documentTypeDeclaration()),
-      .element(documentElement)
+      .element(documentElement),
     ])
     if formatted {
       document.format()
@@ -54,7 +54,8 @@ extension DocumentSyntax {
       target: URL
     ) -> DocumentSyntax where L: Localization {
       let encodedTargetString = target.relativeString
-      let readableTargetString = encodedTargetString.removingPercentEncoding
+      let readableTargetString =
+        encodedTargetString.removingPercentEncoding
         ?? encodedTargetString  // @exempt(from: tests)
       let arrow = language.textDirection.htmlAttribute == "ltr" ? "↳" : "↲"
       let targetWithArrow = "\(arrow) \(readableTargetString)"
@@ -81,7 +82,7 @@ extension DocumentSyntax {
                       .text(readableTargetString)
                     ]
                   )
-                )
+                ),
               ])
             )
           ])
