@@ -12,8 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-#if canImport(Foundation)
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+#if !os(WASI)
   import Foundation
 #endif
 
@@ -21,16 +21,16 @@ import SDGLogic
 import SDGText
 import SDGPersistence
 
-// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-#if canImport(Foundation)
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+#if !os(WASI)
   let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
   let json = try Data(from: specificationURL)
   let database = try JSONDecoder().decode([String: Entity].self, from: json)
 #endif
 
 var transformed: [String: String] = [:]
-// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-#if canImport(Foundation)
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+#if !os(WASI)
   for (entity, text) in database {
     var name = entity
     if entity.hasPrefix("&"),
@@ -58,8 +58,8 @@ for (entity, text) in sorted {
 }
 file.append("]\n")
 
-// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-#if canImport(Foundation)
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+#if !os(WASI)
   let sourceFile = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .deletingLastPathComponent()

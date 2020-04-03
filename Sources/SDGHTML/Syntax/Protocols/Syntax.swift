@@ -93,8 +93,8 @@ extension Syntax {
   /// The default syntax unfolder lacks any context information and thus will not unfold elements like `<page>` or `<localized>`. See `SyntaxUnfolder.init(context:)` for more information.
   public mutating func unfold() throws {
     let context: SyntaxUnfolder.Context?
-    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-    #if !canImport(Foundation)
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+    #if os(WASI)
       context = nil
     #else
       context = SyntaxUnfolder.Context(

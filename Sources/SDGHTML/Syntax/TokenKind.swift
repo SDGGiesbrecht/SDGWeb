@@ -108,8 +108,8 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaninfulNormalizeWhitespace() {
     onlyOnTextTokens { text in
-      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-      #if canImport(Foundation)
+      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+      #if !os(WASI)
         let words = text.scalars.components(
           separatedBy: ConditionalPattern({ $0.isHTMLWhitespaceOrNewline })
         )
@@ -122,8 +122,8 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaningfulTrimWhitespace() {
     onlyOnTextTokens { text in
-      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-      #if canImport(Foundation)
+      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+      #if !os(WASI)
         while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
           text.scalars.removeFirst()
         }
@@ -136,8 +136,8 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
     onlyOnTextTokens { text in
-      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-      #if canImport(Foundation)
+      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+      #if !os(WASI)
         while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
           // @exempt(from: tests) Not currently reachable.
           text.scalars.removeFirst()
@@ -149,8 +149,8 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaningfulSetTrailingWhitespace(to whitespace: String) {
     onlyOnTextTokens { text in
-      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-      #if canImport(Foundation)
+      // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+      #if !os(WASI)
         while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
           text.scalars.removeLast()
         }

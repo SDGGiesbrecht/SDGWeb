@@ -12,8 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-#if canImport(Foundation)
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+#if !os(WASI)
   import Foundation
 #endif
 
@@ -30,8 +30,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-  #if canImport(Foundation)
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+  #if !os(WASI)
     internal static func load<Unfolder>(
       from file: URL,
       in site: Site<Localization, Unfolder>
@@ -100,8 +100,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     site: Site<Localization, Unfolder>
   ) throws -> DocumentSyntax {
     var syntax = templateSyntax
-    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-    #if canImport(Foundation)
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+    #if !os(WASI)
       try syntax.unfold(
         with: Unfolder(
           context: SyntaxUnfolder.Context(
@@ -149,8 +149,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )
     }
 
-    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-    #if canImport(Foundation)
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+    #if !os(WASI)
       var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
       url.deleteLastPathComponent()
       url.appendPathComponent(String(try resolvedFileName()))
@@ -175,8 +175,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     if formatting {
       result.format()
     }
-    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-    #if canImport(Foundation)
+    // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+    #if !os(WASI)
       try StrictString(result.source()).save(to: url)
     #endif
   }
