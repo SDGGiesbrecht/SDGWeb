@@ -174,15 +174,15 @@ let package = Package(
   ]
 )
 
-// #workaround(workspace version 0.30.2, Causes Xcode executable/scheme issues for iOS.)
 func removeEntityListGenerator() {
   package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
 }
+// #workaround(Swift 5.2, The generated Xcode project cannot handle executables when building for iOS.)
 #if os(macOS)
   removeEntityListGenerator()
 #endif
 
-// #workaround(workspace version 0.30.2, CMake cannot handle Unicode.)
+// #workaround(workspace version 0.32.0, CMake cannot handle Unicode.)
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   removeEntityListGenerator()
