@@ -231,7 +231,7 @@ class APITests: TestCase {
   }
 
   func testElementFactories() {
-    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+    #if !os(Windows)  // #workaround(workspace version 0.32.0, SegFault)
       func compare(
         _ element: ElementSyntax,
         to specification: String,
@@ -620,7 +620,7 @@ class APITests: TestCase {
   }
 
   func testSyntaxError() {
-    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+    #if !os(Windows)  // #workaround(workspace version 0.32.0, SegFault)
       func expectViolation(
         named name: String,
         in string: String,
@@ -658,7 +658,8 @@ class APITests: TestCase {
         )
       }
 
-      #if !os(Android)  // #workaround(Swift 5.1.3, FoundationNetworking cannot be linked.)
+      // #workaround(workspace version 0.32.0, FoundationNetworking cannot be linked.)
+      #if !os(Android)
         expectViolation(
           named: "Dead Remote Link",
           in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
@@ -856,7 +857,7 @@ class APITests: TestCase {
   }
 
   func testValidLink() throws {
-    #if !os(Windows)  // #workaround(Swift 5.1.3, SegFault)
+    #if !os(Windows)  // #workaround(workspace version 0.32.0, SegFault)
       let document = try DocumentSyntax.parse(
         source:
           "<a href=\u{22}http://www.google.com\u{22}></a>"

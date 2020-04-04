@@ -23,7 +23,7 @@ import SDGCalendar
 /// - Parameters:
 ///     - yearFirstPublished: The year the site was first published.
 public func copyrightDates(yearFirstPublished: GregorianYear) -> StrictString {
-  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
   #if os(WASI)
     return yearFirstPublished.inEnglishDigits()
   #else
