@@ -12,11 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+// #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
 #if !os(WASI)
   import Foundation
 #endif
-#if !os(Android)  // #workaround(Swift 5.1.3, FoundationNetworking cannot be linked.)
+#if !os(Android)  // #workaround(workspace version 0.32.0, FoundationNetworking cannot be linked.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
   #endif
@@ -170,7 +170,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
 
   // MARK: - Validation
 
-  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
   #if !os(WASI)
     internal func validate(
       location: String.ScalarView.Index,
@@ -410,7 +410,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   }
 
   private static let urlAttributes: Set<String> = ["data", "href", "poster", "src", "srcset"]
-  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
   #if !os(WASI)
     internal func validateURLValue(
       location: String.ScalarView.Index,
@@ -436,7 +436,8 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
           } else if url.host == "example.com" {
             dead = false
           } else {
-            #if os(Android)  // #workaround(Swift 5.1.3, FoundationNetworking cannot be linked.)
+            #if os(Android)
+              // #workaround(workspace version 0.32.0, FoundationNetworking cannot be linked.)
               dead = false
             #else
               let request = URLRequest(

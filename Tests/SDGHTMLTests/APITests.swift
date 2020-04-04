@@ -658,7 +658,7 @@ class APITests: TestCase {
         )
       }
 
-      #if !os(Android)  // #workaround(Swift 5.1.3, FoundationNetworking cannot be linked.)
+      #if !os(Android)  // #workaround(workspace version 0.32.0, FoundationNetworking cannot be linked.)
         expectViolation(
           named: "Dead Remote Link",
           in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
