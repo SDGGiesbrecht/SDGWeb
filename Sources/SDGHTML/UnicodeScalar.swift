@@ -12,8 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-#if canImport(Foundation)
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+#if !os(WASI)
   import Foundation
 #endif
 
@@ -22,8 +22,8 @@ import SDGCollections
 
 extension Unicode.Scalar {
 
-  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-  #if canImport(Foundation)
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+  #if !os(WASI)
     /// Whether or not the scalar represents whitespace or a newline in HTML.
     public var isHTMLWhitespaceOrNewline: Bool {
       return value < 0x80 ∧ self ∈ CharacterSet.whitespacesAndNewlines

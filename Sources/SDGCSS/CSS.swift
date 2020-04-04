@@ -18,8 +18,8 @@ import SDGText
 /// A namespace for functions related to CSS.
 public enum CSS {
 
-  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-  #if canImport(Foundation)
+  // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+  #if !os(WASI)
     /// A recommended root CSS file.
     public static let root: StrictString = {
       var result = StrictString(Resources.root)

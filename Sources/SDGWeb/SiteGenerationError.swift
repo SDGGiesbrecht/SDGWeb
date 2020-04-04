@@ -12,8 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-#if canImport(Foundation)
+// #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+#if !os(WASI)
   import Foundation
 #endif
 
@@ -45,8 +45,8 @@ public enum SiteGenerationError: PresentableError {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch self {
       case .foundationError(let error):
-        // #workaround(Swift 5.1.5, Web doesn’t have foundation yet; compiler doesn’t recognize os(WASI).)
-        #if !canImport(Foundation)
+        // #workaround(Swift 5.1.5, Web doesn’t have foundation yet.)
+        #if os(WASI)
           return StrictString(String(describing: error))
         #else
           return StrictString(error.localizedDescription)
