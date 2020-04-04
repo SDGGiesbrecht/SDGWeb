@@ -27,7 +27,9 @@ class RegressionTests: TestCase {
 
   func testRedirect() throws {
     // Untracked.
-    #if !os(Windows)  // #workaround(Swift 5.1.3, Foundation has issues with the file system)
+
+    // #workaround(workspace version 0.32.0, Foundation has issues with the file system)
+    #if !os(Windows)
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
         let redirectFile = DocumentSyntax.redirect(
           language: InterfaceLocalization.deutschDeutschland,
