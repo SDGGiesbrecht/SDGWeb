@@ -145,6 +145,12 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
   #if !os(WASI)
     // MARK: - FileConvertible
 
+    // #workaround(workspace version 0.32.0, Duplicate documentation until Web supports Foundation and the extension can be merged.)
+    /// Creates an instance using raw data from a file on the disk.
+    ///
+    /// - Parameters:
+    ///   - file: The data.
+    ///   - origin: A URL indicating where the data came from.
     public init(file: Data, origin: URL?) throws {
       let source = try String(file: file, origin: origin)
       switch DocumentSyntax.parse(source: source) {
@@ -155,6 +161,8 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
       }
     }
 
+    // #workaround(workspace version 0.32.0, Duplicate documentation until Web supports Foundation and the extension can be merged.)
+    /// A binary representation that can be written as a file.
     public var file: Data {
       return source().file
     }
