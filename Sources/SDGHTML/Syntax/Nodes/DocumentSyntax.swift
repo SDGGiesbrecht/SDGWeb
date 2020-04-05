@@ -18,12 +18,13 @@
 #endif
 
 import SDGText
+import SDGPersistence
 import SDGLocalization
 
 import SDGWebLocalizations
 
 /// A syntax node representing an HTML document.
-public struct DocumentSyntax: ContainerSyntax, Syntax {
+public struct DocumentSyntax: ContainerSyntax, FileConvertible, Syntax {
 
   // MARK: - Parsing
 
@@ -129,6 +130,22 @@ public struct DocumentSyntax: ContainerSyntax, Syntax {
       return result
     }
   #endif
+
+  // MARK: - FileConvertible
+
+  public init(file: Data, origin: URL?) throws {
+    let source = try String(file: file, origin: origin)
+    switch DocumentSyntax.parse(source: source) {
+    case .success(let document):
+      self = document
+    case .failure(let error):
+      throw error
+    }
+  }
+
+  public var file: Data {
+    return source().file
+  }
 
   // MARK: - Syntax
 

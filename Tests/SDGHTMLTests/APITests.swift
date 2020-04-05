@@ -162,6 +162,10 @@ class APITests: TestCase {
       ContentSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text.")))))
     )
     XCTAssertEqual(document.source(), "Text.")
+    testFileConvertibleConformance(
+      of: DocumentSyntax.document(documentElement: .division()),
+      uniqueTestName: "HTML Document"
+    )
   }
 
   func testElement() {
