@@ -167,6 +167,7 @@ class APITests: TestCase {
         of: DocumentSyntax.document(documentElement: .division()),
         uniqueTestName: "HTML Document"
       )
+      XCTAssertNil(try? DocumentSyntax(file: "</end>".file, origin: nil))
     #endif
   }
 
