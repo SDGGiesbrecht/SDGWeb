@@ -24,7 +24,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// A syntax node representing an HTML document.
-public struct DocumentSyntax: ContainerSyntax, FileConvertible, Syntax {
+public struct DocumentSyntax: ContainerSyntax, Equatable, FileConvertible, Syntax {
 
   // MARK: - Parsing
 
@@ -130,6 +130,12 @@ public struct DocumentSyntax: ContainerSyntax, FileConvertible, Syntax {
       return result
     }
   #endif
+
+  // MARK: - Equatable
+
+  public static func ==(precedingValue: DocumentSyntax, followingValue: DocumentSyntax) -> Bool {
+    return precedingValue.source() == followingValue.source()
+  }
 
   // MARK: - FileConvertible
 
