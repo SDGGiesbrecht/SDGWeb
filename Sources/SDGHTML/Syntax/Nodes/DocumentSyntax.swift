@@ -23,8 +23,12 @@ import SDGLocalization
 
 import SDGWebLocalizations
 
+// #workaround(workspace version 0.32.0, Web doesn’t have Foundation yet.)
+#if !os(WASI)
+  extension DocumentSyntax: FileConvertible {}
+#endif
 /// A syntax node representing an HTML document.
-public struct DocumentSyntax: ContainerSyntax, Equatable, FileConvertible, Syntax {
+public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
 
   // MARK: - Parsing
 
@@ -133,25 +137,28 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, FileConvertible, Synta
 
   // MARK: - Equatable
 
-  public static func ==(precedingValue: DocumentSyntax, followingValue: DocumentSyntax) -> Bool {
+  public static func == (precedingValue: DocumentSyntax, followingValue: DocumentSyntax) -> Bool {
     return precedingValue.source() == followingValue.source()
   }
 
-  // MARK: - FileConvertible
+  // #workaround(workspace version 0.32.0, Web doesn’t have Foundation yet.)
+  #if !os(WASI)
+    // MARK: - FileConvertible
 
-  public init(file: Data, origin: URL?) throws {
-    let source = try String(file: file, origin: origin)
-    switch DocumentSyntax.parse(source: source) {
-    case .success(let document):
-      self = document
-    case .failure(let error):
-      throw error
+    public init(file: Data, origin: URL?) throws {
+      let source = try String(file: file, origin: origin)
+      switch DocumentSyntax.parse(source: source) {
+      case .success(let document):
+        self = document
+      case .failure(let error):
+        throw error
+      }
     }
-  }
 
-  public var file: Data {
-    return source().file
-  }
+    public var file: Data {
+      return source().file
+    }
+  #endif
 
   // MARK: - Syntax
 
