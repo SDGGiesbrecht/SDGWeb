@@ -67,15 +67,24 @@ extension ListSyntax where Entry == ContentSyntax {
   private mutating func mergeAdjacentText() {
     var firstIndex = 0
     while firstIndex < endIndex {
-      defer { firstIndex += 1 }
+      defer { firstIndex = self.index(after: firstIndex) }
 
-      while case .text(let firstText) = self[firstIndex].kind,
-        let secondIndex = self.index(firstIndex, offsetBy: 1, limitedBy: endIndex),
-        secondIndex < endIndex,
-        case .text(let secondText) = self[secondIndex].kind {
+      if case .text(let firstText) = self[firstIndex].kind {
+        var lastIndex = firstIndex
+        var concatenated = ""
+        while let next = self.index(lastIndex, offsetBy: 1, limitedBy: endIndex),
+        next < endIndex,
+        case .text(let nextText) = self[next].kind {
+          defer { lastIndex = next }
+          concatenated.append(nextText.text.tokenKind.text)
+        }
+
+        if lastIndex ≠ firstIndex {
           replaceSubrange(
-            firstIndex...secondIndex,
-            with: [.text(firstText.text.tokenKind.text + secondText.text.tokenKind.text)])
+            firstIndex...lastIndex,
+            with: [.text(firstText.text.tokenKind.text + concatenated)]
+          )
+        }
       }
     }
   }
