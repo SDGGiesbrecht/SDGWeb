@@ -453,6 +453,7 @@ target_link_libraries("SDGHTML" PRIVATE
   "SDGMathematics"
   "SDGCollections"
   "SDGText"
+  "SDGPersistence"
   "SDGLocalization"
 )
 

@@ -18,12 +18,17 @@
 #endif
 
 import SDGText
+import SDGPersistence
 import SDGLocalization
 
 import SDGWebLocalizations
 
+// #workaround(workspace version 0.32.0, Web doesn’t have Foundation yet.)
+#if !os(WASI)
+  extension DocumentSyntax: FileConvertible {}
+#endif
 /// A syntax node representing an HTML document.
-public struct DocumentSyntax: ContainerSyntax, Syntax {
+public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
 
   // MARK: - Parsing
 
@@ -127,6 +132,39 @@ public struct DocumentSyntax: ContainerSyntax, Syntax {
         }
       }
       return result
+    }
+  #endif
+
+  // MARK: - Equatable
+
+  public static func == (precedingValue: DocumentSyntax, followingValue: DocumentSyntax) -> Bool {
+    return precedingValue.source() == followingValue.source()
+  }
+
+  // #workaround(workspace version 0.32.0, Web doesn’t have Foundation yet.)
+  #if !os(WASI)
+    // MARK: - FileConvertible
+
+    // #workaround(workspace version 0.32.0, Duplicate documentation until Web supports Foundation and the extension can be merged.)
+    /// Creates an instance using raw data from a file on the disk.
+    ///
+    /// - Parameters:
+    ///   - file: The data.
+    ///   - origin: A URL indicating where the data came from.
+    public init(file: Data, origin: URL?) throws {
+      let source = try String(file: file, origin: origin)
+      switch DocumentSyntax.parse(source: source) {
+      case .success(let document):
+        self = document
+      case .failure(let error):
+        throw error
+      }
+    }
+
+    // #workaround(workspace version 0.32.0, Duplicate documentation until Web supports Foundation and the extension can be merged.)
+    /// A binary representation that can be written as a file.
+    public var file: Data {
+      return source().file
     }
   #endif
 
