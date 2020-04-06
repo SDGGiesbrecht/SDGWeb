@@ -34,7 +34,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
   #if !os(WASI)
     internal static func load<Unfolder>(
       from file: URL,
-      in site: Site<Localization, Unfolder>
+      in site: Site<Localization, Unfolder>,
+      formatting: Bool
     ) -> Result<PageTemplate, PageTemplateLoadingError> {
       let relativePath = StrictString(file.path(relativeTo: site.repositoryStructure.pages))
 
@@ -49,6 +50,9 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       switch DocumentSyntax.parse(source: String(source)) {
       case .success(let document):
         templateSyntax = document
+        if formatting {
+          try? document.formatted().save(to: file)
+        }
       case .failure(let error):
         return .failure(.syntaxError(page: relativePath, error: error))
       }
