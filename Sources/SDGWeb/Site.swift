@@ -74,7 +74,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   /// Generates the website in its result directory.
   ///
   /// - Parameters:
-  ///     - formatting: Whether the resulting HTML source should be formatted.
+  ///     - formatting: Whether the templates and resulting HTML source should be formatted.
   public func generate(formatting: Bool = true) -> Result<Void, SiteGenerationError> {
 
     clean()
@@ -129,7 +129,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       for templateLocation in fileEnumeration
       where templateLocation.lastPathComponent ≠ ".DS_Store" {
 
-        switch PageTemplate.load(from: templateLocation, in: self) {
+        switch PageTemplate.load(from: templateLocation, in: self, formatting: formatting) {
         case .failure(let error):
           return .failure(error)
         case .success(let template):

@@ -64,7 +64,34 @@ extension ListSyntax where Entry == ContentSyntax {
 
   // MARK: - Formatting
 
+  private mutating func mergeAdjacentText() {
+    var firstIndex = 0
+    while firstIndex < endIndex {
+      defer { firstIndex = self.index(after: firstIndex) }
+
+      if case .text(let firstText) = self[firstIndex].kind {
+        var lastIndex = firstIndex
+        var concatenated = ""
+        while let next = self.index(lastIndex, offsetBy: 1, limitedBy: endIndex),
+        next < endIndex,
+        case .text(let nextText) = self[next].kind {
+          defer { lastIndex = next }
+          concatenated.append(nextText.text.tokenKind.text)
+        }
+
+        if lastIndex ≠ firstIndex {
+          replaceSubrange(
+            firstIndex...lastIndex,
+            with: [.text(firstText.text.tokenKind.text + concatenated)]
+          )
+        }
+      }
+    }
+  }
+
   internal mutating func formatContentList(indentationLevel: Int, forDocument: Bool) {
+    mergeAdjacentText()
+
     if count ≤ 1,
       allSatisfy({ node in
         if case .text = node.kind {
