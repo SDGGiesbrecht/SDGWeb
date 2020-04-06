@@ -348,6 +348,11 @@ class APITests: TestCase {
         to: "Span",
         overwriteSpecificationInsteadOfFailing: false
       )
+      compare(
+        .heading(level: .level1),
+        to: "Heading 1",
+        overwriteSpecificationInsteadOfFailing: false
+      )
     #endif
   }
 
