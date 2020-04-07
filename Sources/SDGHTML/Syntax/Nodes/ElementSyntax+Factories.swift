@@ -208,6 +208,22 @@ extension ElementSyntax {
     return ElementSyntax(name: "header", attributes: attributes, contents: contents)
   }
 
+  /// Creates a heading (`<h2>`, `<h3>`, etc.).
+  ///
+  /// Heading levels 1 through 5 correspond to tags `<h2>` to `<h3>`. For the `<h1>` tag, use `title(attributes:contents:)` instead.
+  ///
+  /// - Parameters:
+  ///   - level: The nesting level of the heading.
+  ///   - attributes: Optional. The attributes.
+  ///   - contents: The contents of the header.
+  public static func heading(
+    level: HeadingLevel,
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax {
+    return ElementSyntax(name: level.htmlTag, attributes: attributes, contents: contents)
+  }
+
   /// Creates a keywords metadata entry.
   ///
   /// - Parameters:
