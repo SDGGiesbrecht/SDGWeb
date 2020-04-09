@@ -27,7 +27,7 @@ import SDGXCTestUtilities
 class InternalTests: TestCase {
 
   func testSyntaxUnfolderError() {
-    // #workaround(workspace version 0.32.0, FoundationNetworking cannot be linked.)
+    // #workaround(Swift 5.2.1, FoundationNetworking cannot be linked.)
     #if !os(Android)
       testCustomStringConvertibleConformance(
         of: SyntaxUnfolder.Error.missingAttribute(
