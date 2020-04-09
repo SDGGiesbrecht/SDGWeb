@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+// #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -63,7 +63,7 @@ extension ElementSyntax {
     return ElementSyntax(name: "body", attributes: attributes, contents: contents)
   }
 
-  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+  // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     /// Creates a canonical URL declaration.
     ///
@@ -240,7 +240,7 @@ extension ElementSyntax {
     )
   }
 
-  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+  // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     /// Creates a language switch element.
     ///
@@ -276,7 +276,7 @@ extension ElementSyntax {
     return ElementSyntax(name: "br", attributes: attributes, empty: true)
   }
 
-  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+  // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     /// Creates a link.
     ///
@@ -459,7 +459,7 @@ extension ElementSyntax {
     return ElementSyntax(name: "p", attributes: attributes, contents: contents)
   }
 
-  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+  // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     /// Creates an embedded portable document (PDF).
     ///

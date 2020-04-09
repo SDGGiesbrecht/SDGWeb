@@ -183,7 +183,7 @@ func removeEntityListGenerator() {
   removeEntityListGenerator()
 #endif
 
-// #workaround(workspace version 0.32.0, CMake cannot handle Unicode.)
+// #workaround(Swift 5.2.1, CMake cannot handle Unicode.)
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   removeEntityListGenerator()
@@ -191,7 +191,7 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   for target in package.targets {
-    // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+    // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
     target.exclude.append("Resources.swift")
   }
 }

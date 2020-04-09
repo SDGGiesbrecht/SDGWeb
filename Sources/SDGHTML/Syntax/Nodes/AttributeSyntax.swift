@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+// #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -170,7 +170,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
 
   // MARK: - Validation
 
-  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+  // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     internal func validate(
       location: String.ScalarView.Index,
@@ -410,7 +410,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   }
 
   private static let urlAttributes: Set<String> = ["data", "href", "poster", "src", "srcset"]
-  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+  // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     internal func validateURLValue(
       location: String.ScalarView.Index,
