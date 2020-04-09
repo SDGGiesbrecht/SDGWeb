@@ -162,13 +162,11 @@ class APITests: TestCase {
       ContentSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text.")))))
     )
     XCTAssertEqual(document.source(), "Text.")
-    #if !os(Windows)  // #workaround(workspace version 0.32.0, SegFault)
-      testFileConvertibleConformance(
-        of: DocumentSyntax.document(documentElement: .division()),
-        uniqueTestName: "HTML Document"
-      )
-      XCTAssertNil(try? DocumentSyntax(file: "</end>".file, origin: nil))
-    #endif
+    testFileConvertibleConformance(
+      of: DocumentSyntax.document(documentElement: .division()),
+      uniqueTestName: "HTML Document"
+    )
+    XCTAssertNil(try? DocumentSyntax(file: "</end>".file, origin: nil))
   }
 
   func testElement() {
