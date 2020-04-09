@@ -108,7 +108,7 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaninfulNormalizeWhitespace() {
     onlyOnTextTokens { text in
-      // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+      // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
       #if !os(WASI)
         let words = text.scalars.components(
           separatedBy: ConditionalPattern({ $0.isHTMLWhitespaceOrNewline })
@@ -122,7 +122,7 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaningfulTrimWhitespace() {
     onlyOnTextTokens { text in
-      // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+      // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
       #if !os(WASI)
         while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
           text.scalars.removeFirst()
@@ -136,7 +136,7 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
     onlyOnTextTokens { text in
-      // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+      // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
       #if !os(WASI)
         while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
           // @exempt(from: tests) Not currently reachable.
@@ -149,7 +149,7 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaningfulSetTrailingWhitespace(to whitespace: String) {
     onlyOnTextTokens { text in
-      // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+      // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
       #if !os(WASI)
         while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
           text.scalars.removeLast()

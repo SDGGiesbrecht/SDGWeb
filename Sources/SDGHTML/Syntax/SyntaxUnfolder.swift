@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+// #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -202,7 +202,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
       }
     })
   }
-  // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+  // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     /// Unfolds the `<page>` element.
     ///
@@ -387,7 +387,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   public func unfold(contentList: inout ListSyntax<ContentSyntax>) throws {
     if let localization = context?.localization {
       try SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
-      // #workaround(workspace version 0.32.0, Web doesn’t have foundation yet.)
+      // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
       #if !os(WASI)
         if let siteRoot = context?.siteRoot,
           let relativePath = context?.relativePath,
