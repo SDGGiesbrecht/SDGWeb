@@ -16,10 +16,8 @@
 #if !os(WASI)
   import Foundation
 #endif
-#if !os(Android)  // #workaround(workspace version 0.32.0, FoundationNetworking cannot be linked.)
-  #if canImport(FoundationNetworking)
-    import FoundationNetworking
-  #endif
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
 #endif
 
 import SDGLogic
