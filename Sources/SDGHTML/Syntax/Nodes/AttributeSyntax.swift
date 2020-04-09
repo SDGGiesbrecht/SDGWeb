@@ -16,8 +16,10 @@
 #if !os(WASI)
   import Foundation
 #endif
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
+#if !os(Android)  // #workaround(Swift 5.2.1, FoundationNetworking cannot be linked.)
+  #if canImport(FoundationNetworking)
+    import FoundationNetworking
+  #endif
 #endif
 
 import SDGLogic
@@ -435,7 +437,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
             dead = false
           } else {
             #if os(Android)
-              // #workaround(workspace version 0.32.0, FoundationNetworking cannot be linked.)
+              // #workaround(Swift 5.2.1, FoundationNetworking cannot be linked.)
               dead = false
             #else
               let request = URLRequest(
