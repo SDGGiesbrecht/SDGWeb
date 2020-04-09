@@ -145,7 +145,7 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
   #if !os(WASI)
     // MARK: - FileConvertible
 
-    // #workaround(workspace version 0.32.0, Duplicate documentation until Web supports Foundation and the extension can be merged.)
+    // #workaround(Swift 5.2.1, Duplicate documentation until Web supports Foundation and the extension can be merged.)
     /// Creates an instance using raw data from a file on the disk.
     ///
     /// - Parameters:
@@ -161,7 +161,7 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
       }
     }
 
-    // #workaround(workspace version 0.32.0, Duplicate documentation until Web supports Foundation and the extension can be merged.)
+    // #workaround(Swift 5.2.1, Duplicate documentation until Web supports Foundation and the extension can be merged.)
     /// A binary representation that can be written as a file.
     public var file: Data {
       return source().file
