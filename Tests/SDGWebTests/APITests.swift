@@ -48,7 +48,10 @@ class APITests: TestCase {
   func testLocalized() throws {
     for localization in InterfaceLocalization.allCases {
       try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        try generate(forMock: "Localized", localization: DoubleLocalization.self)
+        // #workaround(Swift 5.2.1, Foundation has issues with the file system.)
+        #if !os(Windows)
+          try generate(forMock: "Localized", localization: DoubleLocalization.self)
+        #endif
       }
     }
   }
@@ -88,7 +91,7 @@ class APITests: TestCase {
   }
 
   func testRightToLeft() throws {
-    // #workaround(workspace version 0.32.0, Foundation has issues with the file system)
+    // #workaround(Swift 5.2.1, Foundation has issues with the file system.)
     #if !os(Windows)
       try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
     #endif
