@@ -46,14 +46,14 @@ class APITests: TestCase {
   }
 
   func testLocalized() throws {
-    // #workaround(workspace version 0.32.0, Foundation has issues with the file system)
-    #if !os(Windows)
-      for localization in InterfaceLocalization.allCases {
-        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+    for localization in InterfaceLocalization.allCases {
+      try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+        // #workaround(Swift 5.2.1, Foundation has issues with the file system.)
+        #if !os(Windows)
           try generate(forMock: "Localized", localization: DoubleLocalization.self)
-        }
+        #endif
       }
-    #endif
+    }
   }
 
   func testNoColon() {
@@ -91,7 +91,7 @@ class APITests: TestCase {
   }
 
   func testRightToLeft() throws {
-    // #workaround(workspace version 0.32.0, Foundation has issues with the file system)
+    // #workaround(Swift 5.2.1, Foundation has issues with the file system.)
     #if !os(Windows)
       try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
     #endif
