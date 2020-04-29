@@ -162,7 +162,7 @@ class APITests: TestCase {
       ContentSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text.")))))
     )
     XCTAssertEqual(document.source(), "Text.")
-    #if !os(Windows)  // #workaround(Swift 5.2.1, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       testFileConvertibleConformance(
         of: DocumentSyntax.document(documentElement: .division()),
         uniqueTestName: "HTML Document"
@@ -238,7 +238,7 @@ class APITests: TestCase {
   }
 
   func testElementFactories() {
-    #if !os(Windows)  // #workaround(Swift 5.2.1, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       func compare(
         _ element: ElementSyntax,
         to specification: String,
@@ -632,7 +632,7 @@ class APITests: TestCase {
   }
 
   func testSyntaxError() {
-    #if !os(Windows)  // #workaround(Swift 5.2.1, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       func expectViolation(
         named name: String,
         in string: String,
@@ -670,7 +670,7 @@ class APITests: TestCase {
         )
       }
 
-      // #workaround(Swift 5.2.1, FoundationNetworking cannot be linked.)
+      // #workaround(Swift 5.2.2, FoundationNetworking cannot be linked.)
       #if !os(Android)
         expectViolation(
           named: "Dead Remote Link",
@@ -869,7 +869,7 @@ class APITests: TestCase {
   }
 
   func testValidLink() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.1, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let document = try DocumentSyntax.parse(
         source:
           "<a href=\u{22}http://www.google.com\u{22}></a>"

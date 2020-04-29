@@ -33,7 +33,7 @@ class RegressionTests: TestCase {
         language: InterfaceLocalization.deutschDeutschland,
         target: URL(fileURLWithPath: "../")
       ).source()
-      // #workaround(Swift 5.2.1, Foundation has issues with the file system.)
+      // #workaround(Swift 5.2.2, Foundation has issues with the file system.)
       #if !os(Windows)
         try redirectFile.save(to: url.appendingPathComponent("Redirect.html"))
         let warnings = Site<InterfaceLocalization, SyntaxUnfolder>.validate(site: url)

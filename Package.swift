@@ -178,12 +178,12 @@ let package = Package(
 func removeEntityListGenerator() {
   package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
 }
-// #workaround(Swift 5.2, The generated Xcode project cannot handle executables when building for iOS.)
+// #workaround(Swift 5.2.2, The generated Xcode project cannot handle executables when building for iOS.)
 #if os(macOS)
   removeEntityListGenerator()
 #endif
 
-// #workaround(Swift 5.2.1, CMake cannot handle Unicode.)
+// #workaround(Swift 5.2.2, CMake cannot handle Unicode.)
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   removeEntityListGenerator()
@@ -191,7 +191,7 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   for target in package.targets {
-    // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
     target.exclude.append("Resources.swift")
   }
 
