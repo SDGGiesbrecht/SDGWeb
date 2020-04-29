@@ -73,7 +73,7 @@ let package = Package(
     .library(name: "SDGCSS", targets: ["SDGCSS"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(4, 6, 0))
+    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(5, 0, 0))
   ],
   targets: [
     // Products
@@ -194,4 +194,5 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     // #workaround(Swift 5.2.1, Web doesn’t have Foundation yet.)
     target.exclude.append("Resources.swift")
   }
+
 }
