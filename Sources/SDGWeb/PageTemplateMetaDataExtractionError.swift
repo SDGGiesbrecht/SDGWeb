@@ -16,5 +16,5 @@ import SDGText
 import SDGLocalization
 
 internal struct PageTemplateMetaDataExtractionError: Error {
-  let page: StrictString
+  internal let page: StrictString
 }

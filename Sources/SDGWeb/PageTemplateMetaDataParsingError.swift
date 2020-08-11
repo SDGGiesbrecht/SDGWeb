@@ -16,5 +16,5 @@ import SDGText
 import SDGLocalization
 
 internal struct PageTemplateMetaDataParsingError: Error {
-  let line: StrictString
+  internal let line: StrictString
 }
