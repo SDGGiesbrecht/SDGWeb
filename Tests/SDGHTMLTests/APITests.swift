@@ -571,6 +571,16 @@ class APITests: TestCase {
 
     let url = "../Mock Projects"
     var thisFile = URL(fileURLWithPath: #file)
+    #if os(Windows)
+      // Fix WSL path if cross‐compiled.
+      var directory = thisFile.path
+      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
+        directory.removeFirst(5)
+        let driveLetter = directory.removeFirst()
+        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
+        thisFile = URL(fileURLWithPath: directory)
+      }
+    #endif
     if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
       thisFile = URL(fileURLWithPath: overridden)
         .appendingPathComponent("Tests")
