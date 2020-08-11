@@ -28,7 +28,8 @@ public struct TextSyntax: Syntax {
   internal static func parse(fromEndOf source: inout String) -> TextSyntax {
     var start = source.scalars.endIndex
     while start ≠ source.scalars.startIndex,
-    source[source.scalars.index(before: start)] ≠ ">" {
+      source[source.scalars.index(before: start)] ≠ ">"
+    {
       start = source.scalars.index(before: start)
     }
     let text = String(source[start...])

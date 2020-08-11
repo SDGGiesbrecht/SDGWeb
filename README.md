@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-macOS • Windows • Web • Linux • tvOS • iOS • Android • watchOS
+macOS • Windows • Web • CentOS • Ubuntu • tvOS • iOS • Android • Amazon Linux • watchOS
 
 [Documentation](https://sdggiesbrecht.github.io/SDGWeb/%F0%9F%87%A8%F0%9F%87%A6EN)
 
@@ -67,17 +67,24 @@ Simply add SDGWeb as a dependency in `Package.swift` and specify which of the li
 
 ```swift
 let package = Package(
-    name: "MyPackage",
-    dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 1)),
-    ],
-    targets: [
-        .target(name: "MyTarget", dependencies: [
-            .productItem(name: "SDGWeb", package: "SDGWeb"),
-            .productItem(name: "SDGHTML", package: "SDGWeb"),
-            .productItem(name: "SDGCSS", package: "SDGWeb"),
-        ])
-    ]
+  name: "MyPackage",
+  dependencies: [
+    .package(
+      name: "SDGWeb",
+      url: "https://github.com/SDGGiesbrecht/SDGWeb",
+      from: Version(5, 3, 1)
+    ),
+  ],
+  targets: [
+    .target(
+      name: "MyTarget",
+      dependencies: [
+        .product(name: "SDGWeb", package: "SDGWeb"),
+        .product(name: "SDGHTML", package: "SDGWeb"),
+        .product(name: "SDGCSS", package: "SDGWeb"),
+      ]
+    )
+  ]
 )
 ```
 

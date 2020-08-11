@@ -27,7 +27,8 @@ public struct TokenSyntax: Syntax {
   ) -> TokenSyntax? {
     var start = source.scalars.endIndex
     while start ≠ source.scalars.startIndex,
-    condition(source.scalars[source.scalars.index(before: start)]) {
+      condition(source.scalars[source.scalars.index(before: start)])
+    {
       start = source.scalars.index(before: start)
     }
     if start == source.scalars.endIndex {

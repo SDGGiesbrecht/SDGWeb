@@ -73,8 +73,9 @@ extension ListSyntax where Entry == ContentSyntax {
         var lastIndex = firstIndex
         var concatenated = ""
         while let next = self.index(lastIndex, offsetBy: 1, limitedBy: endIndex),
-        next < endIndex,
-        case .text(let nextText) = self[next].kind {
+          next < endIndex,
+          case .text(let nextText) = self[next].kind
+        {
           defer { lastIndex = next }
           concatenated.append(nextText.text.tokenKind.text)
         }

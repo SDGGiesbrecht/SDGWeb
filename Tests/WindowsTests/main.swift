@@ -1,5 +1,5 @@
 /*
- WindowsMain.swift
+ main.swift
 
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
@@ -51,7 +51,7 @@ extension SDGHTMLTests.APITests {
 extension SDGHTMLTests.InternalTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
-      ("testSyntaxUnfolderError", testSyntaxUnfolderError),
+      ("testSyntaxUnfolderError", testSyntaxUnfolderError)
     ])
   ]
 }
@@ -90,7 +90,7 @@ extension SDGWebTests.APITests {
 extension SDGWebTests.RegressionTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
-      ("testRedirect", testRedirect),
+      ("testRedirect", testRedirect)
     ])
   ]
 }
