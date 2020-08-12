@@ -698,7 +698,7 @@ class APITests: TestCase {
         )
       }
 
-      // #workaround(Swift 5.2.2, FoundationNetworking cannot be linked.)
+      // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
       #if !os(Android)
         expectViolation(
           named: "Dead Remote Link",
