@@ -23,6 +23,7 @@ import SDGWeb
 
 import XCTest
 
+import SDGPersistenceTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 
