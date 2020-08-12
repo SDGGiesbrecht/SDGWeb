@@ -12,11 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+// #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   import Foundation
 #endif
-#if !os(Android)  // #workaround(Swift 5.2.2, FoundationNetworking cannot be linked.)
+#if !os(Android)  // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
   #endif
@@ -170,7 +170,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
 
   // MARK: - Validation
 
-  // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+  // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     internal func validate(
       location: String.ScalarView.Index,
@@ -410,7 +410,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   }
 
   private static let urlAttributes: Set<String> = ["data", "href", "poster", "src", "srcset"]
-  // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+  // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     internal func validateURLValue(
       location: String.ScalarView.Index,
@@ -437,7 +437,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
             dead = false
           } else {
             #if os(Android)
-              // #workaround(Swift 5.2.2, FoundationNetworking cannot be linked.)
+              // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
               dead = false
             #else
               let request = URLRequest(

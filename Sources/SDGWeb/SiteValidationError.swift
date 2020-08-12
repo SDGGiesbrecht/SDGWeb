@@ -34,7 +34,7 @@ public enum SiteValidationError: PresentableError {
   public func presentableDescription() -> StrictString {
     switch self {
     case .foundationError(let error):
-      // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+      // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
       #if os(WASI)
         return StrictString(String(describing: error))
       #else

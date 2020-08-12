@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+// #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -23,7 +23,7 @@ import SDGLocalization
 
 import SDGWebLocalizations
 
-// #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+// #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   extension DocumentSyntax: FileConvertible {}
 #endif
@@ -71,7 +71,7 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
 
   // MARK: - Validation
 
-  // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+  // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     /// Validates the document.
     ///
@@ -141,11 +141,11 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
     return precedingValue.source() == followingValue.source()
   }
 
-  // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+  // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     // MARK: - FileConvertible
 
-    // #workaround(Swift 5.2.2, Duplicate documentation until Web supports Foundation and the extension can be merged.)
+    // #workaround(Swift 5.2.4, Duplicate documentation until Web supports Foundation and the extension can be merged.)
     /// Creates an instance using raw data from a file on the disk.
     ///
     /// - Parameters:
@@ -161,7 +161,7 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
       }
     }
 
-    // #workaround(Swift 5.2.2, Duplicate documentation until Web supports Foundation and the extension can be merged.)
+    // #workaround(Swift 5.2.4, Duplicate documentation until Web supports Foundation and the extension can be merged.)
     /// A binary representation that can be written as a file.
     public var file: Data {
       return source().file

@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+// #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -25,7 +25,7 @@ extension SyntaxUnfolder {
   /// Contextual information for a syntax unfolder.
   public struct Context {
 
-    // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
     #if !os(WASI)
       /// Creates a context for a syntax unfolder.
       ///
@@ -57,7 +57,7 @@ extension SyntaxUnfolder {
     // MARK: - Properties
 
     internal let localization: AnyLocalization?
-    // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
     #if !os(WASI)
       internal let siteRoot: URL?
     #endif

@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+// #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -32,7 +32,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+  // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     /// Creates a website instance.
     ///
@@ -61,7 +61,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   // MARK: - Properties
 
   internal let repositoryStructure: RepositoryStructure
-  // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+  // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     internal let siteRoot: UserFacing<URL, Localization>
   #endif
@@ -79,7 +79,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
     clean()
 
-    // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
     #if !os(WASI)
       switch writePages(formatting: formatting) {
       case .failure(let error):
@@ -96,7 +96,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
     do {
       try copyCSS()
-      // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+      // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
       #if !os(WASI)
         if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
           try copyResources()
@@ -110,13 +110,13 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   }
 
   private func clean() {
-    // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
     #if !os(WASI)
       try? FileManager.default.removeItem(at: repositoryStructure.result)
     #endif
   }
 
-  // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+  // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     private func writePages(formatting: Bool) -> Result<Void, PageTemplateLoadingError> {
       let fileEnumeration: [URL]
@@ -157,7 +157,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         }
       }).resolved()
     )
-    // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
     #if !os(WASI)
       try FileManager.default.copy(
         repositoryStructure.css,
@@ -182,7 +182,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         }
       }).resolved()
     )
-    // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
     #if !os(WASI)
       try FileManager.default.copy(
         repositoryStructure.resources,
@@ -193,14 +193,14 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
   // MARK: - Validation
 
-  // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+  // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
   #if !os(WASI)
     /// Validates any website.
     ///
     /// - Parameters:
     ///     - site: The URL of a site in the local file system.
     public static func validate(site: URL) -> [URL: [SiteValidationError]] {
-      // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+      // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
       #if !os(WASI)
         var files: [URL]
         do {
@@ -212,7 +212,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       #endif
 
       var results: [URL: [SiteValidationError]] = [:]
-      // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+      // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
       #if !os(WASI)
         for file in files where file.pathExtension == "html" {
           let source: String
