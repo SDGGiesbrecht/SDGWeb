@@ -48,16 +48,14 @@ class APITests: TestCase {
   }
 
   func testCopyright() {
-    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
-      XCTAssert(
-        ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
+    XCTAssert(
+      ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
+    )
+    XCTAssert(
+      copyrightDates(yearFirstPublished: 2000).contains(
+        CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
       )
-      XCTAssert(
-        copyrightDates(yearFirstPublished: 2000).contains(
-          CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
-        )
-      )
-    #endif
+    )
   }
 
   func testInvalidHTML() {
@@ -122,64 +120,60 @@ class APITests: TestCase {
     }
   }
   func testSiteGenerationError() {
-    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
-      let errors: [SiteGenerationError] = [
-        .foundationError(StandInError()),
-        .invalidDomain("[...]"),
-        .missingTitle(page: "[...]"),
-        .syntaxError(
-          page: "[...]",
-          error: SyntaxError(
-            file: "[...]",
-            index: "".scalars.startIndex,
-            description: UserFacing<StrictString, InterfaceLocalization>({ _ in "[...]" }),
-            context: "[...]"
-          )
-        ),
-      ]
-      for index in errors.indices {
-        let error = errors[index]
-        testCustomStringConvertibleConformance(
-          of: error,
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: index.inDigits(),
-          overwriteSpecificationInsteadOfFailing: false
+    let errors: [SiteGenerationError] = [
+      .foundationError(StandInError()),
+      .invalidDomain("[...]"),
+      .missingTitle(page: "[...]"),
+      .syntaxError(
+        page: "[...]",
+        error: SyntaxError(
+          file: "[...]",
+          index: "".scalars.startIndex,
+          description: UserFacing<StrictString, InterfaceLocalization>({ _ in "[...]" }),
+          context: "[...]"
         )
-      }
-    #endif
+      ),
+    ]
+    for index in errors.indices {
+      let error = errors[index]
+      testCustomStringConvertibleConformance(
+        of: error,
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: index.inDigits(),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    }
   }
 
   func testSiteValidationError() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
-      let parseFailure: SyntaxError
-      switch DocumentSyntax.parse(source: "html>") {
-      case .failure(let error):
-        parseFailure = error
-      case .success:
-        XCTFail("Should not have parsed successfully.")
-        return
-      }
-      let errors: [SiteValidationError] = [
-        .foundationError(StandInError()),
-        .syntaxError(parseFailure),
-      ]
-      for index in errors.indices {
-        let error = errors[index]
-        testCustomStringConvertibleConformance(
-          of: error,
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: index.inDigits(),
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      }
+    let parseFailure: SyntaxError
+    switch DocumentSyntax.parse(source: "html>") {
+    case .failure(let error):
+      parseFailure = error
+    case .success:
+      XCTFail("Should not have parsed successfully.")
+      return
+    }
+    let errors: [SiteValidationError] = [
+      .foundationError(StandInError()),
+      .syntaxError(parseFailure),
+    ]
+    for index in errors.indices {
+      let error = errors[index]
+      testCustomStringConvertibleConformance(
+        of: error,
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: index.inDigits(),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    }
 
-      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
-        let invalidHTML = "p>This paragraph is broken.</p>"
-        try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
-        let warnings = Site<InterfaceLocalization, Unfolder>.validate(site: url)
-        XCTAssert(¬warnings.isEmpty)
-      }
-    #endif
+    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
+      let invalidHTML = "p>This paragraph is broken.</p>"
+      try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
+      let warnings = Site<InterfaceLocalization, Unfolder>.validate(site: url)
+      XCTAssert(¬warnings.isEmpty)
+    }
   }
 
   func testUnknownLocalization() throws {
