@@ -73,7 +73,7 @@ let package = Package(
     .library(name: "SDGCSS", targets: ["SDGCSS"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(5, 0, 0))
+    .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(5, 4, 1))
   ],
   targets: [
     // Products
@@ -168,6 +168,7 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ]
@@ -194,5 +195,45 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
     target.exclude.append("Resources.swift")
   }
-
 }
+
+// Windows Tests (Generated automatically by Workspace.)
+import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true",
+  ProcessInfo.processInfo.environment["GENERATING_TESTS"] == nil
+{
+  var tests: [Target] = []
+  var other: [Target] = []
+  for target in package.targets {
+    if target.type == .test {
+      tests.append(target)
+    } else {
+      other.append(target)
+    }
+  }
+  package.targets = other
+  package.targets.append(
+    contentsOf: tests.map({ test in
+      return .target(
+        name: test.name,
+        dependencies: test.dependencies,
+        path: test.path ?? "Tests/\(test.name)",
+        exclude: test.exclude,
+        sources: test.sources,
+        publicHeadersPath: test.publicHeadersPath,
+        cSettings: test.cSettings,
+        cxxSettings: test.cxxSettings,
+        swiftSettings: test.swiftSettings,
+        linkerSettings: test.linkerSettings
+      )
+    })
+  )
+  package.targets.append(
+    .target(
+      name: "WindowsTests",
+      dependencies: tests.map({ Target.Dependency.target(name: $0.name) }),
+      path: "Tests/WindowsTests"
+    )
+  )
+}
+// End Windows Tests

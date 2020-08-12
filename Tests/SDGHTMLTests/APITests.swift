@@ -26,6 +26,24 @@ import SDGXCTestUtilities
 
 class APITests: TestCase {
 
+  static let configureWindowsTestDirectory: Void = {
+    // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
+    #if os(Windows)
+      var directory = testSpecificationDirectory().path
+      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
+        directory.removeFirst(5)
+        let driveLetter = directory.removeFirst()
+        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
+        let url = URL(fileURLWithPath: directory)
+        setTestSpecificationDirectory(to: url)
+      }
+    #endif
+  }()
+  override func setUp() {
+    super.setUp()
+    APITests.configureWindowsTestDirectory
+  }
+
   func testAttribute() {
     var attribute = AttributeSyntax(name: TokenSyntax(kind: .attributeName("attribute")))
     XCTAssertEqual(attribute.source(), " attribute")
@@ -571,6 +589,16 @@ class APITests: TestCase {
 
     let url = "../Mock Projects"
     var thisFile = URL(fileURLWithPath: #file)
+    #if os(Windows)
+      // Fix WSL path if cross‐compiled.
+      var directory = thisFile.path
+      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
+        directory.removeFirst(5)
+        let driveLetter = directory.removeFirst()
+        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
+        thisFile = URL(fileURLWithPath: directory)
+      }
+    #endif
     if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
       thisFile = URL(fileURLWithPath: overridden)
         .appendingPathComponent("Tests")

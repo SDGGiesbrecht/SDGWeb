@@ -17,5 +17,5 @@ public struct _SyntaxStorage {
 
   // MARK: - Properties
 
-  var children: [Syntax?]
+  internal var children: [Syntax?]
 }

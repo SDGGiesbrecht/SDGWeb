@@ -54,7 +54,7 @@ public enum TokenKind: Equatable, Hashable {
   // MARK: - Properties
 
   /// The textual representation of this token kind.
-  var text: String {
+  public var text: String {
     switch self {
     case .text(let text),
       .whitespace(let text),
