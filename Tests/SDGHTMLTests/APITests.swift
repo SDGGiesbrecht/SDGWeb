@@ -184,7 +184,11 @@ class APITests: TestCase {
       of: DocumentSyntax.document(documentElement: .division()),
       uniqueTestName: "HTML Document"
     )
+    #warning("Debug message.")
+    print("Finished file convertible test.")
     XCTAssertNil(try? DocumentSyntax(file: "</end>".file, origin: nil))
+    #warning("Debug message.")
+    print("Finished testDocument().")
   }
 
   func testElement() {
