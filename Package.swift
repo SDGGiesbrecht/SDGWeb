@@ -179,7 +179,7 @@ let package = Package(
 func removeEntityListGenerator() {
   package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
 }
-// #workaround(Swift 5.2.2, The generated Xcode project cannot handle executables when building for iOS.)
+// #workaround(workspace version 0.34.0, The generated Xcode project cannot handle executables when building for iOS.)
 #if os(macOS)
   removeEntityListGenerator()
 #endif
