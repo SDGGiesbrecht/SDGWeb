@@ -187,7 +187,7 @@ func removeEntityListGenerator() {
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   for target in package.targets {
-    // #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+    // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
     target.exclude.append("Resources.swift")
   }
 }
