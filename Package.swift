@@ -197,6 +197,12 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   }
 }
 
+// #workaround(xcodebuild -version 11.6, watchOS cannot handle test targets.) // @exempt(from: unicode)
+import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  package.targets.removeAll(where: { $0.type == .test })
+}
+
 // Windows Tests (Generated automatically by Workspace.)
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true",
