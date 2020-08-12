@@ -37,6 +37,15 @@ func generate<L>(
     .deletingLastPathComponent()
     .deletingLastPathComponent()
     .deletingLastPathComponent()
+  #if os(Windows)
+    var directory = sdgWebRepositoryRoot.path
+    if directory.hasPrefix("\u{5C}mnt\u{5C}") {
+      directory.removeFirst(5)
+      let driveLetter = directory.removeFirst()
+      directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
+      sdgWebRepositoryRoot = URL(fileURLWithPath: directory)
+    }
+  #endif
   if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
     sdgWebRepositoryRoot = URL(fileURLWithPath: overridden)
   }
