@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+// #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -21,7 +21,7 @@ import SDGLogic
 import SDGText
 import SDGPersistence
 
-// #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+// #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
   let json = try Data(from: specificationURL)
@@ -29,7 +29,7 @@ import SDGPersistence
 #endif
 
 var transformed: [String: String] = [:]
-// #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+// #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   for (entity, text) in database {
     var name = entity
@@ -58,7 +58,7 @@ for (entity, text) in sorted {
 }
 file.append("]\n")
 
-// #workaround(Swift 5.2.2, Web doesn’t have Foundation yet.)
+// #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
   let sourceFile = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
