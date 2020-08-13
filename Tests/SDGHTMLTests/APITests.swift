@@ -678,9 +678,10 @@ class APITests: TestCase {
         #warning("Debug message.")
         print(localization.code)
         report.append(localization.icon ?? StrictString(localization.code))
-        #warning("Here?")
-        continue
+        #warning("Succeeded here.")
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+          #warning("Here?")
+          return;
           for error in errors {
             report.append("")
             report.append(error.presentableDescription())
