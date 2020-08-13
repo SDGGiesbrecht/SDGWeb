@@ -672,34 +672,27 @@ class APITests: TestCase {
         XCTAssert(¬validated.isEmpty, "No error detected.", file: file, line: line)
         errors.append(contentsOf: validated)
       }
-      var report: [StrictString] = []
-      #warning("Succeeded here.")
-      for localization in InterfaceLocalization.allCases {
-        #warning("Debug message.")
-        print(localization.code)
-        report.append(localization.icon ?? StrictString(localization.code))
-        #warning("Succeeded here.")
-        LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          #warning("Succeded here.")
-          for error in errors {
-            #warning("Here?")
-            continue
-            report.append("")
-            report.append(error.presentableDescription())
+      #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+        var report: [StrictString] = []
+        for localization in InterfaceLocalization.allCases {
+          report.append(localization.icon ?? StrictString(localization.code))
+          LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+            for error in errors {
+              report.append("")
+              report.append(error.presentableDescription())
+            }
           }
         }
-      }
-      #warning("Failed here.")
-      return;
-      compare(
-        String(report.joined(separator: "\n")),
-        against: testSpecificationDirectory()
-          .appendingPathComponent("SyntaxError")
-          .appendingPathComponent("\(name).txt"),
-        overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
-        file: file,
-        line: line
-      )
+        compare(
+          String(report.joined(separator: "\n")),
+          against: testSpecificationDirectory()
+            .appendingPathComponent("SyntaxError")
+            .appendingPathComponent("\(name).txt"),
+          overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
+          file: file,
+          line: line
+        )
+      #endif
     }
 
     // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
