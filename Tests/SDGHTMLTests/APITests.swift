@@ -674,10 +674,6 @@ class APITests: TestCase {
       }
       var report: [StrictString] = []
       for localization in InterfaceLocalization.allCases {
-        #warning("Succeeded here.")
-        print(localization.icon)
-        #warning("Failed here. (Or fixed now?)")
-        return
         report.append(localization.icon ?? StrictString(localization.code))
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
           for error in errors {
