@@ -682,6 +682,8 @@ class APITests: TestCase {
           }
         }
       }
+      #warning("Debugging.")
+      return
       compare(
         String(report.joined(separator: "\n")),
         against: testSpecificationDirectory()
