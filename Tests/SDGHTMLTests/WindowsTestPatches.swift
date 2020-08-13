@@ -15,6 +15,7 @@
 #if os(Windows)
 
   import SDGText
+  import SDGPersistence
 
   // #workaround(SDGCornerstone 5.4.1, Requires newline normalization.)
   func testFileConvertibleConformance<T>(
