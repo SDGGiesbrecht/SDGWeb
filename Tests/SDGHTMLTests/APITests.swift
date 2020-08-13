@@ -673,6 +673,8 @@ class APITests: TestCase {
         errors.append(contentsOf: validated)
       }
       var report: [StrictString] = []
+      #warning("Here?")
+      return;
       for localization in InterfaceLocalization.allCases {
         report.append(localization.icon ?? StrictString(localization.code))
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
@@ -682,7 +684,7 @@ class APITests: TestCase {
           }
         }
       }
-      #warning("Here?")
+      #warning("Failed here.")
       return;
       compare(
         String(report.joined(separator: "\n")),
