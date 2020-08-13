@@ -152,7 +152,11 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
     ///   - file: The data.
     ///   - origin: A URL indicating where the data came from.
     public init(file: Data, origin: URL?) throws {
-      let source = try String(file: file, origin: origin)
+      var source = try String(file: file, origin: origin)
+
+      // Normalize line breaks.
+      source.scalars.replaceMatches(for: "\u{D}".scalars, with: "".scalars)
+
       switch DocumentSyntax.parse(source: source) {
       case .success(let document):
         self = document
