@@ -51,6 +51,8 @@ class APITests: TestCase {
     XCTAssert(
       ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
     )
+    #warning("Here?")
+    return;
     XCTAssert(
       copyrightDates(yearFirstPublished: 2000).contains(
         CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
