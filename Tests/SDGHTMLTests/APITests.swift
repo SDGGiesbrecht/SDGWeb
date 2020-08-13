@@ -675,18 +675,15 @@ class APITests: TestCase {
       var report: [StrictString] = []
       for localization in InterfaceLocalization.allCases {
         report.append(localization.icon ?? StrictString(localization.code))
-        #warning("Succeeded here.")
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          #warning("Here?")
-          return;
           for error in errors {
             report.append("")
             report.append(error.presentableDescription())
           }
         }
-        #warning("Failed here.")
-        return;
       }
+      #warning("Here?")
+      return;
       compare(
         String(report.joined(separator: "\n")),
         against: testSpecificationDirectory()
