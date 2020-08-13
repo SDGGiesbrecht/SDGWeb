@@ -676,11 +676,9 @@ class APITests: TestCase {
       for localization in InterfaceLocalization.allCases {
         #warning("Succeeded here.")
         print(localization.icon)
-        #warning("Here?")
+        #warning("Failed here. (Or fixed now?)")
         return
         report.append(localization.icon ?? StrictString(localization.code))
-        #warning("Failed here.")
-        return
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
           for error in errors {
             report.append("")
