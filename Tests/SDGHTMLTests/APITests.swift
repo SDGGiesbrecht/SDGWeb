@@ -672,11 +672,12 @@ class APITests: TestCase {
         XCTAssert(¬validated.isEmpty, "No error detected.", file: file, line: line)
         errors.append(contentsOf: validated)
       }
-      #warning("Debugging.")
-      return
+      #warning("Succeeded here.")
       var report: [StrictString] = []
       for localization in InterfaceLocalization.allCases {
         report.append(localization.icon ?? StrictString(localization.code))
+        #warning("Here?")
+        return
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
           for error in errors {
             report.append("")
@@ -684,7 +685,7 @@ class APITests: TestCase {
           }
         }
       }
-      #warning("Debugging.")
+      #warning("Failed here.")
       return
       compare(
         String(report.joined(separator: "\n")),
