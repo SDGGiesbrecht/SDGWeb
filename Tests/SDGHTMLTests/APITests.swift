@@ -673,10 +673,13 @@ class APITests: TestCase {
         errors.append(contentsOf: validated)
       }
       var report: [StrictString] = []
-      #warning("Here?")
-      return;
+      #warning("Succeeded here.")
       for localization in InterfaceLocalization.allCases {
+        #warning("Debug message.")
+        print(localization.code)
         report.append(localization.icon ?? StrictString(localization.code))
+        #warning("Here?")
+        continue
         LocalizationSetting(orderOfPrecedence: [localization.code]).do {
           for error in errors {
             report.append("")
