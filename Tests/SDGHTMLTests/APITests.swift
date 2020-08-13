@@ -180,13 +180,10 @@ class APITests: TestCase {
       ContentSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text.")))))
     )
     XCTAssertEqual(document.source(), "Text.")
-    // #workaround(SDGCornerstone 5.4.1, Requires newline normalization.)
-    #if !os(Windows)
-      testFileConvertibleConformance(
-        of: DocumentSyntax.document(documentElement: .division()),
-        uniqueTestName: "HTML Document"
-      )
-    #endif
+    testFileConvertibleConformance(
+      of: DocumentSyntax.document(documentElement: .division()),
+      uniqueTestName: "HTML Document"
+    )
     XCTAssertNil(try? DocumentSyntax(file: "</end>".file, origin: nil))
   }
 
