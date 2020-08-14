@@ -150,34 +150,36 @@ class APITests: TestCase {
   }
 
   func testSiteValidationError() throws {
-    let parseFailure: SyntaxError
-    switch DocumentSyntax.parse(source: "html>") {
-    case .failure(let error):
-      parseFailure = error
-    case .success:
-      XCTFail("Should not have parsed successfully.")
-      return
-    }
-    let errors: [SiteValidationError] = [
-      .foundationError(StandInError()),
-      .syntaxError(parseFailure),
-    ]
-    for index in errors.indices {
-      let error = errors[index]
-      testCustomStringConvertibleConformance(
-        of: error,
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: index.inDigits(),
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    }
+    #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+      let parseFailure: SyntaxError
+      switch DocumentSyntax.parse(source: "html>") {
+      case .failure(let error):
+        parseFailure = error
+      case .success:
+        XCTFail("Should not have parsed successfully.")
+        return
+      }
+      let errors: [SiteValidationError] = [
+        .foundationError(StandInError()),
+        .syntaxError(parseFailure),
+      ]
+      for index in errors.indices {
+        let error = errors[index]
+        testCustomStringConvertibleConformance(
+          of: error,
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: index.inDigits(),
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      }
 
-    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
-      let invalidHTML = "p>This paragraph is broken.</p>"
-      try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
-      let warnings = Site<InterfaceLocalization, Unfolder>.validate(site: url)
-      XCTAssert(¬warnings.isEmpty)
-    }
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
+        let invalidHTML = "p>This paragraph is broken.</p>"
+        try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
+        let warnings = Site<InterfaceLocalization, Unfolder>.validate(site: url)
+        XCTAssert(¬warnings.isEmpty)
+      }
+    #endif
   }
 
   func testUnknownLocalization() throws {
