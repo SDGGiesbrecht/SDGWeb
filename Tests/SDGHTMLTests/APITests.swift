@@ -319,7 +319,9 @@ class APITests: TestCase {
     compare(.lineBreak(), to: "Line Break", overwriteSpecificationInsteadOfFailing: false)
     compare(
       .link(
-        target: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.html"),
+        target:
+          URL(fileURLWithPath: "Some Relative Path")
+          .appendingPathComponent("Chemin d’accès.html"),
         language: InterfaceLocalization.englishUnitedKingdom
       ),
       to: "Link",
@@ -329,7 +331,9 @@ class APITests: TestCase {
     compare(.paragraph(), to: "Paragraph", overwriteSpecificationInsteadOfFailing: false)
     compare(
       .portableDocument(
-        url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès.pdf"),
+        url:
+          URL(fileURLWithPath: "Some Relative Path")
+          .appendingPathComponent("Chemin d’accès.pdf"),
         fallbackRepresentation: []
       ),
       to: "Portable Document",
