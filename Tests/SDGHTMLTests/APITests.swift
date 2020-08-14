@@ -280,7 +280,11 @@ class APITests: TestCase {
     )
     compare(.body(), to: "Body", overwriteSpecificationInsteadOfFailing: false)
     compare(
-      .css(url: URL(fileURLWithPath: "Some Relative Path/Chemin d’accès/CSS.css")),
+      .css(
+        url: URL(fileURLWithPath: "Some Relative Path")
+          .appendingPathComponent("Chemin d’accès")
+          .appendingPathComponent("CSS.css")
+      ),
       to: "CSS",
       overwriteSpecificationInsteadOfFailing: false
     )
