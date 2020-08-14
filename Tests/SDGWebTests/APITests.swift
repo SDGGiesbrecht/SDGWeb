@@ -48,16 +48,16 @@ class APITests: TestCase {
   }
 
   func testCopyright() {
-    XCTAssert(
-      ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
-    )
-    #warning("Here?")
-    return;
-    XCTAssert(
-      copyrightDates(yearFirstPublished: 2000).contains(
-        CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
+    #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+      XCTAssert(
+        ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
       )
-    )
+      XCTAssert(
+        copyrightDates(yearFirstPublished: 2000).contains(
+          CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
+        )
+      )
+    #endif
   }
 
   func testInvalidHTML() {
