@@ -31,9 +31,9 @@ public struct AttributeValueSyntax: Syntax {
   }
   private static let indices = Child.indexTable()
 
-  internal static func parse(fromEndOf source: inout String) -> Result<
-    AttributeValueSyntax?, SyntaxError
-  > {
+  internal static func parse(
+    fromEndOf source: inout String
+  ) -> Result<AttributeValueSyntax?, SyntaxError> {
     if source.scalars.last ≠ "\u{22}" {
       return .success(nil)
     }

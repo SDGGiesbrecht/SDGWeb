@@ -29,9 +29,9 @@ public struct AttributesSyntax: AttributedSyntax, ExpressibleByArrayLiteral, Syn
   }
   private static let indices = Child.indexTable()
 
-  internal static func parse(fromEndOf source: inout String) -> Result<
-    (name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError
-  > {
+  internal static func parse(
+    fromEndOf source: inout String
+  ) -> Result<(name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError> {
     let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
     var parsedElements: [AttributeSyntax] = []
 
