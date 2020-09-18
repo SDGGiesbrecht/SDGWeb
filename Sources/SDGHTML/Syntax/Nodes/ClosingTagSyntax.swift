@@ -17,13 +17,13 @@ public struct ClosingTagSyntax: NamedSyntax, Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
+  private enum Child: ChildSet {
     case lessThan
     case slash
     case name
     case greaterThan
   }
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = Child.indexTable()
 
   // MARK: - Initialization
 

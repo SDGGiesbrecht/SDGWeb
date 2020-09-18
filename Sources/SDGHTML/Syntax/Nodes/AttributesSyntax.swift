@@ -23,11 +23,11 @@ public struct AttributesSyntax: AttributedSyntax, ExpressibleByArrayLiteral, Syn
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
+  private enum Child: ChildSet {
     case attributes
     case trailingWhitespace
   }
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = Child.indexTable()
 
   internal static func parse(fromEndOf source: inout String) -> Result<
     (name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError

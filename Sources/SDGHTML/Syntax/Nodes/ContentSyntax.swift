@@ -19,10 +19,10 @@ public struct ContentSyntax: Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
+  private enum Child: ChildSet {
     case kind
   }
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = Child.indexTable()
 
   // MARK: - Initialization
 
