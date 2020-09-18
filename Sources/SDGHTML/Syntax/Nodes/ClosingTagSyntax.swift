@@ -97,10 +97,10 @@ public struct ClosingTagSyntax: NamedSyntax, Syntax {
   /// The greater‐than sign.
   public var greaterThan: TokenSyntax {
     get {
-      return _storage.children[ClosingTagSyntax.indices[.greaterThan]!] as! TokenSyntax
+      return _storage.children[3] as! TokenSyntax
     }
     set {
-      _storage.children[ClosingTagSyntax.indices[.greaterThan]!] = newValue
+      _storage.children[3] = newValue
     }
   }
 
