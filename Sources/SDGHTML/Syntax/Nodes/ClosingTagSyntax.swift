@@ -17,6 +17,8 @@ public struct ClosingTagSyntax: NamedSyntax, Syntax {
 
   // MARK: - Parsing
 
+  #if !os(Windows)
+  // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
   private enum Child: ChildSet {
     case lessThan
     case slash
@@ -24,6 +26,7 @@ public struct ClosingTagSyntax: NamedSyntax, Syntax {
     case greaterThan
   }
   private static let indices = Child.indexTable()
+  #endif
 
   // MARK: - Initialization
 
@@ -64,30 +67,30 @@ public struct ClosingTagSyntax: NamedSyntax, Syntax {
   /// The less‐than sign.
   public var lessThan: TokenSyntax {
     get {
-      return _storage.children[ClosingTagSyntax.indices[.lessThan]!] as! TokenSyntax
+      return _storage.children[0] as! TokenSyntax
     }
     set {
-      _storage.children[ClosingTagSyntax.indices[.lessThan]!] = newValue
+      _storage.children[0] = newValue
     }
   }
 
   /// The slash.
   public var slash: TokenSyntax {
     get {
-      return _storage.children[ClosingTagSyntax.indices[.slash]!] as! TokenSyntax
+      return _storage.children[1] as! TokenSyntax
     }
     set {
-      _storage.children[ClosingTagSyntax.indices[.slash]!] = newValue
+      _storage.children[1] = newValue
     }
   }
 
   /// The tag name.
   public var name: TokenSyntax {
     get {
-      return _storage.children[ClosingTagSyntax.indices[.name]!] as! TokenSyntax
+      return _storage.children[2] as! TokenSyntax
     }
     set {
-      _storage.children[ClosingTagSyntax.indices[.name]!] = newValue
+      _storage.children[2] = newValue
     }
   }
 

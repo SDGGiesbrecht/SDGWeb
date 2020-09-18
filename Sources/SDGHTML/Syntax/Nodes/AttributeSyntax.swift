@@ -34,12 +34,15 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
 
   // MARK: - Parsing
 
+  #if !os(Windows)
+  // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
   private enum Child: ChildSet {
     case whitespace
     case name
     case value
   }
   private static let indices = Child.indexTable()
+  #endif
 
   internal static func parse(
     fromEndOf source: inout String
@@ -113,30 +116,30 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   /// The leading whitespace.
   public var whitespace: TokenSyntax {
     get {
-      return _storage.children[AttributeSyntax.indices[.whitespace]!] as! TokenSyntax
+      return _storage.children[0] as! TokenSyntax
     }
     set {
-      _storage.children[AttributeSyntax.indices[.whitespace]!] = newValue
+      _storage.children[0] = newValue
     }
   }
 
   /// The attribute name.
   public var name: TokenSyntax {
     get {
-      return _storage.children[AttributeSyntax.indices[.name]!] as! TokenSyntax
+      return _storage.children[1] as! TokenSyntax
     }
     set {
-      _storage.children[AttributeSyntax.indices[.name]!] = newValue
+      _storage.children[1] = newValue
     }
   }
 
   /// The attribute value.
   public var value: AttributeValueSyntax? {
     get {
-      return _storage.children[AttributeSyntax.indices[.value]!] as? AttributeValueSyntax
+      return _storage.children[2] as? AttributeValueSyntax
     }
     set {
-      _storage.children[AttributeSyntax.indices[.value]!] = newValue
+      _storage.children[2] = newValue
     }
   }
 
