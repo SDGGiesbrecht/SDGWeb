@@ -34,12 +34,12 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
+  private enum Child: ChildSet {
     case whitespace
     case name
     case value
   }
-  private static let indices = Dictionary(uniqueKeysWithValues: Child.allCases.enumerated().lazy.map({ ($1, $0) }))
+  private static let indices = Child.indexTable()
 
   internal static func parse(
     fromEndOf source: inout String

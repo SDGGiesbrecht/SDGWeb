@@ -20,10 +20,10 @@ public struct TextSyntax: Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
+  private enum Child: ChildSet {
     case token
   }
-  private static let indices = Dictionary(uniqueKeysWithValues: Child.allCases.enumerated().lazy.map({ ($1, $0) }))
+  private static let indices = Child.indexTable()
 
   internal static func parse(fromEndOf source: inout String) -> TextSyntax {
     var start = source.scalars.endIndex

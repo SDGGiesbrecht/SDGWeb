@@ -23,11 +23,11 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
+  private enum Child: ChildSet {
     case openingTag
     case continuation
   }
-  private static let indices = Dictionary(uniqueKeysWithValues: Child.allCases.enumerated().lazy.map({ ($1, $0) }))
+  private static let indices = Child.indexTable()
 
   private static func unpairedGreaterThan() -> UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
