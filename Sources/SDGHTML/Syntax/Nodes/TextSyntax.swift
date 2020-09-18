@@ -20,8 +20,10 @@ public struct TextSyntax: Syntax {
 
   // MARK: - Parsing
 
-  // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
-  private static let indices = TextSyntaxChild.allCases.bijectiveIndexMapping
+  private enum Child: CaseIterable {
+    case token
+  }
+  private static let indices = Child.allCases.bijectiveIndexMapping
 
   internal static func parse(fromEndOf source: inout String) -> TextSyntax {
     var start = source.scalars.endIndex
@@ -82,8 +84,4 @@ public struct TextSyntax: Syntax {
   // MARK: - Syntax
 
   public var _storage: _SyntaxStorage
-}
-
-private enum TextSyntaxChild: CaseIterable {
-  case token
 }

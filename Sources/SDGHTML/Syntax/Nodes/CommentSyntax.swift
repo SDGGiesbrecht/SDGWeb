@@ -22,8 +22,12 @@ public struct CommentSyntax: Syntax {
 
   // MARK: - Parsing
 
-  // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
-  private static let indices = CommentSyntaxChild.allCases.bijectiveIndexMapping
+  private enum Child: CaseIterable {
+    case openingToken
+    case contents
+    case closingToken
+  }
+  private static let indices = Child.allCases.bijectiveIndexMapping
 
   internal static func parse(fromEndOf source: inout String) -> Result<CommentSyntax, SyntaxError> {
     let preservedSource = source
@@ -111,10 +115,4 @@ public struct CommentSyntax: Syntax {
     contents.whereMeaningfulSetTrailingWhitespace(to: " ")
     closingToken.format(indentationLevel: indentationLevel)
   }
-}
-
-private enum CommentSyntaxChild: CaseIterable {
-  case openingToken
-  case contents
-  case closingToken
 }

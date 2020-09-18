@@ -24,8 +24,13 @@ public struct OpeningTagSyntax: AttributedSyntax, NamedSyntax, Syntax {
 
   // MARK: - Parsing
 
-  // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
-  private static let indices = OpeningTagSyntaxChild.allCases.bijectiveIndexMapping
+  private enum Child: CaseIterable {
+    case lessThan
+    case name
+    case attributes
+    case greaterThan
+  }
+  private static let indices = Child.allCases.bijectiveIndexMapping
 
   // MARK: - Initialization
 
@@ -189,11 +194,4 @@ public struct OpeningTagSyntax: AttributedSyntax, NamedSyntax, Syntax {
   // MARK: - Syntax
 
   public var _storage: _SyntaxStorage
-}
-
-private enum OpeningTagSyntaxChild: CaseIterable {
-  case lessThan
-  case name
-  case attributes
-  case greaterThan
 }
