@@ -17,11 +17,11 @@ public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: ChildSet {
+  private enum Child: CaseIterable {
     case content
     case closingTag
   }
-  private static let indices = Child.indexTable()
+  private static let indices = Dictionary(uniqueKeysWithValues: Child.allCases.enumerated().lazy.map({ ($1, $0) }))
 
   // MARK: - Initialization
 

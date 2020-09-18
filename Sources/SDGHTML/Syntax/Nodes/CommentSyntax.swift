@@ -22,12 +22,12 @@ public struct CommentSyntax: Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: ChildSet {
+  private enum Child: CaseIterable {
     case openingToken
     case contents
     case closingToken
   }
-  private static let indices = Child.indexTable()
+  private static let indices = Dictionary(uniqueKeysWithValues: Child.allCases.enumerated().lazy.map({ ($1, $0) }))
 
   internal static func parse(fromEndOf source: inout String) -> Result<CommentSyntax, SyntaxError> {
     let preservedSource = source

@@ -32,10 +32,10 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: ChildSet {
+  private enum Child: CaseIterable {
     case content
   }
-  private static let indices = Child.indexTable()
+  private static let indices = Dictionary(uniqueKeysWithValues: Child.allCases.enumerated().lazy.map({ ($1, $0) }))
 
   /// Parses the source into a syntax tree.
   ///

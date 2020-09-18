@@ -23,13 +23,13 @@ public struct AttributeValueSyntax: Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: ChildSet {
+  private enum Child: CaseIterable {
     case equals
     case openingQuotationMark
     case value
     case closingQuotationMark
   }
-  private static let indices = Child.indexTable()
+  private static let indices = Dictionary(uniqueKeysWithValues: Child.allCases.enumerated().lazy.map({ ($1, $0) }))
 
   internal static func parse(fromEndOf source: inout String) -> Result<
     AttributeValueSyntax?, SyntaxError
