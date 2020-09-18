@@ -524,7 +524,7 @@ jobs:
       run: |
         set -x
         export TARGETING_WATCHOS=true
-        xcodebuild build -sdk watchos -scheme SDGCornerstone-Package
+        xcodebuild build -sdk watchos -scheme SDGWeb-Package
   Miscellaneous:
     name: Miscellaneous
     runs-on: ubuntu-18.04
