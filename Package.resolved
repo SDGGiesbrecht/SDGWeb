@@ -5,9 +5,9 @@
         "package": "SDGCornerstone",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
-          "branch": null,
-          "revision": "7f3189cba8af1d52115f617e8fae56c6fbf82e4b",
-          "version": "5.4.1"
+          "branch": "swift‐5.3",
+          "revision": "63e2fef30a911296ebf1902cae789dc4033aeb89",
+          "version": null
         }
       },
       {
