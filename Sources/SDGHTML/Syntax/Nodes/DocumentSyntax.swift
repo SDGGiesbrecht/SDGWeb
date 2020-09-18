@@ -182,8 +182,6 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
   }
 }
 
-extension DocumentSyntax {
-  fileprivate enum Child: CaseIterable {
-    case content
-  }
+private enum Child: CaseIterable {
+  case content
 }

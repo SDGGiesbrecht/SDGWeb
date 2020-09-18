@@ -107,11 +107,9 @@ public struct ClosingTagSyntax: NamedSyntax, Syntax {
   public var _storage: _SyntaxStorage
 }
 
-extension ClosingTagSyntax {
-  fileprivate enum Child: CaseIterable {
-    case lessThan
-    case slash
-    case name
-    case greaterThan
-  }
+private enum Child: CaseIterable {
+  case lessThan
+  case slash
+  case name
+  case greaterThan
 }

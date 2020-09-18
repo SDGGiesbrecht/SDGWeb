@@ -174,11 +174,9 @@ public struct AttributeValueSyntax: Syntax {
   public var _storage: _SyntaxStorage
 }
 
-extension AttributeValueSyntax {
-  fileprivate enum Child: CaseIterable {
-    case equals
-    case openingQuotationMark
-    case value
-    case closingQuotationMark
-  }
+private enum Child: CaseIterable {
+  case equals
+  case openingQuotationMark
+  case value
+  case closingQuotationMark
 }

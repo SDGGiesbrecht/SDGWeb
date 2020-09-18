@@ -113,10 +113,8 @@ public struct CommentSyntax: Syntax {
   }
 }
 
-extension CommentSyntax {
-  fileprivate enum Child: CaseIterable {
-    case openingToken
-    case contents
-    case closingToken
-  }
+private enum Child: CaseIterable {
+  case openingToken
+  case contents
+  case closingToken
 }

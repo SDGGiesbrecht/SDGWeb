@@ -79,9 +79,7 @@ public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
   }
 }
 
-extension ElementContinuationSyntax {
-  fileprivate enum Child: CaseIterable {
-    case content
-    case closingTag
-  }
+private enum Child: CaseIterable {
+  case content
+  case closingTag
 }

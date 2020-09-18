@@ -211,9 +211,7 @@ public struct AttributesSyntax: AttributedSyntax, ExpressibleByArrayLiteral, Syn
   }
 }
 
-extension AttributesSyntax {
-  fileprivate enum Child: CaseIterable {
-    case attributes
-    case trailingWhitespace
-  }
+private enum Child: CaseIterable {
+  case attributes
+  case trailingWhitespace
 }

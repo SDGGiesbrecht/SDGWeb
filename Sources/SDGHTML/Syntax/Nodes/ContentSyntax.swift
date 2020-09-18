@@ -82,8 +82,6 @@ public struct ContentSyntax: Syntax {
   public var _storage: _SyntaxStorage
 }
 
-extension ContentSyntax {
-  fileprivate enum Child: CaseIterable {
-    case kind
-  }
+private enum Child: CaseIterable {
+  case kind
 }

@@ -255,9 +255,7 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
   }
 }
 
-extension ElementSyntax {
-  fileprivate enum Child: CaseIterable {
-    case openingTag
-    case continuation
-  }
+private enum Child: CaseIterable {
+  case openingTag
+  case continuation
 }

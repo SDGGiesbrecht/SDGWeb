@@ -191,11 +191,9 @@ public struct OpeningTagSyntax: AttributedSyntax, NamedSyntax, Syntax {
   public var _storage: _SyntaxStorage
 }
 
-extension OpeningTagSyntax {
-  fileprivate enum Child: CaseIterable {
-    case lessThan
-    case name
-    case attributes
-    case greaterThan
-  }
+private enum Child: CaseIterable {
+  case lessThan
+  case name
+  case attributes
+  case greaterThan
 }
