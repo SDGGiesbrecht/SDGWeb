@@ -18,7 +18,7 @@ public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
   // MARK: - Parsing
 
   // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = ElementContinuationSyntaxChild.allCases.bijectiveIndexMapping
 
   // MARK: - Initialization
 
@@ -79,7 +79,7 @@ public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
   }
 }
 
-private enum Child: CaseIterable {
+private enum ElementContinuationSyntaxChild: CaseIterable {
   case content
   case closingTag
 }

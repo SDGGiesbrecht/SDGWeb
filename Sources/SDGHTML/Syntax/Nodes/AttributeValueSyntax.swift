@@ -24,7 +24,7 @@ public struct AttributeValueSyntax: Syntax {
   // MARK: - Parsing
 
   // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = AttributeValueSyntaxChild.allCases.bijectiveIndexMapping
 
   internal static func parse(
     fromEndOf source: inout String
@@ -174,7 +174,7 @@ public struct AttributeValueSyntax: Syntax {
   public var _storage: _SyntaxStorage
 }
 
-private enum Child: CaseIterable {
+private enum AttributeValueSyntaxChild: CaseIterable {
   case equals
   case openingQuotationMark
   case value

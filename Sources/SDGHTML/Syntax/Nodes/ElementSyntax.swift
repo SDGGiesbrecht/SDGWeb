@@ -24,7 +24,7 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
   // MARK: - Parsing
 
   // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = ElementSyntaxChild.allCases.bijectiveIndexMapping
 
   private static func unpairedGreaterThan() -> UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -255,7 +255,7 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
   }
 }
 
-private enum Child: CaseIterable {
+private enum ElementSyntaxChild: CaseIterable {
   case openingTag
   case continuation
 }

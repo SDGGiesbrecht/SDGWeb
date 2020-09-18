@@ -35,7 +35,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   // MARK: - Parsing
 
   // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = AttributeSyntaxChild.allCases.bijectiveIndexMapping
 
   internal static func parse(
     fromEndOf source: inout String
@@ -516,7 +516,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   }
 }
 
-private enum Child: CaseIterable {
+private enum AttributeSyntaxChild: CaseIterable {
   case whitespace
   case name
   case value
