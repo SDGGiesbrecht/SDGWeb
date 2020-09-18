@@ -19,9 +19,7 @@ public struct ContentSyntax: Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
-    case kind
-  }
+  // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
   private static let indices = Child.allCases.bijectiveIndexMapping
 
   // MARK: - Initialization
@@ -82,4 +80,10 @@ public struct ContentSyntax: Syntax {
   // MARK: - Syntax
 
   public var _storage: _SyntaxStorage
+}
+
+extension ContentSyntax {
+  fileprivate enum Child: CaseIterable {
+    case kind
+  }
 }

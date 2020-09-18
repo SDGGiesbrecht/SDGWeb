@@ -23,10 +23,7 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
-    case openingTag
-    case continuation
-  }
+  // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
   private static let indices = Child.allCases.bijectiveIndexMapping
 
   private static func unpairedGreaterThan() -> UserFacing<StrictString, InterfaceLocalization> {
@@ -255,5 +252,12 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
   where Unfolder: SyntaxUnfolderProtocol {
     try unfoldChildren(with: unfolder)
     try unfolder.unfold(element: &self)
+  }
+}
+
+extension ElementSyntax {
+  fileprivate enum Child: CaseIterable {
+    case openingTag
+    case continuation
   }
 }

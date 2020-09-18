@@ -23,17 +23,12 @@ public struct AttributeValueSyntax: Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
-    case equals
-    case openingQuotationMark
-    case value
-    case closingQuotationMark
-  }
+  // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
   private static let indices = Child.allCases.bijectiveIndexMapping
 
-  internal static func parse(fromEndOf source: inout String) -> Result<
-    AttributeValueSyntax?, SyntaxError
-  > {
+  internal static func parse(
+    fromEndOf source: inout String
+  ) -> Result<AttributeValueSyntax?, SyntaxError> {
     if source.scalars.last ≠ "\u{22}" {
       return .success(nil)
     }
@@ -177,4 +172,13 @@ public struct AttributeValueSyntax: Syntax {
   // MARK: - Syntax
 
   public var _storage: _SyntaxStorage
+}
+
+extension AttributeValueSyntax {
+  fileprivate enum Child: CaseIterable {
+    case equals
+    case openingQuotationMark
+    case value
+    case closingQuotationMark
+  }
 }

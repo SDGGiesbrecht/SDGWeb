@@ -22,11 +22,7 @@ public struct CommentSyntax: Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
-    case openingToken
-    case contents
-    case closingToken
-  }
+  // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
   private static let indices = Child.allCases.bijectiveIndexMapping
 
   internal static func parse(fromEndOf source: inout String) -> Result<CommentSyntax, SyntaxError> {
@@ -114,5 +110,13 @@ public struct CommentSyntax: Syntax {
     contents.whereMeaningfulSetLeadingWhitespace(to: " ")
     contents.whereMeaningfulSetTrailingWhitespace(to: " ")
     closingToken.format(indentationLevel: indentationLevel)
+  }
+}
+
+extension CommentSyntax {
+  fileprivate enum Child: CaseIterable {
+    case openingToken
+    case contents
+    case closingToken
   }
 }

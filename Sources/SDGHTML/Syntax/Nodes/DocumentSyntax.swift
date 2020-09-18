@@ -32,9 +32,7 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
-    case content
-  }
+  // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
   private static let indices = Child.allCases.bijectiveIndexMapping
 
   /// Parses the source into a syntax tree.
@@ -181,5 +179,11 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
     try unfoldChildren(with: unfolder)
     try unfoldContainer(with: unfolder)
     try unfolder.unfold(document: &self)
+  }
+}
+
+extension DocumentSyntax {
+  fileprivate enum Child: CaseIterable {
+    case content
   }
 }

@@ -23,10 +23,7 @@ public struct AttributesSyntax: AttributedSyntax, ExpressibleByArrayLiteral, Syn
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
-    case attributes
-    case trailingWhitespace
-  }
+  // #workaround(Swift 5.3, The “Child” declaration at the bottom of the file belongs here, but Windows linkage fails with “Declaration may not be in a Comdat!”)
   private static let indices = Child.allCases.bijectiveIndexMapping
 
   internal static func parse(fromEndOf source: inout String) -> Result<
@@ -211,5 +208,12 @@ public struct AttributesSyntax: AttributedSyntax, ExpressibleByArrayLiteral, Syn
     } else {
       trailingWhitespace = nil
     }
+  }
+}
+
+extension AttributesSyntax {
+  fileprivate enum Child: CaseIterable {
+    case attributes
+    case trailingWhitespace
   }
 }
