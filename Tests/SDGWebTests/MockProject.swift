@@ -33,13 +33,13 @@ func generate<L>(
   line: UInt = #line
 ) throws where L: InputLocalization {
 
-  var sdgWebRepositoryRoot = URL(fileURLWithPath: #file)
+  var sdgWebRepositoryRoot = URL(fileURLWithPath: #filePath)
     .deletingLastPathComponent()
     .deletingLastPathComponent()
     .deletingLastPathComponent()
   #if os(Windows)
     var directory = sdgWebRepositoryRoot.path
-    if directory.hasPrefix("\u{5C}mnt\u{5C}") {
+    if directory.hasPrefix("/mnt/") {
       directory.removeFirst(5)
       let driveLetter = directory.removeFirst()
       directory.prepend(contentsOf: "\(driveLetter.uppercased()):")

@@ -22,12 +22,15 @@ public struct CommentSyntax: Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
+  #if !os(Windows)
+  // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+  private enum Child: ChildSet {
     case openingToken
     case contents
     case closingToken
   }
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = Child.indexTable()
+  #endif
 
   internal static func parse(fromEndOf source: inout String) -> Result<CommentSyntax, SyntaxError> {
     let preservedSource = source
@@ -77,30 +80,30 @@ public struct CommentSyntax: Syntax {
   /// The opening token.
   public var openingToken: TokenSyntax {
     get {
-      return _storage.children[CommentSyntax.indices[.openingToken]!] as! TokenSyntax
+      return _storage.children[0] as! TokenSyntax
     }
     set {
-      _storage.children[CommentSyntax.indices[.openingToken]!] = newValue
+      _storage.children[0] = newValue
     }
   }
 
   /// The contents.
   public var contents: TokenSyntax {
     get {
-      return _storage.children[CommentSyntax.indices[.contents]!] as! TokenSyntax
+      return _storage.children[1] as! TokenSyntax
     }
     set {
-      _storage.children[CommentSyntax.indices[.contents]!] = newValue
+      _storage.children[1] = newValue
     }
   }
 
   /// The closing token.
   public var closingToken: TokenSyntax {
     get {
-      return _storage.children[CommentSyntax.indices[.closingToken]!] as! TokenSyntax
+      return _storage.children[2] as! TokenSyntax
     }
     set {
-      _storage.children[CommentSyntax.indices[.closingToken]!] = newValue
+      _storage.children[2] = newValue
     }
   }
 

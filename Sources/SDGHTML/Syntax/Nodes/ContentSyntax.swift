@@ -19,10 +19,13 @@ public struct ContentSyntax: Syntax {
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
+  #if !os(Windows)
+  // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+  private enum Child: ChildSet {
     case kind
   }
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = Child.indexTable()
+  #endif
 
   // MARK: - Initialization
 
@@ -39,10 +42,10 @@ public struct ContentSyntax: Syntax {
   /// The kind of node.
   public var kind: ContentSyntaxKind {
     get {
-      return ContentSyntax.kind(of: _storage.children[ContentSyntax.indices[.kind]!]!)
+      return ContentSyntax.kind(of: _storage.children[0]!)
     }
     set {
-      _storage.children[ContentSyntax.indices[.kind]!] = ContentSyntax.syntax(of: newValue)
+      _storage.children[0] = ContentSyntax.syntax(of: newValue)
     }
   }
 

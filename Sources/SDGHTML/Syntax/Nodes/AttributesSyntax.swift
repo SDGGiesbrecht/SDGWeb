@@ -23,15 +23,18 @@ public struct AttributesSyntax: AttributedSyntax, ExpressibleByArrayLiteral, Syn
 
   // MARK: - Parsing
 
-  private enum Child: CaseIterable {
+  #if !os(Windows)
+  // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+  private enum Child: ChildSet {
     case attributes
     case trailingWhitespace
   }
-  private static let indices = Child.allCases.bijectiveIndexMapping
+  private static let indices = Child.indexTable()
+  #endif
 
-  internal static func parse(fromEndOf source: inout String) -> Result<
-    (name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError
-  > {
+  internal static func parse(
+    fromEndOf source: inout String
+  ) -> Result<(name: TokenSyntax, attributes: AttributesSyntax?), SyntaxError> {
     let whitespace = TokenSyntax.parseWhitespace(fromEndOf: &source)
     var parsedElements: [AttributeSyntax] = []
 
@@ -142,21 +145,21 @@ public struct AttributesSyntax: AttributedSyntax, ExpressibleByArrayLiteral, Syn
   /// The attributes.
   public var attributes: ListSyntax<AttributeSyntax>? {
     get {
-      return _storage.children[AttributesSyntax.indices[.attributes]!]
+      return _storage.children[0]
         as? ListSyntax<AttributeSyntax>
     }
     set {
-      _storage.children[AttributesSyntax.indices[.attributes]!] = newValue
+      _storage.children[0] = newValue
     }
   }
 
   /// Any trailing whitespace.
   public var trailingWhitespace: TokenSyntax? {
     get {
-      return _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] as? TokenSyntax
+      return _storage.children[1] as? TokenSyntax
     }
     set {
-      _storage.children[AttributesSyntax.indices[.trailingWhitespace]!] = newValue
+      _storage.children[1] = newValue
     }
   }
 
