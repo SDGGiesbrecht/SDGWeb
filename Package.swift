@@ -75,8 +75,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      .branch("swift‐5.3")  // #warning(Temporary branch!)
-      //from: Version(5, 4, 1)
+      from: Version(6, 0, 0)
     )
   ],
   targets: [
