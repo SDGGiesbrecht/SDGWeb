@@ -592,7 +592,7 @@ class APITests: TestCase {
     XCTAssertEqual(HTML.percentEncodeURLPath("Ελληνικό κείμενο"), "Ελληνικό%20κείμενο")
 
     let url = "../Mock Projects"
-    var thisFile = URL(fileURLWithPath: #file)
+    var thisFile = URL(fileURLWithPath: #filePath)
     #if os(Windows)
       // Fix WSL path if cross‐compiled.
       var directory = thisFile.path
