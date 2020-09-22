@@ -596,7 +596,7 @@ class APITests: TestCase {
     #if os(Windows)
       // Fix WSL path if cross‐compiled.
       var directory = thisFile.path
-      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
+      if directory.hasPrefix("/mnt/") {
         directory.removeFirst(5)
         let driveLetter = directory.removeFirst()
         directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
