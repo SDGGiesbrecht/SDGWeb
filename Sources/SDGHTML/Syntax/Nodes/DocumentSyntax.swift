@@ -33,11 +33,11 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
   // MARK: - Parsing
 
   #if !os(Windows)
-  // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-  private enum Child: ChildSet {
-    case content
-  }
-  private static let indices = Child.indexTable()
+    // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+    private enum Child: ChildSet {
+      case content
+    }
+    private static let indices = Child.indexTable()
   #endif
 
   /// Parses the source into a syntax tree.

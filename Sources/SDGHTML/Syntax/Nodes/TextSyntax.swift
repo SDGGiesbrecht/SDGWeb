@@ -21,11 +21,11 @@ public struct TextSyntax: Syntax {
   // MARK: - Parsing
 
   #if !os(Windows)
-  // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-  private enum Child: ChildSet {
-    case token
-  }
-  private static let indices = Child.indexTable()
+    // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+    private enum Child: ChildSet {
+      case token
+    }
+    private static let indices = Child.indexTable()
   #endif
 
   internal static func parse(fromEndOf source: inout String) -> TextSyntax {

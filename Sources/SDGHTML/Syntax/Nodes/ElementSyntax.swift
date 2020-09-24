@@ -24,12 +24,12 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
   // MARK: - Parsing
 
   #if !os(Windows)
-  // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-  private enum Child: ChildSet {
-    case openingTag
-    case continuation
-  }
-  private static let indices = Child.indexTable()
+    // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+    private enum Child: ChildSet {
+      case openingTag
+      case continuation
+    }
+    private static let indices = Child.indexTable()
   #endif
 
   private static func unpairedGreaterThan() -> UserFacing<StrictString, InterfaceLocalization> {

@@ -20,11 +20,11 @@ public struct ContentSyntax: Syntax {
   // MARK: - Parsing
 
   #if !os(Windows)
-  // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-  private enum Child: ChildSet {
-    case kind
-  }
-  private static let indices = Child.indexTable()
+    // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+    private enum Child: ChildSet {
+      case kind
+    }
+    private static let indices = Child.indexTable()
   #endif
 
   // MARK: - Initialization
