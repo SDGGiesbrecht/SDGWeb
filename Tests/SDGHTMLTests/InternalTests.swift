@@ -26,6 +26,13 @@ import SDGXCTestUtilities
 
 class InternalTests: TestCase {
 
+  func testChildSet() {
+    enum Children: ChildSet {
+      case a, b
+    }
+    _ = Children.indexTable()
+  }
+
   func testSyntaxUnfolderError() {
     // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
     #if !os(Android)

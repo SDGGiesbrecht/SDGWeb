@@ -51,7 +51,8 @@ extension SDGHTMLTests.APITests {
 extension SDGHTMLTests.InternalTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
-      ("testSyntaxUnfolderError", testSyntaxUnfolderError)
+      ("testChildSet", testChildSet),
+      ("testSyntaxUnfolderError", testSyntaxUnfolderError),
     ])
   ]
 }
