@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-protocol ChildSet: CaseIterable, Hashable {}
+internal protocol ChildSet: CaseIterable, Hashable {}
 
 extension ChildSet {
 
