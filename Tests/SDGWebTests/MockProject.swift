@@ -29,7 +29,7 @@ func generate<L>(
   forMock mockName: String,
   localization: L.Type,
   expectValidationFailure: Bool = false,
-  file: StaticString = #file,
+  file: StaticString = #filePath,
   line: UInt = #line
 ) throws where L: InputLocalization {
 
@@ -107,11 +107,11 @@ func generate<L>(
 func expectErrorGenerating<L>(
   forMock mockName: String,
   localization: L.Type,
-  file: String = #file,
-  line: Int = #line
+  file: StaticString = #filePath,
+  line: UInt = #line
 ) where L: InputLocalization {
   do {
     try generate(forMock: mockName, localization: localization)
-    XCTFail("Failed to throw error.")
+    XCTFail("Failed to throw error.", file: file, line: line)
   } catch {}
 }

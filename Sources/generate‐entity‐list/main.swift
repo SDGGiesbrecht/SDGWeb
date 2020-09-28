@@ -60,7 +60,7 @@ file.append("]\n")
 
 // #workaround(Swift 5.2.4, Web doesn’t have Foundation yet.)
 #if !os(WASI)
-  let sourceFile = URL(fileURLWithPath: #file)
+  let sourceFile = URL(fileURLWithPath: #filePath)
     .deletingLastPathComponent()
     .deletingLastPathComponent()
     .appendingPathComponent("SDGHTML")
