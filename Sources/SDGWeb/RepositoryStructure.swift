@@ -28,7 +28,7 @@ public struct RepositoryStructure {  // @exempt(from: swiftFormat[UseEnumForName
     ///
     /// - Parameters:
     ///     - main: Optional. The location of “main.swift” if different from the call site.
-    public init(main: String = #file) {
+    public init(main: String = #filePath) {
       var url = URL(fileURLWithPath: String(main))
       for _ in 1...3 {
         url.deleteLastPathComponent()
@@ -39,7 +39,7 @@ public struct RepositoryStructure {  // @exempt(from: swiftFormat[UseEnumForName
     /// Creates a custom repository structure.
     ///
     /// - Parameters:
-    ///     - root: The path of the repository root. (Usually derived from `#file`.)
+    ///     - root: The path of the repository root. (Usually derived from `#filePath`.)
     ///     - template: Optional. The URL of templates directory, if it is not in the default location.
     ///     - result: Optional. The URL of result directory, if it is not in the default location.
     ///     - pages: Optional. The URL of pages directory, if it is not in the default location.

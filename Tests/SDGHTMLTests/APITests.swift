@@ -258,7 +258,7 @@ class APITests: TestCase {
       _ element: ElementSyntax,
       to specification: String,
       overwriteSpecificationInsteadOfFailing: Bool,
-      file: StaticString = #file,
+      file: StaticString = #filePath,
       line: UInt = #line
     ) {
       let formatted = element.formatted()
@@ -668,7 +668,7 @@ class APITests: TestCase {
       named name: String,
       in string: String,
       overwriteSpecificationInsteadOfFailing: Bool,
-      file: StaticString = #file,
+      file: StaticString = #filePath,
       line: UInt = #line
     ) {
       var errors: [SyntaxError] = []
@@ -784,7 +784,7 @@ class APITests: TestCase {
       to end: String? = nil,
       context: Bool = true,
       expectError: Bool = false,
-      file: StaticString = #file,
+      file: StaticString = #filePath,
       line: UInt = #line
     ) {
       do {

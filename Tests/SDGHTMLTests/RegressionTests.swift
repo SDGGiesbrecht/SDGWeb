@@ -23,7 +23,7 @@ import SDGXCTestUtilities
 class RegressionTests: TestCase {
 
   func testDataAttributesAllowed() throws {
-    let thisFile = URL(fileURLWithPath: #file)
+    let thisFile = URL(fileURLWithPath: #filePath)
     let document = try DocumentSyntax.parse(source: "<div data\u{2D}custom></div>").get()
     let report = document.validate(baseURL: thisFile)
     XCTAssert(report.isEmpty, "\(report)")
