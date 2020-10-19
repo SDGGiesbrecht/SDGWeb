@@ -16,11 +16,11 @@
 #if !os(WASI)
   import Foundation
 #endif
-#if !os(Android)  // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
+//#if !os(Android)  // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
   #endif
-#endif
+//#endif
 
 import SDGLogic
 import SDGCollections
