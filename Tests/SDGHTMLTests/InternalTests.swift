@@ -34,17 +34,14 @@ class InternalTests: TestCase {
   }
 
   func testSyntaxUnfolderError() {
-    // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
-    #if !os(Android)
-      testCustomStringConvertibleConformance(
-        of: SyntaxUnfolder.Error.missingAttribute(
-          element: ElementSyntax(name: "element", empty: true),
-          attribute: UserFacing<StrictString, InterfaceLocalization>({ _ in "attribute" })
-        ),
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Missing Attribute",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    testCustomStringConvertibleConformance(
+      of: SyntaxUnfolder.Error.missingAttribute(
+        element: ElementSyntax(name: "element", empty: true),
+        attribute: UserFacing<StrictString, InterfaceLocalization>({ _ in "attribute" })
+      ),
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Missing Attribute",
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 }

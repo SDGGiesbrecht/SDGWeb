@@ -703,14 +703,11 @@ class APITests: TestCase {
       #endif
     }
 
-    // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
-    #if !os(Android)
-      expectViolation(
-        named: "Dead Remote Link",
-        in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    expectViolation(
+      named: "Dead Remote Link",
+      in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     expectViolation(
       named: "Missing Attribute Value",
       in: "<a href></a>",

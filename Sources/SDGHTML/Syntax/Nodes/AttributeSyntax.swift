@@ -16,11 +16,9 @@
 #if !os(WASI)
   import Foundation
 #endif
-//#if !os(Android)  // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
-  #if canImport(FoundationNetworking)
-    import FoundationNetworking
-  #endif
-//#endif
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 import SDGLogic
 import SDGCollections
@@ -439,28 +437,23 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
           } else if url.host == "example.com" {
             dead = false
           } else {
-            #if os(Android)
-              // #workaround(Swift 5.2.4, FoundationNetworking cannot be linked.)
-              dead = false
-            #else
-              let request = URLRequest(
-                url: url,
-                cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-                timeoutInterval: 10
-              )
-              let semaphore = DispatchSemaphore(value: 0)
-              let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                if error == nil,
-                  let status = (response as? HTTPURLResponse)?.statusCode,
-                  status.dividedAccordingToEuclid(by: 100) == 2
-                {
-                  dead = false
-                }
-                semaphore.signal()
+            let request = URLRequest(
+              url: url,
+              cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+              timeoutInterval: 10
+            )
+            let semaphore = DispatchSemaphore(value: 0)
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+              if error == nil,
+                let status = (response as? HTTPURLResponse)?.statusCode,
+                status.dividedAccordingToEuclid(by: 100) == 2
+              {
+                dead = false
               }
-              task.resume()
-              semaphore.wait()
-            #endif
+              semaphore.signal()
+            }
+            task.resume()
+            semaphore.wait()
           }
           if dead {
             results.append(
