@@ -29,24 +29,6 @@ import SDGXCTestUtilities
 
 class APITests: TestCase {
 
-  static let configureWindowsTestDirectory: Void = {
-    // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
-    #if os(Windows)
-      var directory = testSpecificationDirectory().path
-      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
-        directory.removeFirst(5)
-        let driveLetter = directory.removeFirst()
-        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
-        let url = URL(fileURLWithPath: directory)
-        setTestSpecificationDirectory(to: url)
-      }
-    #endif
-  }()
-  override func setUp() {
-    super.setUp()
-    APITests.configureWindowsTestDirectory
-  }
-
   func testCopyright() {
     #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
       XCTAssert(
