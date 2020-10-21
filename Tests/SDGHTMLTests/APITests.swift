@@ -662,7 +662,7 @@ class APITests: TestCase {
         XCTAssert(¬validated.isEmpty, "No error detected.", file: file, line: line)
         errors.append(contentsOf: validated)
       }
-      #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+      #if !os(Windows)  // #workaround(Swift 5.3, Segmentation fault.)
         var report: [StrictString] = []
         for localization in InterfaceLocalization.allCases {
           report.append(localization.icon ?? StrictString(localization.code))

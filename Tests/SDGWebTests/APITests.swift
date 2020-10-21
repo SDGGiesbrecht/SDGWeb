@@ -30,7 +30,7 @@ import SDGXCTestUtilities
 class APITests: TestCase {
 
   func testCopyright() {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+    #if !os(Windows)  // #workaround(Swift 5.3, Segmentation fault.)
       XCTAssert(
         ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
       )
@@ -104,7 +104,7 @@ class APITests: TestCase {
     }
   }
   func testSiteGenerationError() {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+    #if !os(Windows)  // #workaround(Swift 5.3, Segmentation fault.)
       let errors: [SiteGenerationError] = [
         .foundationError(StandInError()),
         .invalidDomain("[...]"),
@@ -132,7 +132,7 @@ class APITests: TestCase {
   }
 
   func testSiteValidationError() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+    #if !os(Windows)  // #workaround(Swift 5.3, Segmentation fault.)
       let parseFailure: SyntaxError
       switch DocumentSyntax.parse(source: "html>") {
       case .failure(let error):
