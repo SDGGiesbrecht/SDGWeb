@@ -19,12 +19,12 @@
   import SDGLocalization
 
   // #workaround(SDGCornerstone 5.4.1, Requires newline normalization.)
-  func testFileConvertibleConformance<T>(
+  /*func testFileConvertibleConformance<T>(
     of instance: T,
     uniqueTestName: StrictString,
     file: StaticString = #filePath,
     line: UInt = #line
-  ) where T: Equatable, T: FileConvertible {}
+  ) where T: Equatable, T: FileConvertible {}*/
 
   // #workaround(SDGCornerstone 5.4.1, Icons lead to segmentation faults.)
   extension Localization {
