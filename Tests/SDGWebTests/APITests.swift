@@ -50,9 +50,9 @@ class APITests: TestCase {
     for localization in InterfaceLocalization.allCases {
       try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
         // #workaround(Swift 5.2.2, Foundation has issues with the file system.)
-        #if !os(Windows)
+        //#if !os(Windows)
           try generate(forMock: "Localized", localization: DoubleLocalization.self)
-        #endif
+        //#endif
       }
     }
   }
