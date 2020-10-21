@@ -204,6 +204,9 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       #if !os(WASI)
         var files: [URL]
         do {
+          #warning("Debugging...")
+          print(try? FileManager.default.deepFileEnumeration(in: site.deletingLastPathComponent()))
+          print(try? FileManager.default.deepFileEnumeration(in: site))
           files = try FileManager.default.deepFileEnumeration(in: site)
         } catch {
           // @exempt(from: tests)
