@@ -49,10 +49,7 @@ class APITests: TestCase {
   func testLocalized() throws {
     for localization in InterfaceLocalization.allCases {
       try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        // #workaround(Swift 5.2.2, Foundation has issues with the file system.)
-        //#if !os(Windows)
-          try generate(forMock: "Localized", localization: DoubleLocalization.self)
-        //#endif
+        try generate(forMock: "Localized", localization: DoubleLocalization.self)
       }
     }
   }
@@ -92,10 +89,7 @@ class APITests: TestCase {
   }
 
   func testRightToLeft() throws {
-    // #workaround(Swift 5.2.2, Foundation has issues with the file system.)
-    #if !os(Windows)
-      try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
-    #endif
+    try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
   }
 
   struct StandInError: PresentableError {
