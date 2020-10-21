@@ -18,7 +18,7 @@
   import SDGPersistence
   import SDGLocalization
 
-  // #workaround(SDGCornerstone 5.4.1, Requires newline normalization.)
+  // #workaround(SDGCornerstone 6.0.0, Requires newline normalization.)
   func testFileConvertibleConformance<T>(
     of instance: T,
     uniqueTestName: StrictString,
@@ -26,7 +26,7 @@
     line: UInt = #line
   ) where T: Equatable, T: FileConvertible {}
 
-  // #workaround(SDGCornerstone 5.4.1, Icons lead to segmentation faults.)
+  // #workaround(SDGCornerstone 6.0.0, Icons lead to segmentation faults.)
   extension Localization {
     var icon: StrictString? {
       return nil
