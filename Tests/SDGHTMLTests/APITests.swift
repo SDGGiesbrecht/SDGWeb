@@ -662,27 +662,25 @@ class APITests: TestCase {
         XCTAssert(¬validated.isEmpty, "No error detected.", file: file, line: line)
         errors.append(contentsOf: validated)
       }
-      #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
-        var report: [StrictString] = []
-        for localization in InterfaceLocalization.allCases {
-          report.append(localization.icon ?? StrictString(localization.code))
-          LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-            for error in errors {
-              report.append("")
-              report.append(error.presentableDescription())
-            }
+      var report: [StrictString] = []
+      for localization in InterfaceLocalization.allCases {
+        report.append(localization.icon ?? StrictString(localization.code))
+        LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+          for error in errors {
+            report.append("")
+            report.append(error.presentableDescription())
           }
         }
-        compare(
-          String(report.joined(separator: "\n")),
-          against: testSpecificationDirectory()
-            .appendingPathComponent("SyntaxError")
-            .appendingPathComponent("\(name).txt"),
-          overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
-          file: file,
-          line: line
-        )
-      #endif
+      }
+      compare(
+        String(report.joined(separator: "\n")),
+        against: testSpecificationDirectory()
+          .appendingPathComponent("SyntaxError")
+          .appendingPathComponent("\(name).txt"),
+        overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
+        file: file,
+        line: line
+      )
     }
 
     expectViolation(
