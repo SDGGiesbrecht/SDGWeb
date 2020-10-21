@@ -34,6 +34,8 @@ class RegressionTests: TestCase {
         target: URL(fileURLWithPath: "../")
       ).source()
       try redirectFile.save(to: url.appendingPathComponent("Redirect.html"))
+      #warning("Debugging...")
+      print(try FileManager.default.deepFileEnumeration(in: url.deletingLastPathComponent()))
       let warnings = Site<InterfaceLocalization, SyntaxUnfolder>.validate(site: url)
       XCTAssert(warnings.isEmpty, "\(warnings)")
     }
