@@ -208,7 +208,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
           do {
             files = try FileManager.default.deepFileEnumeration(in: site)
           } catch {
-            #if os(Windows)
+            #if os(Windows)  // @exempt(from: tests)
               files = try FileManager.default.deepFileEnumeration(
                 in: site.deletingLastPathComponent().appendingPathComponent(
                   site.lastPathComponent,
