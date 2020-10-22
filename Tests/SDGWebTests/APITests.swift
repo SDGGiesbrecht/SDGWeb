@@ -30,7 +30,7 @@ import SDGXCTestUtilities
 class APITests: TestCase {
 
   func testCopyright() {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+    #if !os(Windows)  // #workaround(Swift 5.3, Segmentation fault.)
       XCTAssert(
         ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
       )
@@ -49,10 +49,7 @@ class APITests: TestCase {
   func testLocalized() throws {
     for localization in InterfaceLocalization.allCases {
       try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-        // #workaround(Swift 5.2.2, Foundation has issues with the file system.)
-        #if !os(Windows)
-          try generate(forMock: "Localized", localization: DoubleLocalization.self)
-        #endif
+        try generate(forMock: "Localized", localization: DoubleLocalization.self)
       }
     }
   }
@@ -92,10 +89,7 @@ class APITests: TestCase {
   }
 
   func testRightToLeft() throws {
-    // #workaround(Swift 5.2.2, Foundation has issues with the file system.)
-    #if !os(Windows)
-      try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
-    #endif
+    try generate(forMock: "Right‐to‐Left", localization: RightToLeftLocalization.self)
   }
 
   struct StandInError: PresentableError {
@@ -104,7 +98,7 @@ class APITests: TestCase {
     }
   }
   func testSiteGenerationError() {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+    #if !os(Windows)  // #workaround(Swift 5.3, Segmentation fault.)
       let errors: [SiteGenerationError] = [
         .foundationError(StandInError()),
         .invalidDomain("[...]"),
@@ -132,7 +126,7 @@ class APITests: TestCase {
   }
 
   func testSiteValidationError() throws {
-    #if !os(Windows)  // #workaround(Swift 5.2.4, Segmentation fault.)
+    #if !os(Windows)  // #workaround(Swift 5.3, Segmentation fault.)
       let parseFailure: SyntaxError
       switch DocumentSyntax.parse(source: "html>") {
       case .failure(let error):
