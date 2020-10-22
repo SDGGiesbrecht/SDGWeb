@@ -205,8 +205,10 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         var files: [URL]
         do {
           #warning("Debugging...")
-          print(try? FileManager.default.deepFileEnumeration(in: site.deletingLastPathComponent()))
-          //print(try? FileManager.default.deepFileEnumeration(in: site))
+          var structure = try? FileManager.default.deepFileEnumeration(in: site.deletingLastPathComponent())
+          print(structure)
+          structure = try? FileManager.default.deepFileEnumeration(in: site)
+          print(structure)
           files = try FileManager.default.deepFileEnumeration(in: site)
         } catch {
           // @exempt(from: tests)
