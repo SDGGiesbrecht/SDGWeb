@@ -204,12 +204,21 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       #if !os(WASI)
         var files: [URL]
         do {
-          #warning("Debugging...")
-          var structure = try? FileManager.default.deepFileEnumeration(in: site.deletingLastPathComponent())
-          print(structure)
-          structure = try? FileManager.default.deepFileEnumeration(in: site)
-          print(structure)
-          files = try FileManager.default.deepFileEnumeration(in: site)
+          // #workaround(SDGCornerstone 6.0.0, Internal catch not handled upstream yet.)
+          do {
+            files = try FileManager.default.deepFileEnumeration(in: site)
+          } catch {
+            #if os(Windows)
+              files = try FileManager.default.deepFileEnumeration(
+                in: site.deletingLastPathComponent().appendingPathComponent(
+                  site.lastPathComponent,
+                  isDirectory: true
+                )
+              )
+            #else
+              throw error
+            #endif
+          }
         } catch {
           // @exempt(from: tests)
           return [site: [.foundationError(error)]]
