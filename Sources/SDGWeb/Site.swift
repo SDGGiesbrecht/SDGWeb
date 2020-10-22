@@ -206,7 +206,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         do {
           #warning("Debugging...")
           print(try? FileManager.default.deepFileEnumeration(in: site.deletingLastPathComponent()))
-          print(try? FileManager.default.deepFileEnumeration(in: site))
+          //print(try? FileManager.default.deepFileEnumeration(in: site))
           files = try FileManager.default.deepFileEnumeration(in: site)
         } catch {
           // @exempt(from: tests)
