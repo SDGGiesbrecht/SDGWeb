@@ -880,10 +880,13 @@ class APITests: TestCase {
   }
 
   func testValidLink() throws {
-    let document = try DocumentSyntax.parse(
-      source:
-        "<a href=\u{22}http://www.google.com\u{22}></a>"
-    ).get()
-    XCTAssert(document.validate(baseURL: URL(string: "/")!).isEmpty)
+    // #workaround(Swift 5.3.1, Segmentation fault.)
+    #if !os(Windows)
+      let document = try DocumentSyntax.parse(
+        source:
+          "<a href=\u{22}http://www.google.com\u{22}></a>"
+      ).get()
+      XCTAssert(document.validate(baseURL: URL(string: "/")!).isEmpty)
+    #endif
   }
 }
