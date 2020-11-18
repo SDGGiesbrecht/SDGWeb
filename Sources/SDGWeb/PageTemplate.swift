@@ -27,6 +27,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
+  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
+  #if !os(WASI)
     internal static func load<Unfolder>(
       from file: URL,
       in site: Site<Localization, Unfolder>,
@@ -59,6 +61,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         )
       )
     }
+  #endif
 
   private init(
     relativePath: StrictString,

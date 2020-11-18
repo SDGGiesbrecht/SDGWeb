@@ -98,6 +98,8 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       try? FileManager.default.removeItem(at: repositoryStructure.result)
   }
 
+  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
+  #if !os(WASI)
     private func writePages(formatting: Bool) -> Result<Void, PageTemplateLoadingError> {
       let fileEnumeration: [URL]
       do {
@@ -124,6 +126,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       }
       return .success(())
     }
+  #endif
 
   private func copyCSS() throws {
     reportProgress(
@@ -171,6 +174,8 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     /// - Parameters:
     ///     - site: The URL of a site in the local file system.
     public static func validate(site: URL) -> [URL: [SiteValidationError]] {
+      // #workaround(Swift 5.3.1, Web lacks FileManager.)
+      #if !os(WASI)
         var files: [URL]
         do {
           // #workaround(SDGCornerstone 6.0.0, Internal catch not handled upstream yet.)
@@ -192,8 +197,11 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
           // @exempt(from: tests)
           return [site: [.foundationError(error)]]
         }
+      #endif
 
       var results: [URL: [SiteValidationError]] = [:]
+      // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
+      #if !os(WASI)
         for file in files where file.pathExtension == "html" {
           let source: String
           do {
@@ -212,6 +220,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
             results[file] = parsed.validate(baseURL: file).map { .syntaxError($0) }
           }
         }
+      #endif
 
       return results.filter { _, value in ¬value.isEmpty }
     }
