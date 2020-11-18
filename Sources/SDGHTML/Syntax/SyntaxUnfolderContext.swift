@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGText
 import SDGLocalization
@@ -25,8 +22,6 @@ extension SyntaxUnfolder {
   /// Contextual information for a syntax unfolder.
   public struct Context {
 
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       /// Creates a context for a syntax unfolder.
       ///
       /// - Parameters:
@@ -52,15 +47,11 @@ extension SyntaxUnfolder {
         self.author = authorDeclaration
         self.css = css
       }
-    #endif
 
     // MARK: - Properties
 
     internal let localization: AnyLocalization?
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       internal let siteRoot: URL?
-    #endif
     internal let relativePath: String?
     internal let title: StrictString?
     internal let author: ElementSyntax?

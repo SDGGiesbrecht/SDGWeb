@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLocalization
 
@@ -63,8 +60,6 @@ extension ElementSyntax {
     return ElementSyntax(name: "body", attributes: attributes, contents: contents)
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// Creates a canonical URL declaration.
     ///
     /// - Parameters:
@@ -96,7 +91,6 @@ extension ElementSyntax {
         empty: true
       )
     }
-  #endif
 
   /// Creates a description metadata entry.
   ///
@@ -240,8 +234,6 @@ extension ElementSyntax {
     )
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// Creates a language switch element.
     ///
     /// - Parameters:
@@ -266,7 +258,6 @@ extension ElementSyntax {
       }
       return navigation(attributes: attributes, contents: entries)
     }
-  #endif
 
   /// Creates a line break element.
   ///
@@ -276,8 +267,6 @@ extension ElementSyntax {
     return ElementSyntax(name: "br", attributes: attributes, empty: true)
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// Creates a link.
     ///
     /// - Parameters:
@@ -301,7 +290,6 @@ extension ElementSyntax {
         contents: contents
       )
     }
-  #endif
 
   /// Creates a metadata entry.
   ///
@@ -459,8 +447,6 @@ extension ElementSyntax {
     return ElementSyntax(name: "p", attributes: attributes, contents: contents)
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// Creates an embedded portable document (PDF).
     ///
     /// - Parameters:
@@ -494,7 +480,6 @@ extension ElementSyntax {
         ].mergedByOverwriting(from: attributes)
       )
     }
-  #endif
 
   /// Creates a section.
   ///

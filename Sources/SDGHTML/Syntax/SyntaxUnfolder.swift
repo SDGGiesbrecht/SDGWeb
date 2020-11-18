@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 import SDGMathematics
@@ -202,8 +199,7 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
       }
     })
   }
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
+
     /// Unfolds the `<page>` element.
     ///
     /// `<page>` serves as the root element of an HTML document. It requires the following attributes:
@@ -291,7 +287,6 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
         }
       }
     }
-  #endif
 
   /// Unfolds `<pageTitle>` into the text of the page’s title.
   ///
@@ -387,8 +382,6 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
   public func unfold(contentList: inout ListSyntax<ContentSyntax>) throws {
     if let localization = context?.localization {
       try SyntaxUnfolder.unfoldLocalized(&contentList, localization: localization)
-      // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-      #if !os(WASI)
         if let siteRoot = context?.siteRoot,
           let relativePath = context?.relativePath,
           let author = context?.author,
@@ -403,7 +396,6 @@ public struct SyntaxUnfolder: SyntaxUnfolderProtocol {
             css: css
           )
         }
-      #endif
     }
     if let title = context?.title {
       SyntaxUnfolder.unfoldPageTitle(&contentList, title: title)

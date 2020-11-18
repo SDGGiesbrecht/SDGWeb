@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 
@@ -115,8 +112,6 @@ public struct OpeningTagSyntax: AttributedSyntax, NamedSyntax, Syntax {
 
   // MARK: - Validation
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     internal func validate(
       location: String.ScalarView.Index,
       file: String,
@@ -157,7 +152,6 @@ public struct OpeningTagSyntax: AttributedSyntax, NamedSyntax, Syntax {
         }
       }
     }
-  #endif
 
   // MARK: - AttributedSyntax
 

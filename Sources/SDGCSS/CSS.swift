@@ -18,8 +18,6 @@ import SDGText
 /// A namespace for functions related to CSS.
 public enum CSS {
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// A recommended root CSS file.
     public static let root: StrictString = {
       var result = StrictString(Resources.root)
@@ -31,5 +29,4 @@ public enum CSS {
       result.replaceSubrange(match.range, with: "".scalars)
       return result
     }()
-  #endif
 }

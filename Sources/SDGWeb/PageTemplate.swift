@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 import SDGMathematics
@@ -30,8 +27,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     internal static func load<Unfolder>(
       from file: URL,
       in site: Site<Localization, Unfolder>,
@@ -64,7 +59,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         )
       )
     }
-  #endif
 
   private init(
     relativePath: StrictString,
@@ -104,8 +98,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     site: Site<Localization, Unfolder>
   ) throws -> DocumentSyntax {
     var syntax = templateSyntax
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       try syntax.unfold(
         with: Unfolder(
           context: SyntaxUnfolder.Context(
@@ -121,7 +113,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
           )
         )
       )
-    #endif
     return syntax
   }
 
@@ -153,8 +144,6 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
       )
     }
 
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
       url.deleteLastPathComponent()
       url.appendPathComponent(String(try resolvedFileName()))
@@ -173,15 +162,11 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
           }
         }).resolved()
       )
-    #endif
 
     var result = try processedResult(for: relativePath, localization: localization, site: site)
     if formatting {
       result.format()
     }
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       try StrictString(result.source()).save(to: url)
-    #endif
   }
 }

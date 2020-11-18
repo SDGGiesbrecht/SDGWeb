@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 #if canImport(FoundationNetworking)
   import FoundationNetworking
 #endif
@@ -171,8 +168,6 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
 
   // MARK: - Validation
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     internal func validate(
       location: String.ScalarView.Index,
       file: String,
@@ -182,7 +177,6 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
       validateValuePresence(location: location, file: file, results: &results)
       return results
     }
-  #endif
 
   private static let nonEmptyAttributes: Set<String> = [
     "accept",
@@ -411,8 +405,6 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   }
 
   private static let urlAttributes: Set<String> = ["data", "href", "poster", "src", "srcset"]
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     internal func validateURLValue(
       location: String.ScalarView.Index,
       file: String,
@@ -491,7 +483,6 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
         }
       }
     }
-  #endif
 
   // MARK: - NamedSyntax
 

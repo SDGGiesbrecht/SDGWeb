@@ -12,18 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 
 /// The structure of a website repository.
 public struct RepositoryStructure {  // @exempt(from: swiftFormat[UseEnumForNamespacing])
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// Creates the default structure, assuming this initializer is called from “main.swift” in that file’s default location.
     ///
     /// - Parameters:
@@ -97,5 +92,4 @@ public struct RepositoryStructure {  // @exempt(from: swiftFormat[UseEnumForName
 
     /// The file containing the site’s global CSS.
     public let siteCSS: URL
-  #endif
 }

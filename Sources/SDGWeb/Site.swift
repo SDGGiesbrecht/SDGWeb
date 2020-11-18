@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGControlFlow
 import SDGLogic
@@ -32,8 +29,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// Creates a website instance.
     ///
     /// - Parameters:
@@ -56,15 +51,11 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       self.author = siteAuthor
       self.reportProgress = reportProgress
     }
-  #endif
 
   // MARK: - Properties
 
   internal let repositoryStructure: RepositoryStructure
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     internal let siteRoot: UserFacing<URL, Localization>
-  #endif
   internal let localizationDirectories: UserFacing<StrictString, Localization>
   internal let author: UserFacing<ElementSyntax, Localization>
   internal let reportProgress: (StrictString) -> Void
@@ -79,8 +70,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
     clean()
 
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       switch writePages(formatting: formatting) {
       case .failure(let error):
         switch error {
@@ -92,16 +81,12 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       case .success:
         break
       }
-    #endif
 
     do {
       try copyCSS()
-      // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-      #if !os(WASI)
         if FileManager.default.fileExists(atPath: repositoryStructure.resources.path) {
           try copyResources()
         }
-      #endif
     } catch {
       return .failure(.foundationError(error))
     }
@@ -110,14 +95,9 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   }
 
   private func clean() {
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       try? FileManager.default.removeItem(at: repositoryStructure.result)
-    #endif
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     private func writePages(formatting: Bool) -> Result<Void, PageTemplateLoadingError> {
       let fileEnumeration: [URL]
       do {
@@ -144,7 +124,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       }
       return .success(())
     }
-  #endif
 
   private func copyCSS() throws {
     reportProgress(
@@ -157,8 +136,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         }
       }).resolved()
     )
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       try FileManager.default.copy(
         repositoryStructure.css,
         to: repositoryStructure.result.appendingPathComponent("CSS")
@@ -168,7 +145,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
           .appendingPathComponent("CSS")
           .appendingPathComponent("Root.css")
       )
-    #endif
   }
 
   private func copyResources() throws {
@@ -182,26 +158,19 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         }
       }).resolved()
     )
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       try FileManager.default.copy(
         repositoryStructure.resources,
         to: repositoryStructure.result.appendingPathComponent("Resources")
       )
-    #endif
   }
 
   // MARK: - Validation
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// Validates any website.
     ///
     /// - Parameters:
     ///     - site: The URL of a site in the local file system.
     public static func validate(site: URL) -> [URL: [SiteValidationError]] {
-      // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-      #if !os(WASI)
         var files: [URL]
         do {
           // #workaround(SDGCornerstone 6.0.0, Internal catch not handled upstream yet.)
@@ -223,11 +192,8 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
           // @exempt(from: tests)
           return [site: [.foundationError(error)]]
         }
-      #endif
 
       var results: [URL: [SiteValidationError]] = [:]
-      // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-      #if !os(WASI)
         for file in files where file.pathExtension == "html" {
           let source: String
           do {
@@ -246,7 +212,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
             results[file] = parsed.validate(baseURL: file).map { .syntaxError($0) }
           }
         }
-      #endif
 
       return results.filter { _, value in ¬value.isEmpty }
     }
@@ -255,5 +220,4 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     public func validate() -> [URL: [SiteValidationError]] {
       return Site.validate(site: repositoryStructure.result)
     }
-  #endif
 }

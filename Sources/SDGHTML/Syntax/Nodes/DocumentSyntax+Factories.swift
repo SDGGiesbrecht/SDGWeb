@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLocalization
 
@@ -40,8 +37,6 @@ extension DocumentSyntax {
     return document
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// Creates an HTML document functioning as a redirect.
     ///
     /// This kind of redirect should only be used as a fallback when the server configuration is unavailable for modification.
@@ -89,5 +84,4 @@ extension DocumentSyntax {
         )
       )
     }
-  #endif
 }

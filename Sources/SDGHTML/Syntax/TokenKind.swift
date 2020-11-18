@@ -108,54 +108,42 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaninfulNormalizeWhitespace() {
     onlyOnTextTokens { text in
-      // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-      #if !os(WASI)
         let words = text.scalars.components(
           separatedBy: ConditionalPattern({ $0.isHTMLWhitespaceOrNewline })
         )
         .lazy.map { $0.contents }
         let scalars = words.lazy.filter({ ¬$0.isEmpty }).joined(separator: " ".scalars)
         text = String(String.UnicodeScalarView(scalars))
-      #endif
     }
   }
 
   internal mutating func whereMeaningfulTrimWhitespace() {
     onlyOnTextTokens { text in
-      // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-      #if !os(WASI)
         while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
           text.scalars.removeFirst()
         }
         while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
           text.scalars.removeLast()
         }
-      #endif
     }
   }
 
   internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
     onlyOnTextTokens { text in
-      // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-      #if !os(WASI)
         while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
           // @exempt(from: tests) Not currently reachable.
           text.scalars.removeFirst()
         }
         text.scalars.prepend(contentsOf: whitespace.scalars)
-      #endif
     }
   }
 
   internal mutating func whereMeaningfulSetTrailingWhitespace(to whitespace: String) {
     onlyOnTextTokens { text in
-      // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-      #if !os(WASI)
         while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
           text.scalars.removeLast()
         }
         text.scalars.append(contentsOf: whitespace.scalars)
-      #endif
     }
   }
 }

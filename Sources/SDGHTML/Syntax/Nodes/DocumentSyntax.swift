@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGText
 import SDGPersistence
@@ -23,12 +20,8 @@ import SDGLocalization
 
 import SDGWebLocalizations
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
-  extension DocumentSyntax: FileConvertible {}
-#endif
 /// A syntax node representing an HTML document.
-public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
+public struct DocumentSyntax: ContainerSyntax, Equatable, FileConvertible, Syntax {
 
   // MARK: - Parsing
 
@@ -74,8 +67,6 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
 
   // MARK: - Validation
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     /// Validates the document.
     ///
     /// - Parameters:
@@ -136,7 +127,6 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
       }
       return result
     }
-  #endif
 
   // MARK: - Equatable
 
@@ -144,8 +134,6 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
     return precedingValue.source() == followingValue.source()
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
     // MARK: - FileConvertible
 
     // #workaround(Swift 5.3, Duplicate documentation until Web supports Foundation and the extension can be merged.)
@@ -169,7 +157,6 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, Syntax {
     public var file: Data {
       return source().file
     }
-  #endif
 
   // MARK: - Syntax
 
