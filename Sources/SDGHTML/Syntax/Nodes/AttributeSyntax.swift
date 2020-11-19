@@ -30,7 +30,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   // MARK: - Parsing
 
   #if !os(Windows)
-    // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+    // #workaround(Swift 5.3.1, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
     private enum Child: ChildSet {
       case whitespace
       case name

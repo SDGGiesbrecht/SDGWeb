@@ -26,7 +26,7 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, FileConvertible, Synta
   // MARK: - Parsing
 
   #if !os(Windows)
-    // #workaround(Swift 5.3, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+    // #workaround(Swift 5.3.1, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
     private enum Child: ChildSet {
       case content
     }
@@ -136,12 +136,6 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, FileConvertible, Synta
 
   // MARK: - FileConvertible
 
-  // #workaround(Swift 5.3, Duplicate documentation until Web supports Foundation and the extension can be merged.)
-  /// Creates an instance using raw data from a file on the disk.
-  ///
-  /// - Parameters:
-  ///   - file: The data.
-  ///   - origin: A URL indicating where the data came from.
   public init(file: Data, origin: URL?) throws {
     let source = try String(file: file, origin: origin)
     switch DocumentSyntax.parse(source: source) {
@@ -152,8 +146,6 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, FileConvertible, Synta
     }
   }
 
-  // #workaround(Swift 5.3, Duplicate documentation until Web supports Foundation and the extension can be merged.)
-  /// A binary representation that can be written as a file.
   public var file: Data {
     return source().file
   }
