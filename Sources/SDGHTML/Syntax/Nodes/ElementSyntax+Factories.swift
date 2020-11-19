@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGLocalization
 
@@ -63,40 +60,37 @@ extension ElementSyntax {
     return ElementSyntax(name: "body", attributes: attributes, contents: contents)
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
-    /// Creates a canonical URL declaration.
-    ///
-    /// - Parameters:
-    ///   - url: The canonical URL.
-    ///   - attributes: Optional. Additional attributes.
-    public static func canonical(url: URL, attributes: [String: String] = [:]) -> ElementSyntax {
-      return ElementSyntax(
-        name: "link",
-        attributes: [
-          "rel": "canonical",
-          "href": url.relativeString,
-        ].mergedByOverwriting(from: attributes),
-        empty: true
-      )
-    }
+  /// Creates a canonical URL declaration.
+  ///
+  /// - Parameters:
+  ///   - url: The canonical URL.
+  ///   - attributes: Optional. Additional attributes.
+  public static func canonical(url: URL, attributes: [String: String] = [:]) -> ElementSyntax {
+    return ElementSyntax(
+      name: "link",
+      attributes: [
+        "rel": "canonical",
+        "href": url.relativeString,
+      ].mergedByOverwriting(from: attributes),
+      empty: true
+    )
+  }
 
-    /// Creates a link to external CSS.
-    ///
-    /// - Parameters:
-    ///   - url: The URL of the CSS file.
-    ///   - attributes: Optional. Additional attributes.
-    public static func css(url: URL, attributes: [String: String] = [:]) -> ElementSyntax {
-      return ElementSyntax(
-        name: "link",
-        attributes: [
-          "rel": "stylesheet",
-          "href": url.relativeString,
-        ].mergedByOverwriting(from: attributes),
-        empty: true
-      )
-    }
-  #endif
+  /// Creates a link to external CSS.
+  ///
+  /// - Parameters:
+  ///   - url: The URL of the CSS file.
+  ///   - attributes: Optional. Additional attributes.
+  public static func css(url: URL, attributes: [String: String] = [:]) -> ElementSyntax {
+    return ElementSyntax(
+      name: "link",
+      attributes: [
+        "rel": "stylesheet",
+        "href": url.relativeString,
+      ].mergedByOverwriting(from: attributes),
+      empty: true
+    )
+  }
 
   /// Creates a description metadata entry.
   ///
@@ -240,33 +234,30 @@ extension ElementSyntax {
     )
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
-    /// Creates a language switch element.
-    ///
-    /// - Parameters:
-    ///   - attributes: Optional. The attributes.
-    ///   - targetURL: The localized target URL.
-    public static func languageSwitch<L>(
-      attributes: [String: String] = [:],
-      targetURL: UserFacing<URL, L>
-    ) -> ElementSyntax where L: InputLocalization {
-      var entries: ListSyntax<ContentSyntax> = []
-      for localization in L.allCases {
-        entries.append(
-          .element(
-            .link(
-              target: targetURL.resolved(for: localization),
-              language: localization,
-              attributes: localization.htmlAttributes,
-              contents: [.text(localization.icon.map({ String($0) }) ?? localization.code)]
-            )
+  /// Creates a language switch element.
+  ///
+  /// - Parameters:
+  ///   - attributes: Optional. The attributes.
+  ///   - targetURL: The localized target URL.
+  public static func languageSwitch<L>(
+    attributes: [String: String] = [:],
+    targetURL: UserFacing<URL, L>
+  ) -> ElementSyntax where L: InputLocalization {
+    var entries: ListSyntax<ContentSyntax> = []
+    for localization in L.allCases {
+      entries.append(
+        .element(
+          .link(
+            target: targetURL.resolved(for: localization),
+            language: localization,
+            attributes: localization.htmlAttributes,
+            contents: [.text(localization.icon.map({ String($0) }) ?? localization.code)]
           )
         )
-      }
-      return navigation(attributes: attributes, contents: entries)
+      )
     }
-  #endif
+    return navigation(attributes: attributes, contents: entries)
+  }
 
   /// Creates a line break element.
   ///
@@ -276,32 +267,29 @@ extension ElementSyntax {
     return ElementSyntax(name: "br", attributes: attributes, empty: true)
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
-    /// Creates a link.
-    ///
-    /// - Parameters:
-    ///   - target: The target URL.
-    ///   - language: The language of the target file.
-    ///   - attributes: Optional. Additional attributes.
-    ///   - contents: Optional. The contents of the link element.
-    public static func link<L>(
-      target: URL,
-      language: L,
-      attributes: [String: String] = [:],
-      contents: ListSyntax<ContentSyntax> = []
-    ) -> ElementSyntax
-    where L: Localization {
-      return ElementSyntax(
-        name: "a",
-        attributes: [
-          "href": target.relativeString,
-          "hreflang": language.code,
-        ].mergedByOverwriting(from: attributes),
-        contents: contents
-      )
-    }
-  #endif
+  /// Creates a link.
+  ///
+  /// - Parameters:
+  ///   - target: The target URL.
+  ///   - language: The language of the target file.
+  ///   - attributes: Optional. Additional attributes.
+  ///   - contents: Optional. The contents of the link element.
+  public static func link<L>(
+    target: URL,
+    language: L,
+    attributes: [String: String] = [:],
+    contents: ListSyntax<ContentSyntax> = []
+  ) -> ElementSyntax
+  where L: Localization {
+    return ElementSyntax(
+      name: "a",
+      attributes: [
+        "href": target.relativeString,
+        "hreflang": language.code,
+      ].mergedByOverwriting(from: attributes),
+      contents: contents
+    )
+  }
 
   /// Creates a metadata entry.
   ///
@@ -459,42 +447,39 @@ extension ElementSyntax {
     return ElementSyntax(name: "p", attributes: attributes, contents: contents)
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
-    /// Creates an embedded portable document (PDF).
-    ///
-    /// - Parameters:
-    ///   - url: The URL of the target document.
-    ///   - attributes: Optional. Additional attributes.
-    ///   - fallbackRepresentation: Optional. The fallback representation of the document.
-    public static func portableDocument(
-      url: URL,
-      attributes: [String: String] = [:],
-      fallbackRepresentation: ListSyntax<ContentSyntax>
-    ) -> ElementSyntax {
-      return object(
-        attributes: [
-          "type": "application/pdf",
-          "data": url.relativeString,
-        ].mergedByOverwriting(from: attributes),
-        fallbackRepresentation: fallbackRepresentation
-      )
-    }
+  /// Creates an embedded portable document (PDF).
+  ///
+  /// - Parameters:
+  ///   - url: The URL of the target document.
+  ///   - attributes: Optional. Additional attributes.
+  ///   - fallbackRepresentation: Optional. The fallback representation of the document.
+  public static func portableDocument(
+    url: URL,
+    attributes: [String: String] = [:],
+    fallbackRepresentation: ListSyntax<ContentSyntax>
+  ) -> ElementSyntax {
+    return object(
+      attributes: [
+        "type": "application/pdf",
+        "data": url.relativeString,
+      ].mergedByOverwriting(from: attributes),
+      fallbackRepresentation: fallbackRepresentation
+    )
+  }
 
-    /// Creates an immediate redirect.
-    ///
-    /// - Parameters:
-    ///   - target: The target of the redirect.
-    ///   - attributes: Optional. Additional attributes.
-    public static func redirect(target: URL, attributes: [String: String] = [:]) -> ElementSyntax {
-      return metadata(
-        attributes: [
-          "http\u{2D}equiv": "refresh",
-          "content": "0; url=\(target.relativeString)",
-        ].mergedByOverwriting(from: attributes)
-      )
-    }
-  #endif
+  /// Creates an immediate redirect.
+  ///
+  /// - Parameters:
+  ///   - target: The target of the redirect.
+  ///   - attributes: Optional. Additional attributes.
+  public static func redirect(target: URL, attributes: [String: String] = [:]) -> ElementSyntax {
+    return metadata(
+      attributes: [
+        "http\u{2D}equiv": "refresh",
+        "content": "0; url=\(target.relativeString)",
+      ].mergedByOverwriting(from: attributes)
+    )
+  }
 
   /// Creates a section.
   ///

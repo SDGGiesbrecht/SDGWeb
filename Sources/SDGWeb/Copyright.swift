@@ -23,15 +23,10 @@ import SDGCalendar
 /// - Parameters:
 ///     - yearFirstPublished: The year the site was first published.
 public func copyrightDates(yearFirstPublished: GregorianYear) -> StrictString {
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if os(WASI)
+  let now = CalendarDate.gregorianNow().gregorianYear
+  if now == yearFirstPublished {
     return yearFirstPublished.inEnglishDigits()
-  #else
-    let now = CalendarDate.gregorianNow().gregorianYear
-    if now == yearFirstPublished {
-      return yearFirstPublished.inEnglishDigits()
-    } else {
-      return yearFirstPublished.inEnglishDigits() + "–" + now.inEnglishDigits()
-    }
-  #endif  // @exempt(from: tests)
+  } else {
+    return yearFirstPublished.inEnglishDigits() + "–" + now.inEnglishDigits()
+  }
 }

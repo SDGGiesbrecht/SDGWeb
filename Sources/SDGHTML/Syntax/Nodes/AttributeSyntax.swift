@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 #if canImport(FoundationNetworking)
   import FoundationNetworking
 #endif
@@ -171,18 +168,15 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
 
   // MARK: - Validation
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
-    internal func validate(
-      location: String.ScalarView.Index,
-      file: String,
-      baseURL: URL
-    ) -> [SyntaxError] {
-      var results: [SyntaxError] = []
-      validateValuePresence(location: location, file: file, results: &results)
-      return results
-    }
-  #endif
+  internal func validate(
+    location: String.ScalarView.Index,
+    file: String,
+    baseURL: URL
+  ) -> [SyntaxError] {
+    var results: [SyntaxError] = []
+    validateValuePresence(location: location, file: file, results: &results)
+    return results
+  }
 
   private static let nonEmptyAttributes: Set<String> = [
     "accept",
@@ -411,32 +405,39 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   }
 
   private static let urlAttributes: Set<String> = ["data", "href", "poster", "src", "srcset"]
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
-    internal func validateURLValue(
-      location: String.ScalarView.Index,
-      file: String,
-      baseURL: URL,
-      results: inout [SyntaxError]
-    ) {
-      if name.source() ∈ AttributeSyntax.urlAttributes,
-        let value = self.value
-      {
-        let urlString = value.value.source()
-        let legacySpecification = urlString.addingPercentEncoding(
-          withAllowedCharacters: CharacterSet(
-            charactersIn: Unicode.Scalar(0)..<Unicode.Scalar(0x80)
-          )
-        )!
-        if let url = URL(string: legacySpecification, relativeTo: baseURL) {
-          var dead = true
-          if url.isFileURL {
+  internal func validateURLValue(
+    location: String.ScalarView.Index,
+    file: String,
+    baseURL: URL,
+    results: inout [SyntaxError]
+  ) {
+    if name.source() ∈ AttributeSyntax.urlAttributes,
+      let value = self.value
+    {
+      let urlString = value.value.source()
+      let legacySpecification = urlString.addingPercentEncoding(
+        withAllowedCharacters: CharacterSet(
+          charactersIn: Unicode.Scalar(0)..<Unicode.Scalar(0x80)
+        )
+      )!
+      if let url = URL(string: legacySpecification, relativeTo: baseURL) {
+        var dead = true
+        if url.isFileURL {
+          // #workaround(Swift 5.3.1, Web lacks checkResourceIsReachable.)
+          #if os(WASI)
+            dead = false
+          #else
             if (try? url.checkResourceIsReachable()) == true {
               dead = false
             }
-          } else if url.host == "example.com" {
+          #endif
+        } else if url.host == "example.com" {
+          dead = false
+        } else {
+          // #workaround(Swift 5.3.1, Web lacks URLRequest.)
+          #if os(WASI)
             dead = false
-          } else {
+          #else
             let request = URLRequest(
               url: url,
               cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
@@ -454,25 +455,9 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
             }
             task.resume()
             semaphore.wait()
-          }
-          if dead {
-            results.append(
-              SyntaxError(
-                file: file,
-                index: location,
-                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                  switch localization {
-                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "A link is dead: \(url.absoluteString)"
-                  case .deutschDeutschland:
-                    return "Ein Verweis ist tot: \(url.absoluteString)"
-                  }
-                }),
-                context: name.source() + value.source()
-              )
-            )
-          }
-        } else {
+          #endif
+        }
+        if dead {
           results.append(
             SyntaxError(
               file: file,
@@ -480,18 +465,34 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
               description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return "A URL is invalid: \(urlString)"
+                  return "A link is dead: \(url.absoluteString)"
                 case .deutschDeutschland:
-                  return "Ein Ressourcenzeiger ist ungültig: \(urlString)"
+                  return "Ein Verweis ist tot: \(url.absoluteString)"
                 }
               }),
               context: name.source() + value.source()
             )
           )
         }
+      } else {
+        results.append(
+          SyntaxError(
+            file: file,
+            index: location,
+            description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "A URL is invalid: \(urlString)"
+              case .deutschDeutschland:
+                return "Ein Ressourcenzeiger ist ungültig: \(urlString)"
+              }
+            }),
+            context: name.source() + value.source()
+          )
+        )
       }
     }
-  #endif
+  }
 
   // MARK: - NamedSyntax
 

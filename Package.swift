@@ -75,7 +75,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(6, 0, 0)
+      from: Version(6, 2, 0)
     )
   ],
   targets: [
@@ -181,12 +181,6 @@ let package = Package(
 )
 
 import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  for target in package.targets {
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    target.exclude.append("Resources.swift")
-  }
-}
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 12.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)

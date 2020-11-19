@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGText
 import SDGLocalization
@@ -45,12 +42,7 @@ public enum SiteGenerationError: PresentableError {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch self {
       case .foundationError(let error):
-        // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-        #if os(WASI)
-          return StrictString(String(describing: error))
-        #else
-          return StrictString(error.localizedDescription)
-        #endif
+        return StrictString(error.localizedDescription)
       case .invalidDomain(let domain):
         switch localization {
         case .englishUnitedKingdom:

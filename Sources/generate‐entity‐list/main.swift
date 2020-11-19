@@ -12,24 +12,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGLogic
 import SDGText
 import SDGPersistence
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
+let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
+// #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
 #if !os(WASI)
-  let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
   let json = try Data(from: specificationURL)
   let database = try JSONDecoder().decode([String: Entity].self, from: json)
 #endif
 
 var transformed: [String: String] = [:]
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
+// #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
 #if !os(WASI)
   for (entity, text) in database {
     var name = entity
@@ -58,14 +55,14 @@ for (entity, text) in sorted {
 }
 file.append("]\n")
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
-  let sourceFile = URL(fileURLWithPath: #filePath)
-    .deletingLastPathComponent()
-    .deletingLastPathComponent()
-    .appendingPathComponent("SDGHTML")
-    .appendingPathComponent("Entities.swift")
+let sourceFile = URL(fileURLWithPath: #filePath)
+  .deletingLastPathComponent()
+  .deletingLastPathComponent()
+  .appendingPathComponent("SDGHTML")
+  .appendingPathComponent("Entities.swift")
 
+// #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
+#if !os(WASI)
   var existing = try StrictString(from: sourceFile)
   existing.truncate(after: "*/\n\n")
   existing.append(contentsOf: file.joined(separator: "\n".scalars))

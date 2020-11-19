@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGLogic
 import SDGMathematics
@@ -30,7 +27,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
+  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
   #if !os(WASI)
     internal static func load<Unfolder>(
       from file: URL,
@@ -104,24 +101,21 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     site: Site<Localization, Unfolder>
   ) throws -> DocumentSyntax {
     var syntax = templateSyntax
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
-      try syntax.unfold(
-        with: Unfolder(
-          context: SyntaxUnfolder.Context(
-            localization: localization,
-            siteRoot: site.siteRoot.resolved(for: localization),
-            relativePath: String(relativePath),
-            title: resolvedTitle(),
-            author: site.author.resolved(for: localization),
-            css: [
-              "CSS/Root.css",
-              "CSS/Site.css",
-            ]
-          )
+    try syntax.unfold(
+      with: Unfolder(
+        context: SyntaxUnfolder.Context(
+          localization: localization,
+          siteRoot: site.siteRoot.resolved(for: localization),
+          relativePath: String(relativePath),
+          title: resolvedTitle(),
+          author: site.author.resolved(for: localization),
+          css: [
+            "CSS/Root.css",
+            "CSS/Site.css",
+          ]
         )
       )
-    #endif
+    )
     return syntax
   }
 
@@ -140,21 +134,21 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     ) ?? resolvedTitle()
   }
 
-  internal func writeResult<Unfolder>(
-    for localization: Localization,
-    of site: Site<Localization, Unfolder>,
-    formatting: Bool
-  ) throws {
+  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
+  #if !os(WASI)
+    internal func writeResult<Unfolder>(
+      for localization: Localization,
+      of site: Site<Localization, Unfolder>,
+      formatting: Bool
+    ) throws {
 
-    var relativePath = self.relativePath
-    if Localization.allCases.count > 1 {
-      relativePath.prepend(
-        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
-      )
-    }
+      var relativePath = self.relativePath
+      if Localization.allCases.count > 1 {
+        relativePath.prepend(
+          contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
+        )
+      }
 
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
       var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
       url.deleteLastPathComponent()
       url.appendPathComponent(String(try resolvedFileName()))
@@ -173,15 +167,12 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
           }
         }).resolved()
       )
-    #endif
 
-    var result = try processedResult(for: relativePath, localization: localization, site: site)
-    if formatting {
-      result.format()
-    }
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    #if !os(WASI)
+      var result = try processedResult(for: relativePath, localization: localization, site: site)
+      if formatting {
+        result.format()
+      }
       try StrictString(result.source()).save(to: url)
-    #endif
-  }
+    }
+  #endif
 }

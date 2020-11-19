@@ -12,10 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGLogic
 import SDGCollections
@@ -92,19 +89,16 @@ public enum HTML {
     return text
   }
 
-  // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-  #if !os(WASI)
-    /// Applies percent encoding to a path intended for a URL.
-    ///
-    /// - Parameters:
-    ///     - path: The path to encode.
-    @inlinable public static func percentEncodeURLPath<S>(_ path: S) -> S where S: StringFamily {
-      var path = path
-      path.scalars.mutateMatches(
-        for: ConditionalPattern({ $0.value < 0x80 ∧ $0 ∉ CharacterSet.urlPathAllowed }),
-        mutation: { return ("%" + String($0.contents.first!.value, radix: 16)).scalars }
-      )
-      return path
-    }
-  #endif
+  /// Applies percent encoding to a path intended for a URL.
+  ///
+  /// - Parameters:
+  ///     - path: The path to encode.
+  @inlinable public static func percentEncodeURLPath<S>(_ path: S) -> S where S: StringFamily {
+    var path = path
+    path.scalars.mutateMatches(
+      for: ConditionalPattern({ $0.value < 0x80 ∧ $0 ∉ CharacterSet.urlPathAllowed }),
+      mutation: { return ("%" + String($0.contents.first!.value, radix: 16)).scalars }
+    )
+    return path
+  }
 }
