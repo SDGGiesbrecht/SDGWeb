@@ -108,42 +108,42 @@ public enum TokenKind: Equatable, Hashable {
 
   internal mutating func whereMeaninfulNormalizeWhitespace() {
     onlyOnTextTokens { text in
-        let words = text.scalars.components(
-          separatedBy: ConditionalPattern({ $0.isHTMLWhitespaceOrNewline })
-        )
-        .lazy.map { $0.contents }
-        let scalars = words.lazy.filter({ ¬$0.isEmpty }).joined(separator: " ".scalars)
-        text = String(String.UnicodeScalarView(scalars))
+      let words = text.scalars.components(
+        separatedBy: ConditionalPattern({ $0.isHTMLWhitespaceOrNewline })
+      )
+      .lazy.map { $0.contents }
+      let scalars = words.lazy.filter({ ¬$0.isEmpty }).joined(separator: " ".scalars)
+      text = String(String.UnicodeScalarView(scalars))
     }
   }
 
   internal mutating func whereMeaningfulTrimWhitespace() {
     onlyOnTextTokens { text in
-        while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
-          text.scalars.removeFirst()
-        }
-        while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
-          text.scalars.removeLast()
-        }
+      while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
+        text.scalars.removeFirst()
+      }
+      while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
+        text.scalars.removeLast()
+      }
     }
   }
 
   internal mutating func whereMeaningfulSetLeadingWhitespace(to whitespace: String) {
     onlyOnTextTokens { text in
-        while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
-          // @exempt(from: tests) Not currently reachable.
-          text.scalars.removeFirst()
-        }
-        text.scalars.prepend(contentsOf: whitespace.scalars)
+      while text.scalars.first?.isHTMLWhitespaceOrNewline == true {
+        // @exempt(from: tests) Not currently reachable.
+        text.scalars.removeFirst()
+      }
+      text.scalars.prepend(contentsOf: whitespace.scalars)
     }
   }
 
   internal mutating func whereMeaningfulSetTrailingWhitespace(to whitespace: String) {
     onlyOnTextTokens { text in
-        while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
-          text.scalars.removeLast()
-        }
-        text.scalars.append(contentsOf: whitespace.scalars)
+      while text.scalars.last?.isHTMLWhitespaceOrNewline == true {
+        text.scalars.removeLast()
+      }
+      text.scalars.append(contentsOf: whitespace.scalars)
     }
   }
 }

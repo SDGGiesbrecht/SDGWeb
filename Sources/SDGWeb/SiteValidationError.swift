@@ -34,7 +34,7 @@ public enum SiteValidationError: PresentableError {
   public func presentableDescription() -> StrictString {
     switch self {
     case .foundationError(let error):
-        return StrictString(error.localizedDescription)
+      return StrictString(error.localizedDescription)
     case .syntaxError(let error):
       return error.presentableDescription()
     }

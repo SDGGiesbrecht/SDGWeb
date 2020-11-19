@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGLogic
 import SDGMathematics
@@ -101,21 +101,21 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     site: Site<Localization, Unfolder>
   ) throws -> DocumentSyntax {
     var syntax = templateSyntax
-      try syntax.unfold(
-        with: Unfolder(
-          context: SyntaxUnfolder.Context(
-            localization: localization,
-            siteRoot: site.siteRoot.resolved(for: localization),
-            relativePath: String(relativePath),
-            title: resolvedTitle(),
-            author: site.author.resolved(for: localization),
-            css: [
-              "CSS/Root.css",
-              "CSS/Site.css",
-            ]
-          )
+    try syntax.unfold(
+      with: Unfolder(
+        context: SyntaxUnfolder.Context(
+          localization: localization,
+          siteRoot: site.siteRoot.resolved(for: localization),
+          relativePath: String(relativePath),
+          title: resolvedTitle(),
+          author: site.author.resolved(for: localization),
+          css: [
+            "CSS/Root.css",
+            "CSS/Site.css",
+          ]
         )
       )
+    )
     return syntax
   }
 
@@ -136,18 +136,18 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
   #if !os(WASI)
-  internal func writeResult<Unfolder>(
-    for localization: Localization,
-    of site: Site<Localization, Unfolder>,
-    formatting: Bool
-  ) throws {
+    internal func writeResult<Unfolder>(
+      for localization: Localization,
+      of site: Site<Localization, Unfolder>,
+      formatting: Bool
+    ) throws {
 
-    var relativePath = self.relativePath
-    if Localization.allCases.count > 1 {
-      relativePath.prepend(
-        contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
-      )
-    }
+      var relativePath = self.relativePath
+      if Localization.allCases.count > 1 {
+        relativePath.prepend(
+          contentsOf: site.localizationDirectories.resolved(for: localization) + "/"
+        )
+      }
 
       var url = site.repositoryStructure.result.appendingPathComponent(String(relativePath))
       url.deleteLastPathComponent()
@@ -168,11 +168,11 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
         }).resolved()
       )
 
-    var result = try processedResult(for: relativePath, localization: localization, site: site)
-    if formatting {
-      result.format()
-    }
+      var result = try processedResult(for: relativePath, localization: localization, site: site)
+      if formatting {
+        result.format()
+      }
       try StrictString(result.source()).save(to: url)
-  }
+    }
   #endif
 }

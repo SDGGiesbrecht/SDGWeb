@@ -12,13 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGLogic
 import SDGText
 import SDGPersistence
 
-  let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
+let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
 // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
 #if !os(WASI)
   let json = try Data(from: specificationURL)
@@ -55,11 +55,11 @@ for (entity, text) in sorted {
 }
 file.append("]\n")
 
-  let sourceFile = URL(fileURLWithPath: #filePath)
-    .deletingLastPathComponent()
-    .deletingLastPathComponent()
-    .appendingPathComponent("SDGHTML")
-    .appendingPathComponent("Entities.swift")
+let sourceFile = URL(fileURLWithPath: #filePath)
+  .deletingLastPathComponent()
+  .deletingLastPathComponent()
+  .appendingPathComponent("SDGHTML")
+  .appendingPathComponent("Entities.swift")
 
 // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
 #if !os(WASI)

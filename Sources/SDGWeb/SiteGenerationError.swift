@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGText
 import SDGLocalization
@@ -42,7 +42,7 @@ public enum SiteGenerationError: PresentableError {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch self {
       case .foundationError(let error):
-          return StrictString(error.localizedDescription)
+        return StrictString(error.localizedDescription)
       case .invalidDomain(let domain):
         switch localization {
         case .englishUnitedKingdom:

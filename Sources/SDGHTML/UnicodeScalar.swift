@@ -12,15 +12,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGLogic
 import SDGCollections
 
 extension Unicode.Scalar {
 
-    /// Whether or not the scalar represents whitespace or a newline in HTML.
-    public var isHTMLWhitespaceOrNewline: Bool {
-      return value < 0x80 ∧ self ∈ CharacterSet.whitespacesAndNewlines
-    }
+  /// Whether or not the scalar represents whitespace or a newline in HTML.
+  public var isHTMLWhitespaceOrNewline: Bool {
+    return value < 0x80 ∧ self ∈ CharacterSet.whitespacesAndNewlines
+  }
 }
