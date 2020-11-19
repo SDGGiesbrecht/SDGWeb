@@ -62,6 +62,8 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
   // MARK: - Processing
 
+  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
+  #if !os(WASI)
   /// Generates the website in its result directory.
   ///
   /// - Parameters:
@@ -98,8 +100,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       try? FileManager.default.removeItem(at: repositoryStructure.result)
   }
 
-  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
-  #if !os(WASI)
     private func writePages(formatting: Bool) -> Result<Void, PageTemplateLoadingError> {
       let fileEnumeration: [URL]
       do {
@@ -126,7 +126,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       }
       return .success(())
     }
-  #endif
 
   private func copyCSS() throws {
     reportProgress(
@@ -166,6 +165,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         to: repositoryStructure.result.appendingPathComponent("Resources")
       )
   }
+  #endif
 
   // MARK: - Validation
 
