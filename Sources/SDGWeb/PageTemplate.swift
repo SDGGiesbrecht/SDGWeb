@@ -134,6 +134,8 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     ) ?? resolvedTitle()
   }
 
+  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
+  #if !os(WASI)
   internal func writeResult<Unfolder>(
     for localization: Localization,
     of site: Site<Localization, Unfolder>,
@@ -172,4 +174,5 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     }
       try StrictString(result.source()).save(to: url)
   }
+  #endif
 }
