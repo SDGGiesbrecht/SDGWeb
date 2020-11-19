@@ -423,12 +423,21 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
         if let url = URL(string: legacySpecification, relativeTo: baseURL) {
           var dead = true
           if url.isFileURL {
+            // #workaround(Swift 5.3.1, Web lacks checkResourceIsReachable.)
+            #if os(WASI)
+            dead = false
+            #else
             if (try? url.checkResourceIsReachable()) == true {
               dead = false
             }
+            #endif
           } else if url.host == "example.com" {
             dead = false
           } else {
+            // #workaround(Swift 5.3.1, Web lacks URLRequest.)
+            #if os(WASI)
+            dead = false
+            #else
             let request = URLRequest(
               url: url,
               cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
@@ -446,6 +455,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
             }
             task.resume()
             semaphore.wait()
+            #endif
           }
           if dead {
             results.append(
