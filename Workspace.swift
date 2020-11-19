@@ -49,7 +49,6 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGLocalizationTestUtilities",
   "SDGLogic",
   "SDGMathematics",
-  "SDGPersistence",
   "SDGPersistenceTestUtilities",
   "SDGTesting",
   "SDGText",
