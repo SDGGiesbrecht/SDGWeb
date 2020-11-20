@@ -178,21 +178,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     #if !os(WASI)
       var files: [URL]
       do {
-        // #workaround(SDGCornerstone 6.0.0, Internal catch not handled upstream yet.)
-        do {
-          files = try FileManager.default.deepFileEnumeration(in: site)
-        } catch {
-          #if os(Windows)  // @exempt(from: tests)
-            files = try FileManager.default.deepFileEnumeration(
-              in: site.deletingLastPathComponent().appendingPathComponent(
-                site.lastPathComponent,
-                isDirectory: true
-              )
-            )
-          #else
-            throw error
-          #endif
-        }
+        files = try FileManager.default.deepFileEnumeration(in: site)
       } catch {
         // @exempt(from: tests)
         return [site: [.foundationError(error)]]
