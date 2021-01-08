@@ -180,6 +180,17 @@ let package = Package(
   ]
 )
 
+for target in package.targets {
+  var swiftSettings = target.swiftSettings ?? []
+  defer { target.swiftSettings = swiftSettings }
+  swiftSettings.append(contentsOf: [
+
+    // Internal‐only:
+    // #workaround(Swift 5.3.2, Web lacks Foundation.ProcessInfo.)
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi]))
+  ])
+}
+
 import Foundation
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
