@@ -186,8 +186,10 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
+    // #workaround(Swift 5.3.2, Web lacks Foundation.FileManager.)
+    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.2, Web lacks Foundation.ProcessInfo.)
-    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi]))
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
   ])
 }
 

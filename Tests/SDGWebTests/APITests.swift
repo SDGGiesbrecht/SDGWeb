@@ -149,12 +149,14 @@ class APITests: TestCase {
         )
       }
 
-      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
-        let invalidHTML = "p>This paragraph is broken.</p>"
-        try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
-        let warnings = Site<InterfaceLocalization, Unfolder>.validate(site: url)
-        XCTAssert(¬warnings.isEmpty)
-      }
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { url in
+          let invalidHTML = "p>This paragraph is broken.</p>"
+          try invalidHTML.save(to: url.appendingPathComponent("Invalid.html"))
+          let warnings = Site<InterfaceLocalization, Unfolder>.validate(site: url)
+          XCTAssert(¬warnings.isEmpty)
+        }
+      #endif
     #endif
   }
 
