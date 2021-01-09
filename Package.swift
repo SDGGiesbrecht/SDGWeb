@@ -231,10 +231,10 @@ package.targets.removeAll(where: { $0.name == "SDGWeb" })
     "Syntax/SyntaxUnfolderError.swift",
     "Syntax/SyntaxUnfolderProtocol.swift",
     "Syntax/UnfoldingError.swift",
-    //"Entities.swift",
-    /**/"HTML.swift",
+    /*!*/"Entities.swift",
+    /*?*/"HTML.swift",
     "Localization.swift",
-    /**/"TextDirection.swift",
+    /*?*/"TextDirection.swift",
   ]
   let impossibleTests = [
     "SDGHTMLTests",
