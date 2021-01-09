@@ -261,15 +261,17 @@ class APITests: TestCase {
       overwriteSpecificationInsteadOfFailing: false
     )
     compare(.body(), to: "Body", overwriteSpecificationInsteadOfFailing: false)
-    compare(
-      .css(
-        url: URL(fileURLWithPath: "Some Relative Path")
-          .appendingPathComponent("Chemin d’accès")
-          .appendingPathComponent("CSS.css")
-      ),
-      to: "CSS",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
+      compare(
+        .css(
+          url: URL(fileURLWithPath: "Some Relative Path")
+            .appendingPathComponent("Chemin d’accès")
+            .appendingPathComponent("CSS.css")
+        ),
+        to: "CSS",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
     compare(
       .description("A document."),
       to: "Description",
@@ -299,28 +301,32 @@ class APITests: TestCase {
       overwriteSpecificationInsteadOfFailing: false
     )
     compare(.lineBreak(), to: "Line Break", overwriteSpecificationInsteadOfFailing: false)
-    compare(
-      .link(
-        target:
-          URL(fileURLWithPath: "Some Relative Path")
-          .appendingPathComponent("Chemin d’accès.html"),
-        language: InterfaceLocalization.englishUnitedKingdom
-      ),
-      to: "Link",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
+      compare(
+        .link(
+          target:
+            URL(fileURLWithPath: "Some Relative Path")
+            .appendingPathComponent("Chemin d’accès.html"),
+          language: InterfaceLocalization.englishUnitedKingdom
+        ),
+        to: "Link",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
     compare(.navigation(), to: "Navigation", overwriteSpecificationInsteadOfFailing: false)
     compare(.paragraph(), to: "Paragraph", overwriteSpecificationInsteadOfFailing: false)
-    compare(
-      .portableDocument(
-        url:
-          URL(fileURLWithPath: "Some Relative Path")
-          .appendingPathComponent("Chemin d’accès.pdf"),
-        fallbackRepresentation: []
-      ),
-      to: "Portable Document",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
+      compare(
+        .portableDocument(
+          url:
+            URL(fileURLWithPath: "Some Relative Path")
+            .appendingPathComponent("Chemin d’accès.pdf"),
+          fallbackRepresentation: []
+        ),
+        to: "Portable Document",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
     compare(.section(), to: "Section", overwriteSpecificationInsteadOfFailing: false)
     compare(.title(), to: "Title", overwriteSpecificationInsteadOfFailing: false)
     compare(
@@ -574,77 +580,85 @@ class APITests: TestCase {
     XCTAssertEqual(HTML.percentEncodeURLPath("Ελληνικό κείμενο"), "Ελληνικό%20κείμενο")
 
     let url = "../Mock Projects"
-    var thisFile = URL(fileURLWithPath: #filePath)
-    #if os(Windows)
-      // Fix WSL path if cross‐compiled.
-      var directory = thisFile.path
-      if directory.hasPrefix("/mnt/") {
-        directory.removeFirst(5)
-        let driveLetter = directory.removeFirst()
-        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
-        thisFile = URL(fileURLWithPath: directory)
+    #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
+      var thisFile = URL(fileURLWithPath: #filePath)
+      #if os(Windows)
+        // Fix WSL path if cross‐compiled.
+        var directory = thisFile.path
+        if directory.hasPrefix("/mnt/") {
+          directory.removeFirst(5)
+          let driveLetter = directory.removeFirst()
+          directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
+          thisFile = URL(fileURLWithPath: directory)
+        }
+      #endif
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+        if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
+          thisFile = URL(fileURLWithPath: overridden)
+            .appendingPathComponent("Tests")
+            .appendingPathComponent("SDGHTMLTests")
+            .appendingPathComponent("APITests.swift")
+        }
+      #endif
+      func validate(url: String) throws -> [SyntaxError] {
+        let document = try DocumentSyntax.parse(
+          source: "<a href=\u{22}\(url)\u{22}>Space is not encoded.</a>"
+        ).get()
+        return document.validate(baseURL: thisFile)
       }
-    #endif
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-      if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
-        thisFile = URL(fileURLWithPath: overridden)
-          .appendingPathComponent("Tests")
-          .appendingPathComponent("SDGHTMLTests")
-          .appendingPathComponent("APITests.swift")
-      }
-    #endif
-    func validate(url: String) throws -> [SyntaxError] {
-      let document = try DocumentSyntax.parse(
-        source: "<a href=\u{22}\(url)\u{22}>Space is not encoded.</a>"
-      ).get()
-      return document.validate(baseURL: thisFile)
-    }
-    XCTAssert(try ¬validate(url: url).isEmpty, "Failed to warn about unencoded space.")
+      XCTAssert(try ¬validate(url: url).isEmpty, "Failed to warn about unencoded space.")
 
-    let otherErrors = try validate(url: HTML.percentEncodeURLPath(url))
-    XCTAssert(
-      otherErrors.isEmpty,
-      "Unrelated warning occurred:\n\(otherErrors)"
-    )
+      let otherErrors = try validate(url: HTML.percentEncodeURLPath(url))
+      XCTAssert(
+        otherErrors.isEmpty,
+        "Unrelated warning occurred:\n\(otherErrors)"
+      )
+    #endif
   }
 
   func testRedirect() {
-    compare(
-      String(
-        DocumentSyntax.redirect(
-          language: InterfaceLocalization.englishCanada,
-          target: URL(fileURLWithPath: "../")
-        ).source()
-      ),
-      against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"),
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
+      compare(
+        String(
+          DocumentSyntax.redirect(
+            language: InterfaceLocalization.englishCanada,
+            target: URL(fileURLWithPath: "../")
+          ).source()
+        ),
+        against: testSpecificationDirectory().appendingPathComponent("Redirect.txt"),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
     enum RightToLeftLocalization: String, Localization {
       case עברית = "he"
       static let fallbackLocalization: RightToLeftLocalization = .עברית
     }
-    compare(
-      String(
-        DocumentSyntax.redirect(
-          language: RightToLeftLocalization.עברית,
-          target: URL(fileURLWithPath: "../")
-        ).source()
-      ),
-      against: testSpecificationDirectory().appendingPathComponent(
-        "Redirect (Right‐to‐Left).txt"
-      ),
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    compare(
-      String(
-        DocumentSyntax.redirect(
-          language: InterfaceLocalization.englishCanada,
-          target: URL(fileURLWithPath: "🇮🇱.html")
-        ).source()
-      ),
-      against: testSpecificationDirectory().appendingPathComponent("Unicode Redirect.txt"),
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
+      compare(
+        String(
+          DocumentSyntax.redirect(
+            language: RightToLeftLocalization.עברית,
+            target: URL(fileURLWithPath: "../")
+          ).source()
+        ),
+        against: testSpecificationDirectory().appendingPathComponent(
+          "Redirect (Right‐to‐Left).txt"
+        ),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
+    #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
+      compare(
+        String(
+          DocumentSyntax.redirect(
+            language: InterfaceLocalization.englishCanada,
+            target: URL(fileURLWithPath: "🇮🇱.html")
+          ).source()
+        ),
+        against: testSpecificationDirectory().appendingPathComponent("Unicode Redirect.txt"),
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testSyntaxError() {
@@ -660,9 +674,11 @@ class APITests: TestCase {
       case .failure(let error):
         errors.append(error)
       case .success(let document):
-        let validated = document.validate(baseURL: URL(fileURLWithPath: "/"))
-        XCTAssert(¬validated.isEmpty, "No error detected.", file: file, line: line)
-        errors.append(contentsOf: validated)
+        #if !PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH
+          let validated = document.validate(baseURL: URL(fileURLWithPath: "/"))
+          XCTAssert(¬validated.isEmpty, "No error detected.", file: file, line: line)
+          errors.append(contentsOf: validated)
+        #endif
       }
       #if !os(Windows)  // #workaround(Swift 5.3.1, Segmentation fault.)
         var report: [StrictString] = []

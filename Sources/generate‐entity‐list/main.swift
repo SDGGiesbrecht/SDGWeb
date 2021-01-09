@@ -58,7 +58,7 @@ for (entity, text) in sorted {
 }
 file.append(contentsOf: [
   "  ]",
-  "#endif\n"
+  "#endif\n",
 ])
 
 let sourceFile = URL(fileURLWithPath: #filePath)
