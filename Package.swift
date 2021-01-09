@@ -195,20 +195,6 @@ for target in package.targets {
 
 import Foundation
 
-if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  // #warning(Debugging.)
-  /*let impossibleTests = [
-    "SDGHTMLTests",
-    "SDGWebTests"
-  ]
-  package.targets.removeAll(where: { impossibleTests.contains($0.name) })
-  package.targets.append(.testTarget(name: "DebuggingTests", dependencies: [
-    "SDGWebLocalizations",
-    "SDGCSS",
-    "SDGHTML",
-  ]))*/
-}
-
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 12.2, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.name.hasPrefix("generate") })
