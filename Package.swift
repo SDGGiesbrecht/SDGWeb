@@ -204,7 +204,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   package.targets.removeAll(where: { impossibleTests.contains($0.name) })
   package.targets.append(.testTarget(name: "DebuggingTests", dependencies: [
     "SDGWebLocalizations",
-    "SDGCSS"
+    "SDGCSS",
+    "SDGHTML"
   ]))
 }
 
