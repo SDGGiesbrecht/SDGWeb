@@ -197,7 +197,7 @@ import Foundation
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   // #warning(Debugging.)
-  let impossibleTests = [
+  /*let impossibleTests = [
     "SDGHTMLTests",
     "SDGWebTests"
   ]
@@ -206,7 +206,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "SDGWebLocalizations",
     "SDGCSS",
     "SDGHTML",
-  ]))
+  ]))*/
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
