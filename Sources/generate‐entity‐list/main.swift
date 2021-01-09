@@ -4,7 +4,7 @@
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
 
- Copyright ©2019–2020 Jeremy David Giesbrecht and the SDGWeb project contributors.
+ Copyright ©2019–2021 Jeremy David Giesbrecht and the SDGWeb project contributors.
 
  Soli Deo gloria.
 
@@ -41,19 +41,25 @@ var transformed: [String: String] = [:]
 #endif
 
 var file: [StrictString] = [
-  "// This is generated automatically using the generate‐entity‐list target.",
-  "@usableFromInline internal let entities: [String: String] = [",
+  "#if PLATFORM_SUFFERS_LONG_LITERAL_BUG",
+  "  @usableFromInline internal let entities: [String: String] = [:]",
+  "#else",
+  "  // This is generated automatically using the generate‐entity‐list target.",
+  "  @usableFromInline internal let entities: [String: String] = [",
 ]
 let sorted = transformed.sorted(by: { $0 < $1 })
 for (entity, text) in sorted {
   let scalars = text.scalars.map({ "\\u{\($0.hexadecimalCode)}" }).joined()
-  var line: StrictString = "  \u{22}\(entity)\u{22}: \u{22}\(scalars)\u{22}"
+  var line: StrictString = "    \u{22}\(entity)\u{22}: \u{22}\(scalars)\u{22}"
   if entity ≠ sorted.last?.0 {
     line.append(",")
   }
   file.append(line)
 }
-file.append("]\n")
+file.append(contentsOf: [
+  "  ]",
+  "#endif\n",
+])
 
 let sourceFile = URL(fileURLWithPath: #filePath)
   .deletingLastPathComponent()

@@ -6,7 +6,7 @@
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the SDGWeb project contributors.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGWeb project contributors.
 
  Soli Deo gloria.
 
@@ -179,6 +179,23 @@ let package = Package(
     ),
   ]
 )
+
+for target in package.targets {
+  var swiftSettings = target.swiftSettings ?? []
+  defer { target.swiftSettings = swiftSettings }
+  swiftSettings.append(contentsOf: [
+
+    // Internal‐only:
+    // #workaround(Swift 5.3.2, Web cannot handle long literals.)
+    .define("PLATFORM_SUFFERS_LONG_LITERAL_BUG", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.FileManager.)
+    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.ProcessInfo.)
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.URL.init(fileURLWithPath).)
+    .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
+  ])
+}
 
 import Foundation
 
