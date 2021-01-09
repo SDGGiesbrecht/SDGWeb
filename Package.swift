@@ -197,7 +197,11 @@ import Foundation
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   // #warning(Debugging.)
-  package.targets.removeAll(where: { $0.isTest })
+  let impossibleTests = [
+    "SDGHTMLTests",
+    "SDGWebTests"
+  ]
+  package.targets.removeAll(where: { impossibleTests.contains($0.name) })
   package.targets.append(.testTarget(name: "DebuggingTests", dependencies: ["SDGWebLocalizations"]))
 }
 
