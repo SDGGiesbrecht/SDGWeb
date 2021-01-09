@@ -236,7 +236,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "HTML.swift",
     "Localization.swift",
     "TextDirection.swift",
-    // "UnicodeScalar.swift",
   ]
   let impossibleTests = [
     "SDGHTMLTests",
