@@ -195,46 +195,8 @@ for target in package.targets {
 
 import Foundation
 
-//if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   // #warning(Debugging.)
-package.products.removeAll(where: { $0.name == "SDGWeb" })
-package.targets.removeAll(where: { $0.name == "SDGWeb" })
-
-  let target = package.targets.first(where: { $0.name == "SDGHTML" })
-  /*target?.exclude = [
-    "Syntax/Nodes/AttributesSyntax.swift",
-    "Syntax/Nodes/AttributeSyntax.swift",
-    "Syntax/Nodes/AttributeValueSyntax.swift",
-    "Syntax/Nodes/ClosingTagSyntax.swift",
-    "Syntax/Nodes/CommentSyntax.swift",
-    "Syntax/Nodes/ContentSyntax.swift",
-    "Syntax/Nodes/ContentSyntax+Factories.swift",
-    "Syntax/Nodes/DocumentSyntax.swift",
-    "Syntax/Nodes/DocumentSyntax+Factories.swift",
-    "Syntax/Nodes/ElementContinuationSyntax.swift",
-    "Syntax/Nodes/ElementSyntax.swift",
-    "Syntax/Nodes/ElementSyntax+Factories.swift",
-    "Syntax/Nodes/ListSyntax.swift",
-    "Syntax/Nodes/ListSyntaxAttributeSyntax.swift",
-    "Syntax/Nodes/ListSyntaxContentSyntax.swift",
-    "Syntax/Nodes/OpeningTagSyntax.swift",
-    "Syntax/Nodes/TextSyntax.swift",
-    "Syntax/Nodes/TokenSyntax.swift",
-    "Syntax/Protocols/AttributedSyntax.swift",
-    "Syntax/Protocols/ContainerSyntax.swift",
-    "Syntax/Protocols/NamedSyntax.swift",
-    "Syntax/Protocols/Syntax.swift",
-    "Syntax/ContentSyntaxKind.swift",
-    "Syntax/SyntaxStorage.swift",
-    "Syntax/SyntaxUnfolder.swift",
-    "Syntax/SyntaxUnfolderContext.swift",
-    "Syntax/SyntaxUnfolderError.swift",
-    "Syntax/SyntaxUnfolderProtocol.swift",
-    "Syntax/UnfoldingError.swift",
-    /*?*/"HTML.swift",
-    "Localization.swift",
-    /*?*/"TextDirection.swift",
-  ]*/
   let impossibleTests = [
     "SDGHTMLTests",
     "SDGWebTests"
@@ -243,9 +205,9 @@ package.targets.removeAll(where: { $0.name == "SDGWeb" })
   package.targets.append(.testTarget(name: "DebuggingTests", dependencies: [
     "SDGWebLocalizations",
     "SDGCSS",
-    "SDGHTML"
+    "SDGHTML",
   ]))
-//}
+}
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 12.2, Tool targets don’t work on tvOS.) @exempt(from: unicode)
