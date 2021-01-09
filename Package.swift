@@ -197,6 +197,46 @@ import Foundation
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   // #warning(Debugging.)
+  let target = package.targets.first(where: { $0.name == "SDGHTML" })
+  target?.exclude = [
+    "Syntax/Nodes/AttributesSyntax.swift",
+    "Syntax/Nodes/AttributeSyntax.swift",
+    "Syntax/Nodes/AttributeValueSyntax.swift",
+    "Syntax/Nodes/ClosingTagSyntax.swift",
+    "Syntax/Nodes/CommentSyntax.swift",
+    "Syntax/Nodes/ContentSyntax.swift",
+    "Syntax/Nodes/DocumentSyntax.swift",
+    "Syntax/Nodes/DocumentSyntax+Factories.swift",
+    "Syntax/Nodes/ElementContinuationSyntax.swift",
+    "Syntax/Nodes/ElementSyntax.swift",
+    "Syntax/Nodes/ElementSyntax+Factories.swift",
+    "Syntax/Nodes/ListSyntax.swift",
+    "Syntax/Nodes/ListSyntaxAttributeSyntax.swift",
+    "Syntax/Nodes/ListSyntaxContentSyntax.swift",
+    "Syntax/Nodes/OpeningTagSyntax.swift",
+    "Syntax/Nodes/TextSyntax.swift",
+    "Syntax/Nodes/TokenSyntax.swift",
+    "Syntax/Protocols/AttributedSyntax.swift",
+    "Syntax/Protocols/ChildSet.swift",
+    "Syntax/Protocols/ContainerSyntax.swift",
+    "Syntax/Protocols/NamedSyntax.swift",
+    "Syntax/Protocols/Syntax.swift",
+    "Syntax/ContentSyntaxKind.swift",
+    "Syntax/HeadingLevel.swift",
+    "Syntax/SyntaxError.swift",
+    "Syntax/SyntaxStorage.swift",
+    "Syntax/SyntaxUnfolder.swift",
+    "Syntax/SyntaxUnfolderContext.swift",
+    "Syntax/SyntaxUnfolderError.swift",
+    "Syntax/SyntaxUnfolderProtocol.swift",
+    "Syntax/TokenKind.swift",
+    "Syntax/UnfoldingError.swift",
+    "Entities.swift",
+    "HTML.swift",
+    "Localization.swift",
+    "TextDirection.swift",
+    // "UnicodeScalar.swift",
+  ]
   let impossibleTests = [
     "SDGHTMLTests",
     "SDGWebTests"
