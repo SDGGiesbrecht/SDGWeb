@@ -202,7 +202,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "SDGWebTests"
   ]
   package.targets.removeAll(where: { impossibleTests.contains($0.name) })
-  package.targets.append(.testTarget(name: "DebuggingTests", dependencies: ["SDGWebLocalizations"]))
+  package.targets.append(.testTarget(name: "DebuggingTests", dependencies: [
+    "SDGWebLocalizations",
+    "SDGCSS"
+  ]))
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
