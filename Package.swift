@@ -195,8 +195,11 @@ for target in package.targets {
 
 import Foundation
 
-if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+//if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   // #warning(Debugging.)
+package.products.removeAll(where: { $0.name == "SDGWeb" })
+package.targets.removeAll(where: { $0.name == "SDGWeb" })
+
   let target = package.targets.first(where: { $0.name == "SDGHTML" })
   target?.exclude = [
     "Syntax/Nodes/AttributesSyntax.swift",
@@ -218,24 +221,24 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "Syntax/Nodes/TextSyntax.swift",
     "Syntax/Nodes/TokenSyntax.swift",
     "Syntax/Protocols/AttributedSyntax.swift",
-    "Syntax/Protocols/ChildSet.swift",
+    //"Syntax/Protocols/ChildSet.swift",
     "Syntax/Protocols/ContainerSyntax.swift",
     "Syntax/Protocols/NamedSyntax.swift",
     "Syntax/Protocols/Syntax.swift",
     "Syntax/ContentSyntaxKind.swift",
-    "Syntax/HeadingLevel.swift",
-    "Syntax/SyntaxError.swift",
+    //"Syntax/HeadingLevel.swift",
+    //"Syntax/SyntaxError.swift",
     "Syntax/SyntaxStorage.swift",
     "Syntax/SyntaxUnfolder.swift",
     "Syntax/SyntaxUnfolderContext.swift",
     "Syntax/SyntaxUnfolderError.swift",
     "Syntax/SyntaxUnfolderProtocol.swift",
-    "Syntax/TokenKind.swift",
+    //"Syntax/TokenKind.swift",
     "Syntax/UnfoldingError.swift",
-    "Entities.swift",
-    "HTML.swift",
+    //"Entities.swift",
+    //"HTML.swift",
     "Localization.swift",
-    "TextDirection.swift",
+    //"TextDirection.swift",
   ]
   let impossibleTests = [
     "SDGHTMLTests",
@@ -247,7 +250,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "SDGCSS",
     "SDGHTML"
   ]))
-}
+//}
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 12.2, Tool targets don’t work on tvOS.) @exempt(from: unicode)
