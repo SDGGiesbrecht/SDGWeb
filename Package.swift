@@ -205,6 +205,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "Syntax/Nodes/ClosingTagSyntax.swift",
     "Syntax/Nodes/CommentSyntax.swift",
     "Syntax/Nodes/ContentSyntax.swift",
+    "Syntax/Nodes/ContentSyntax+Factories.swift",
     "Syntax/Nodes/DocumentSyntax.swift",
     "Syntax/Nodes/DocumentSyntax+Factories.swift",
     "Syntax/Nodes/ElementContinuationSyntax.swift",
