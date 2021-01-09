@@ -201,7 +201,7 @@ package.products.removeAll(where: { $0.name == "SDGWeb" })
 package.targets.removeAll(where: { $0.name == "SDGWeb" })
 
   let target = package.targets.first(where: { $0.name == "SDGHTML" })
-  target?.exclude = [
+  /*target?.exclude = [
     "Syntax/Nodes/AttributesSyntax.swift",
     "Syntax/Nodes/AttributeSyntax.swift",
     "Syntax/Nodes/AttributeValueSyntax.swift",
@@ -234,7 +234,7 @@ package.targets.removeAll(where: { $0.name == "SDGWeb" })
     /*?*/"HTML.swift",
     "Localization.swift",
     /*?*/"TextDirection.swift",
-  ]
+  ]*/
   let impossibleTests = [
     "SDGHTMLTests",
     "SDGWebTests"
