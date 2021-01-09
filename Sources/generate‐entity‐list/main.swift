@@ -41,7 +41,7 @@ var transformed: [String: String] = [:]
 #endif
 
 var file: [StrictString] = [
-  "#if os(WASI)  // #workaround(Swift 5.3.2, Otherwise module is broken.)",
+  "#if os(WASI)  // #workaround(Swift 5.3.2, Web cannot handle long literals.)",
   "  @usableFromInline internal let entities: [String: String] = [:]",
   "#else",
   "  // This is generated automatically using the generate‐entity‐list target.",
