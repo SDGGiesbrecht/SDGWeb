@@ -117,7 +117,9 @@ class APITests: TestCase {
     let withEntities = AttributeValueSyntax(
       value: TokenSyntax(kind: .attributeText("&#2010;&8208;&hyphen;&not‐an‐entity;"))
     )
-    XCTAssertEqual(withEntities.valueText, "‐‐‐&not‐an‐entity;")
+    #if !PLATFORM_SUFFERS_LONG_LITERAL_BUG
+      XCTAssertEqual(withEntities.valueText, "‐‐‐&not‐an‐entity;")
+    #endif
   }
 
   func testComment() {

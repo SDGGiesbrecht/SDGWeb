@@ -116,6 +116,8 @@ func expectErrorGenerating<L>(
 ) where L: InputLocalization {
   do {
     try generate(forMock: mockName, localization: localization)
-    XCTFail("Failed to throw error.", file: file, line: line)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      XCTFail("Failed to throw error.", file: file, line: line)
+    #endif
   } catch {}
 }
