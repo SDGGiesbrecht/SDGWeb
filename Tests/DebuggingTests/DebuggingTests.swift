@@ -4,6 +4,6 @@
 
 import XCTest
 
-final class DebuggingTests: XCTest {
+final class DebuggingTests: XCTestCase {
   func testDebugging() {}
 }
