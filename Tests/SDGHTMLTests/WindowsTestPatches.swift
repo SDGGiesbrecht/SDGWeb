@@ -18,7 +18,7 @@
   import SDGPersistence
   import SDGLocalization
 
-  // #workaround(Swift 5.3.1, Leads to segmentation faults.)
+  // #workaround(Swift 5.3.2, Leads to segmentation faults.)
   func testFileConvertibleConformance<T>(
     of instance: T,
     uniqueTestName: StrictString,
@@ -26,7 +26,7 @@
     line: UInt = #line
   ) where T: Equatable, T: FileConvertible {}
 
-  // #workaround(Swift 5.3.1, Icons lead to segmentation faults.)
+  // #workaround(Swift 5.3.2, Icons lead to segmentation faults.)
   extension Localization {
     var icon: StrictString? {
       return nil
