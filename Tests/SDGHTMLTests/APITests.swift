@@ -682,7 +682,7 @@ class APITests: TestCase {
           errors.append(contentsOf: validated)
         #endif
       }
-      #if !os(Windows)  // #workaround(Swift 5.3.1, Segmentation fault.)
+      #if !os(Windows)  // #workaround(Swift 5.3.2, Segmentation fault.)
         var report: [StrictString] = []
         for localization in InterfaceLocalization.allCases {
           report.append(localization.icon ?? StrictString(localization.code))
@@ -900,7 +900,7 @@ class APITests: TestCase {
   }
 
   func testValidLink() throws {
-    // #workaround(Swift 5.3.1, Segmentation fault.)
+    // #workaround(Swift 5.3.2, Segmentation fault.)
     #if !os(Windows)
       let document = try DocumentSyntax.parse(
         source:

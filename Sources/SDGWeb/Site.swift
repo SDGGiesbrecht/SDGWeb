@@ -174,8 +174,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   /// - Parameters:
   ///     - site: The URL of a site in the local file system.
   public static func validate(site: URL) -> [URL: [SiteValidationError]] {
-    // #workaround(Swift 5.3.1, Web lacks FileManager.)
-    #if !os(WASI)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var files: [URL]
       do {
         files = try FileManager.default.deepFileEnumeration(in: site)

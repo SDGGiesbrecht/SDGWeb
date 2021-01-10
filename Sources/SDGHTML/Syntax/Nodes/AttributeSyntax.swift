@@ -30,7 +30,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
   // MARK: - Parsing
 
   #if !os(Windows)
-    // #workaround(Swift 5.3.1, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
+    // #workaround(Swift 5.3.2, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
     private enum Child: ChildSet {
       case whitespace
       case name
@@ -423,8 +423,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
       if let url = URL(string: legacySpecification, relativeTo: baseURL) {
         var dead = true
         if url.isFileURL {
-          // #workaround(Swift 5.3.1, Web lacks checkResourceIsReachable.)
-          #if os(WASI)
+          #if PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE
             dead = false
           #else
             if (try? url.checkResourceIsReachable()) == true {
@@ -434,8 +433,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
         } else if url.host == "example.com" {
           dead = false
         } else {
-          // #workaround(Swift 5.3.1, Web lacks URLRequest.)
-          #if os(WASI)
+          #if PLATFORM_LACKS_FOUNDATION_URL_REQUEST
             dead = false
           #else
             let request = URLRequest(
