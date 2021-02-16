@@ -16,7 +16,7 @@
 
 import PackageDescription
 
-// #example(1, readMe🇨🇦EN)
+// #example(1, readMe🇨🇦EN) #example(2, conditions)
 /// SDGWeb provides tools for generating websites.
 ///
 /// > [כְּשִׁמְךָ אֱלֹהִים כְּן תְּהלָּתְךָ עַל־קַצְוֵי־אֶרֶץ׃](https://www.biblegateway.com/passage/?search=Psalm+48&version=WLC;NIV)
@@ -56,6 +56,12 @@ import PackageDescription
 ///
 /// try site.generate().get()
 /// let warnings = site.validate()
+/// ```
+///
+/// Some platforms lack certain features. The compilation conditions which appear throughout the documentation are defined as follows:
+///
+/// ```swift
+/// .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
 /// ```
 let package = Package(
   name: "SDGWeb",
@@ -184,19 +190,21 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
+    // #workaround(Swift 5.3.3, Web lacks Foundation.FileManager.)
+    // @example(conditions)
+    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+    // @endExample
 
     // Internal‐only:
-    // #workaround(Swift 5.3.2, Web cannot handle long literals.)
+    // #workaround(Swift 5.3.3, Web cannot handle long literals.)
     .define("PLATFORM_SUFFERS_LONG_LITERAL_BUG", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.2, Web lacks Foundation.FileManager.)
-    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.2, Web lacks Foundation.ProcessInfo.)
+    // #workaround(Swift 5.3.3, Web lacks Foundation.ProcessInfo.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.2, Web lacks Foundation.URL.checkResourceIsReachable().)
+    // #workaround(Swift 5.3.3, Web lacks Foundation.URL.checkResourceIsReachable().)
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.2, Web lacks Foundation.URL.init(fileURLWithPath).)
+    // #workaround(Swift 5.3.3, Web lacks Foundation.URL.init(fileURLWithPath).)
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.2, Web lacks Foundation.URLRequest.)
+    // #workaround(Swift 5.3.3, Web lacks Foundation.URLRequest.)
     .define("PLATFORM_LACKS_FOUNDATION_URL_REQUEST", .when(platforms: [.wasi])),
   ])
 }

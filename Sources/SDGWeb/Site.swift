@@ -62,8 +62,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
 
   // MARK: - Processing
 
-  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
-  #if !os(WASI)
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     /// Generates the website in its result directory.
     ///
     /// - Parameters:
@@ -185,8 +184,7 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
     #endif
 
     var results: [URL: [SiteValidationError]] = [:]
-    // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
-    #if !os(WASI)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       for file in files where file.pathExtension == "html" {
         let source: String
         do {

@@ -19,15 +19,13 @@ import SDGText
 import SDGPersistence
 
 let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
-// #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
-#if !os(WASI)
+#if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
   let json = try Data(from: specificationURL)
   let database = try JSONDecoder().decode([String: Entity].self, from: json)
 #endif
 
 var transformed: [String: String] = [:]
-// #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
-#if !os(WASI)
+#if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
   for (entity, text) in database {
     var name = entity
     if entity.hasPrefix("&"),
@@ -67,8 +65,7 @@ let sourceFile = URL(fileURLWithPath: #filePath)
   .appendingPathComponent("SDGHTML")
   .appendingPathComponent("Entities.swift")
 
-// #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
-#if !os(WASI)
+#if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
   var existing = try StrictString(from: sourceFile)
   existing.truncate(after: "*/\n\n")
   existing.append(contentsOf: file.joined(separator: "\n".scalars))
