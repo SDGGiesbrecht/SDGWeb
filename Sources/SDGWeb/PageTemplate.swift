@@ -27,8 +27,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
 
   // MARK: - Initialization
 
-  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
-  #if !os(WASI)
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     internal static func load<Unfolder>(
       from file: URL,
       in site: Site<Localization, Unfolder>,
@@ -134,8 +133,7 @@ internal class PageTemplate<Localization> where Localization: SDGLocalization.In
     ) ?? resolvedTitle()
   }
 
-  // #workaround(SDGCornerstone 6.2.0, Web lacks file system interaction.)
-  #if !os(WASI)
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     internal func writeResult<Unfolder>(
       for localization: Localization,
       of site: Site<Localization, Unfolder>,
