@@ -664,8 +664,7 @@ class APITests: TestCase {
   }
 
   func testSyntaxError() {
-    #warning("Debugging...")
-    print(#function)
+    #if !os(Windows)  // #workaround(Swift 5.4.2, Crashes before function even begins.)
     func expectViolation(
       named name: String,
       in string: String,
@@ -673,8 +672,6 @@ class APITests: TestCase {
       file: StaticString = #filePath,
       line: UInt = #line
     ) {
-      #warning("Debugging...")
-      print(name)
       var errors: [SyntaxError] = []
       switch DocumentSyntax.parse(source: string) {
       case .failure(let error):
@@ -708,8 +705,6 @@ class APITests: TestCase {
         )
       #endif
     }
-    #warning("Debugging...")
-    print("After nested function...")
 
     expectViolation(
       named: "Dead Remote Link",
@@ -781,6 +776,7 @@ class APITests: TestCase {
       in: "<html><h1>...</h1><h3>...</h3></html>",
       overwriteSpecificationInsteadOfFailing: false
     )
+    #endif
   }
 
   func testSyntaxUnfolder() {
