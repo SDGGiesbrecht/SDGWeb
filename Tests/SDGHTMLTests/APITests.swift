@@ -671,6 +671,8 @@ class APITests: TestCase {
       file: StaticString = #filePath,
       line: UInt = #line
     ) {
+      #warning("Debugging...")
+      print(name)
       var errors: [SyntaxError] = []
       switch DocumentSyntax.parse(source: string) {
       case .failure(let error):
