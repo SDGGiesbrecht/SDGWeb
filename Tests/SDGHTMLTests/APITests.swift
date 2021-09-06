@@ -664,6 +664,8 @@ class APITests: TestCase {
   }
 
   func testSyntaxError() {
+    #warning("Debugging...")
+    print(#function)
     func expectViolation(
       named name: String,
       in string: String,
@@ -706,6 +708,8 @@ class APITests: TestCase {
         )
       #endif
     }
+    #warning("Debugging...")
+    print("After nested function...")
 
     expectViolation(
       named: "Dead Remote Link",
