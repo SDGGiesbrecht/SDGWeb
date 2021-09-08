@@ -23,14 +23,11 @@ public struct AttributesSyntax: AttributedSyntax, ExpressibleByArrayLiteral, Syn
 
   // MARK: - Parsing
 
-  //#if !os(Windows)
-    // #warning(Swift 5.3.2, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-    private enum Child: ChildSet {
-      case attributes
-      case trailingWhitespace
-    }
-    private static let indices = Child.indexTable()
-  //#endif
+  private enum Child: ChildSet {
+    case attributes
+    case trailingWhitespace
+  }
+  private static let indices = Child.indexTable()
 
   internal static func parse(
     fromEndOf source: inout String
