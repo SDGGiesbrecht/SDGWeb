@@ -23,14 +23,11 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
 
   // MARK: - Parsing
 
-  #if !os(Windows)
-    // #workaround(Swift 5.3.2, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-    private enum Child: ChildSet {
-      case openingTag
-      case continuation
-    }
-    private static let indices = Child.indexTable()
-  #endif
+  private enum Child: ChildSet {
+    case openingTag
+    case continuation
+  }
+  private static let indices = Child.indexTable()
 
   private static func unpairedGreaterThan() -> UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -163,20 +160,20 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
   /// The opening tag.
   public var openingTag: OpeningTagSyntax {
     get {
-      return _storage.children[0] as! OpeningTagSyntax
+      return _storage.children[ElementSyntax.indices[.openingTag]!] as! OpeningTagSyntax
     }
     set {
-      _storage.children[0] = newValue
+      _storage.children[ElementSyntax.indices[.openingTag]!] = newValue
     }
   }
 
   /// The content and closing tag, if the element is not empty.
   public var continuation: ElementContinuationSyntax? {
     get {
-      return _storage.children[1] as? ElementContinuationSyntax
+      return _storage.children[ElementSyntax.indices[.continuation]!] as? ElementContinuationSyntax
     }
     set {
-      _storage.children[1] = newValue
+      _storage.children[ElementSyntax.indices[.continuation]!] = newValue
     }
   }
 

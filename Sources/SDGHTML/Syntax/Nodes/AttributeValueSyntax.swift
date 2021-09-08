@@ -23,16 +23,13 @@ public struct AttributeValueSyntax: Syntax {
 
   // MARK: - Parsing
 
-  #if !os(Windows)
-    // #workaround(Swift 5.3.2, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-    private enum Child: ChildSet {
-      case equals
-      case openingQuotationMark
-      case value
-      case closingQuotationMark
-    }
-    private static let indices = Child.indexTable()
-  #endif
+  private enum Child: ChildSet {
+    case equals
+    case openingQuotationMark
+    case value
+    case closingQuotationMark
+  }
+  private static let indices = Child.indexTable()
 
   internal static func parse(
     fromEndOf source: inout String
@@ -128,40 +125,40 @@ public struct AttributeValueSyntax: Syntax {
   /// The equals sign.
   public var equals: TokenSyntax {
     get {
-      return _storage.children[0] as! TokenSyntax
+      return _storage.children[AttributeValueSyntax.indices[.equals]!] as! TokenSyntax
     }
     set {
-      _storage.children[0] = newValue
+      _storage.children[AttributeValueSyntax.indices[.equals]!] = newValue
     }
   }
 
   /// The opening quotation mark.
   public var openingQuotationMark: TokenSyntax {
     get {
-      return _storage.children[1] as! TokenSyntax
+      return _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] as! TokenSyntax
     }
     set {
-      _storage.children[1] = newValue
+      _storage.children[AttributeValueSyntax.indices[.openingQuotationMark]!] = newValue
     }
   }
 
   /// The value.
   public var value: TokenSyntax {
     get {
-      return _storage.children[2] as! TokenSyntax
+      return _storage.children[AttributeValueSyntax.indices[.value]!] as! TokenSyntax
     }
     set {
-      _storage.children[2] = newValue
+      _storage.children[AttributeValueSyntax.indices[.value]!] = newValue
     }
   }
 
   /// The closing quotation mark.
   public var closingQuotationMark: TokenSyntax {
     get {
-      return _storage.children[3] as! TokenSyntax
+      return _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] as! TokenSyntax
     }
     set {
-      _storage.children[3] = newValue
+      _storage.children[AttributeValueSyntax.indices[.closingQuotationMark]!] = newValue
     }
   }
 

@@ -21,16 +21,13 @@ public struct OpeningTagSyntax: AttributedSyntax, NamedSyntax, Syntax {
 
   // MARK: - Parsing
 
-  #if !os(Windows)
-    // #workaround(Swift 5.3.2, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-    private enum Child: ChildSet {
-      case lessThan
-      case name
-      case attributes
-      case greaterThan
-    }
-    private static let indices = Child.indexTable()
-  #endif
+  private enum Child: ChildSet {
+    case lessThan
+    case name
+    case attributes
+    case greaterThan
+  }
+  private static let indices = Child.indexTable()
 
   // MARK: - Initialization
 
@@ -73,40 +70,40 @@ public struct OpeningTagSyntax: AttributedSyntax, NamedSyntax, Syntax {
   /// The less‐than sign.
   public var lessThan: TokenSyntax {
     get {
-      return _storage.children[0] as! TokenSyntax
+      return _storage.children[OpeningTagSyntax.indices[.lessThan]!] as! TokenSyntax
     }
     set {
-      _storage.children[0] = newValue
+      _storage.children[OpeningTagSyntax.indices[.lessThan]!] = newValue
     }
   }
 
   /// The tag name.
   public var name: TokenSyntax {
     get {
-      return _storage.children[1] as! TokenSyntax
+      return _storage.children[OpeningTagSyntax.indices[.name]!] as! TokenSyntax
     }
     set {
-      _storage.children[1] = newValue
+      _storage.children[OpeningTagSyntax.indices[.name]!] = newValue
     }
   }
 
   /// Any attributes.
   public var attributes: AttributesSyntax? {
     get {
-      return _storage.children[2] as? AttributesSyntax
+      return _storage.children[OpeningTagSyntax.indices[.attributes]!] as? AttributesSyntax
     }
     set {
-      _storage.children[2] = newValue
+      _storage.children[OpeningTagSyntax.indices[.attributes]!] = newValue
     }
   }
 
   /// The greater‐than sign.
   public var greaterThan: TokenSyntax {
     get {
-      return _storage.children[3] as! TokenSyntax
+      return _storage.children[OpeningTagSyntax.indices[.greaterThan]!] as! TokenSyntax
     }
     set {
-      _storage.children[3] = newValue
+      _storage.children[OpeningTagSyntax.indices[.greaterThan]!] = newValue
     }
   }
 
