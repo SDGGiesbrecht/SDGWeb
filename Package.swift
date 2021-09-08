@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.4
 
 /*
  Package.swift
@@ -142,7 +142,7 @@ let package = Package(
 
     // Resource Generation
 
-    .target(
+    .executableTarget(
       name: "generate‐entity‐list",
       dependencies: [
         .product(name: "SDGLogic", package: "SDGCornerstone"),
