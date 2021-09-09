@@ -683,7 +683,7 @@ class APITests: TestCase {
             errors.append(contentsOf: validated)
           #endif
         }
-        #if !os(Windows)  // #workaround(Swift 5.3.2, Segmentation fault.)
+        #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
           var report: [StrictString] = []
           for localization in InterfaceLocalization.allCases {
             report.append(localization.icon ?? StrictString(localization.code))
@@ -902,8 +902,7 @@ class APITests: TestCase {
   }
 
   func testValidLink() throws {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       let document = try DocumentSyntax.parse(
         source:
           "<a href=\u{22}http://www.google.com\u{22}></a>"

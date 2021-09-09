@@ -12,13 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if os(Windows)
-
+#if PLATFORM_SUFFERS_SEGMENTATION_FAULTS
   import SDGText
   import SDGPersistence
   import SDGLocalization
 
-  // #workaround(Swift 5.3.2, Leads to segmentation faults.)
   func testFileConvertibleConformance<T>(
     of instance: T,
     uniqueTestName: StrictString,
@@ -26,7 +24,6 @@
     line: UInt = #line
   ) where T: Equatable, T: FileConvertible {}
 
-  // #workaround(Swift 5.3.2, Icons lead to segmentation faults.)
   extension Localization {
     var icon: StrictString? {
       return nil

@@ -46,7 +46,7 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
     switch AttributesSyntax.parse(fromEndOf: &source) {
     case .failure(let error):
       return .failure(error)
-    case .success(let (name, attributes)):
+    case .success((let name, let attributes)):
       if source.scalars.isEmpty {
         return .failure(
           SyntaxError(
@@ -83,7 +83,7 @@ public struct ElementSyntax: AttributedSyntax, ContainerSyntax, NamedSyntax, Syn
           ) {
           case .failure(let error):
             return .failure(error)
-          case .success(let (opening, content)):
+          case .success((let opening, let content)):
             guard let tag = opening else {
               return .failure(
                 SyntaxError(
