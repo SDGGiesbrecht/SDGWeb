@@ -17,14 +17,11 @@ public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
 
   // MARK: - Parsing
 
-  #if !os(Windows)
-    // #workaround(Swift 5.3.2, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-    private enum Child: ChildSet {
-      case content
-      case closingTag
-    }
-    private static let indices = Child.indexTable()
-  #endif
+  private enum Child: ChildSet {
+    case content
+    case closingTag
+  }
+  private static let indices = Child.indexTable()
 
   // MARK: - Initialization
 
@@ -51,21 +48,21 @@ public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
   /// The content of the element.
   public var content: ListSyntax<ContentSyntax> {
     get {
-      return _storage.children[0]
+      return _storage.children[ElementContinuationSyntax.indices[.content]!]
         as! ListSyntax<ContentSyntax>
     }
     set {
-      _storage.children[0] = newValue
+      _storage.children[ElementContinuationSyntax.indices[.content]!] = newValue
     }
   }
 
   /// The closing tag.
   public var closingTag: ClosingTagSyntax {
     get {
-      return _storage.children[1] as! ClosingTagSyntax
+      return _storage.children[ElementContinuationSyntax.indices[.closingTag]!] as! ClosingTagSyntax
     }
     set {
-      _storage.children[1] = newValue
+      _storage.children[ElementContinuationSyntax.indices[.closingTag]!] = newValue
     }
   }
 

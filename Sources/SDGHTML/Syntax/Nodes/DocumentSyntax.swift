@@ -25,13 +25,10 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, FileConvertible, Synta
 
   // MARK: - Parsing
 
-  #if !os(Windows)
-    // #workaround(Swift 5.3.2, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-    private enum Child: ChildSet {
-      case content
-    }
-    private static let indices = Child.indexTable()
-  #endif
+  private enum Child: ChildSet {
+    case content
+  }
+  private static let indices = Child.indexTable()
 
   /// Parses the source into a syntax tree.
   ///
@@ -58,10 +55,10 @@ public struct DocumentSyntax: ContainerSyntax, Equatable, FileConvertible, Synta
   /// The content.
   public var content: ListSyntax<ContentSyntax> {
     get {
-      return _storage.children[0] as! ListSyntax<ContentSyntax>
+      return _storage.children[DocumentSyntax.indices[.content]!] as! ListSyntax<ContentSyntax>
     }
     set {
-      _storage.children[0] = newValue
+      _storage.children[DocumentSyntax.indices[.content]!] = newValue
     }
   }
 

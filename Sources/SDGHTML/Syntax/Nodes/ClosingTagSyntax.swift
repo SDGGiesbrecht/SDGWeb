@@ -17,16 +17,13 @@ public struct ClosingTagSyntax: NamedSyntax, Syntax {
 
   // MARK: - Parsing
 
-  #if !os(Windows)
-    // #workaround(Swift 5.3.2, Automatic indices here and in the other nodes has been disconnected to dodge a COMDAT issue on Windows.)
-    private enum Child: ChildSet {
-      case lessThan
-      case slash
-      case name
-      case greaterThan
-    }
-    private static let indices = Child.indexTable()
-  #endif
+  private enum Child: ChildSet {
+    case lessThan
+    case slash
+    case name
+    case greaterThan
+  }
+  private static let indices = Child.indexTable()
 
   // MARK: - Initialization
 
@@ -67,40 +64,40 @@ public struct ClosingTagSyntax: NamedSyntax, Syntax {
   /// The less‐than sign.
   public var lessThan: TokenSyntax {
     get {
-      return _storage.children[0] as! TokenSyntax
+      return _storage.children[ClosingTagSyntax.indices[.lessThan]!] as! TokenSyntax
     }
     set {
-      _storage.children[0] = newValue
+      _storage.children[ClosingTagSyntax.indices[.lessThan]!] = newValue
     }
   }
 
   /// The slash.
   public var slash: TokenSyntax {
     get {
-      return _storage.children[1] as! TokenSyntax
+      return _storage.children[ClosingTagSyntax.indices[.slash]!] as! TokenSyntax
     }
     set {
-      _storage.children[1] = newValue
+      _storage.children[ClosingTagSyntax.indices[.slash]!] = newValue
     }
   }
 
   /// The tag name.
   public var name: TokenSyntax {
     get {
-      return _storage.children[2] as! TokenSyntax
+      return _storage.children[ClosingTagSyntax.indices[.name]!] as! TokenSyntax
     }
     set {
-      _storage.children[2] = newValue
+      _storage.children[ClosingTagSyntax.indices[.name]!] = newValue
     }
   }
 
   /// The greater‐than sign.
   public var greaterThan: TokenSyntax {
     get {
-      return _storage.children[3] as! TokenSyntax
+      return _storage.children[ClosingTagSyntax.indices[.greaterThan]!] as! TokenSyntax
     }
     set {
-      _storage.children[3] = newValue
+      _storage.children[ClosingTagSyntax.indices[.greaterThan]!] = newValue
     }
   }
 
