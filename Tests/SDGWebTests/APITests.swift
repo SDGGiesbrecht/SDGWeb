@@ -30,6 +30,7 @@ import SDGXCTestUtilities
 class APITests: TestCase {
 
   func testCopyright() {
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       XCTAssert(
         ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
       )
@@ -38,6 +39,7 @@ class APITests: TestCase {
           CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
         )
       )
+    #endif
   }
 
   func testInvalidHTML() {
