@@ -683,7 +683,6 @@ class APITests: TestCase {
             errors.append(contentsOf: validated)
           #endif
         }
-        #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
           var report: [StrictString] = []
           for localization in InterfaceLocalization.allCases {
             report.append(localization.icon ?? StrictString(localization.code))
@@ -703,7 +702,6 @@ class APITests: TestCase {
             file: file,
             line: line
           )
-        #endif
       }
 
       expectViolation(
