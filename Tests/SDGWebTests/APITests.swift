@@ -98,6 +98,7 @@ class APITests: TestCase {
     }
   }
   func testSiteGenerationError() {
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       let errors: [SiteGenerationError] = [
         .foundationError(StandInError()),
         .invalidDomain("[...]"),
@@ -121,6 +122,7 @@ class APITests: TestCase {
           overwriteSpecificationInsteadOfFailing: false
         )
       }
+    #endif
   }
 
   func testSiteValidationError() throws {
