@@ -900,12 +900,10 @@ class APITests: TestCase {
   }
 
   func testValidLink() throws {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       let document = try DocumentSyntax.parse(
         source:
           "<a href=\u{22}http://www.google.com\u{22}></a>"
       ).get()
       XCTAssert(document.validate(baseURL: URL(string: "/")!).isEmpty)
-    #endif
   }
 }

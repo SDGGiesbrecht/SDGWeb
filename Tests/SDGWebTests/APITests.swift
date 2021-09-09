@@ -30,7 +30,6 @@ import SDGXCTestUtilities
 class APITests: TestCase {
 
   func testCopyright() {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       XCTAssert(
         ¬copyrightDates(yearFirstPublished: CalendarDate.gregorianNow().gregorianYear).contains("–")
       )
@@ -39,7 +38,6 @@ class APITests: TestCase {
           CalendarDate.gregorianNow().gregorianYear.inEnglishDigits()
         )
       )
-    #endif
   }
 
   func testInvalidHTML() {
@@ -98,7 +96,6 @@ class APITests: TestCase {
     }
   }
   func testSiteGenerationError() {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       let errors: [SiteGenerationError] = [
         .foundationError(StandInError()),
         .invalidDomain("[...]"),
@@ -122,11 +119,9 @@ class APITests: TestCase {
           overwriteSpecificationInsteadOfFailing: false
         )
       }
-    #endif
   }
 
   func testSiteValidationError() throws {
-    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       let parseFailure: SyntaxError
       switch DocumentSyntax.parse(source: "html>") {
       case .failure(let error):
@@ -157,7 +152,6 @@ class APITests: TestCase {
           XCTAssert(¬warnings.isEmpty)
         }
       #endif
-    #endif
   }
 
   func testUnknownLocalization() throws {
