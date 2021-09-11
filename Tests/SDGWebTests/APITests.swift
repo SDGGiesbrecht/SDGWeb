@@ -126,6 +126,7 @@ class APITests: TestCase {
   }
 
   func testSiteValidationError() throws {
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       let parseFailure: SyntaxError
       switch DocumentSyntax.parse(source: "html>") {
       case .failure(let error):
@@ -156,6 +157,7 @@ class APITests: TestCase {
           XCTAssert(¬warnings.isEmpty)
         }
       #endif
+    #endif
   }
 
   func testUnknownLocalization() throws {
