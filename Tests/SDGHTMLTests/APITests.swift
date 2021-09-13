@@ -164,7 +164,7 @@ class APITests: TestCase {
       ContentSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text.")))))
     )
     XCTAssertEqual(document.source(), "Text.")
-    #if !PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDGCORNERSONE
+    #if !PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE
       testFileConvertibleConformance(
         of: DocumentSyntax.document(documentElement: .division()),
         uniqueTestName: "HTML Document"
@@ -902,10 +902,12 @@ class APITests: TestCase {
   }
 
   func testValidLink() throws {
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       let document = try DocumentSyntax.parse(
         source:
           "<a href=\u{22}http://www.google.com\u{22}></a>"
       ).get()
       XCTAssert(document.validate(baseURL: URL(string: "/")!).isEmpty)
+    #endif
   }
 }
