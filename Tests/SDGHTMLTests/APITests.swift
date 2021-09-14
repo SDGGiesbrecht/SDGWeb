@@ -685,25 +685,25 @@ class APITests: TestCase {
             errors.append(contentsOf: validated)
           #endif
         }
-          var report: [StrictString] = []
-          for localization in InterfaceLocalization.allCases {
-            report.append(localization.icon ?? StrictString(localization.code))
-            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-              for error in errors {
-                report.append("")
-                report.append(error.presentableDescription())
-              }
+        var report: [StrictString] = []
+        for localization in InterfaceLocalization.allCases {
+          report.append(localization.icon ?? StrictString(localization.code))
+          LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+            for error in errors {
+              report.append("")
+              report.append(error.presentableDescription())
             }
           }
-          compare(
-            String(report.joined(separator: "\n")),
-            against: testSpecificationDirectory()
-              .appendingPathComponent("SyntaxError")
-              .appendingPathComponent("\(name).txt"),
-            overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
-            file: file,
-            line: line
-          )
+        }
+        compare(
+          String(report.joined(separator: "\n")),
+          against: testSpecificationDirectory()
+            .appendingPathComponent("SyntaxError")
+            .appendingPathComponent("\(name).txt"),
+          overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
+          file: file,
+          line: line
+        )
       }
 
       expectViolation(

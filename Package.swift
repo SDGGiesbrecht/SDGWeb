@@ -210,7 +210,7 @@ for target in package.targets {
     .define("PLATFORM_LACKS_SDG_CORNERSTONE_TEST_CASE", .when(platforms: [.watchOS])),
     // #wokraround(SDGCornerstone 7.2.4, Windows line endings not supported by testFileConvertibleConformance.)
     .define("PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE", .when(platforms: [.windows])),
-    // #warning(SDGCornerstone 7.2.4, Windows suffers unexplained segmentation faults.)
+    // #workaround(SDGCornerstone 7.2.4, Windows suffers unexplained segmentation faults.)
     .define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS", .when(platforms: [.windows])),
   ])
 }
