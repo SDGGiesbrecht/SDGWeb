@@ -164,10 +164,12 @@ class APITests: TestCase {
       ContentSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text.")))))
     )
     XCTAssertEqual(document.source(), "Text.")
-    testFileConvertibleConformance(
-      of: DocumentSyntax.document(documentElement: .division()),
-      uniqueTestName: "HTML Document"
-    )
+    #if !PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE
+      testFileConvertibleConformance(
+        of: DocumentSyntax.document(documentElement: .division()),
+        uniqueTestName: "HTML Document"
+      )
+    #endif
     XCTAssertNil(try? DocumentSyntax(file: "</end>".file, origin: nil))
   }
 
@@ -683,27 +685,25 @@ class APITests: TestCase {
             errors.append(contentsOf: validated)
           #endif
         }
-        #if !os(Windows)  // #workaround(Swift 5.3.2, Segmentation fault.)
-          var report: [StrictString] = []
-          for localization in InterfaceLocalization.allCases {
-            report.append(localization.icon ?? StrictString(localization.code))
-            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-              for error in errors {
-                report.append("")
-                report.append(error.presentableDescription())
-              }
+        var report: [StrictString] = []
+        for localization in InterfaceLocalization.allCases {
+          report.append(localization.icon ?? StrictString(localization.code))
+          LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+            for error in errors {
+              report.append("")
+              report.append(error.presentableDescription())
             }
           }
-          compare(
-            String(report.joined(separator: "\n")),
-            against: testSpecificationDirectory()
-              .appendingPathComponent("SyntaxError")
-              .appendingPathComponent("\(name).txt"),
-            overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
-            file: file,
-            line: line
-          )
-        #endif
+        }
+        compare(
+          String(report.joined(separator: "\n")),
+          against: testSpecificationDirectory()
+            .appendingPathComponent("SyntaxError")
+            .appendingPathComponent("\(name).txt"),
+          overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing,
+          file: file,
+          line: line
+        )
       }
 
       expectViolation(
@@ -902,8 +902,7 @@ class APITests: TestCase {
   }
 
   func testValidLink() throws {
-    // #workaround(Swift 5.3.2, Segmentation fault.)
-    #if !os(Windows)
+    #if !PLATFORM_SUFFERS_SEGMENTATION_FAULTS
       let document = try DocumentSyntax.parse(
         source:
           "<a href=\u{22}http://www.google.com\u{22}></a>"

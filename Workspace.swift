@@ -54,6 +54,3 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGText",
   "SDGXCTestUtilities",
 ]
-
-// #workaround(workspace version 0.36.1, False positives.)
-configuration.proofreading.swiftFormatConfiguration?.rules["UseLetInEveryBoundCaseVariable"] = false
