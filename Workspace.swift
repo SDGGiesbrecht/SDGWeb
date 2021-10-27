@@ -54,3 +54,8 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGText",
   "SDGXCTestUtilities",
 ]
+
+// #workaround(workspace 0.38.0, Until default scope is fixed.)
+configuration.testing.exemptionTokens.insert(
+  TestCoverageExemptionToken("fail", scope: .previousLine)
+)
