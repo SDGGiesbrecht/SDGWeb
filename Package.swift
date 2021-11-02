@@ -81,7 +81,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(7, 2, 5)
+      from: Version(8, 0, 0)
     )
   ],
   targets: [
