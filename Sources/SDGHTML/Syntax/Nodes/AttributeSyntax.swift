@@ -430,7 +430,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
         } else if url.host == "example.com" {
           dead = false
         } else {
-          #if PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_REQUEST
+          #if PLATFORM_LACKS_FOUNDATION_NETWORKING
             dead = false
           #else
             let request = URLRequest(

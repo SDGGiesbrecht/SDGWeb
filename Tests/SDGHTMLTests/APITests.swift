@@ -706,7 +706,7 @@ class APITests: TestCase {
         )
       }
 
-      #if !PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_REQUEST
+      #if !PLATFORM_LACKS_FOUNDATION_NETWORKING
         expectViolation(
           named: "Dead Remote Link",
           in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
