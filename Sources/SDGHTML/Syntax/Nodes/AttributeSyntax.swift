@@ -13,7 +13,7 @@
  */
 
 import Foundation
-#if canImport(FoundationNetworking)
+#if !PLATFORM_LACKS_FOUNDATION_NETWORKING
   import FoundationNetworking
 #endif
 
@@ -430,7 +430,7 @@ public struct AttributeSyntax: NamedSyntax, Syntax {
         } else if url.host == "example.com" {
           dead = false
         } else {
-          #if PLATFORM_LACKS_FOUNDATION_URL_REQUEST
+          #if PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_REQUEST
             dead = false
           #else
             let request = URLRequest(
