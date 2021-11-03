@@ -13,7 +13,7 @@
  */
 
 import Foundation
-#if !PLATFORM_LACKS_FOUNDATION_NETWORKING
+#if !PLATFORM_LACKS_FOUNDATION_NETWORKING && canImport(FoundationNetworking)
   import FoundationNetworking
 #endif
 
