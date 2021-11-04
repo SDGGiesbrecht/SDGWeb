@@ -706,11 +706,13 @@ class APITests: TestCase {
         )
       }
 
-      expectViolation(
-        named: "Dead Remote Link",
-        in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
-        overwriteSpecificationInsteadOfFailing: false
-      )
+      #if !PLATFORM_LACKS_FOUNDATION_NETWORKING
+        expectViolation(
+          named: "Dead Remote Link",
+          in: "<a href=\u{22}http://doesnotexist.invalid\u{22}></a>",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
       expectViolation(
         named: "Missing Attribute Value",
         in: "<a href></a>",

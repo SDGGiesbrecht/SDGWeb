@@ -204,8 +204,8 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
     // #workaround(Swift 5.4.2, Web lacks Foundation.URL.init(fileURLWithPath).)
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.4.2, Web lacks Foundation.URLRequest.)
-    .define("PLATFORM_LACKS_FOUNDATION_URL_REQUEST", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.5.1, Android lacks FoundationNetworking.)
+    .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
     // #wokraround(SDGCornerstone 7.2.4, Windows line endings not supported by testFileConvertibleConformance.)
     .define("PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE", .when(platforms: [.windows])),
     // #workaround(SDGCornerstone 7.2.4, Windows suffers unexplained segmentation faults.)
