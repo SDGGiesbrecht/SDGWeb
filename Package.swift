@@ -196,8 +196,8 @@ for target in package.targets {
     // @endExample
 
     // Internal‐only:
-    // #warning(Swift 5.4.2, Web cannot handle long literals.)
-    //.define("PLATFORM_SUFFERS_LONG_LITERAL_BUG", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.5.1, Web cannot handle long literals.)
+    .define("PLATFORM_SUFFERS_LONG_LITERAL_BUG", .when(platforms: [.wasi])),
     // #workaround(Swift 5.5.1, Web lacks Foundation.ProcessInfo.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.5.1, Web lacks Foundation.URL.checkResourceIsReachable().)
