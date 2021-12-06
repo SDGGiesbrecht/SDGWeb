@@ -206,30 +206,30 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     // #workaround(Swift 5.5.1, Android lacks FoundationNetworking.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
-    // #workaround(SDGCornerstone 7.2.4, Windows line endings not supported by testFileConvertibleConformance.)
+    // #workaround(SDGCornerstone 8.0.1, Windows line endings not supported by testFileConvertibleConformance.)
     .define("PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE", .when(platforms: [.windows])),
-    // #workaround(SDGCornerstone 7.2.4, Windows suffers unexplained segmentation faults.)
+    // #workaround(SDGCornerstone 8.0.1, Windows suffers unexplained segmentation faults.)
     .define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS", .when(platforms: [.windows])),
   ])
 }
 
 #if os(Windows)
-  // #workaround(Swift 5.4.2, Unable to build from Windows.)
+  // #warning(Swift 5.4.2, Unable to build from Windows.)
   package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
 #endif
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
 }
