@@ -215,7 +215,7 @@ for target in package.targets {
 
 #if os(Windows)
   // #warning(Swift 5.4.2, Unable to build from Windows.)
-  package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
+  //package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
 #endif
 
 import Foundation
