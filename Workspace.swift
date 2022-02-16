@@ -4,7 +4,7 @@
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
 
- Copyright ©2018–2021 Jeremy David Giesbrecht and the SDGWeb project contributors.
+ Copyright ©2018–2022 Jeremy David Giesbrecht and the SDGWeb project contributors.
 
  Soli Deo gloria.
 
@@ -54,3 +54,5 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGText",
   "SDGXCTestUtilities",
 ]
+
+configuration.supportedPlatforms.remove(.centOS)
