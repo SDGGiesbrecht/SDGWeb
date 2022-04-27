@@ -177,7 +177,8 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
       var files: [URL]
       do {
         files = try FileManager.default.deepFileEnumeration(in: site)
-      } catch {  // @exempt(from: tests)
+      } catch {
+        // @exempt(from: tests)
         return [site: [.foundationError(error)]]
       }
     #endif
@@ -188,7 +189,8 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
         let source: String
         do {
           source = try String(from: file)
-        } catch {  // @exempt(from: tests)
+        } catch {
+          // @exempt(from: tests)
           results[file] = [.foundationError(error)]
           break
         }
