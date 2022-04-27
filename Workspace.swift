@@ -54,5 +54,3 @@ configuration.documentation.api.ignoredDependencies = [
   "SDGText",
   "SDGXCTestUtilities",
 ]
-
-configuration.supportedPlatforms.remove(.centOS)
