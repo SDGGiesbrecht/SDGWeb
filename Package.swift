@@ -211,12 +211,14 @@ for target in package.targets {
   ])
 }
 
-#if os(Windows)
-  // #workaround(Swift 5.5.1, Unable to build from Windows.)
-  package.targets.removeAll(where: { $0.name == "generate‐entity‐list" })
-#endif
-
 import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+  // #workaround(Swift 5.6, Windows cannot handle Unicode name.)
+  for target in package.targets {
+    target.name = target.name.replacingOccurrences(of: "‐", with: "_")
+  }
+}
+
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.targets.removeAll(where: { $0.type == .executable })
