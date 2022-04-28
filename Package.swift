@@ -148,7 +148,8 @@ let package = Package(
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
-      ]
+      ],
+      path: "Sources/generate_entity_list"
     ),
 
     // Tests
