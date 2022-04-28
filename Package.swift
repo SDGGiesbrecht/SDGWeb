@@ -206,8 +206,8 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
     // #workaround(Swift 5.6, Android lacks FoundationNetworking.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
-    // #warning(SDGCornerstone 8.0.1, Windows line endings not supported by testFileConvertibleConformance.)
-    //.define("PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE", .when(platforms: [.windows])),
+    // #workaround(SDGCornerstone 9.0.0, Windows line endings not supported by testFileConvertibleConformance.)
+    .define("PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE", .when(platforms: [.windows])),
     // #warning(SDGCornerstone 8.0.1, Windows suffers unexplained segmentation faults.)
     //.define("PLATFORM_SUFFERS_SEGMENTATION_FAULTS", .when(platforms: [.windows])),
   ])
