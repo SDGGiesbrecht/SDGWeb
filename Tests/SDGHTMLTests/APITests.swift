@@ -666,7 +666,6 @@ class APITests: TestCase {
   }
 
   func testSyntaxError() {
-    #if !os(Windows)  // #workaround(Swift 5.4.2, Crashes before function even begins.)
       func expectViolation(
         named name: String,
         in string: String,
@@ -778,7 +777,6 @@ class APITests: TestCase {
         in: "<html><h1>...</h1><h3>...</h3></html>",
         overwriteSpecificationInsteadOfFailing: false
       )
-    #endif
   }
 
   func testSyntaxUnfolder() {
