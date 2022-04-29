@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Swift 5.6, Directory should be “generate‐entity‐list” but for Windows bug.)
+
 import Foundation
 
 import SDGLogic
