@@ -142,15 +142,15 @@ let package = Package(
 
     // Resource Generation
 
-    .executableTarget(
-      // #workaround(Swift 5.6, Should be “generate‐entity‐list”, but for Windows bug.)
-      name: "generate_entity_list",
+    // #workaround(xcodebuild -version 13.3.1, Should be an executable, but for interference with tvOS, etc.) @exempt(from: unicode)
+    .testTarget(
+      name: "SDGEntityListGenerationTests",
       dependencies: [
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
       ],
-      path: "Sources/generate_entity_list"
+      path: "Sources/SDGEntityListGeneratorTests"
     ),
 
     // Tests
@@ -211,12 +211,4 @@ for target in package.targets {
     // #workaround(SDGCornerstone 9.0.0, Windows line endings not supported by testFileConvertibleConformance.)
     .define("PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE", .when(platforms: [.windows])),
   ])
-}
-
-import Foundation
-// #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS, etc.) @exempt(from: unicode)
-if ["TVOS", "IOS", "WATCHOS"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
- {
-  package.targets.removeAll(where: { $0.type == .executable })
 }
