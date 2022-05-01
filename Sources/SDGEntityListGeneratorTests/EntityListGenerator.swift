@@ -20,7 +20,7 @@ import SDGPersistence
 
 enum EntityListGenerator {
 
-  static func main() {
+  static func main() throws {
     let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       let json = try Data(from: specificationURL)

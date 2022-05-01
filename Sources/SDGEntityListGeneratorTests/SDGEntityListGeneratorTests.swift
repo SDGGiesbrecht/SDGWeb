@@ -14,10 +14,10 @@
 
 import XCTest
 
-final class SDGEntityListGenerator: XCTest {
+final class SDGEntityListGeneratorTests: XCTestCase {
 
-  // Fix the spelling of “test” to run the generator.
-  func tesEntityListGenerator() {
-    EntityListGenerator.main()
+  // Fix the spelling of “test” and then run the test to execute the generator.
+  func tesEntityListGenerator() throws {
+    try EntityListGenerator.main()
   }
 }
