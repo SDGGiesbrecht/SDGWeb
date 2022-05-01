@@ -143,7 +143,8 @@ let package = Package(
     // Resource Generation
 
     .executableTarget(
-      name: "generate‐entity‐list",
+      // #workaround(Swift 5.6, Should be “generate‐entity‐list”, but for Windows bug.)
+      name: "generate_entity_list",
       dependencies: [
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
@@ -213,24 +214,9 @@ for target in package.targets {
 }
 
 import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.6, Windows cannot handle Unicode name.)
-  for target in package.targets {
-    target.name = target.name.replacingOccurrences(of: "‐", with: "_")
-  }
-}
-
-if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
-  package.targets.removeAll(where: { $0.type == .executable })
-}
-
-if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
-  package.targets.removeAll(where: { $0.type == .executable })
-}
-
-if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+// #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS, etc.) @exempt(from: unicode)
+if ["TVOS", "IOS", "WATCHOS"]
+  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
+ {
   package.targets.removeAll(where: { $0.type == .executable })
 }
