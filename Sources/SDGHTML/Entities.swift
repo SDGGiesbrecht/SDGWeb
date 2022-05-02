@@ -2141,6 +2141,6 @@
     "zopf": "\u{1D56B}",
     "zscr": "\u{1D4CF}",
     "zwj": "\u{200D}",
-    "zwnj": "\u{200C}"
+    "zwnj": "\u{200C}",
   ]
 #endif
