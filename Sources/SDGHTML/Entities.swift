@@ -15,7 +15,7 @@
 #if PLATFORM_SUFFERS_LONG_LITERAL_BUG
   @usableFromInline internal let entities: [String: String] = [:]
 #else
-  // This is generated automatically using the generate‐entity‐list target.
+  // This is generated automatically using the SDGEntityListGeneratorTests target.
   @usableFromInline internal let entities: [String: String] = [
     "AElig": "\u{00C6}",
     "AMP": "\u{0026}",

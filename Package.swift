@@ -142,14 +142,15 @@ let package = Package(
 
     // Resource Generation
 
-    .executableTarget(
-      name: "generate‐entity‐list",
+    // #workaround(xcodebuild -version 13.3.1, Should be an executable, but for interference with tvOS, etc.) @exempt(from: unicode)
+    .testTarget(
+      name: "SDGEntityListGenerationTests",
       dependencies: [
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
       ],
-      path: "Sources/generate_entity_list"
+      path: "Sources/SDGEntityListGeneratorTests"
     ),
 
     // Tests
@@ -210,27 +211,4 @@ for target in package.targets {
     // #workaround(SDGCornerstone 9.0.0, Windows line endings not supported by testFileConvertibleConformance.)
     .define("PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE", .when(platforms: [.windows])),
   ])
-}
-
-import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.6, Windows cannot handle Unicode name.)
-  for target in package.targets {
-    target.name = target.name.replacingOccurrences(of: "‐", with: "_")
-  }
-}
-
-if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
-  package.targets.removeAll(where: { $0.type == .executable })
-}
-
-if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
-  package.targets.removeAll(where: { $0.type == .executable })
-}
-
-if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
-  package.targets.removeAll(where: { $0.type == .executable })
 }
