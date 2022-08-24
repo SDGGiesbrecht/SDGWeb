@@ -21,8 +21,6 @@ public enum CSS {
   /// A recommended root CSS file.
   public static let root: StrictString = {
     var result = StrictString(Resources.root)
-    #warning("Debugging...")
-    print("“\(result)”")
     let match = result.firstMatch(
       for: "/*".scalars
         + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
