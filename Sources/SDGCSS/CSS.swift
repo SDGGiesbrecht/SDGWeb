@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCollections
 import SDGText
 
@@ -24,7 +26,9 @@ public enum CSS {
     let match = result.firstMatch(
       for: "/*".scalars
         + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
-        + "*/\n\n".scalars
+        + "*/".scalars
+        + CharacterSet.newlinePattern
+        + CharacterSet.newlinePattern
     )!
     result.replaceSubrange(match.range, with: "".scalars)
     return result
