@@ -24,11 +24,11 @@ public enum CSS {
   public static let root: StrictString = {
     var result = StrictString(Resources.root)
     let match = result.firstMatch(
-      for: "/*".scalars
+      for: "/*".scalars.literal(for: StrictString.self)
         + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
-        + "*/".scalars
-        + CharacterSet.newlinePattern
-        + CharacterSet.newlinePattern
+        + "*/".scalars.literal(for: StrictString.self)
+        + Newline.pattern(for: StrictString.self)
+        + Newline.pattern(for: StrictString.self)
     )!
     result.replaceSubrange(match.range, with: "".scalars)
     return result
