@@ -22,30 +22,35 @@ import SDGText
 public enum HTML {
 
   @inlinable internal static func sharedEscape<S>(_ text: inout S) where S: StringFamily {
-    text.scalars.replaceMatches(for: "&".scalars, with: "&#x0026;".scalars)
+    text.scalars.replaceMatches(
+      for: "&".scalars.literal(for: S.ScalarView.self),
+      with: "&#x0026;".scalars
+    )
   }
   @inlinable internal static func sharedUnescape<S>(_ text: inout S) where S: StringFamily {
     text.scalars.mutateMatches(
-      for: "&".scalars + RepetitionPattern(¬";".scalars) + ";".scalars,
-      mutation: { (match: PatternMatch<S.ScalarView>) -> S.ScalarView.SubSequence in
+      for: "&".scalars.literal(for: S.ScalarView.self)
+        + RepetitionPattern(¬(";".scalars.literal(for: S.ScalarView.self)))
+        + ";".scalars.literal(for: S.ScalarView.self),
+      mutation: { (match) -> S.ScalarView in
         var entity = match.contents
         entity.removeFirst()
         entity.removeLast()
         if let text = entities[String(String.ScalarView(entity))] {
-          return S.ScalarView(text.scalars)[...]
+          return S.ScalarView(text.scalars)
         } else if entity.first == "#",
           entity.dropFirst().allSatisfy({ $0.properties.isHexDigit }),
           let hexadecimal = UInt32(String(String.ScalarView(entity)).dropFirst(), radix: 16),
           let scalar = Unicode.Scalar.init(hexadecimal)
         {
-          return S.ScalarView(String(scalar).scalars)[...]
+          return S.ScalarView(String(scalar).scalars)
         } else if entity.allSatisfy({ $0.properties.isASCIIHexDigit }),
           let decimal = UInt32(String(String.ScalarView(entity)), radix: 10),
           let scalar = Unicode.Scalar.init(decimal)
         {
-          return S.ScalarView(String(scalar).scalars)[...]
+          return S.ScalarView(String(scalar).scalars)
         }
-        return match.contents
+        return S.ScalarView(match.contents)
       }
     )
   }
@@ -58,12 +63,30 @@ public enum HTML {
   where S: StringFamily {
     var text = text
     sharedEscape(&text)
-    text.scalars.replaceMatches(for: "<".scalars, with: "&#x003C;".scalars)
-    text.scalars.replaceMatches(for: ">".scalars, with: "&#x003E;".scalars)
-    text.scalars.replaceMatches(for: "\u{2066}".scalars, with: "<bdi dir=\u{22}ltr\u{22}>".scalars)
-    text.scalars.replaceMatches(for: "\u{2067}".scalars, with: "<bdi dir=\u{22}rtl\u{22}>".scalars)
-    text.scalars.replaceMatches(for: "\u{2068}".scalars, with: "<bdi dir=\u{22}auto\u{22}>".scalars)
-    text.scalars.replaceMatches(for: "\u{2069}".scalars, with: "</bdi>".scalars)
+    text.scalars.replaceMatches(
+      for: "<".scalars.literal(for: S.ScalarView.self),
+      with: "&#x003C;".scalars
+    )
+    text.scalars.replaceMatches(
+      for: ">".scalars.literal(for: S.ScalarView.self),
+      with: "&#x003E;".scalars
+    )
+    text.scalars.replaceMatches(
+      for: "\u{2066}".scalars.literal(for: S.ScalarView.self),
+      with: "<bdi dir=\u{22}ltr\u{22}>".scalars
+    )
+    text.scalars.replaceMatches(
+      for: "\u{2067}".scalars.literal(for: S.ScalarView.self),
+      with: "<bdi dir=\u{22}rtl\u{22}>".scalars
+    )
+    text.scalars.replaceMatches(
+      for: "\u{2068}".scalars.literal(for: S.ScalarView.self),
+      with: "<bdi dir=\u{22}auto\u{22}>".scalars
+    )
+    text.scalars.replaceMatches(
+      for: "\u{2069}".scalars.literal(for: S.ScalarView.self),
+      with: "</bdi>".scalars
+    )
     return text
   }
 
@@ -74,7 +97,10 @@ public enum HTML {
   @inlinable public static func escapeTextForAttribute<S>(_ text: S) -> S where S: StringFamily {
     var text = text
     sharedEscape(&text)
-    text.scalars.replaceMatches(for: "\u{22}".scalars, with: "&#x0022;".scalars)
+    text.scalars.replaceMatches(
+      for: "\u{22}".scalars.literal(for: S.ScalarView.self),
+      with: "&#x0022;".scalars
+    )
     return text
   }
   /// Unescapes text from an attribute value, resolving entities.
@@ -84,7 +110,10 @@ public enum HTML {
   @inlinable internal static func unescapeTextForAttribute<S>(_ text: S) -> S
   where S: StringFamily {
     var text = text
-    text.scalars.replaceMatches(for: "&#x0022;".scalars, with: "\u{22}".scalars)
+    text.scalars.replaceMatches(
+      for: "&#x0022;".scalars.literal(for: S.ScalarView.self),
+      with: "\u{22}".scalars
+    )
     sharedUnescape(&text)
     return text
   }
