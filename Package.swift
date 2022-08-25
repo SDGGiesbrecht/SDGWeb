@@ -128,6 +128,9 @@ let package = Package(
       dependencies: [
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
+      ],
+      resources: [
+        .copy("Root.css")
       ]
     ),
 
