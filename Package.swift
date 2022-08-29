@@ -145,7 +145,7 @@ let package = Package(
 
     // Resource Generation
 
-    // #workaround(xcodebuild -version 13.3.1, Should be an executable, but for interference with tvOS, etc.) @exempt(from: unicode)
+    // #workaround(xcodebuild -version 13.4.1, Should be an executable, but for interference with tvOS, etc.) @exempt(from: unicode)
     .testTarget(
       name: "SDGEntityListGenerationTests",
       dependencies: [
@@ -195,21 +195,21 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.6, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.6.1, Web lacks Foundation.FileManager.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // @endExample
 
     // Internal‐only:
-    // #workaround(Swift 5.6, Web cannot handle long literals.)
+    // #workaround(Swift 5.6.1, Web cannot handle long literals.)
     .define("PLATFORM_SUFFERS_LONG_LITERAL_BUG", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6, Web lacks Foundation.ProcessInfo.)
+    // #workaround(Swift 5.6.1, Web lacks Foundation.ProcessInfo.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6, Web lacks Foundation.URL.checkResourceIsReachable().)
+    // #workaround(Swift 5.6.1, Web lacks Foundation.URL.checkResourceIsReachable().)
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6, Web lacks Foundation.URL.init(fileURLWithPath).)
+    // #workaround(Swift 5.6.1, Web lacks Foundation.URL.init(fileURLWithPath).)
     .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6, Android lacks FoundationNetworking.)
+    // #workaround(Swift 5.6.1, Android lacks FoundationNetworking.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
     // #workaround(SDGCornerstone 9.0.0, Windows line endings not supported by testFileConvertibleConformance.)
     .define("PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE", .when(platforms: [.windows])),
