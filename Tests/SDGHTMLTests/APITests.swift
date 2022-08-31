@@ -166,7 +166,8 @@ class APITests: TestCase {
     XCTAssertEqual(document.source(), "Text.")
     testFileConvertibleConformance(
       of: DocumentSyntax.document(documentElement: .division()),
-      uniqueTestName: "HTML Document"
+      uniqueTestName: "HTML Document",
+      normalizeLineEndings: true
     )
     XCTAssertNil(try? DocumentSyntax(file: "</end>".file, origin: nil))
   }
