@@ -13,7 +13,7 @@
  */
 
 /// The level of a section heading.
-public enum HeadingLevel: CaseIterable {
+public enum HeadingLevel: CaseIterable, Sendable {
 
   // MARK: - Cases
 

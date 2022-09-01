@@ -17,7 +17,7 @@ import SDGLogic
 import SDGLocalization
 
 /// A Syntax node.
-public protocol Syntax: TransparentWrapper, TextOutputStreamable {
+public protocol Syntax: Sendable, TransparentWrapper, TextOutputStreamable {
   var _storage: _SyntaxStorage { get set }
 
   /// Applies systematic formatting to the HTML source node.

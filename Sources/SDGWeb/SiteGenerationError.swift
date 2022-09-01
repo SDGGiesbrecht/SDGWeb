@@ -22,7 +22,7 @@ import SDGHTML
 import SDGWebLocalizations
 
 /// An error encountered during site generation.
-public enum SiteGenerationError: PresentableError {
+public enum SiteGenerationError: PresentableError, Sendable {
 
   /// Foundation encountered an error.
   case foundationError(Swift.Error)

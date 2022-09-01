@@ -13,7 +13,7 @@
  */
 
 internal typealias SyntaxStorage = _SyntaxStorage
-public struct _SyntaxStorage {
+public struct _SyntaxStorage: Sendable {
 
   // MARK: - Properties
 

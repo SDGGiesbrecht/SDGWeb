@@ -19,7 +19,7 @@ import SDGWebLocalizations
 import SDGHTML
 
 /// An error detected while validating a website.
-public enum SiteValidationError: PresentableError {
+public enum SiteValidationError: PresentableError, Sendable {
 
   // MARK: - Cases
 

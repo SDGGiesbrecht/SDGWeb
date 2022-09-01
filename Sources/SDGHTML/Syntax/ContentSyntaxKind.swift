@@ -13,7 +13,7 @@
  */
 
 /// Enumerates the kinds of content piece.
-public enum ContentSyntaxKind {
+public enum ContentSyntaxKind: Sendable {
 
   /// A `TextSyntax` instance.
   case text(TextSyntax)

@@ -18,7 +18,7 @@ import SDGLocalization
 import SDGWebLocalizations
 
 /// An HTML syntax error or a violation of best practices.
-public struct SyntaxError: PresentableError {
+public struct SyntaxError: PresentableError, Sendable {
 
   /// Creates a syntax error.
   ///
@@ -34,7 +34,8 @@ public struct SyntaxError: PresentableError {
     context: String
   ) where L: Localization {
 
-    self.description = { description.resolved() }
+    let descriptionClosure: @Sendable () -> StrictString = { description.resolved() }
+    self.description = descriptionClosure
     self.context = context
 
     let lines = file.lines
@@ -43,7 +44,7 @@ public struct SyntaxError: PresentableError {
   }
 
   private let line: Int
-  private let description: () -> StrictString
+  private let description: @Sendable () -> StrictString
   private let context: String
 
   // MARK: - PresentableError
