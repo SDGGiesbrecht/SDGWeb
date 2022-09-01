@@ -164,12 +164,11 @@ class APITests: TestCase {
       ContentSyntax(kind: .text(TextSyntax(text: TokenSyntax(kind: .text("Text.")))))
     )
     XCTAssertEqual(document.source(), "Text.")
-    #if !PLATFORM_LINE_ENDINGS_NOT_SUPPORTED_BY_SDG_CORNERSONE
-      testFileConvertibleConformance(
-        of: DocumentSyntax.document(documentElement: .division()),
-        uniqueTestName: "HTML Document"
-      )
-    #endif
+    testFileConvertibleConformance(
+      of: DocumentSyntax.document(documentElement: .division()),
+      uniqueTestName: "HTML Document",
+      normalizeLineEndings: true
+    )
     XCTAssertNil(try? DocumentSyntax(file: "</end>".file, origin: nil))
   }
 
