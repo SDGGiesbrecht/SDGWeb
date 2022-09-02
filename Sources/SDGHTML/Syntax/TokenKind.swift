@@ -16,7 +16,7 @@ import SDGLogic
 import SDGCollections
 
 /// Enumerates the kinds of tokens in HTML.
-public enum TokenKind: Equatable, Hashable {
+public enum TokenKind: Equatable, Hashable, Sendable {
 
   // MARK: - Cases
 

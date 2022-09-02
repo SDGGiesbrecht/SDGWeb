@@ -16,7 +16,7 @@ import SDGText
 import SDGLocalization
 
 /// An error that encountered while unfolding a syntax node.
-public struct UnfoldingError: PresentableError {
+public struct UnfoldingError: PresentableError, Sendable {
 
   // MARK: - Initialization
 
@@ -29,13 +29,14 @@ public struct UnfoldingError: PresentableError {
     description: UserFacing<StrictString, L>,
     node: Syntax
   ) where L: Localization {
-    self.description = { description.resolved() }
+    let descriptionClosure: @Sendable () -> StrictString = { description.resolved() }
+    self.description = descriptionClosure
     self.syntaxNode = node
   }
 
   // MARK: - Properties
 
-  private let description: () -> StrictString
+  private let description: @Sendable () -> StrictString
 
   /// The node where the error occurred.
   public let syntaxNode: Syntax
