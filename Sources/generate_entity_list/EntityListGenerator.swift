@@ -18,7 +18,7 @@ import SDGLogic
 import SDGText
 import SDGPersistence
 
-enum EntityListGenerator {
+@main enum EntityListGenerator {
 
   static func main() throws {
     let specificationURL = URL(string: "https://html.spec.whatwg.org/entities.json")!

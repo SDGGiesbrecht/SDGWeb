@@ -145,15 +145,14 @@ let package = Package(
 
     // Resource Generation
 
-    // #workaround(xcodebuild -version 13.4.1, Should be an executable, but for interference with tvOS, etc.) @exempt(from: unicode)
-    .testTarget(
-      name: "SDGEntityListGenerationTests",
+    .executableTarget(
+      // #workaround(Swift 7.0, Windows is unable to handle Unicode name.)
+      name: "generate_entity_list",
       dependencies: [
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
-      ],
-      path: "Sources/SDGEntityListGeneratorTests"
+      ]
     ),
 
     // Tests
