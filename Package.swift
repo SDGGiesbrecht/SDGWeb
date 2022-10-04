@@ -146,7 +146,8 @@ let package = Package(
     // Resource Generation
 
     .executableTarget(
-      name: "generate‐entity‐list",
+      // #workaround(Swift 7.0, Windows is unable to handle Unicode name.)
+      name: "generate_entity_list",
       dependencies: [
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGText", package: "SDGCornerstone"),
