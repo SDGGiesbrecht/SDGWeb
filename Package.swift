@@ -194,9 +194,9 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #warning(Swift 5.6.1, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.7, Web lacks Foundation.FileManager.)
     // @example(conditions)
-    //.define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // @endExample
 
     // Internal‐only:
