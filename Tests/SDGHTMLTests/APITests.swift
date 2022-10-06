@@ -588,14 +588,12 @@ class APITests: TestCase {
         thisFile = URL(fileURLWithPath: directory)
       }
     #endif
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-      if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
-        thisFile = URL(fileURLWithPath: overridden)
-          .appendingPathComponent("Tests")
-          .appendingPathComponent("SDGHTMLTests")
-          .appendingPathComponent("APITests.swift")
-      }
-    #endif
+    if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
+      thisFile = URL(fileURLWithPath: overridden)
+        .appendingPathComponent("Tests")
+        .appendingPathComponent("SDGHTMLTests")
+        .appendingPathComponent("APITests.swift")
+    }
     func validate(url: String) throws -> [SyntaxError] {
       let document = try DocumentSyntax.parse(
         source: "<a href=\u{22}\(url)\u{22}>Space is not encoded.</a>"
