@@ -194,21 +194,21 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.6.1, Web lacks Foundation.FileManager.)
+    // #warning(Swift 5.6.1, Web lacks Foundation.FileManager.)
     // @example(conditions)
-    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+    //.define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // @endExample
 
     // Internal‐only:
-    // #workaround(Swift 5.6.1, Web cannot handle long literals.)
-    .define("PLATFORM_SUFFERS_LONG_LITERAL_BUG", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6.1, Web lacks Foundation.ProcessInfo.)
-    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6.1, Web lacks Foundation.URL.checkResourceIsReachable().)
-    .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6.1, Web lacks Foundation.URL.init(fileURLWithPath).)
-    .define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6.1, Android lacks FoundationNetworking.)
-    .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
+    // #warning(Swift 5.6.1, Web cannot handle long literals.)
+    //.define("PLATFORM_SUFFERS_LONG_LITERAL_BUG", .when(platforms: [.wasi])),
+    // #warning(Swift 5.6.1, Web lacks Foundation.ProcessInfo.)
+    //.define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+    // #warning(Swift 5.6.1, Web lacks Foundation.URL.checkResourceIsReachable().)
+    //.define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
+    // #warning(Swift 5.6.1, Web lacks Foundation.URL.init(fileURLWithPath).)
+    //.define("PLATFORM_LACKS_FOUNDATION_URL_INIT_FILE_URL_WITH_PATH", .when(platforms: [.wasi])),
+    // #warning(Swift 5.6.1, Android lacks FoundationNetworking.)
+    //.define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
   ])
 }
