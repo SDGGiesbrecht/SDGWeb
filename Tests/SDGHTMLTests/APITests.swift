@@ -703,11 +703,13 @@ class APITests: TestCase {
       in: "<a hidden=\u{22}value\u{22}></a>",
       overwriteSpecificationInsteadOfFailing: false
     )
-    expectViolation(
-      named: "Dead Relative Link",
-      in: "<a href=\u{22}does/not/exist\u{22}></a>",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE
+      expectViolation(
+        named: "Dead Relative Link",
+        in: "<a href=\u{22}does/not/exist\u{22}></a>",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
     expectViolation(
       named: "Invalid URL",
       in: "<a href=\u{22}\u{22}></a>",
