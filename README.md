@@ -78,7 +78,7 @@ let package = Package(
     .package(
       name: "SDGWeb",
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
-      from: Version(6, 1, 0)
+      from: Version(6, 1, 1)
     ),
   ],
   targets: [
