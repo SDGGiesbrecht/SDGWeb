@@ -46,11 +46,9 @@ func generate<L>(
       sdgWebRepositoryRoot = URL(fileURLWithPath: directory)
     }
   #endif
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-    if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
-      sdgWebRepositoryRoot = URL(fileURLWithPath: overridden)
-    }
-  #endif
+  if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
+    sdgWebRepositoryRoot = URL(fileURLWithPath: overridden)
+  }
 
   #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     // @example(readMe🇨🇦EN)
