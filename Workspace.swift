@@ -4,7 +4,7 @@
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
 
- Copyright ©2018–2022 Jeremy David Giesbrecht and the SDGWeb project contributors.
+ Copyright ©2018–2023 Jeremy David Giesbrecht and the SDGWeb project contributors.
 
  Soli Deo gloria.
 
@@ -34,23 +34,3 @@ configuration._applySDGOverrides()
 configuration._validateSDGStandards()
 
 configuration.repository.ignoredPaths.insert("Tests/Mock Projects")
-
-configuration.documentation.api.ignoredDependencies = [
-  // Swift
-  "Dispatch",
-  "Foundation",
-  "XCTest",
-
-  // SDGCornerstone
-  "SDGLogic",
-  "SDGCalendar",
-  "SDGCollections",
-  "SDGCornerstoneLocalizations",
-  "SDGLocalizationTestUtilities",
-  "SDGLogic",
-  "SDGMathematics",
-  "SDGPersistenceTestUtilities",
-  "SDGTesting",
-  "SDGText",
-  "SDGXCTestUtilities",
-]

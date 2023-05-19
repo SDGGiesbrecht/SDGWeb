@@ -4,7 +4,7 @@
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
 
- Copyright ©2018–2022 Jeremy David Giesbrecht and the SDGWeb project contributors.
+ Copyright ©2018–2023 Jeremy David Giesbrecht and the SDGWeb project contributors.
 
  Soli Deo gloria.
 
@@ -37,7 +37,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   ///     - localizationDirectories: The name to use for localization directories.
   ///     - siteAuthor: The author of the website.
   ///     - reportProgress: A closure to report progress as the site is assembled.
-  ///     - progressReport: A string describing progress made.
   public init(
     repositoryStructure: RepositoryStructure,
     siteRoot: UserFacing<URL, Localization>,

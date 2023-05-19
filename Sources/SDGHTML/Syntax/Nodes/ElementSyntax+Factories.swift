@@ -4,7 +4,7 @@
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
 
- Copyright ©2019–2022 Jeremy David Giesbrecht and the SDGWeb project contributors.
+ Copyright ©2019–2023 Jeremy David Giesbrecht and the SDGWeb project contributors.
 
  Soli Deo gloria.
 
@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGCollections
 import SDGLocalization
 
 extension ElementSyntax {

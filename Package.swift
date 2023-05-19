@@ -6,7 +6,7 @@
  This source file is part of the SDGWeb open source project.
  https://sdggiesbrecht.github.io/SDGWeb
 
- Copyright ©2018–2022 Jeremy David Giesbrecht and the SDGWeb project contributors.
+ Copyright ©2018–2023 Jeremy David Giesbrecht and the SDGWeb project contributors.
 
  Soli Deo gloria.
 
@@ -209,3 +209,8 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
   ])
 }
+
+// #workaround(Swift 5.7.2, Hardware compatibility; tools version does not reflect support.))
+#if compiler(<5.8) && !os(macOS)
+  #error("Swift 5.7 is only supported on macOS, tvOS, iOS and watchOS; elsewhere, please use Swift 5.8 or select an older version of SDGWeb.")
+#endif
