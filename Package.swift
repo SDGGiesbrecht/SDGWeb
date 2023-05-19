@@ -146,7 +146,7 @@ let package = Package(
     // Resource Generation
 
     .executableTarget(
-      // #workaround(Swift 7.0, Windows is unable to handle Unicode name.)
+      // #workaround(Swift 5.8, Windows is unable to handle Unicode name.)
       name: "generate_entity_list",
       dependencies: [
         .product(name: "SDGLogic", package: "SDGCornerstone"),
@@ -194,7 +194,7 @@ for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
-    // #workaround(Swift 5.7, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.8, Web lacks Foundation.FileManager.)
     // @example(conditions)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // @endExample
@@ -205,7 +205,7 @@ for target in package.targets {
     // #workaround(Swift 5.7, Web lacks Foundation.URL.checkResourceIsReachable().)
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
     // #workaround(Swift 5.7, Web lacks FoundationNetworking.)
-    // #workaround(Swift 5.7, Android lacks FoundationNetworking.)
+    // #workaround(Swift 5.8, Android lacks FoundationNetworking.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
   ])
 }
