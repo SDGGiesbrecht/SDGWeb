@@ -37,7 +37,6 @@ where Localization: SDGLocalization.InputLocalization, Unfolder: SiteSyntaxUnfol
   ///     - localizationDirectories: The name to use for localization directories.
   ///     - siteAuthor: The author of the website.
   ///     - reportProgress: A closure to report progress as the site is assembled.
-  ///     - progressReport: A string describing progress made.
   public init(
     repositoryStructure: RepositoryStructure,
     siteRoot: UserFacing<URL, Localization>,
