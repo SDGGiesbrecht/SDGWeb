@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGCollections
 import SDGLocalization
 
 extension ElementSyntax {

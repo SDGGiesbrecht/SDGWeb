@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
+
 /// The content and closing tag of an element.
 public struct ElementContinuationSyntax: ContainerSyntax, Syntax {
 
