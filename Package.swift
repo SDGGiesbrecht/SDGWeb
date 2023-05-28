@@ -81,7 +81,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(10, 0, 0)
+      from: Version(10, 1, 2)
     )
   ],
   targets: [
@@ -209,8 +209,3 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
   ])
 }
-
-// #workaround(Swift 5.7.2, Hardware compatibility; tools version does not reflect support.))
-#if compiler(<5.8) && !os(macOS)
-  #error("Swift 5.7 is only supported on macOS, tvOS, iOS and watchOS; elsewhere, please use Swift 5.8 or select an older version of SDGWeb.")
-#endif
