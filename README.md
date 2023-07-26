@@ -67,7 +67,7 @@ Some platforms lack certain features. The compilation conditions which appear th
 
 ## Importing
 
-SDGWeb provides libraries for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDGWeb provides libraries for use with the Swift Package Manager.
 
 Simply add SDGWeb as a dependency in `Package.swift` and specify which of the libraries to use:
 
@@ -76,7 +76,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "SDGWeb",
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
       from: Version(6, 1, 2)
     ),
